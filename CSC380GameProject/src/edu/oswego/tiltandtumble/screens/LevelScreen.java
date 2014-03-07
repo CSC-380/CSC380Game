@@ -1,4 +1,5 @@
-package screens;
+package edu.oswego.tiltandtumble.screens;
+
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -18,19 +19,24 @@ import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
+import edu.oswego.tiltandtumble.TiltAndTumble;
 
-import edu.oswego.maestri.game.TiltAndTumble;
 
-public class HighScoresScreen implements Screen {
-	TiltAndTumble game;
+
+public class LevelScreen implements Screen {
+	
 	private  Stage stage;
     private  Skin skin;
-    
-	
-	public HighScoresScreen(TiltAndTumble game){
-		this.game = game;
-	}
 
+    TiltAndTumble game;
+
+    public LevelScreen(TiltAndTumble game){
+
+    	this.game = game;
+    	
+    }
+    
+    
 	@Override
 	public void render(float delta) {
 		 Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
@@ -80,6 +86,19 @@ public class HighScoresScreen implements Screen {
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
+
+        Button play = new TextButton("Click to Play Level One!", textButtonStyle);
+        table.add(play);
+        
+
+        play.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+            	
+                game.setScreen(new GameScreen(game, 1));
+                dispose();
+            }
+        });
         
         table.row();
         table.row();

@@ -1,4 +1,4 @@
-package levels;
+package edu.oswego.tiltandtumble.levels;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +9,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 
-import worldObjects.*;
+import edu.oswego.tiltandtumble.worldObjects.*;
+
 public class BallController {
 
 	enum Keys {

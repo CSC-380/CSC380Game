@@ -1,9 +1,8 @@
-package levels;
+package edu.oswego.tiltandtumble.levels;
 
 
 
 
-import collisionListener.OurCollisionListener;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -27,7 +26,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
-import worldObjects.*;
+import edu.oswego.tiltandtumble.collisionListener.OurCollisionListener;
+import edu.oswego.tiltandtumble.worldObjects.*;
+
 
 public class WorldRenderer extends OrthogonalTiledMapRenderer{
 	private WorldPopulator worldPopulator;

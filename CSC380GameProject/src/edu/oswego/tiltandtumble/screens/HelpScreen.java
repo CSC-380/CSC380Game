@@ -1,4 +1,4 @@
-package screens;
+package edu.oswego.tiltandtumble.screens;
 
 import com.badlogic.gdx.Screen;
 

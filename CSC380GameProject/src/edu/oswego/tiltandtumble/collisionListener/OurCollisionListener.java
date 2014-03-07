@@ -1,4 +1,4 @@
-package collisionListener;
+package edu.oswego.tiltandtumble.collisionListener;
 
 
 
@@ -8,7 +8,8 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
-import worldObjects.*;
+import edu.oswego.tiltandtumble.worldObjects.*;
+
 
 
 

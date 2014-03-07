@@ -1,4 +1,5 @@
-package screens;
+package edu.oswego.tiltandtumble.screens;
+
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -18,20 +19,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
+import edu.oswego.tiltandtumble.TiltAndTumble;
 
-import edu.oswego.maestri.game.TiltAndTumble;
 
-public class CreditScreen implements Screen {
 
-	TiltAndTumble game;
+public class SettingsScreen implements Screen {
+
 	private  Stage stage;
     private  Skin skin;
-    
+	TiltAndTumble game;
 	
-	public CreditScreen(TiltAndTumble game){
+	public SettingsScreen(TiltAndTumble game){
 		this.game = game;
 	}
-
+	
 	@Override
 	public void render(float delta) {
 		 Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
@@ -39,7 +40,6 @@ public class CreditScreen implements Screen {
 	        stage.draw();
 		
 	}
-
 
 	@Override
 	public void resize(int width, int height) {
@@ -82,12 +82,8 @@ public class CreditScreen implements Screen {
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
-
-		
-		
-		
-		
-		table.row();
+        
+        table.row();
         table.row();
         Button back = new TextButton("Go Back", textButtonStyle);
         table.add(back);
@@ -99,6 +95,7 @@ public class CreditScreen implements Screen {
                 dispose();
             }
         });
+	
 		
 	}
 

@@ -1,4 +1,5 @@
-package screens;
+package edu.oswego.tiltandtumble.screens;
+
 
 
 import com.badlogic.gdx.Gdx;
@@ -8,8 +9,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.physics.box2d.World;
 
-import edu.oswego.maestri.game.TiltAndTumble;
-import levels.*;
+import edu.oswego.tiltandtumble.TiltAndTumble;
+import edu.oswego.tiltandtumble.levels.*;
+
 
 public class GameScreen implements Screen, InputProcessor {
 

@@ -1,4 +1,4 @@
-package worldObjects;
+package edu.oswego.tiltandtumble.worldObjects;
 
 
 

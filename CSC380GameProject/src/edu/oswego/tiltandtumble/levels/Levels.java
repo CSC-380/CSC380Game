@@ -1,4 +1,4 @@
-package levels;
+package edu.oswego.tiltandtumble.levels;
 
 
 
@@ -8,8 +8,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.Vector2;
 
-import worldObjects.Block;
-import worldObjects.Hole;
+import edu.oswego.tiltandtumble.worldObjects.Block;
+import edu.oswego.tiltandtumble.worldObjects.Hole;
+
 
 public class Levels {
 

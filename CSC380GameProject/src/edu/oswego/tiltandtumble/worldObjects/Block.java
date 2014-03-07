@@ -1,4 +1,5 @@
-package worldObjects;
+package edu.oswego.tiltandtumble.worldObjects;
+
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -10,7 +11,8 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 
-import collisionListener.OurCollisionListener;
+import edu.oswego.tiltandtumble.collisionListener.OurCollisionListener;
+
 
 
 

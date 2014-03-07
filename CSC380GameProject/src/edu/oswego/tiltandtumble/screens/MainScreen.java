@@ -1,4 +1,5 @@
-package screens;
+package edu.oswego.tiltandtumble.screens;
+
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -18,41 +19,45 @@ import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
+import edu.oswego.tiltandtumble.TiltAndTumble;
 
-import edu.oswego.maestri.game.TiltAndTumble;
 
-public class LevelScreen implements Screen {
-	
-	private  Stage stage;
-    private  Skin skin;
+public class MainScreen implements Screen {
 
-    TiltAndTumble game;
+    final TiltAndTumble game;
+    private  Stage stage;
+    private Skin skin;
+    float height;
+    float width;
 
-    public LevelScreen(TiltAndTumble game){
 
-    	this.game = game;
-    	
+    public MainScreen(final TiltAndTumble game) {
+        this.game = game;
     }
-    
-    
-	@Override
-	public void render(float delta) {
-		 Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-	        stage.act(Gdx.graphics.getDeltaTime());
-	        stage.draw();
-		
-	}
 
-	@Override
-	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
 
-	@Override
-	public void show() {
-		stage = new Stage();
+
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        stage.setViewport(width, height, true);
+    }
+
+    @Override
+    public void show() {
+        
+       
+
+        stage = new Stage();
         Gdx.input.setInputProcessor(stage);
+        height = stage.getHeight();
+        width = stage.getWidth();
 
         skin = new Skin();
 
@@ -85,57 +90,77 @@ public class LevelScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
-        Button play = new TextButton("Click to Play Level One!", textButtonStyle);
+        Button play = new TextButton("Click to Play!", textButtonStyle);
         table.add(play);
-        
 
         play.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-            	
-                game.setScreen(new GameScreen(game, 1));
+                game.setScreen(new LevelScreen(game));
+                dispose();
+            }
+        });
+        table.row();
+        Button settings = new TextButton("Click to View Settings!", textButtonStyle);
+        table.add(settings);
+
+        settings.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(new SettingsScreen(game));
+                dispose();
+            }
+        });
+        table.row();
+        Button scores = new TextButton("Click to View Scores!", textButtonStyle);
+        table.add(scores);
+
+        scores.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(new HighScoresScreen(game));
                 dispose();
             }
         });
         
         table.row();
-        table.row();
-        Button back = new TextButton("Go Back", textButtonStyle);
-        table.add(back);
+        Button credits = new TextButton("Click to View Credits!", textButtonStyle);
+        table.add(credits);
 
-        back.addListener(new ChangeListener() {
+        credits.addListener(new ChangeListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {	
-                game.setMainScreen();
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(new CreditScreen(game));
                 dispose();
             }
         });
-		
-	}
 
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-		
-	}
+       
 
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void hide() {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void dispose() {
-		stage.dispose();
+    }
+
+    @Override
+    public void pause() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void resume() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
         skin.dispose();
-		
-	}
+    }
 
 }

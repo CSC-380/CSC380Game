@@ -1,4 +1,4 @@
-package worldObjects;
+package edu.oswego.tiltandtumble.worldObjects;
 
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.math.Polygon;
