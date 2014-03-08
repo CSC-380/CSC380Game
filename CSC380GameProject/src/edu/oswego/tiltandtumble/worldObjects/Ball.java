@@ -1,86 +1,70 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
-
-
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.maps.objects.CircleMapObject;
-import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 
+import edu.oswego.tiltandtumble.levels.UnitScale;
 
 public class Ball {
+    public static final float FRICTION = 0.1f;
+    public static final float DENSITY = 1.0f;
+    public static final float RESTITUTION = 0.7f;
+    public static final BodyType BODY_TYPE = BodyType.DynamicBody;
+    public static final float ANGULAR_DAMPENING = 0.1f;
+    public static final float LINEAR_DAMPENING = 0.1f;
 
+    private final Texture texture;
+    private final Sprite sprite;
+    private final Body body;
 
+    UnitScale scale;
 
-	public static final float SPEED = 4f;	// unit per second
-	public static final float SIZE = 0.5f; // half a unit
-	BodyDef bodyDef = new BodyDef();
-	
-	
-	Vector2 	acceleration = new Vector2();
-	Vector2 	velocity = new Vector2();
-	Circle ball;
-	CircleMapObject cirMapObj = new CircleMapObject();
+    public Ball(Body body, UnitScale scale) {
+        this.body = body;
+        this.scale = scale;
+        body.setUserData(this);
 
-	public Ball(Vector2 position) {
-		ball = cirMapObj.getCircle();
-		cirMapObj.setColor(new Color(1,0,1,1));
-		ball.setPosition(position);
-		ball.setRadius(SIZE/2);
-		bodyDef.type = BodyType.DynamicBody;
-	
-	
-	}
-	public BodyDef getBodyDef(){
-		return bodyDef;
-	}
-	 
-	public void update(float delta) {
-		float x = ball.x;
-		float y = ball.y;
-		Vector2 pos = new Vector2(x,y);
-		pos.add(velocity.cpy().scl(delta));
-		ball.setY(pos.x);
-		ball.setY(pos.y);
-	}
+        // http://opengameart.org/content/orbs-wo-drop-shadows
+        texture = new Texture(Gdx.files.internal("data/GreenOrb.png"));
+        sprite = new Sprite(texture);
 
-	public Vector2 getPosition(){
-		float x = ball.x;
-		float y = ball.y;	
-		return new Vector2(x,y);
-		
-	}
+        // NOTE: the ball is 64x64 so we scale it down to 32x32
+        // TODO: can i figure this out programmatically?
+        sprite.setScale(0.5f);
+    }
 
-	public Vector2 getAcceleration() {
-		return acceleration;
-	}
+    public void applyLinearImpulse(float x, float y) {
+        body.applyLinearImpulse(
+            x,
+            y,
+            body.getPosition().x,
+            body.getPosition().y,
+            true);
+//        body.applyForceToCenter(x, y, false);
+    }
 
-	public Vector2 getVelocity() {
-	
-		return velocity;
-	}
-	
-	public void setPosition(Vector2 position) {
-		ball.setPosition(position);
-	}
+    public void render(SpriteBatch batch) {
+        sprite.setPosition(getX(), getY());
+        sprite.draw(batch);
+    }
 
+    public float getX() {
+        return scale.metersToPixels(body.getPosition().x) - (sprite.getWidth() * 0.5f);
+    }
 
-	public void setAcceleration(Vector2 acceleration) {
-		this.acceleration = acceleration;
-	}
+    public float getY() {
+        return scale.metersToPixels(body.getPosition().y) - (sprite.getHeight() * 0.5f);
+    }
 
+    public void dispose() {
+        texture.dispose();
+    }
 
-	public void setVelocity(Vector2 velocity) {
-		this.velocity = velocity;
-	}
-	public Circle getBall(){
-		return ball;
-	}
-	public void stop(){
-		
-	}
-	
+    public Body getBody() {
+        return body;
+    }
 }

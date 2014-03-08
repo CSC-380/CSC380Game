@@ -1,34 +1,28 @@
 package edu.oswego.tiltandtumble.collisionListener;
 
-
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
-import edu.oswego.tiltandtumble.worldObjects.*;
-
-
-
+import edu.oswego.tiltandtumble.worldObjects.PushBumper;
 
 
 public class OurCollisionListener implements ContactListener {
 
-	//changed kevins' code to try for the block
     @Override
     public void beginContact(Contact contact) {
-    	//System.out.println("Contact heard");
         Gdx.app.log("begin contact", contact.toString());
         Object a = contact.getFixtureA().getBody().getUserData();
         Object b = contact.getFixtureB().getBody().getUserData();
         if (a != null && b != null) {
-            if (a instanceof Block) {
-                ((Block)a).handleCollision(contact, true);
+            Gdx.app.log("begin contact", a.getClass().getName() + " > " + b.getClass().getName());
+            if (a instanceof PushBumper) {
+                ((PushBumper)a).handleCollision(contact, true);
             }
-            else if (b instanceof Block) {
-                ((Block)b).handleCollision(contact, false);
+            else if (b instanceof PushBumper) {
+                ((PushBumper)b).handleCollision(contact, false);
             }
         }
     }

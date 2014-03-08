@@ -4,6 +4,8 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Peripheral;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -26,8 +28,6 @@ import edu.oswego.tiltandtumble.screens.SettingsScreen;
 
 public class TiltAndTumble extends Game {
 
-	SpriteBatch batch;
-
 	Deque<Screen> screenStack = new ArrayDeque<Screen>(10);
 
     private MainScreen mainScreen;
@@ -40,9 +40,13 @@ public class TiltAndTumble extends Game {
 	private Skin skin;
 	private Stage stage;
     private BitmapFont font;
+    private SpriteBatch batch;
+
+    private final Settings settings = new Settings();
 
     @Override
     public void create() {
+        settings.setUseDpad(!Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer));
     	batch = new SpriteBatch();
     	stage = new Stage();
     	font = new BitmapFont();
@@ -147,6 +151,14 @@ public class TiltAndTumble extends Game {
         return font;
     }
 
+    public SpriteBatch getSpriteBatch() {
+        return batch;
+    }
+
+    public Settings getSettings() {
+        return settings;
+    }
+
     @Override
     public void dispose() {
         stage.dispose();
@@ -163,13 +175,16 @@ public class TiltAndTumble extends Game {
 
     @Override
     public void resize(int width, int height) {
+        // NOTE: we probably don't need this
     }
 
     @Override
     public void pause() {
+        // TODO: implement
     }
 
     @Override
     public void resume() {
+        // TODO: implement
     }
 }

@@ -1,76 +1,69 @@
 package edu.oswego.tiltandtumble.screens;
 
-
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.physics.box2d.World;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
-import edu.oswego.tiltandtumble.levels.*;
+import edu.oswego.tiltandtumble.levels.Level;
+
+public class GameScreen implements Screen /*, InputProcessor */ {
+
+	//private WorldPopulator worldPopulator;
+	//private WorldRenderer renderer;
+	//private BallController controller;
+	TiltAndTumble game;
+
+	private Level level;
 
 
-public class GameScreen implements Screen, InputProcessor {
+	private final int width = 480;
+	private final int height = 320;
 
-	private WorldPopulator 	worldPopulator;
-	private WorldRenderer 	renderer;
-	private BallController	controller;
-	TiltAndTumble           game;
-	private int levelNum;
-
-
-	private int width = 480;
-	private int height= 320;
-	
 	public GameScreen(TiltAndTumble game, int currentLevel){
-		levelNum = currentLevel;
-		this.game = game;
-		
+        this.game = game;
+		loadLevel(currentLevel);
 	}
-	
-	
+
+	public void loadLevel(int num) {
+	    level = new Level(num, game.getSettings());
+	}
+
+	public void loadNextLevel() {
+	    loadLevel(level.getLevelNumber() + 1);
+	}
+
 	@Override
 	public void show() {
-		//world = new World();
-		worldPopulator = new WorldPopulator(levelNum);
-		renderer = new WorldRenderer(worldPopulator,false);
-		controller = new BallController(worldPopulator);
-		Gdx.input.setInputProcessor(this);
+//		Gdx.input.setInputProcessor(this);
 	}
-	
+
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
-		controller.update(delta);
-		renderer.render();
+		level.render(game.getSpriteBatch(), game.getFont());
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		renderer.setSize(width, height);
-		this.width = width;
-		this.height = height;
 	}
 
 	@Override
 	public void hide() {
-		Gdx.input.setInputProcessor(null);
+//		Gdx.input.setInputProcessor(null);
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
+		// TODO: implement
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
+		// TODO: implement
 	}
 
 	@Override
@@ -79,7 +72,7 @@ public class GameScreen implements Screen, InputProcessor {
 	}
 
 	// * InputProcessor methods ***************************//
-
+/*
 	@Override
 	public boolean keyDown(int keycode) {
 		if (keycode == Keys.LEFT)
@@ -151,5 +144,6 @@ public class GameScreen implements Screen, InputProcessor {
 		// TODO Auto-generated method stub
 		return false;
 	}
+*/
 }
 

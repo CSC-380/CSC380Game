@@ -1,16 +1,15 @@
 package edu.oswego.tiltandtumble.screens;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
+import edu.oswego.tiltandtumble.Settings;
 import edu.oswego.tiltandtumble.TiltAndTumble;
-
-
 
 public class SettingsScreen extends AbstractScreen {
 
@@ -26,7 +25,36 @@ public class SettingsScreen extends AbstractScreen {
         table.setFillParent(true);
         stage.addActor(table);
 
-        table.row();
+        final Settings settings = game.getSettings();
+
+        final CheckBox useDpad = new CheckBox("Use DPad: " + (settings.isUseDpad() ? "X" : " ") , skin);
+        table.add(useDpad).spaceTop(20);
+
+        useDpad.setChecked(settings.isUseDpad());
+        useDpad.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                settings.setUseDpad(useDpad.isChecked());
+                useDpad.setText("Use DPad: " + (settings.isUseDpad() ? "X" : " "));
+            }
+        });
+
+        table.row().spaceTop(10);
+
+        final CheckBox debugView = new CheckBox("Debug View: " + (settings.isDebugRender() ? "X" : " ") , skin);
+        table.add(debugView);
+
+        debugView.setChecked(settings.isDebugRender());
+        debugView.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                settings.setDebugRender(debugView.isChecked());
+                debugView.setText("Debug View: " + (settings.isDebugRender() ? "X" : " "));
+            }
+        });
+
+        table.row().spaceTop(20);
+
         Button back = new TextButton("Go Back", skin);
         table.add(back);
         back.addListener(new ChangeListener() {

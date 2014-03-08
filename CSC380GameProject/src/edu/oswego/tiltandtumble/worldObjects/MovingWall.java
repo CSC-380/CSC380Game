@@ -15,6 +15,7 @@ public class MovingWall {
     public MovingWall(PolygonMapObject mapObject, World world) {
         Polygon polygon = mapObject.getPolygon();
 
+        // TODO: this needs to be a kinematic body
         BodyDef bdef = new BodyDef();
         bdef.type = BodyType.StaticBody;
         bdef.position.set(polygon.getX(), polygon.getY());
