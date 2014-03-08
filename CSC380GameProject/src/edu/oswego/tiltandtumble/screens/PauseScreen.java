@@ -1,49 +1,37 @@
 package edu.oswego.tiltandtumble.screens;
 
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-public class PauseScreen implements Screen {
+import edu.oswego.tiltandtumble.TiltAndTumble;
 
-	@Override
-	public void render(float delta) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-		
-	}
+public class PauseScreen extends AbstractScreen {
 
-	@Override
-	public void show() {
-		// TODO Auto-generated method stub
-		
-	}
+    public PauseScreen(final TiltAndTumble game){
+        super(game);
+    }
 
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(stage);
 
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
+        Table table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
 
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-		
-	}
-
+        table.row();
+        Button back = new TextButton("Go Back", skin);
+        table.add(back);
+        back.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.showPreviousScreen();
+            }
+        });
+    }
 }
