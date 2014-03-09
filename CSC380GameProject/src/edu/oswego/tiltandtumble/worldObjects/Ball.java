@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import edu.oswego.tiltandtumble.levels.UnitScale;
 
-public class Ball {
+public class Ball extends AbstractWorldObject {
     public static final float FRICTION = 0.1f;
     public static final float DENSITY = 1.0f;
     public static final float RESTITUTION = 0.7f;
@@ -19,12 +19,11 @@ public class Ball {
 
     private final Texture texture;
     private final Sprite sprite;
-    private final Body body;
 
     UnitScale scale;
 
     public Ball(Body body, UnitScale scale) {
-        this.body = body;
+        super(body);
         this.scale = scale;
         body.setUserData(this);
 
@@ -62,9 +61,5 @@ public class Ball {
 
     public void dispose() {
         texture.dispose();
-    }
-
-    public Body getBody() {
-        return body;
     }
 }

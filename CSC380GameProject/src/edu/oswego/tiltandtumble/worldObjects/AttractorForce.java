@@ -1,6 +1,13 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
-public class AttractorForce {
+import com.badlogic.gdx.physics.box2d.Body;
 
-    // TODO: we will will need to simulate radial gravity for this
+public class AttractorForce extends AbstractWorldObject {
+
+	// TODO: we will will need to simulate radial gravity for this
+
+	public AttractorForce(Body body) {
+		super(body);
+        body.setUserData(this);
+	}
 }

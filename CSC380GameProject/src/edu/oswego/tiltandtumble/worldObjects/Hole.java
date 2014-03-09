@@ -1,4 +1,11 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
-public class Hole {
+import com.badlogic.gdx.physics.box2d.Body;
+
+public class Hole extends AbstractWorldObject {
+
+	public Hole(Body body) {
+		super(body);
+        body.setUserData(this);
+	}
 }

@@ -7,17 +7,16 @@ import com.badlogic.gdx.physics.box2d.Contact;
 
 import edu.oswego.tiltandtumble.levels.UnitScale;
 
-public class PushBumper {
+public class PushBumper extends AbstractWorldObject {
     public static final float FRICTION = 0.0f;
     public static final float DENSITY = 2.0f;
     public static final float RESTITUTION = 0.0f;
     public static final BodyType BODY_TYPE = BodyType.StaticBody;
 
-    private final Body body;
     private final UnitScale scale;
 
     public PushBumper(Body body, UnitScale scale) {
-        this.body = body;
+        super(body);
         this.scale = scale;
         body.setUserData(this);
     }

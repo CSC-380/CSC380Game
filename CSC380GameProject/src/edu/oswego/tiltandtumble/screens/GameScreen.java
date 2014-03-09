@@ -13,7 +13,7 @@ import edu.oswego.tiltandtumble.levels.Level;
 import edu.oswego.tiltandtumble.levels.LevelRenderer;
 import edu.oswego.tiltandtumble.levels.WorldPopulator;
 
-public class GameScreen implements Screen /*, InputProcessor */ {
+public class GameScreen implements Screen {
 
 	private final BallController ballController;
 	private final WorldPopulator worldPopulator;
@@ -92,4 +92,3 @@ public class GameScreen implements Screen /*, InputProcessor */ {
 		renderer.dispose();
 	}
 }
-

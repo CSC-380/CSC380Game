@@ -1,41 +1,12 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
-import com.badlogic.gdx.maps.objects.PolygonMapObject;
-import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 
-public class MovingWall {
-    Body body;
+public class MovingWall extends AbstractWorldObject {
+    // TODO: this needs to be a kinematic body
 
-    public MovingWall(PolygonMapObject mapObject, World world) {
-        Polygon polygon = mapObject.getPolygon();
-
-        // TODO: this needs to be a kinematic body
-        BodyDef bdef = new BodyDef();
-        bdef.type = BodyType.StaticBody;
-        bdef.position.set(polygon.getX(), polygon.getY());
-
-        body = world.createBody(bdef);
-
-        PolygonShape shape = new PolygonShape();
-        shape.set(polygon.getVertices());
-
-        FixtureDef fdef = new FixtureDef();
-        fdef.shape = shape;
-        fdef.friction = 0.5f;
-        fdef.density = 5.0f;
-        fdef.restitution = 0.0f;
-        body.createFixture(fdef);
-
-        // dispose after creating fixture
-        shape.dispose();
-
+    public MovingWall(Body body) {
+    	super(body);
         body.setUserData(this);
     }
 }
-
