@@ -47,7 +47,7 @@ public class Ball {
 //        body.applyForceToCenter(x, y, false);
     }
 
-    public void render(SpriteBatch batch) {
+    public void draw(SpriteBatch batch) {
         sprite.setPosition(getX(), getY());
         sprite.draw(batch);
     }

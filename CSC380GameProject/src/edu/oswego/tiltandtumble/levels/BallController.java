@@ -8,14 +8,17 @@ import edu.oswego.tiltandtumble.worldObjects.Ball;
 
 public class BallController implements InputProcessor {
     private final boolean useAccelerometer;
-    private final Ball ball;
+    private Ball ball;
 
     private float tiltX = 0;
     private float tiltY = 0;
 
-    public BallController(Ball ball, boolean useAccelerometer) {
-        this.ball = ball;
+    public BallController(boolean useAccelerometer) {
         this.useAccelerometer = useAccelerometer;
+    }
+
+    public void setBall(Ball ball) {
+    	this.ball = ball;
     }
 
     @Override
@@ -93,7 +96,9 @@ public class BallController implements InputProcessor {
             tiltX = Gdx.input.getAccelerometerY() * 0.001f;
             tiltY = Gdx.input.getAccelerometerX() * -0.001f;
         }
-        ball.applyLinearImpulse(tiltX, tiltY);
+        if (ball != null) {
+        	ball.applyLinearImpulse(tiltX, tiltY);
+        }
     }
 
     public float getX() {
