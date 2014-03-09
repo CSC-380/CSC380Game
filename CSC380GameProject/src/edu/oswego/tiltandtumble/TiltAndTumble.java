@@ -1,7 +1,6 @@
 package edu.oswego.tiltandtumble;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.Stack;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -28,7 +27,8 @@ import edu.oswego.tiltandtumble.screens.SettingsScreen;
 
 public class TiltAndTumble extends Game {
 
-	Deque<Screen> screenStack = new ArrayDeque<Screen>(10);
+	// NOTE: older phones do not have Deque interface
+	Stack<Screen> screenStack = new Stack<Screen>();
 
     private MainScreen mainScreen;
     private CreditScreen creditScreen;
