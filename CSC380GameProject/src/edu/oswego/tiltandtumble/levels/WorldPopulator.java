@@ -31,7 +31,7 @@ public final class WorldPopulator {
     private final FixtureDefBuilder fixtureDef = new FixtureDefBuilder();
 
 
-    public Ball populateWorld(TiledMap map, World world, UnitScale scale) {
+    public Ball populateWorldFromMap(TiledMap map, World world, UnitScale scale) {
         // TODO: probably need to return an data structure of all the objects
         //       some may need to be disposed once the world goes away...
         Ball ball = null;

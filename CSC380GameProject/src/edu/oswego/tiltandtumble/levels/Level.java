@@ -3,8 +3,6 @@ package edu.oswego.tiltandtumble.levels;
 import java.text.DecimalFormat;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.Input.Peripheral;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -41,13 +39,12 @@ public class Level implements Disposable {
     private final TiledMap map;
     private final OrthogonalTiledMapRenderer mapRenderer;
 
-    private float tiltX;
-    private float tiltY;
+    private final BallController ballController;
 
     private final UnitScale scale = new UnitScale(1f/64f);
 
     private final Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
-    private final DecimalFormat decimalFormatter = new DecimalFormat("######.##");
+    private final DecimalFormat decimalFormatter = new DecimalFormat("######.####");
 
     private final int level;
 
@@ -60,6 +57,8 @@ public class Level implements Disposable {
 
         camera = new OrthographicCamera();
         map = loadMap(level);
+        // TODO: allow for map properties to be used to customize the level behavior if needed...
+
         // NOTE: if we set the scaling based on the texture size then
         //       we can use tile counts, instead of pixels, for the
         //       camera.setToOrtho call below.
@@ -70,91 +69,20 @@ public class Level implements Disposable {
         camera.setToOrtho(false, 480, 320); //game.width, game.height);
 
         // TODO: move the world populator up to the GameScreen and pass it in here
-        ball = new WorldPopulator().populateWorld(map, world, scale);
+        ball = new WorldPopulator().populateWorldFromMap(map, world, scale);
+        ballController = new BallController(ball, !settings.isUseDpad());
 
-        if (settings.isUseDpad()) {
-            addKeyInputProcessor();
-        }
         contactListener = new OurCollisionListener();
         world.setContactListener(contactListener);
         startTime = TimeUtils.nanoTime();
     }
 
-    private TiledMap loadMap(int level) {
-        return new TmxMapLoader().load("data/level" + level + ".tmx");
+    public InputProcessor getInputProcessor() {
+        return ballController;
     }
 
-    private void addKeyInputProcessor() {
-        Gdx.input.setInputProcessor(new InputProcessor() {
-            @Override
-            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-                // TODO Auto-generated method stub
-                return false;
-            }
-
-            @Override
-            public boolean touchDragged(int screenX, int screenY, int pointer) {
-                // TODO Auto-generated method stub
-                return false;
-            }
-
-            @Override
-            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                // TODO Auto-generated method stub
-                return false;
-            }
-
-            @Override
-            public boolean scrolled(int amount) {
-                // TODO Auto-generated method stub
-                return false;
-            }
-
-            @Override
-            public boolean mouseMoved(int screenX, int screenY) {
-                // TODO Auto-generated method stub
-                return false;
-            }
-
-            @Override
-            public boolean keyUp(int keycode) {
-                // TODO Auto-generated method stub
-                return false;
-            }
-
-            @Override
-            public boolean keyTyped(char character) {
-                // TODO Auto-generated method stub
-                return false;
-            }
-
-            @Override
-            public boolean keyDown(int keycode) {
-                switch (keycode) {
-                case Keys.LEFT:
-                    tiltX -= 0.001f;
-                    break;
-                case Keys.RIGHT:
-                    tiltX += 0.001f;
-                    break;
-                case Keys.UP:
-                    tiltY += 0.001f;
-                    break;
-                case Keys.DOWN:
-                    tiltY -= 0.001f;
-                    break;
-                case Keys.CENTER:
-                    tiltX = 0f;
-                    tiltY = 0f;
-                    break;
-
-                default:
-                    break;
-                }
-                Gdx.app.log("keydown", tiltX + " " + tiltY);
-                return false;
-            }
-        });
+    private TiledMap loadMap(int level) {
+        return new TmxMapLoader().load("data/level" + level + ".tmx");
     }
 
     public int getLevelNumber() {
@@ -184,8 +112,8 @@ public class Level implements Disposable {
         batch.begin();
         if (settings.isDebugRender()) {
             renderTextInCameraView(batch, font, "FPS: " + fps, 10, 15);
-            renderTextInCameraView(batch, font, "X: " + decimalFormatter.format(tiltX), 10, 30);
-            renderTextInCameraView(batch, font, "Y: " + decimalFormatter.format(tiltY), 10, 45);
+            renderTextInCameraView(batch, font, "X: " + decimalFormatter.format(ballController.getX()), 10, 30);
+            renderTextInCameraView(batch, font, "Y: " + decimalFormatter.format(ballController.getY()), 10, 45);
             renderTextInCameraView(batch, font, "BVel X: " + decimalFormatter.format(ball.getBody().getLinearVelocity().x), 10, 60);
             renderTextInCameraView(batch, font, "BVel Y: " + decimalFormatter.format(ball.getBody().getLinearVelocity().y), 10, 75);
             renderTextInCameraView(batch, font, "BVel A: " + decimalFormatter.format(ball.getBody().getAngularVelocity()), 10, 90);
@@ -202,15 +130,7 @@ public class Level implements Disposable {
             startTime = TimeUtils.nanoTime();
         }
 
-        if (!settings.isUseDpad()) {
-            if (Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer)) {
-                // accelerometer is reversed from screen coordinates, we are in landscape mode
-                tiltX = Gdx.input.getAccelerometerY() * 0.001f;
-                tiltY = Gdx.input.getAccelerometerX() * -0.001f;
-            }
-        }
-
-        ball.applyLinearImpulse(tiltX, tiltY);
+        ballController.update();
 
         //world.step(1/60f, 6, 2);
         world.step(1/45f, 10, 8);
@@ -235,5 +155,6 @@ public class Level implements Disposable {
     public void dispose() {
         mapRenderer.dispose();
         world.dispose();
+        ball.dispose();
     }
 }

@@ -1,6 +1,7 @@
 package edu.oswego.tiltandtumble.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 
@@ -15,6 +16,7 @@ public class GameScreen implements Screen /*, InputProcessor */ {
 	TiltAndTumble game;
 
 	private Level level;
+    private final InputMultiplexer inputMux = new InputMultiplexer();
 
 
 	private final int width = 480;
@@ -26,7 +28,11 @@ public class GameScreen implements Screen /*, InputProcessor */ {
 	}
 
 	public void loadLevel(int num) {
+	    if (level != null) {
+	        inputMux.removeProcessor(level.getInputProcessor());
+	    }
 	    level = new Level(num, game.getSettings());
+	    inputMux.addProcessor(level.getInputProcessor());
 	}
 
 	public void loadNextLevel() {
@@ -35,7 +41,7 @@ public class GameScreen implements Screen /*, InputProcessor */ {
 
 	@Override
 	public void show() {
-//		Gdx.input.setInputProcessor(this);
+		Gdx.input.setInputProcessor(inputMux);
 	}
 
 
@@ -53,7 +59,7 @@ public class GameScreen implements Screen /*, InputProcessor */ {
 
 	@Override
 	public void hide() {
-//		Gdx.input.setInputProcessor(null);
+		Gdx.input.setInputProcessor(null);
 	}
 
 	@Override
@@ -69,6 +75,7 @@ public class GameScreen implements Screen /*, InputProcessor */ {
 	@Override
 	public void dispose() {
 		Gdx.input.setInputProcessor(null);
+		level.dispose();
 	}
 
 	// * InputProcessor methods ***************************//
