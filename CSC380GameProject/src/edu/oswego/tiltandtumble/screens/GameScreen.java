@@ -44,7 +44,7 @@ public class GameScreen implements Screen /*, InputProcessor */ {
 		inputMux.addProcessor(level.getInputProcessor());
 		renderer = new DefaultLevelRenderer(level, width, height);
 		if (game.getSettings().isDebugRender()) {
-			renderer = new DebugLevelRenderer(renderer, ballController, true);
+			renderer = new DebugLevelRenderer(renderer, ballController);
 		}
 	}
 
