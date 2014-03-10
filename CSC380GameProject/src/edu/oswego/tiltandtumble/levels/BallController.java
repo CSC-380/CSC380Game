@@ -13,6 +13,9 @@ public class BallController implements InputProcessor {
     private float tiltX = 0;
     private float tiltY = 0;
 
+    private int keyX = 0;
+    private int keyY = 0;
+
     public BallController(boolean useAccelerometer) {
         this.useAccelerometer = useAccelerometer;
     }
@@ -65,28 +68,6 @@ public class BallController implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        switch (keycode) {
-        case Keys.LEFT:
-            tiltX -= 0.001f;
-            break;
-        case Keys.RIGHT:
-            tiltX += 0.001f;
-            break;
-        case Keys.UP:
-            tiltY += 0.001f;
-            break;
-        case Keys.DOWN:
-            tiltY -= 0.001f;
-            break;
-        case Keys.CENTER:
-            tiltX = 0f;
-            tiltY = 0f;
-            break;
-
-        default:
-            break;
-        }
-        Gdx.app.log("keydown", tiltX + " " + tiltY);
         return false;
     }
 
@@ -95,6 +76,22 @@ public class BallController implements InputProcessor {
             // accelerometer is reversed from screen coordinates, we are in landscape mode
             tiltX = Gdx.input.getAccelerometerY() * 0.001f;
             tiltY = Gdx.input.getAccelerometerX() * -0.001f;
+        }
+        else {
+        	if (Gdx.input.isKeyPressed(Keys.UP)) {
+        		decrementY();
+        	}
+        	else if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+        		incrementY();
+        	}
+        	if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+        		decrementX();
+        	}
+        	else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+        		incrementX();
+        	}
+            tiltX = keyX * 0.001f;
+            tiltY = keyY * -0.001f;
         }
         if (ball != null) {
         	ball.applyLinearImpulse(tiltX, tiltY);
@@ -107,5 +104,41 @@ public class BallController implements InputProcessor {
 
     public float getY() {
         return tiltY;
+    }
+
+    private void incrementX() {
+    	if (keyX >= 10) {
+    		keyX = 10;
+    	}
+    	else {
+    		keyX += 1;
+    	}
+    }
+
+    private void decrementX() {
+    	if (keyX <= -10) {
+    		keyX = -10;
+    	}
+    	else {
+    		keyX -= 1;
+    	}
+    }
+
+    private void incrementY() {
+    	if (keyY >= 10) {
+    		keyY = 10;
+    	}
+    	else {
+    		keyY += 1;
+    	}
+    }
+
+    private void decrementY() {
+    	if (keyY <= -10) {
+    		keyY = -10;
+    	}
+    	else {
+    		keyY -= 1;
+    	}
     }
 }
