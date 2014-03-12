@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 
 import edu.oswego.tiltandtumble.worldObjects.Ball;
 
+// TODO: we may not need this to actually be an input processor.
 public class BallController implements InputProcessor {
     private final boolean useAccelerometer;
     private Ball ball;
