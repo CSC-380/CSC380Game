@@ -2,8 +2,6 @@ package edu.oswego.tiltandtumble.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL10;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
 import edu.oswego.tiltandtumble.levels.BallController;
@@ -13,21 +11,17 @@ import edu.oswego.tiltandtumble.levels.Level;
 import edu.oswego.tiltandtumble.levels.LevelRenderer;
 import edu.oswego.tiltandtumble.levels.WorldPopulator;
 
-public class GameScreen implements Screen {
+public class GameScreen extends AbstractScreen {
 
 	private final BallController ballController;
 	private final WorldPopulator worldPopulator;
-	private final TiltAndTumble game;
 
 	private Level level;
 	private LevelRenderer renderer;
 	private final InputMultiplexer inputMux = new InputMultiplexer();
 
-	private final int width = 480;
-	private final int height = 320;
-
 	public GameScreen(TiltAndTumble game, int currentLevel) {
-		this.game = game;
+		super(game);
 		ballController = new BallController(!game.getSettings().isUseDpad());
 		worldPopulator = new WorldPopulator();
 
@@ -42,7 +36,7 @@ public class GameScreen implements Screen {
 		}
 		level = new Level(num, ballController, worldPopulator);
 		inputMux.addProcessor(level.getInputProcessor());
-		renderer = new DefaultLevelRenderer(level, width, height);
+		renderer = new DefaultLevelRenderer(level, game.getWidth(), game.getHeight());
 		if (game.getSettings().isDebugRender()) {
 			renderer = new DebugLevelRenderer(renderer, ballController);
 		}
@@ -59,35 +53,15 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		super.render(delta);
 
 		renderer.render(game.getSpriteBatch(), game.getFont());
 		level.update();
 	}
 
 	@Override
-	public void resize(int width, int height) {
-	}
-
-	@Override
-	public void hide() {
-		Gdx.input.setInputProcessor(null);
-	}
-
-	@Override
-	public void pause() {
-		// TODO: implement
-	}
-
-	@Override
-	public void resume() {
-		// TODO: implement
-	}
-
-	@Override
 	public void dispose() {
-		Gdx.input.setInputProcessor(null);
+		super.dispose();
 		level.dispose();
 		renderer.dispose();
 	}

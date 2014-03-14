@@ -10,48 +10,53 @@ import edu.oswego.tiltandtumble.TiltAndTumble;
 
 abstract class AbstractScreen implements Screen {
 
-    protected final TiltAndTumble game;
-    protected final Stage stage;
-    protected final Skin skin;
+	protected final TiltAndTumble game;
+	protected final Stage stage;
+	protected final Skin skin;
 
-    public AbstractScreen(final TiltAndTumble game) {
-        this.game = game;
-        this.stage = game.getStage();
-        this.skin = game.getSkin();
-    }
+	public AbstractScreen(final TiltAndTumble game) {
+		this.game = game;
+		this.stage = game.getStage();
+		this.skin = game.getSkin();
+	}
 
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-        stage.act(Gdx.graphics.getDeltaTime());
-        stage.draw();
-    }
+	@Override
+	public void render(float delta) {
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
-    @Override
-    public void resize(int width, int height) {
-        stage.setViewport(width, height, true);
-    }
+		stage.act(Gdx.graphics.getDeltaTime());
+		stage.draw();
+	}
 
-    @Override
-    public void hide() {
-        stage.clear();
-    }
+	@Override
+	public void resize(int width, int height) {
+		// NOTE: see https://github.com/libgdx/libgdx/wiki/Scene2d
+		//       we may need to do something more complex with viewport scaling
+		stage.setViewport(game.getWidth(), game.getHeight(), true);
+		stage.getCamera().translate(-stage.getGutterWidth(), -stage.getGutterHeight(), 0);
+	}
 
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
+	@Override
+	public void hide() {
+		stage.clear();
+		Gdx.input.setInputProcessor(null);
+	}
 
-    }
+	@Override
+	public void pause() {
+		// TODO Auto-generated method stub
 
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
+	}
 
-    }
+	@Override
+	public void resume() {
+		// TODO Auto-generated method stub
 
-    @Override
-    public void dispose() {
-        // TODO Auto-generated method stub
+	}
 
-    }
+	@Override
+	public void dispose() {
+		Gdx.input.setInputProcessor(null);
+	}
 }

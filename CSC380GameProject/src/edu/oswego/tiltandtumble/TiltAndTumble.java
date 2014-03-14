@@ -24,168 +24,181 @@ import edu.oswego.tiltandtumble.screens.LevelScreen;
 import edu.oswego.tiltandtumble.screens.MainScreen;
 import edu.oswego.tiltandtumble.screens.SettingsScreen;
 
-
 public class TiltAndTumble extends Game {
 
 	// NOTE: older phones do not have Deque interface
 	Stack<Screen> screenStack = new Stack<Screen>();
 
-    private MainScreen mainScreen;
-    private CreditScreen creditScreen;
-    private HelpScreen helpScreen;
-    private HighScoresScreen highScoresScreen;
-    private SettingsScreen settingsScreen;
-    private LevelScreen levelScreen;
+	private MainScreen mainScreen;
+	private CreditScreen creditScreen;
+	private HelpScreen helpScreen;
+	private HighScoresScreen highScoresScreen;
+	private SettingsScreen settingsScreen;
+	private LevelScreen levelScreen;
 
 	private Skin skin;
 	private Stage stage;
-    private BitmapFont font;
-    private SpriteBatch batch;
+	private BitmapFont font;
+	private SpriteBatch batch;
 
-    private final Settings settings = new Settings();
+	private final int width = 480;
+	private final int height = 320;
 
-    @Override
-    public void create() {
-        settings.setUseDpad(!Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer));
-    	batch = new SpriteBatch();
-    	stage = new Stage();
-    	font = new BitmapFont();
-    	skin = new Skin();
-        loadSkin();
+	private final Settings settings = new Settings();
 
-    	showMainScreen();
-    }
+	@Override
+	public void create() {
+		settings.setUseDpad(!Gdx.input
+				.isPeripheralAvailable(Peripheral.Accelerometer));
+		batch = new SpriteBatch();
+		stage = new Stage();
+		stage.setViewport(width, height, true);
+		font = new BitmapFont();
+		skin = new Skin();
+		loadSkin();
 
-    private void loadSkin() {
-        // TODO: this should load the skin from a resource file.
+		showMainScreen();
+	}
 
-        // Generate a 1x1 white texture and store it in the skin named "white".
-        Pixmap pixmap = new Pixmap(1, 1, Format.RGBA8888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        skin.add("white", new Texture(pixmap));
+	private void loadSkin() {
+		// TODO: this should load the skin from a resource file.
 
-        // Store the default libgdx font under the name "default".
-        skin.add("default", font);
+		// Generate a 1x1 white texture and store it in the skin named "white".
+		Pixmap pixmap = new Pixmap(1, 1, Format.RGBA8888);
+		pixmap.setColor(Color.WHITE);
+		pixmap.fill();
+		skin.add("white", new Texture(pixmap));
 
-        // Configure a TextButtonStyle and name it "default". Skin resources are stored by type, so this doesn't overwrite the font.
-        TextButtonStyle textButtonStyle = new TextButtonStyle();
-        textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
-        textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
-        textButtonStyle.font = skin.getFont("default");
-        textButtonStyle.font.setScale(5);
-        skin.add("default", textButtonStyle);
-        CheckBoxStyle checkBoxStyle = new CheckBoxStyle();
-        checkBoxStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
-        checkBoxStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-        checkBoxStyle.checked = skin.newDrawable("white", Color.BLUE);
-        checkBoxStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
-        checkBoxStyle.font = skin.getFont("default");
-        skin.add("default", checkBoxStyle);
-    }
+		// Store the default libgdx font under the name "default".
+		skin.add("default", font);
 
-    public void showMainScreen(){
-        if (mainScreen == null) {
-            mainScreen = new MainScreen(this);
-        }
-        if (getScreen() != null) {
-            screenStack.push(getScreen());
-        }
-    	setScreen(mainScreen);
-    }
+		// Configure a TextButtonStyle and name it "default". Skin resources are
+		// stored by type, so this doesn't overwrite the font.
+		TextButtonStyle textButtonStyle = new TextButtonStyle();
+		textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
+		textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
+		textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
+		textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
+		textButtonStyle.font = skin.getFont("default");
+		// textButtonStyle.font.setScale(5);
+		skin.add("default", textButtonStyle);
+		CheckBoxStyle checkBoxStyle = new CheckBoxStyle();
+		checkBoxStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
+		checkBoxStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
+		checkBoxStyle.checked = skin.newDrawable("white", Color.BLUE);
+		checkBoxStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
+		checkBoxStyle.font = skin.getFont("default");
+		skin.add("default", checkBoxStyle);
+	}
 
-    public void showCreditScreen() {
-        if (creditScreen == null) {
-            creditScreen = new CreditScreen(this);
-        }
-        screenStack.push(getScreen());
-        setScreen(creditScreen);
-    }
+	public void showMainScreen() {
+		if (mainScreen == null) {
+			mainScreen = new MainScreen(this);
+		}
+		if (getScreen() != null) {
+			screenStack.push(getScreen());
+		}
+		setScreen(mainScreen);
+	}
 
-    public void showHelpScreen() {
-        if (helpScreen == null) {
-            helpScreen = new HelpScreen(this);
-        }
-        screenStack.push(getScreen());
-        setScreen(helpScreen);
-    }
+	public void showCreditScreen() {
+		if (creditScreen == null) {
+			creditScreen = new CreditScreen(this);
+		}
+		screenStack.push(getScreen());
+		setScreen(creditScreen);
+	}
 
-    public void showHighScoresScreen() {
-        if (highScoresScreen == null) {
-            highScoresScreen = new HighScoresScreen(this);
-        }
-        screenStack.push(getScreen());
-        setScreen(highScoresScreen);
-    }
+	public void showHelpScreen() {
+		if (helpScreen == null) {
+			helpScreen = new HelpScreen(this);
+		}
+		screenStack.push(getScreen());
+		setScreen(helpScreen);
+	}
 
-    public void showSettingsScreen() {
-        if (settingsScreen == null) {
-            settingsScreen = new SettingsScreen(this);
-        }
-        screenStack.push(getScreen());
-        setScreen(settingsScreen);
-    }
+	public void showHighScoresScreen() {
+		if (highScoresScreen == null) {
+			highScoresScreen = new HighScoresScreen(this);
+		}
+		screenStack.push(getScreen());
+		setScreen(highScoresScreen);
+	}
 
-    public void showLevelScreen() {
-        if (levelScreen == null) {
-            levelScreen = new LevelScreen(this);
-        }
-        screenStack.push(getScreen());
-        setScreen(levelScreen);
-    }
+	public void showSettingsScreen() {
+		if (settingsScreen == null) {
+			settingsScreen = new SettingsScreen(this);
+		}
+		screenStack.push(getScreen());
+		setScreen(settingsScreen);
+	}
 
-    public void showPreviousScreen() {
-        setScreen(screenStack.pop());
-    }
+	public void showLevelScreen() {
+		if (levelScreen == null) {
+			levelScreen = new LevelScreen(this);
+		}
+		screenStack.push(getScreen());
+		setScreen(levelScreen);
+	}
 
-    public Skin getSkin() {
-        return skin;
-    }
+	public void showPreviousScreen() {
+		setScreen(screenStack.pop());
+	}
 
-    public Stage getStage() {
-        return stage;
-    }
+	public Skin getSkin() {
+		return skin;
+	}
 
-    public BitmapFont getFont() {
-        return font;
-    }
+	public Stage getStage() {
+		return stage;
+	}
 
-    public SpriteBatch getSpriteBatch() {
-        return batch;
-    }
+	public BitmapFont getFont() {
+		return font;
+	}
 
-    public Settings getSettings() {
-        return settings;
-    }
+	public SpriteBatch getSpriteBatch() {
+		return batch;
+	}
 
-    @Override
-    public void dispose() {
-        stage.dispose();
-        skin.dispose();
-        mainScreen.dispose();
-        batch.dispose();
-        font.dispose();
-    }
+	public Settings getSettings() {
+		return settings;
+	}
 
-    @Override
-    public void render() {
-        super.render();
-    }
+	public float getWidth() {
+		return width;
+	}
 
-    @Override
-    public void resize(int width, int height) {
-        // NOTE: we probably don't need this
-    }
+	public float getHeight() {
+		return height;
+	}
 
-    @Override
-    public void pause() {
-        // TODO: implement
-    }
+	@Override
+	public void dispose() {
+		stage.dispose();
+		skin.dispose();
+		mainScreen.dispose();
+		batch.dispose();
+		font.dispose();
+	}
 
-    @Override
-    public void resume() {
-        // TODO: implement
-    }
+	@Override
+	public void render() {
+		super.render();
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		// NOTE: we probably don't need this
+	}
+
+	@Override
+	public void pause() {
+		// TODO: implement
+	}
+
+	@Override
+	public void resume() {
+		// TODO: implement
+	}
 }
