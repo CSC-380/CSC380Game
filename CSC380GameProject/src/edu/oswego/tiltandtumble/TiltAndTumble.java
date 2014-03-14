@@ -75,6 +75,7 @@ public class TiltAndTumble extends Game {
         textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
         textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
         textButtonStyle.font = skin.getFont("default");
+        textButtonStyle.font.setScale(5);
         skin.add("default", textButtonStyle);
         CheckBoxStyle checkBoxStyle = new CheckBoxStyle();
         checkBoxStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
