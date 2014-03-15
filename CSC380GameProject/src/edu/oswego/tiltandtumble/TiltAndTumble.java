@@ -14,10 +14,13 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 
 import edu.oswego.tiltandtumble.screens.CreditScreen;
+import edu.oswego.tiltandtumble.screens.GameScreen;
 import edu.oswego.tiltandtumble.screens.HelpScreen;
 import edu.oswego.tiltandtumble.screens.HighScoresScreen;
 import edu.oswego.tiltandtumble.screens.LevelScreen;
@@ -35,6 +38,7 @@ public class TiltAndTumble extends Game {
 	private HighScoresScreen highScoresScreen;
 	private SettingsScreen settingsScreen;
 	private LevelScreen levelScreen;
+	private GameScreen gameScreen;
 
 	private Skin skin;
 	private Stage stage;
@@ -63,11 +67,11 @@ public class TiltAndTumble extends Game {
 	private void loadSkin() {
 		// TODO: this should load the skin from a resource file.
 
-		// Generate a 1x1 white texture and store it in the skin named "white".
+		// Generate a 1x1 white texture and store it in the skin named "defaultTexture".
 		Pixmap pixmap = new Pixmap(1, 1, Format.RGBA8888);
 		pixmap.setColor(Color.WHITE);
 		pixmap.fill();
-		skin.add("white", new Texture(pixmap));
+		skin.add("defaultTexture", new Texture(pixmap));
 
 		// Store the default libgdx font under the name "default".
 		skin.add("default", font);
@@ -75,20 +79,32 @@ public class TiltAndTumble extends Game {
 		// Configure a TextButtonStyle and name it "default". Skin resources are
 		// stored by type, so this doesn't overwrite the font.
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
-		textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
-		textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-		textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
-		textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
+		textButtonStyle.up = skin.newDrawable("defaultTexture", Color.DARK_GRAY);
+		textButtonStyle.down = skin.newDrawable("defaultTexture", Color.DARK_GRAY);
+		textButtonStyle.checked = skin.newDrawable("defaultTexture", Color.BLUE);
+		textButtonStyle.over = skin.newDrawable("defaultTexture", Color.LIGHT_GRAY);
 		textButtonStyle.font = skin.getFont("default");
 		// textButtonStyle.font.setScale(5);
 		skin.add("default", textButtonStyle);
 		CheckBoxStyle checkBoxStyle = new CheckBoxStyle();
-		checkBoxStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
-		checkBoxStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-		checkBoxStyle.checked = skin.newDrawable("white", Color.BLUE);
-		checkBoxStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
+		checkBoxStyle.up = skin.newDrawable("defaultTexture", Color.DARK_GRAY);
+		checkBoxStyle.down = skin.newDrawable("defaultTexture", Color.DARK_GRAY);
+		checkBoxStyle.checked = skin.newDrawable("defaultTexture", Color.BLUE);
+		checkBoxStyle.over = skin.newDrawable("defaultTexture", Color.LIGHT_GRAY);
 		checkBoxStyle.font = skin.getFont("default");
 		skin.add("default", checkBoxStyle);
+		WindowStyle windowStyle = new WindowStyle();
+		windowStyle.stageBackground = skin.newDrawable("defaultTexture",
+				new Color(Color.DARK_GRAY.r, Color.DARK_GRAY.g, Color.DARK_GRAY.b, 0.5f));
+		windowStyle.background = skin.newDrawable("defaultTexture", Color.DARK_GRAY);
+		windowStyle.titleFont = skin.getFont("default");
+		windowStyle.titleFontColor = Color.WHITE;
+		skin.add("default", windowStyle);
+		LabelStyle labelStyle = new LabelStyle();
+		labelStyle.background = skin.newDrawable("defaultTexture", Color.DARK_GRAY);
+		labelStyle.font = skin.getFont("default");
+		labelStyle.fontColor = Color.WHITE;
+		skin.add("default", labelStyle);
 	}
 
 	public void showMainScreen() {
@@ -141,6 +157,15 @@ public class TiltAndTumble extends Game {
 		setScreen(levelScreen);
 	}
 
+	public void showGameScreen(int level) {
+		if (gameScreen != null) {
+			gameScreen.dispose();
+		}
+		screenStack.push(getScreen());
+		gameScreen = new GameScreen(this, level);
+		setScreen(gameScreen);
+	}
+
 	public void showPreviousScreen() {
 		setScreen(screenStack.pop());
 	}
@@ -175,11 +200,29 @@ public class TiltAndTumble extends Game {
 
 	@Override
 	public void dispose() {
-		stage.dispose();
-		skin.dispose();
 		mainScreen.dispose();
+		if (creditScreen != null) {
+			creditScreen.dispose();
+		}
+		if (helpScreen != null) {
+			helpScreen.dispose();
+		}
+		if (highScoresScreen != null) {
+			highScoresScreen.dispose();
+		}
+		if (settingsScreen != null) {
+			settingsScreen.dispose();
+		}
+		if (levelScreen != null) {
+			levelScreen.dispose();
+		}
+		if (gameScreen != null) {
+			gameScreen.dispose();
+		}
+		stage.dispose();
 		batch.dispose();
 		font.dispose();
+		skin.dispose();
 	}
 
 	@Override

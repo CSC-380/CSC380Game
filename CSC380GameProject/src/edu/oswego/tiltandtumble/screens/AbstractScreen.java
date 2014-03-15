@@ -25,8 +25,18 @@ abstract class AbstractScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
+		preStageRenderHook(delta);
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
+		postStageRenderHook(delta);
+	}
+
+	protected void preStageRenderHook(float delta) {
+
+	}
+
+	protected void postStageRenderHook(float delta) {
+
 	}
 
 	@Override

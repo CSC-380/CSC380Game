@@ -34,3 +34,6 @@ Thumbs.db
 # tmp files
 *~
 
+# jvm crash log
+hs_err_pid*.log
+S
