@@ -1,10 +1,7 @@
 package edu.oswego.tiltandtumble.data;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import com.badlogic.gdx.file.FileHandle;
-
 import java.util.ArrayList;
 import java.io.IOException;
 import java.io.InputStream;
