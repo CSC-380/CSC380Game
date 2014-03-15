@@ -1,6 +1,6 @@
 package edu.oswego.tiltandtumble.data;
 
-import java.util.ArrayList;
+
 import com.badlogic.gdx.file.FileHandle;
 import java.util.ArrayList;
 import java.io.IOException;
@@ -11,6 +11,7 @@ import java.io.ObjectOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.BufferedOutputStream;
 import java.lang.ClassNotFoundException;
+imort java.io.Serializable;
 
 public class HighScores implements Serializable{
 	// TODO: implement this
