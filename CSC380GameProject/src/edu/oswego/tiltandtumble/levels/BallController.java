@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputProcessor;
 
 import edu.oswego.tiltandtumble.worldObjects.Ball;
 public class BallController  {
@@ -28,7 +26,6 @@ public class BallController  {
 
 
 	private final boolean useAccelerometer;
-	//private boolean useOnScreenDPad;
 	private Ball ball;
 
 	private float tiltX = 0;

@@ -1,21 +1,14 @@
 package edu.oswego.tiltandtumble.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
 import edu.oswego.tiltandtumble.levels.BallController;
@@ -43,9 +36,10 @@ public class GameScreen extends AbstractScreen implements InputProcessor  {
 	float width;
 	float height;
 	Stage dpadStage;
-	Stage hudStage;
+	boolean usingDpad = false;
+	
 
-	private final InputMultiplexer inputMux = new InputMultiplexer();
+	//private final InputMultiplexer inputMux = new InputMultiplexer();
 
 
 
@@ -58,6 +52,7 @@ public class GameScreen extends AbstractScreen implements InputProcessor  {
 		height = game.getHeight();
 		if(game.getSettings().isUseDpad()){
 			loadDpad();
+			usingDpad = true;
 		}
 		loadHUD();
 		this.loadLevel(currentLevel);		
@@ -113,60 +108,23 @@ public class GameScreen extends AbstractScreen implements InputProcessor  {
 		Image upImage = new Image(skin, "up");
 		upImage.setPosition(48, 100);
 		dpadStage.addActor(upImage);
-		upImage.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-
-			}
-		});
 		Image rightImage = new Image(skin, "right");
 		rightImage.setPosition(95, 55);
 		dpadStage.addActor(rightImage);
-		rightImage.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
 
-			}
-		});
 		Image leftImage = new Image(skin, "left");
 		leftImage.setPosition(0, 55);
 		dpadStage.addActor(leftImage);
 
-		leftImage.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-
-			}
-		});
 		Image downImage = new Image(skin, "down");
 		downImage.setPosition(48, 0);
 		dpadStage.addActor(downImage);
-		downImage.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-
-			}
-		});
 
 	}
 
 	public void loadHUD(){
 		//not working but will work on another time
-		hudStage = new Stage();
-		hudStage.setViewport(width, height);
-		Table table = new Table();
-		table.setFillParent(true);
-		stage.addActor(table);
-		Skin skin = game.getSkin();
-
-		Label label = new Label("LEVEL 1", skin);
-		label.setColor(new Color(Color.CYAN));
-		label.setSize(width, 50);
-		label.setVisible(true);
-		label.setText("WHY ISNT THIS WORKING");
-
-		table.add(label);
-		System.out.println("HUD loaded");
+		
 
 	}
 	@Override
@@ -176,19 +134,21 @@ public class GameScreen extends AbstractScreen implements InputProcessor  {
 
 		preStageRenderHook(delta);
 		stage.act(Gdx.graphics.getDeltaTime());
-		dpadStage.act(delta);
-		hudStage.act(delta);
+		if(usingDpad){
+			dpadStage.act(delta);
+		}
 		stage.draw();
-		dpadStage.draw();
-		hudStage.draw();
+		if(usingDpad){
+			dpadStage.draw();
+		}
 		postStageRenderHook(delta);
 	}
 
 
 	@Override
 	public void show() {
-		Gdx.input.setInputProcessor(inputMux);
-		inputMux.addProcessor(this);
+		Gdx.input.setInputProcessor(this);
+		//inputMux.addProcessor(this);
 		//	inputMux.addProcessor(dpadStage);
 
 
@@ -255,6 +215,9 @@ public class GameScreen extends AbstractScreen implements InputProcessor  {
 	@Override
 	public boolean touchDown(int x, int y, int pointer, int button) {
 		//System.out.println("down X: " +x + " Y: "+ y + " pointer: " + pointer + " button: " + button);
+		if(!usingDpad){
+			return false;
+		}
 		if(y < 270 && y> 220){
 			if(x < 50){
 				controller.leftPressed();
@@ -276,6 +239,9 @@ public class GameScreen extends AbstractScreen implements InputProcessor  {
 	@Override
 	public boolean touchUp(int x, int y, int pointer, int button) {
 		//System.out.println("upX: " +x + " Y: "+ y + " pointer: " + pointer + " button: " + button);
+		if(!usingDpad){
+			return false;
+		}
 		if(y < 270 && y> 220){
 			if(x < 50){
 				controller.leftReleased();
