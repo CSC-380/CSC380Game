@@ -15,14 +15,14 @@ public class HighScores implements Serializable{
 	private static final long serialVersionUID = -2777200203575485944L;
 	private static final String FILE = "Scores.dat";
 
-	private final SortedSet<Integer> scores;
+	private final SortedSet<Score> scores;
 
 	public HighScores() {
-		scores = new TreeSet<Integer>();
+		scores = new TreeSet<Score>();
 	}
 
-	public void compareAndSave(int currentScore) {
-		scores.add(currentScore);
+	public void compareAndSave(Score score) {
+		scores.add(score);
 		if (scores.size() > 10) {
 			scores.remove(scores.first());
 		}

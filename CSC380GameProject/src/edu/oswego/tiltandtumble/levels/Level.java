@@ -14,7 +14,7 @@ import edu.oswego.tiltandtumble.worldObjects.Ball;
 
 public class Level implements Disposable {
 
-	public static enum State {
+	private static enum State {
 		NOT_STARTED,
 		STARTED,
 		FINISHED

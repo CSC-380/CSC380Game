@@ -2,8 +2,6 @@ package edu.oswego.tiltandtumble.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
 import edu.oswego.tiltandtumble.levels.BallController;
@@ -12,8 +10,15 @@ import edu.oswego.tiltandtumble.levels.DefaultLevelRenderer;
 import edu.oswego.tiltandtumble.levels.Level;
 import edu.oswego.tiltandtumble.levels.LevelRenderer;
 import edu.oswego.tiltandtumble.levels.WorldPopulator;
+import edu.oswego.tiltandtumble.screens.dialogs.ScoreDialog;
 
 public class GameScreen extends AbstractScreen {
+
+	private static enum State {
+		PAUSED,
+		PLAYING,
+		SCORED
+	}
 
 	private final BallController ballController;
 	private final WorldPopulator worldPopulator;
@@ -23,7 +28,7 @@ public class GameScreen extends AbstractScreen {
 	private LevelRenderer renderer;
 	private final InputMultiplexer inputMux = new InputMultiplexer();
 
-	private boolean dialogShowing = false;
+	private State currentState;
 
 	public GameScreen(TiltAndTumble game, int currentLevel) {
 		super(game);
@@ -48,6 +53,8 @@ public class GameScreen extends AbstractScreen {
 		if (game.getSettings().isDebugRender()) {
 			renderer = new DebugLevelRenderer(renderer, ballController);
 		}
+		currentState = State.PLAYING;
+
 		// TODO: move this to someplace more meaningful as part of issue #19
 		level.start();
 	}
@@ -77,13 +84,9 @@ public class GameScreen extends AbstractScreen {
 		if (level.isStarted()) {
 			level.update();
 		} else if (level.hasFinished()) {
-
-			// NOTE: we can only call show once and this hook gets called for
-			//       each frame we render. something better can be done instead
-			//       of this boolean gate.
-			if (!dialogShowing) {
-				dialogShowing = true;
+			if (currentState != State.SCORED) {
 				scoreDialog.show(stage);
+				currentState = State.SCORED;
 			}
 		}
 	}
@@ -96,25 +99,6 @@ public class GameScreen extends AbstractScreen {
 		}
 		if (renderer != null) {
 			renderer.dispose();
-		}
-	}
-
-	public static final class ScoreDialog extends Dialog {
-
-		private final GameScreen screen;
-
-		public ScoreDialog(String title, Skin skin, GameScreen screen) {
-			super(title, skin);
-			this.screen = screen;
-			text("Score: TODO");
-			button("Continue");
-		}
-
-		@Override
-		protected void result(Object object) {
-			super.result(object);
-			Gdx.app.log("dialog result", "" + object);
-			screen.loadNextLevel();
 		}
 	}
 }
