@@ -11,12 +11,13 @@ import edu.oswego.tiltandtumble.worldObjects.Ball;
 public class BallController  {
 	
 
+
 	enum MyKeys {
 		LEFT, RIGHT, UP, DOWN
 	}
 
-	
-	
+
+
 	static Map<MyKeys, Boolean> keys = new HashMap<BallController.MyKeys, Boolean>();
 	static {
 		keys.put(MyKeys.LEFT, false);
@@ -26,106 +27,106 @@ public class BallController  {
 	};
 
 
-    private final boolean useAccelerometer;
-    //private boolean useOnScreenDPad;
-    private Ball ball;
+	private final boolean useAccelerometer;
+	//private boolean useOnScreenDPad;
+	private Ball ball;
 
-    private float tiltX = 0;
-    private float tiltY = 0;
+	private float tiltX = 0;
+	private float tiltY = 0;
 
-    private int keyX = 0;
-    private int keyY = 0;
+	private int keyX = 0;
+	private int keyY = 0;
 
-    public BallController(boolean useAccelerometer) {
-        this.useAccelerometer = useAccelerometer;
-       
-        
-    }
-
-    public void setBall(Ball ball) {
-    	this.ball = ball;
-    }
+	public BallController(boolean useAccelerometer) {
+		this.useAccelerometer = useAccelerometer;
 
 
-    public void update() {
-        if (useAccelerometer) {
-            // accelerometer is reversed from screen coordinates, we are in landscape mode
-            tiltX = Gdx.input.getAccelerometerY() * 0.001f;
-            tiltY = Gdx.input.getAccelerometerX() * -0.001f;
-        }
-        else {
-        	if (keys.get(MyKeys.UP)) {
-        		decrementY();
-        	}
-        	else if (keys.get(MyKeys.DOWN)) {
-        		incrementY();
-        	}
-        	if (keys.get(MyKeys.LEFT)) {
-        		decrementX();
-        	}
-        	else if (keys.get(MyKeys.RIGHT)) {
-        		incrementX();
-        	}
-            tiltX = keyX * 0.001f;
-            tiltY = keyY * -0.001f;
-        }
-        if (ball != null) {
-        	ball.applyLinearImpulse(tiltX, tiltY);
-        }
-    }
+	}
 
-    public float getX() {
-        return tiltX;
-    }
+	public void setBall(Ball ball) {
+		this.ball = ball;
+	}
 
-    public float getY() {
-        return tiltY;
-    }
 
-    private void incrementX() {
-    	if (keyX >= 10) {
-    		keyX = 10;
-    	}
-    	else {
-    		keyX += 1;
-    	}
-    }
+	public void update() {
+		if (useAccelerometer) {
+			// accelerometer is reversed from screen coordinates, we are in landscape mode
+			tiltX = Gdx.input.getAccelerometerY() * 0.001f;
+			tiltY = Gdx.input.getAccelerometerX() * -0.001f;
+		}
+		else {
+			if (keys.get(MyKeys.UP)) {
+				decrementY();
+			}
+			else if (keys.get(MyKeys.DOWN)) {
+				incrementY();
+			}
+			if (keys.get(MyKeys.LEFT)) {
+				decrementX();
+			}
+			else if (keys.get(MyKeys.RIGHT)) {
+				incrementX();
+			}
+			tiltX = keyX * 0.001f;
+			tiltY = keyY * -0.001f;
+		}
+		if (ball != null) {
+			ball.applyLinearImpulse(tiltX, tiltY);
+		}
+	}
 
-    private void decrementX() {
-    	if (keyX <= -10) {
-    		keyX = -10;
-    	}
-    	else {
-    		keyX -= 1;
-    	}
-    }
+	public float getX() {
+		return tiltX;
+	}
 
-    private void incrementY() {
-    	if (keyY >= 10) {
-    		keyY = 10;
-    	}
-    	else {
-    		keyY += 1;
-    	}
-    }
+	public float getY() {
+		return tiltY;
+	}
 
-    private void decrementY() {
-    	if (keyY <= -10) {
-    		keyY = -10;
-    	}
-    	else {
-    		keyY -= 1;
-    	}
-    }
-	
-	
-	
+	private void incrementX() {
+		if (keyX >= 10) {
+			keyX = 10;
+		}
+		else {
+			keyX += 1;
+		}
+	}
+
+	private void decrementX() {
+		if (keyX <= -10) {
+			keyX = -10;
+		}
+		else {
+			keyX -= 1;
+		}
+	}
+
+	private void incrementY() {
+		if (keyY >= 10) {
+			keyY = 10;
+		}
+		else {
+			keyY += 1;
+		}
+	}
+
+	private void decrementY() {
+		if (keyY <= -10) {
+			keyY = -10;
+		}
+		else {
+			keyY -= 1;
+		}
+	}
+
+
+
 
 	// ** Key presses and touches **************** //
 
 	public void leftPressed() {
 		keys.get(keys.put(MyKeys.LEFT, true));
-	
+
 	}
 
 	public void rightPressed() {
@@ -154,5 +155,5 @@ public class BallController  {
 	public void downReleased() {
 		keys.get(keys.put(MyKeys.DOWN, false));
 	}
-	
+
 }
