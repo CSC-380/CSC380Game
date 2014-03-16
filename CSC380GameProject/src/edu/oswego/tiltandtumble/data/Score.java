@@ -1,5 +1,6 @@
 package edu.oswego.tiltandtumble.data;
 
+
 public class Score implements Comparable<Score> {
 
 	private final String initials;
@@ -28,4 +29,8 @@ public class Score implements Comparable<Score> {
 	public int compareTo(Score score) {
 		return score.points - this.points;
 	}
+
 }
+
+
+
