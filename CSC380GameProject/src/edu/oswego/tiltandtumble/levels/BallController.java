@@ -1,14 +1,33 @@
 package edu.oswego.tiltandtumble.levels;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 
 import edu.oswego.tiltandtumble.worldObjects.Ball;
+public class BallController  {
+	
 
-// TODO: we may not need this to actually be an input processor.
-public class BallController implements InputProcessor {
+	enum MyKeys {
+		LEFT, RIGHT, UP, DOWN
+	}
+
+	
+	
+	static Map<MyKeys, Boolean> keys = new HashMap<BallController.MyKeys, Boolean>();
+	static {
+		keys.put(MyKeys.LEFT, false);
+		keys.put(MyKeys.RIGHT, false);
+		keys.put(MyKeys.UP, false);
+		keys.put(MyKeys.DOWN, false);
+	};
+
+
     private final boolean useAccelerometer;
+    //private boolean useOnScreenDPad;
     private Ball ball;
 
     private float tiltX = 0;
@@ -19,58 +38,14 @@ public class BallController implements InputProcessor {
 
     public BallController(boolean useAccelerometer) {
         this.useAccelerometer = useAccelerometer;
+       
+        
     }
 
     public void setBall(Ball ball) {
     	this.ball = ball;
     }
 
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
 
     public void update() {
         if (useAccelerometer) {
@@ -79,16 +54,16 @@ public class BallController implements InputProcessor {
             tiltY = Gdx.input.getAccelerometerX() * -0.001f;
         }
         else {
-        	if (Gdx.input.isKeyPressed(Keys.UP)) {
+        	if (keys.get(MyKeys.UP)) {
         		decrementY();
         	}
-        	else if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+        	else if (keys.get(MyKeys.DOWN)) {
         		incrementY();
         	}
-        	if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+        	if (keys.get(MyKeys.LEFT)) {
         		decrementX();
         	}
-        	else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+        	else if (keys.get(MyKeys.RIGHT)) {
         		incrementX();
         	}
             tiltX = keyX * 0.001f;
@@ -142,4 +117,42 @@ public class BallController implements InputProcessor {
     		keyY -= 1;
     	}
     }
+	
+	
+	
+
+	// ** Key presses and touches **************** //
+
+	public void leftPressed() {
+		keys.get(keys.put(MyKeys.LEFT, true));
+	
+	}
+
+	public void rightPressed() {
+		keys.get(keys.put(MyKeys.RIGHT, true));
+	}
+
+	public void upPressed() {
+		keys.get(keys.put(MyKeys.UP, true));
+	}
+	public void downPressed(){
+		keys.get(keys.put(MyKeys.DOWN, true));
+	}
+
+
+	public void leftReleased() {
+		keys.get(keys.put(MyKeys.LEFT, false));
+	}
+
+	public void rightReleased() {
+		keys.get(keys.put(MyKeys.RIGHT, false));
+	}
+
+	public void upReleased() {
+		keys.get(keys.put(MyKeys.UP, false));
+	}
+	public void downReleased() {
+		keys.get(keys.put(MyKeys.DOWN, false));
+	}
+	
 }

@@ -2,8 +2,17 @@ package edu.oswego.tiltandtumble.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
 import edu.oswego.tiltandtumble.levels.BallController;
@@ -13,40 +22,50 @@ import edu.oswego.tiltandtumble.levels.Level;
 import edu.oswego.tiltandtumble.levels.LevelRenderer;
 import edu.oswego.tiltandtumble.levels.WorldPopulator;
 
-public class GameScreen extends AbstractScreen {
+public class GameScreen extends AbstractScreen implements InputProcessor  {
 
-	private final BallController ballController;
-	private final WorldPopulator worldPopulator;
+	private final WorldPopulator 	worldPopulator;
+	private LevelRenderer 	renderer;
+	private final BallController	controller;
 	private final ScoreDialog scoreDialog;
+	
+	private Level 	level;
+	float width;
+	float height;
+	Stage dpadStage;
+	Stage hudStage;
 
-	private Level level;
-	private LevelRenderer renderer;
 	private final InputMultiplexer inputMux = new InputMultiplexer();
-
+	
 	private boolean dialogShowing = false;
-
-	public GameScreen(TiltAndTumble game, int currentLevel) {
+	
+	public GameScreen(TiltAndTumble game, int currentLevel){
 		super(game);
-		ballController = new BallController(!game.getSettings().isUseDpad());
+		controller = new BallController(!game.getSettings().isUseDpad());
 		worldPopulator = new WorldPopulator();
 		scoreDialog = new ScoreDialog("Score\n", skin, this);
-
-		loadLevel(currentLevel);
+		width = game.getWidth();
+		height = game.getHeight();
+		if(game.getSettings().isUseDpad()){
+			loadDpad();
+		}
+		loadHUD();
+		this.loadLevel(currentLevel);		
 	}
-
+	
 	public void loadLevel(int num) {
 		if (level != null) {
 			level.dispose();
-			level = null;
+			renderer.dispose();
 		}
 		if (renderer != null) {
 			renderer.dispose();
 			renderer = null;
 		}
-		level = new Level(num, ballController, worldPopulator);
-		renderer = new DefaultLevelRenderer(level, game.getWidth(), game.getHeight());
+		level = new Level(num, controller, worldPopulator);
+		renderer = new DefaultLevelRenderer(level,game.getWidth(), game.getHeight());
 		if (game.getSettings().isDebugRender()) {
-			renderer = new DebugLevelRenderer(renderer, ballController);
+			renderer = new DebugLevelRenderer(renderer, controller);
 		}
 		// TODO: move this to someplace more meaningful as part of issue #19
 		level.start();
@@ -64,13 +83,88 @@ public class GameScreen extends AbstractScreen {
 			game.showPreviousScreen();
 		}
 	}
+	
+	public void loadDpad(){
 
+		dpadStage = new Stage();
+		dpadStage.setViewport(width, height);
+		 Texture upTexture = new Texture(Gdx.files.internal("data/UpArrow.png"));
+		 Texture rightTexture = new Texture(Gdx.files.internal("data/RightArrow.png"));
+		 Texture downTexture = new Texture(Gdx.files.internal("data/DownArrow.png"));
+		 Texture leftTexture = new Texture(Gdx.files.internal("data/LeftArrow.png"));
+		    Skin skin = new Skin();
+		    skin.add("up", upTexture);
+		    skin.add("right", rightTexture);
+		    skin.add("left", leftTexture);
+		    skin.add("down", downTexture);
+		    
+		    Image upImage = new Image(skin, "up");
+		    upImage.setPosition(48, 100);
+		    dpadStage.addActor(upImage);
+		    upImage.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+            	
+            }
+        });
+		    Image rightImage = new Image(skin, "right");
+		    rightImage.setPosition(95, 55);
+		    dpadStage.addActor(rightImage);
+		    rightImage.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+            
+            }
+        });
+		    Image leftImage = new Image(skin, "left");
+		    leftImage.setPosition(0, 55);
+		    dpadStage.addActor(leftImage);
+		   
+		    leftImage.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+            	
+            }
+        });
+		    Image downImage = new Image(skin, "down");
+		    downImage.setPosition(48, 0);
+		    dpadStage.addActor(downImage);
+		    downImage.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+               
+            }
+        });
+		    
+	}
+	
+	public void loadHUD(){
+		hudStage = new Stage();
+		hudStage.setViewport(width, height);
+		
+	}
+	@Override
+	public void render(float delta) {
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+
+		preStageRenderHook(delta);
+		stage.act(Gdx.graphics.getDeltaTime());
+		dpadStage.act(delta);
+		stage.draw();
+		dpadStage.draw();
+		postStageRenderHook(delta);
+	}
+	
+	
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(inputMux);
-		inputMux.addProcessor(stage);
+		inputMux.addProcessor(this);
+	//	inputMux.addProcessor(dpadStage);
+	
+		
 	}
-
 	@Override
 	protected void preStageRenderHook(float delta) {
 		renderer.render(game.getSpriteBatch(), game.getFont());
@@ -82,8 +176,8 @@ public class GameScreen extends AbstractScreen {
 			//       each frame we render. something better can be done instead
 			//       of this boolean gate.
 			if (!dialogShowing) {
-				dialogShowing = true;
 				scoreDialog.show(stage);
+				dialogShowing = true;
 			}
 		}
 	}
@@ -98,7 +192,7 @@ public class GameScreen extends AbstractScreen {
 			renderer.dispose();
 		}
 	}
-
+	
 	public static final class ScoreDialog extends Dialog {
 
 		private final GameScreen screen;
@@ -117,4 +211,101 @@ public class GameScreen extends AbstractScreen {
 			screen.loadNextLevel();
 		}
 	}
-}
+
+	// * InputProcessor methods ***************************//
+
+		@Override
+		public boolean keyDown(int keycode) {
+			if (keycode == Keys.LEFT)
+				controller.leftPressed();
+			if (keycode == Keys.RIGHT)
+				controller.rightPressed();
+			if (keycode == Keys.UP)
+				controller.upPressed();
+			if (keycode == Keys.DOWN)
+				controller.downPressed();
+			return true;
+		}
+
+		@Override
+		public boolean keyUp(int keycode) {
+			if (keycode == Keys.LEFT)
+				controller.leftReleased();
+			if (keycode == Keys.RIGHT)
+				controller.rightReleased();
+			if (keycode == Keys.UP)
+				controller.upReleased();
+			if (keycode == Keys.DOWN)
+				controller.downReleased();
+			return true;
+		}
+
+		@Override
+		public boolean keyTyped(char character) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean touchDown(int x, int y, int pointer, int button) {
+			//System.out.println("down X: " +x + " Y: "+ y + " pointer: " + pointer + " button: " + button);
+			if(y < 270 && y> 220){
+				if(x < 50){
+					controller.leftPressed();
+				}
+				if(x > 100 && x < 140){
+					controller.rightPressed();
+				}
+			}
+			if(x>50 && x<100){
+				if(y>175 && y < 220){
+					controller.upPressed();
+				}if( y > 265){
+					controller.downPressed();
+				}
+			}
+			return true;
+		}
+
+		@Override
+		public boolean touchUp(int x, int y, int pointer, int button) {
+			//System.out.println("upX: " +x + " Y: "+ y + " pointer: " + pointer + " button: " + button);
+			if(y < 270 && y> 220){
+				if(x < 50){
+					controller.leftReleased();
+				}
+				if(x > 100 && x < 140){
+					controller.rightReleased();
+				}
+			}
+			if(x>50 && x<100){
+				if(y>175 && y < 220){
+					controller.upReleased();
+				}if( y > 265){
+					controller.downReleased();
+				}
+			}
+			return true;
+		}
+
+		@Override
+		public boolean touchDragged(int x, int y, int pointer) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean scrolled(int amount) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean mouseMoved(int screenX, int screenY) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+
+	}
+	
