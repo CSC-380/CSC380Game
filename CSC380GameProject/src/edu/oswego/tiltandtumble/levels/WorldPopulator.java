@@ -172,9 +172,11 @@ public final class WorldPopulator {
 				.friction(Ball.FRICTION).density(Ball.DENSITY)
 				.restitution(Ball.RESTITUTION).build());
 
+		float diameter = scale.metersToPixels(shape.getRadius()) * 2;
+
 		// dispose after creating fixture
 		shape.dispose();
-		return new Ball(body, scale);
+		return new Ball(body, diameter, scale);
 	}
 
 	public FinishLine createFinishLine(PolygonMapObject obj, Level level,

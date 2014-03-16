@@ -17,7 +17,7 @@
   <object name="FinishLine" x="55" y="55" width="48" height="48">
    <ellipse/>
   </object>
-  <object name="Ball" x="3103" y="543" width="32" height="32">
+  <object name="Ball" x="3108" y="547" width="24" height="24">
    <ellipse/>
   </object>
   <object name="StaticWall" x="0" y="2" width="3197" height="27"/>

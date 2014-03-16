@@ -22,7 +22,7 @@ public class Ball extends AbstractWorldObject {
 
     UnitScale scale;
 
-    public Ball(Body body, UnitScale scale) {
+    public Ball(Body body, float diameter, UnitScale scale) {
         super(body);
         this.scale = scale;
         body.setUserData(this);
@@ -31,9 +31,7 @@ public class Ball extends AbstractWorldObject {
         texture = new Texture(Gdx.files.internal("data/GreenOrb.png"));
         sprite = new Sprite(texture);
 
-        // NOTE: the ball is 64x64 so we scale it down to 32x32
-        // TODO: can i figure this out programmatically?
-        sprite.setScale(0.5f);
+        sprite.setSize(diameter, diameter);
     }
 
     public void applyLinearImpulse(float x, float y) {
