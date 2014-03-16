@@ -17,6 +17,7 @@ import edu.oswego.tiltandtumble.levels.DefaultLevelRenderer;
 import edu.oswego.tiltandtumble.levels.Level;
 import edu.oswego.tiltandtumble.levels.LevelRenderer;
 import edu.oswego.tiltandtumble.levels.WorldPopulator;
+import edu.oswego.tiltandtumble.screens.dialogs.ScoreDialog;
 
 public class GameScreen extends AbstractScreen implements InputProcessor  {
 
