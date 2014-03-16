@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-
 import edu.oswego.tiltandtumble.TiltAndTumble;
 import edu.oswego.tiltandtumble.levels.BallController;
 import edu.oswego.tiltandtumble.levels.DebugLevelRenderer;
@@ -25,27 +24,22 @@ public class GameScreen extends AbstractScreen implements InputProcessor  {
 		PLAYING,
 		SCORED
 	}
-
+	private final BallController	ballController;
 	private final WorldPopulator 	worldPopulator;
-	private LevelRenderer 	renderer;
-	private final BallController	controller;
 	private final ScoreDialog scoreDialog;
-	private State currentState;
-
+	
 	private Level 	level;
+	private LevelRenderer 	renderer;
 	float width;
 	float height;
-	Stage dpadStage;
+	private Stage dpadStage;
 	boolean usingDpad = false;
 	
-
-	//private final InputMultiplexer inputMux = new InputMultiplexer();
-
-
+	private State currentState;
 
 	public GameScreen(TiltAndTumble game, int currentLevel){
 		super(game);
-		controller = new BallController(!game.getSettings().isUseDpad());
+		ballController = new BallController(!game.getSettings().isUseDpad());
 		worldPopulator = new WorldPopulator();
 		scoreDialog = new ScoreDialog("Score\n", skin, this);
 		width = game.getWidth();
@@ -61,16 +55,16 @@ public class GameScreen extends AbstractScreen implements InputProcessor  {
 	public void loadLevel(int num) {
 		if (level != null) {
 			level.dispose();
-			renderer.dispose();
+			level = null;
 		}
 		if (renderer != null) {
 			renderer.dispose();
 			renderer = null;
 		}
-		level = new Level(num, controller, worldPopulator);
+		level = new Level(num, ballController, worldPopulator);
 		renderer = new DefaultLevelRenderer(level,game.getWidth(), game.getHeight());
 		if (game.getSettings().isDebugRender()) {
-			renderer = new DebugLevelRenderer(renderer, controller);
+			renderer = new DebugLevelRenderer(renderer, ballController);
 		}
 		currentState = State.PLAYING;
 
@@ -148,11 +142,8 @@ public class GameScreen extends AbstractScreen implements InputProcessor  {
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(this);
-		//inputMux.addProcessor(this);
-		//	inputMux.addProcessor(dpadStage);
-
-
 	}
+	
 	@Override
 	protected void preStageRenderHook(float delta) {
 		renderer.render(game.getSpriteBatch(), game.getFont());
@@ -183,26 +174,26 @@ public class GameScreen extends AbstractScreen implements InputProcessor  {
 	@Override
 	public boolean keyDown(int keycode) {
 		if (keycode == Keys.LEFT)
-			controller.leftPressed();
+			ballController.leftPressed();
 		if (keycode == Keys.RIGHT)
-			controller.rightPressed();
+			ballController.rightPressed();
 		if (keycode == Keys.UP)
-			controller.upPressed();
+			ballController.upPressed();
 		if (keycode == Keys.DOWN)
-			controller.downPressed();
+			ballController.downPressed();
 		return true;
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
 		if (keycode == Keys.LEFT)
-			controller.leftReleased();
+			ballController.leftReleased();
 		if (keycode == Keys.RIGHT)
-			controller.rightReleased();
+			ballController.rightReleased();
 		if (keycode == Keys.UP)
-			controller.upReleased();
+			ballController.upReleased();
 		if (keycode == Keys.DOWN)
-			controller.downReleased();
+			ballController.downReleased();
 		return true;
 	}
 
@@ -220,17 +211,17 @@ public class GameScreen extends AbstractScreen implements InputProcessor  {
 		}
 		if(y < 270 && y> 220){
 			if(x < 50){
-				controller.leftPressed();
+				ballController.leftPressed();
 			}
 			if(x > 100 && x < 140){
-				controller.rightPressed();
+				ballController.rightPressed();
 			}
 		}
 		if(x>50 && x<100){
 			if(y>175 && y < 220){
-				controller.upPressed();
+				ballController.upPressed();
 			}if( y > 265){
-				controller.downPressed();
+				ballController.downPressed();
 			}
 		}
 		return true;
@@ -244,17 +235,17 @@ public class GameScreen extends AbstractScreen implements InputProcessor  {
 		}
 		if(y < 270 && y> 220){
 			if(x < 50){
-				controller.leftReleased();
+				ballController.leftReleased();
 			}
 			if(x > 100 && x < 140){
-				controller.rightReleased();
+				ballController.rightReleased();
 			}
 		}
 		if(x>50 && x<100){
 			if(y>175 && y < 220){
-				controller.upReleased();
+				ballController.upReleased();
 			}if( y > 265){
-				controller.downReleased();
+				ballController.downReleased();
 			}
 		}
 		return true;
