@@ -37,3 +37,5 @@ Thumbs.db
 # jvm crash log
 hs_err_pid*.log
 
+# our data files
+Scores.dat

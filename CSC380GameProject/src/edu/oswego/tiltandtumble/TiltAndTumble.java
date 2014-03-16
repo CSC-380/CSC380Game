@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 
+import edu.oswego.tiltandtumble.data.HighScores;
 import edu.oswego.tiltandtumble.screens.CreditScreen;
 import edu.oswego.tiltandtumble.screens.GameScreen;
 import edu.oswego.tiltandtumble.screens.HelpScreen;
@@ -49,6 +50,7 @@ public class TiltAndTumble extends Game {
 	private final int height = 320;
 
 	private final Settings settings = new Settings();
+	private HighScores scores;
 
 	@Override
 	public void create() {
@@ -60,6 +62,7 @@ public class TiltAndTumble extends Game {
 		font = new BitmapFont();
 		skin = new Skin();
 		loadSkin();
+		scores = HighScores.load();
 
 		showMainScreen();
 	}
@@ -190,6 +193,10 @@ public class TiltAndTumble extends Game {
 		return settings;
 	}
 
+	public HighScores getHighScores() {
+		return scores;
+	}
+
 	public float getWidth() {
 		return width;
 	}
@@ -200,6 +207,7 @@ public class TiltAndTumble extends Game {
 
 	@Override
 	public void dispose() {
+		HighScores.save(scores);
 		mainScreen.dispose();
 		if (creditScreen != null) {
 			creditScreen.dispose();
