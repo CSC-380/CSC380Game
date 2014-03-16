@@ -16,10 +16,10 @@ import edu.oswego.tiltandtumble.levels.DefaultLevelRenderer;
 import edu.oswego.tiltandtumble.levels.Level;
 import edu.oswego.tiltandtumble.levels.LevelRenderer;
 import edu.oswego.tiltandtumble.levels.WorldPopulator;
-import edu.oswego.tiltandtumble.screens.dialogs.*;
+import edu.oswego.tiltandtumble.screens.dialogs.ScoreDialog;
 
 public class GameScreen extends AbstractScreen implements InputProcessor  {
-
+//did this change
 	private static enum State {
 		PAUSED,
 		PLAYING,
@@ -38,10 +38,6 @@ public class GameScreen extends AbstractScreen implements InputProcessor  {
 	float height;
 	Stage dpadStage;
 	boolean usingDpad = false;
-	
-
-	//private final InputMultiplexer inputMux = new InputMultiplexer();
-
 
 
 	public GameScreen(TiltAndTumble game, int currentLevel){
