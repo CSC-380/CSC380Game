@@ -6,7 +6,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
 
 import edu.oswego.tiltandtumble.collisionListener.BallCollisionListener;
-import edu.oswego.tiltandtumble.levels.UnitScale;
 
 public class PushBumper extends AbstractWorldObject implements BallCollisionListener {
     public static final float FRICTION = 0.0f;
@@ -14,11 +13,8 @@ public class PushBumper extends AbstractWorldObject implements BallCollisionList
     public static final float RESTITUTION = 0.0f;
     public static final BodyType BODY_TYPE = BodyType.StaticBody;
 
-   // private final UnitScale scale;
-
-    public PushBumper(Body body, UnitScale scale) {
+    public PushBumper(Body body) {
         super(body);
-       // this.scale = scale;
         body.setUserData(this);
     }
 
