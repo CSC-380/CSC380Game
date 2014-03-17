@@ -1,12 +1,14 @@
 package edu.oswego.tiltandtumble.levels;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
-
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import edu.oswego.tiltandtumble.worldObjects.Ball;
-public class BallController  {
+public class BallController extends ClickListener  {
 	
 
 
@@ -14,15 +16,13 @@ public class BallController  {
 		LEFT, RIGHT, UP, DOWN
 	}
 
+	private static enum State {
+		PAUSED,
+		ACTIVE	
+	}
 
 
-	static Map<MyKeys, Boolean> keys = new HashMap<BallController.MyKeys, Boolean>();
-	static {
-		keys.put(MyKeys.LEFT, false);
-		keys.put(MyKeys.RIGHT, false);
-		keys.put(MyKeys.UP, false);
-		keys.put(MyKeys.DOWN, false);
-	};
+	private final Map<MyKeys, Boolean> keys = new EnumMap<MyKeys, Boolean>(MyKeys.class);
 
 
 	private final boolean useAccelerometer;
@@ -30,13 +30,17 @@ public class BallController  {
 
 	private float tiltX = 0;
 	private float tiltY = 0;
-
+	private State currentState;
 	private int keyX = 0;
 	private int keyY = 0;
 
 	public BallController(boolean useAccelerometer) {
 		this.useAccelerometer = useAccelerometer;
-
+		keys.put(MyKeys.LEFT, false);
+		keys.put(MyKeys.RIGHT, false);
+		keys.put(MyKeys.UP, false);
+		keys.put(MyKeys.DOWN, false);
+		currentState = State.ACTIVE;
 
 	}
 
@@ -46,29 +50,100 @@ public class BallController  {
 
 
 	public void update() {
-		if (useAccelerometer) {
-			// accelerometer is reversed from screen coordinates, we are in landscape mode
-			tiltX = Gdx.input.getAccelerometerY() * 0.001f;
-			tiltY = Gdx.input.getAccelerometerX() * -0.001f;
+		if(currentState == State.ACTIVE){
+			if (useAccelerometer) {
+				// accelerometer is reversed from screen coordinates, we are in landscape mode
+				tiltX = Gdx.input.getAccelerometerY() * 0.001f;
+				tiltY = Gdx.input.getAccelerometerX() * -0.001f;
+			}
+			else {
+				// might as well accept either input
+				updateFromDpad();
+				updateFromKeys();
+
+				tiltX = keyX * 0.001f;
+				tiltY = keyY * -0.001f;
+			}
+			if (ball != null) {
+				ball.applyLinearImpulse(tiltX, tiltY);
+			}
 		}
-		else {
-			if (keys.get(MyKeys.UP)) {
-				decrementY();
-			}
-			else if (keys.get(MyKeys.DOWN)) {
-				incrementY();
-			}
-			if (keys.get(MyKeys.LEFT)) {
-				decrementX();
-			}
-			else if (keys.get(MyKeys.RIGHT)) {
-				incrementX();
-			}
-			tiltX = keyX * 0.001f;
-			tiltY = keyY * -0.001f;
+	}
+	
+	public void pauseBall(){
+		currentState = State.PAUSED;
+		ball.pauseBall();
+	}
+	public void resumeBall(){
+		currentState = State.ACTIVE;
+		ball.resumeBall();
+	}
+	
+	private void updateFromDpad() {
+		if (keys.get(MyKeys.UP)) {
+			decrementY();
 		}
-		if (ball != null) {
-			ball.applyLinearImpulse(tiltX, tiltY);
+		else if (keys.get(MyKeys.DOWN)) {
+			incrementY();
+		}
+		if (keys.get(MyKeys.LEFT)) {
+			decrementX();
+		}
+		else if (keys.get(MyKeys.RIGHT)) {
+			incrementX();
+		}
+	}
+
+	private void updateFromKeys() {
+		if (Gdx.input.isKeyPressed(Keys.UP)) {
+            decrementY();
+        }
+        else if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+            incrementY();
+        }
+        if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+            decrementX();
+        }
+        else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+            incrementX();
+        }
+	}
+	@Override
+	public boolean touchDown(InputEvent event, float x, float y, int pointer,
+			int button) {
+		Gdx.app.log("touchDown", event.getListenerActor().getName());
+		String name = event.getListenerActor().getName();
+		if (name.equals("up")) {
+			upPressed();
+		}
+		else if (name.equals("down")) {
+			downPressed();
+		}
+		else if (name.equals("left")) {
+			leftPressed();
+		}
+		else if (name.equals("right")) {
+			rightPressed();
+		}
+		return true;
+	}
+
+	@Override
+	public void touchUp(InputEvent event, float x, float y, int pointer,
+			int button) {
+		Gdx.app.log("touchUp", event.getListenerActor().getName());
+		String name = event.getListenerActor().getName();
+		if (name.equals("up")) {
+			upReleased();
+		}
+		else if (name.equals("down")) {
+			downReleased();
+		}
+		else if (name.equals("left")) {
+			leftReleased();
+		}
+		else if (name.equals("right")) {
+			rightReleased();
 		}
 	}
 

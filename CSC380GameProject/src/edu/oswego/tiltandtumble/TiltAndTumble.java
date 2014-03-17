@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
@@ -26,6 +27,7 @@ import edu.oswego.tiltandtumble.screens.HighScoresScreen;
 import edu.oswego.tiltandtumble.screens.LevelScreen;
 import edu.oswego.tiltandtumble.screens.MainScreen;
 import edu.oswego.tiltandtumble.screens.SettingsScreen;
+import edu.oswego.tiltandtumble.screens.dialogs.PauseDialog;
 
 public class TiltAndTumble extends Game {
 
@@ -60,7 +62,7 @@ public class TiltAndTumble extends Game {
 		font = new BitmapFont();
 		skin = new Skin();
 		loadSkin();
-
+	
 		showMainScreen();
 	}
 
@@ -79,31 +81,32 @@ public class TiltAndTumble extends Game {
 		// Configure a TextButtonStyle and name it "default". Skin resources are
 		// stored by type, so this doesn't overwrite the font.
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
-		textButtonStyle.up = skin.newDrawable("defaultTexture", Color.DARK_GRAY);
-		textButtonStyle.down = skin.newDrawable("defaultTexture", Color.DARK_GRAY);
+		textButtonStyle.up = skin.newDrawable("defaultTexture", Color.BLACK);
+		textButtonStyle.down = skin.newDrawable("defaultTexture", Color.BLACK);
 		textButtonStyle.checked = skin.newDrawable("defaultTexture", Color.BLUE);
-		textButtonStyle.over = skin.newDrawable("defaultTexture", Color.LIGHT_GRAY);
+		textButtonStyle.over = skin.newDrawable("defaultTexture", Color.BLACK);
 		textButtonStyle.font = skin.getFont("default");
 		// textButtonStyle.font.setScale(5);
 		skin.add("default", textButtonStyle);
 		CheckBoxStyle checkBoxStyle = new CheckBoxStyle();
-		checkBoxStyle.up = skin.newDrawable("defaultTexture", Color.DARK_GRAY);
-		checkBoxStyle.down = skin.newDrawable("defaultTexture", Color.DARK_GRAY);
+		checkBoxStyle.up = skin.newDrawable("defaultTexture", Color.BLACK);
+		checkBoxStyle.down = skin.newDrawable("defaultTexture", Color.BLACK);
 		checkBoxStyle.checked = skin.newDrawable("defaultTexture", Color.BLUE);
-		checkBoxStyle.over = skin.newDrawable("defaultTexture", Color.LIGHT_GRAY);
+		checkBoxStyle.over = skin.newDrawable("defaultTexture", Color.BLACK);
 		checkBoxStyle.font = skin.getFont("default");
 		skin.add("default", checkBoxStyle);
 		WindowStyle windowStyle = new WindowStyle();
-		windowStyle.stageBackground = skin.newDrawable("defaultTexture",
-				new Color(Color.DARK_GRAY.r, Color.DARK_GRAY.g, Color.DARK_GRAY.b, 0.5f));
-		windowStyle.background = skin.newDrawable("defaultTexture", Color.DARK_GRAY);
+		//windowStyle.stageBackground = skin.newDrawable("defaultTexture",
+		//		new Color(Color.CYAN.r, Color.RED.g, Color.GREEN.b, 0.5f));
+		windowStyle.background = skin.newDrawable("defaultTexture", Color.LIGHT_GRAY);
 		windowStyle.titleFont = skin.getFont("default");
 		windowStyle.titleFontColor = Color.WHITE;
 		skin.add("default", windowStyle);
 		LabelStyle labelStyle = new LabelStyle();
-		labelStyle.background = skin.newDrawable("defaultTexture", Color.DARK_GRAY);
+		labelStyle.background = skin.newDrawable("defaultTexture", Color.CLEAR);
 		labelStyle.font = skin.getFont("default");
 		labelStyle.fontColor = Color.WHITE;
+		
 		skin.add("default", labelStyle);
 	}
 
@@ -237,11 +240,12 @@ public class TiltAndTumble extends Game {
 
 	@Override
 	public void pause() {
-		// TODO: implement
+		
 	}
 
 	@Override
 	public void resume() {
-		// TODO: implement
+		
+		
 	}
 }

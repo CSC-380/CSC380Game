@@ -14,11 +14,8 @@ public class PushBumper extends AbstractWorldObject implements BallCollisionList
     public static final float RESTITUTION = 0.0f;
     public static final BodyType BODY_TYPE = BodyType.StaticBody;
 
-   // private final UnitScale scale;
-
-    public PushBumper(Body body, UnitScale scale) {
+    public PushBumper(Body body) {
         super(body);
-       // this.scale = scale;
         body.setUserData(this);
     }
 
