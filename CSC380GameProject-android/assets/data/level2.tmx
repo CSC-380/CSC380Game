@@ -23,17 +23,17 @@
  </tileset>
  <layer name="Background" width="60" height="30">
   <data encoding="base64" compression="zlib">
-   eJztmE0KwjAQRie69ArdSk/iETyUF/B0HkMQXEkIYgiTMRnz88Vm8aBpSsnrN5OWrnuiNZOT+RDO3XaOsylL7hpjLIp79fZ9Uvpaw2s1vhKj5XsxMmi+XNZS/qn5LhFnf3wYMF+Jo3HEckb09bO2x5r+jdU2oq+mf1PvheIbZvrNV/vsUHxz8v3F1VLak/N9ZLx/Od77kI/WFyFfqZ5LguJruZLD967hjvI9+U++pev5TvIY3bcl03f6lvQN+7Pm+wfBtzfTd9ZzrXxz/3WM7ruFepZyblHbPfu3de+i5Nsy7977M3euZu6I+W6tnkf3Td2juLkXlRrekw==
+   eJztls0JwzAMRu322BVyLZmkI3SoLtDpOkahkFMxJtQIW7EUxZaLDg9i8kNePknOfHZuJnLzP+C51yly97JQ37HExHhWb9/F1b8rvJbjizFavg+Po803lzWWf22+U8E5XV8GzBfj6iOlnDX6plmHY07/lmpboy+nf2ufpcUXZrrly/12Wnwp+e5xDUh75nw/hP03xzqHUri+GvLF6lkSLb6Bp4uk3ke4a/mf/CffvfUM+/+9scbmhQbflpiv+Ur6wv7kzCR4D2V/t3zNV1s9j+S75Xq0v9Vze9810xa13bN/pfwoM0FDvi3z7j2fqfmM5tsb85X3rZ1RuXNfwN/jag==
   </data>
  </layer>
  <layer name="background2" width="60" height="30">
   <data encoding="base64" compression="zlib">
-   eJzNmMtNAzEURT1BCUisI1hE7FhRAZ8G+GwpigbogBIog1QAdcRBLPAIGT1e3tdjEx/JimbsQK6vff0Jwc9q+Pk8G/g2b7MQHoX6+0UIDwt73fGB7zf+N2ukdzOf9veg3m0qn8aynfZvf3kaZH8/FH+9QL0bx/e0tucDXzCS3uzvBRqX1+n5hhjHcb7bFsLppbyGnnr6RmPUuwRlBfRz/krzVoLTS+nR6i1IXmLeZ7t6Je8slOqNof5cxmS9Vix9UapXe780zFsLa4deCx69nKc15vKY07lAoL9URh2m5yPHGPfoDUx9S70QKqNO0vOpMbtfwt/8/QJ1Xr2eHKLg9JaMZ6pfcMY/o0LphWtUBO9r+MvNc09eSZTo5fogEu9rQflbuia9Bt9+gsuwVuvRiMVfj/5e8pkD++s5L0SibS/5zKH5y2UxR+96tXzm9tHcGO9db/Z36r45w+mFc5XaI/firxft/MutT73MX4yWZ73r1fz1jnPreR/vKfblrzWPp+QVdddRez/Jgf3FedzifOTJ6tpo85c6H0l49GafpayujTWfrfPYsh5FVC9lV22yv559JGyL+8FzH4v1Zr/3fT7y9IXnPhb7DMdAK0rOvyX3z5LXLccvJvt7mTRcIR3U+Uejd73Z39uk9U7wrSSvqIyiwHvrsXwD8XXupw==
+   eJzNWMtNAzEQ9QYlIHGO4BBx40QFfBrgc6UoGqADSqAMUkGoIxvggFfIaJid8czzesk+yYq8dpJ9fp7nGYeAY9X8fJ41+py3WQiPmfH7RQgPC//Y8QH2jv+NNeO7nQ/7Pcp3F9uHs+2G/e0vnpq8vu+Gvigo3y3wPWvueaM3jhzfpO8F25fXsX8j7ON23p9LofGVtKaaImtjoeO7JG1F+Gv65uI2B42vxMca9yCnJcdm1ueb086DUr5tqB/LHImvF561KOVrPV864taDNcDXA4SvpmmNWO58OjUKqq/kUYexfwTscYRvUMbH5EshedRJ7J86vfsl/PXfLzKG8kV8SILGt2Q/S+vCPf6ZNYkvPaNa8ryGvlqcI36VQwlfbQ1a4XktSPqWnkmvAcsnNA8b6zzq4NEX4V/Tnz9DPyfj0PxCA9cXqRdaYW5Nf0bj2DPf0lfzYg1T52v5s5ZHa3t86nyTvkPz5gSNL41VKUf28OU1Fo/XGvqisOpf7Xzy8EX7EtDz1/KzqfO19EX3ubfe5znFvvT1+vEQv5LuOqR8Mn2mOWPoy/14jPrI69X7iF+pPsoB4Zt01rx6H/Gb4I1jz3nUsnHtvS0+/Izz1BlJXySPpHP5OiD3sZxX0puvh/f3PPDUR8haIPexnBfVi39f6pegpP4tuX/Ovav33q6mvpeRwxXjIdU/FqbON+l7G7neZXQr8SvJoyRw3+naN6C9K74=
   </data>
  </layer>
  <layer name="map" width="60" height="30">
   <data encoding="base64" compression="zlib">
-   eJztmMFOwzAMht3DrpyA09TTxkvCCwy4whvwCON12gvaYeoBaQ+wWEpUzziJ0zUlLfzSr2mZq/WrE8fptgLYJhp1Yz/nptrc9y7RG8v9MAHzmzD2ZdwqfWDXDuHdWc71L+W4MX5XumHXct5b4zvB95aNxpbAK+X6AHpeH0NNxvm8put6ClFezhP7Xcu7Iblee+b4VPlO4T3CZd61vFQuJjevVKtQKbx8LXNemkeaTyq6pkvML89piDdlntZsvBTeUOyYvFAxj6iWuIPhvNL81c7TKfL7AZdrkEvipXuU5tmk7FGhdT6G9pDOi2OPxk/kOnwGnec/htTs3GpB10+AHXsxfiVxR/jZWzqVyEt1TX1GnZglXvr7dz4Ula6pzyi8/5Szwj9vPkk91pJ5Jfn6YzSvSRpe/M7Xa6m8zm7/4fnW8lLNgdftP0vn5ed93lPMhdd3FkT56pX0rkPqJx2Pb38tOb+NZzz0LqvE/IYU43V5pr3VUnjpfuTmbiPEpfDyfvOUC0RQrN8IzVueb1fLSstfTLH3sR2Lo3MANWfeUD9J4/ar/vyMfJ+r3n+B97nqXTovr1GaOOczczuZOA==
+   eJzlmE1ug0AMhc0i26zariJWSS/ZXiBtt+0NeoT0OrCpkBpxh85IWLw4nj8CdKBPeopkTODD82M4FESHRFttu9+lqTT3fUz0vuN+nIH5XYl9G9eRbsS5Q3iPHefuj2pcGX9EuhLnSt4743vFDx0b5ubAq9W6oXheF0MJcTmucV7PIeSVPKHjsbx7qPXOMcbnqncK75ku6x7Li+KcqXm1tcoqhVfOZcmLdcR6onBO51hfWVMfb8o4LUU8F15f7pi8VAiPqBrc0nBebfzGjtM56vtJl3NQSuPFPSrm2aTsUb55PoZOlM5rY0/Gz3CefQat4xpD1uypVVNcP0Fd7NX4DfLOdN1bsnLkRd2yPltpPRnyymOu5zSXblmfOZbyrhC6xtRaM6/WY62ZV5OrP7aWcy2GV87nhvLlZfP+I+8thlc7J3de3n/WzivHouwplsLrehfk+9HWK21f1fpJ5uGcH+X/c61v5Yj7vmXlWF+fQrxcZ+yt1sKL+xGP3UrJS+GVe5zrPWMKhfqN0LjFercQz6l+IYW+x7YiD+vF8aXy+u4V806b/v3Zxr82vf8D70vRO3deuUbF5LF/AY97lnw=
   </data>
  </layer>
  <layer name="objects" width="60" height="30">
@@ -41,7 +41,7 @@
    eJztmEsKgDAMBQOurBvvqzfQO/uDQi32I7RpmmQgG58uhthqA1COaQCYTV5ZcrNWHGM4u30lgenbsucWaf2VRGxdK/hoP95Q+PYpBDBOIfNrTTJ4T1vvQdL+Nyj71th3Kfv65PrH7uvJtwTqyxv15Y368qY339T5b7lqjTzfm2+K7ao9kpP1rXR+I+tbCfXlDapvo5mKy+Nr4HvG419381BWYVZ0Am2wDDc=
   </data>
  </layer>
- <objectgroup name="collision" width="60" height="30">
+ <objectgroup name="collision" width="60" height="30" visible="0">
   <object name="StaticWall" x="164" y="578" width="153" height="27"/>
   <object name="StaticWall" x="33" y="451" width="28" height="511"/>
   <object name="StaticWall" x="290" y="801" width="158" height="27"/>
