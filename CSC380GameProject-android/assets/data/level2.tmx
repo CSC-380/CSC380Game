@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="60" height="30" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="9ywlq" tilewidth="32" tileheight="32">
+  <image source="9ywlq.png" width="512" height="384"/>
+ </tileset>
+ <tileset firstgid="193" name="dg_edging332 256x416 pix" tilewidth="32" tileheight="32">
+  <image source="dg_edging332 256x416 pix.gif" width="256" height="416"/>
+ </tileset>
+ <tileset firstgid="297" name="TileA4" tilewidth="32" tileheight="32">
+  <image source="TileA4.png" width="512" height="480"/>
+ </tileset>
+ <tileset firstgid="537" name="42176783" tilewidth="32" tileheight="32">
+  <image source="42176783.png" width="480" height="1600"/>
+ </tileset>
+ <tileset firstgid="1287" name="tilea2 (1)" tilewidth="32" tileheight="32">
+  <image source="tilea2 (1).png" width="512" height="384"/>
+ </tileset>
+ <tileset firstgid="1479" name="tilea2222" tilewidth="32" tileheight="32">
+  <image source="tilea2222.png" width="512" height="384"/>
+ </tileset>
+ <tileset firstgid="1671" name="sci-fi-platformer-tiles-32x32-extension_0" tilewidth="32" tileheight="32">
+  <image source="sci-fi-platformer-tiles-32x32-extension_0.png" width="512" height="4096"/>
+ </tileset>
+ <layer name="Background" width="60" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztmE0KwjAQRie69ArdSk/iETyUF/B0HkMQXEkIYgiTMRnz88Vm8aBpSsnrN5OWrnuiNZOT+RDO3XaOsylL7hpjLIp79fZ9Uvpaw2s1vhKj5XsxMmi+XNZS/qn5LhFnf3wYMF+Jo3HEckb09bO2x5r+jdU2oq+mf1PvheIbZvrNV/vsUHxz8v3F1VLak/N9ZLx/Od77kI/WFyFfqZ5LguJruZLD967hjvI9+U++pev5TvIY3bcl03f6lvQN+7Pm+wfBtzfTd9ZzrXxz/3WM7ruFepZyblHbPfu3de+i5Nsy7977M3euZu6I+W6tnkf3Td2juLkXlRrekw==
+  </data>
+ </layer>
+ <layer name="background2" width="60" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzNmMtNAzEURT1BCUisI1hE7FhRAZ8G+GwpigbogBIog1QAdcRBLPAIGT1e3tdjEx/JimbsQK6vff0Jwc9q+Pk8G/g2b7MQHoX6+0UIDwt73fGB7zf+N2ukdzOf9veg3m0qn8aynfZvf3kaZH8/FH+9QL0bx/e0tucDXzCS3uzvBRqX1+n5hhjHcb7bFsLppbyGnnr6RmPUuwRlBfRz/krzVoLTS+nR6i1IXmLeZ7t6Je8slOqNof5cxmS9Vix9UapXe780zFsLa4deCx69nKc15vKY07lAoL9URh2m5yPHGPfoDUx9S70QKqNO0vOpMbtfwt/8/QJ1Xr2eHKLg9JaMZ6pfcMY/o0LphWtUBO9r+MvNc09eSZTo5fogEu9rQflbuia9Bt9+gsuwVuvRiMVfj/5e8pkD++s5L0SibS/5zKH5y2UxR+96tXzm9tHcGO9db/Z36r45w+mFc5XaI/firxft/MutT73MX4yWZ73r1fz1jnPreR/vKfblrzWPp+QVdddRez/Jgf3FedzifOTJ6tpo85c6H0l49GafpayujTWfrfPYsh5FVC9lV22yv559JGyL+8FzH4v1Zr/3fT7y9IXnPhb7DMdAK0rOvyX3z5LXLccvJvt7mTRcIR3U+Uejd73Z39uk9U7wrSSvqIyiwHvrsXwD8XXupw==
+  </data>
+ </layer>
+ <layer name="map" width="60" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztmMFOwzAMht3DrpyA09TTxkvCCwy4whvwCON12gvaYeoBaQ+wWEpUzziJ0zUlLfzSr2mZq/WrE8fptgLYJhp1Yz/nptrc9y7RG8v9MAHzmzD2ZdwqfWDXDuHdWc71L+W4MX5XumHXct5b4zvB95aNxpbAK+X6AHpeH0NNxvm8put6ClFezhP7Xcu7Iblee+b4VPlO4T3CZd61vFQuJjevVKtQKbx8LXNemkeaTyq6pkvML89piDdlntZsvBTeUOyYvFAxj6iWuIPhvNL81c7TKfL7AZdrkEvipXuU5tmk7FGhdT6G9pDOi2OPxk/kOnwGnec/htTs3GpB10+AHXsxfiVxR/jZWzqVyEt1TX1GnZglXvr7dz4Ula6pzyi8/5Szwj9vPkk91pJ5Jfn6YzSvSRpe/M7Xa6m8zm7/4fnW8lLNgdftP0vn5ed93lPMhdd3FkT56pX0rkPqJx2Pb38tOb+NZzz0LqvE/IYU43V5pr3VUnjpfuTmbiPEpfDyfvOUC0RQrN8IzVueb1fLSstfTLH3sR2Lo3MANWfeUD9J4/ar/vyMfJ+r3n+B97nqXTovr1GaOOczczuZOA==
+  </data>
+ </layer>
+ <layer name="objects" width="60" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztmEsKgDAMBQOurBvvqzfQO/uDQi32I7RpmmQgG58uhthqA1COaQCYTV5ZcrNWHGM4u30lgenbsucWaf2VRGxdK/hoP95Q+PYpBDBOIfNrTTJ4T1vvQdL+Nyj71th3Kfv65PrH7uvJtwTqyxv15Y368qY339T5b7lqjTzfm2+K7ao9kpP1rXR+I+tbCfXlDapvo5mKy+Nr4HvG419381BWYVZ0Am2wDDc=
+  </data>
+ </layer>
+ <objectgroup name="collision" width="60" height="30">
+  <object name="StaticWall" x="164" y="578" width="153" height="27"/>
+  <object name="StaticWall" x="33" y="451" width="28" height="511"/>
+  <object name="StaticWall" x="290" y="801" width="158" height="27"/>
+  <object name="StaticWall" x="163" y="579" width="25" height="387"/>
+  <object name="StaticWall" x="290" y="579" width="30" height="248"/>
+  <object name="StaticWall" x="419" y="451" width="29" height="377"/>
+  <object name="StaticWall" x="289" y="451" width="157" height="25"/>
+  <object name="StaticWall" x="33" y="449" width="157" height="27"/>
+  <object name="StaticWall" x="173" y="321" width="17" height="155"/>
+  <object name="StaticWall" x="131" y="226" width="176" height="28"/>
+  <object name="StaticWall" x="290" y="221" width="17" height="255"/>
+  <object name="StaticWall" x="-1" y="321" width="189" height="28"/>
+  <object name="StaticWall" x="2" y="16" width="27" height="331"/>
+  <object name="StaticWall" x="9" y="5" width="443" height="23"/>
+  <object name="StaticWall" x="129" y="97" width="22" height="155"/>
+  <object name="StaticWall" x="129" y="99" width="219" height="27"/>
+  <object name="StaticWall" x="419" y="-13" width="97" height="74"/>
+  <object name="StaticWall" x="324" y="100" width="23" height="88"/>
+  <object name="StaticWall" x="321" y="161" width="113" height="81"/>
+  <object x="454" y="235" width="1" height="1"/>
+  <object name="StaticWall" x="609" y="133" width="33" height="155"/>
+  <object name="StaticWall" x="418" y="223" width="95" height="162"/>
+  <object name="StaticWall" x="495" y="355" width="133" height="33"/>
+  <object name="StaticWall" x="481" y="-1" width="168" height="159"/>
+  <object name="StaticWall" x="623" y="282" width="109" height="5"/>
+  <object name="StaticWall" x="619" y="319" width="113" height="5"/>
+  <object name="StaticWall" x="610" y="319" width="28" height="640"/>
+  <object name="StaticWall" x="96" y="707" width="92" height="27"/>
+  <object name="StaticWall" x="45" y="954" width="141" height="5"/>
+  <object name="StaticWall" x="1346" y="-3" width="123" height="320"/>
+  <object name="StaticWall" x="1344" y="386" width="122" height="572"/>
+  <object name="StaticWall" x="1443" y="933" width="123" height="25"/>
+  <object name="StaticWall" x="1538" y="834" width="250" height="119"/>
+  <object name="StaticWall" x="1440" y="9" width="406" height="50"/>
+  <object name="StaticWall" x="1537" y="97" width="186" height="473"/>
+  <object name="StaticWall" x="1537" y="643" width="124" height="154"/>
+  <object name="StaticWall" x="1701" y="417" width="121" height="283"/>
+  <object name="StaticWall" x="1697" y="738" width="91" height="131"/>
+  <object name="StaticWall" x="1753" y="929" width="178" height="28"/>
+  <object name="StaticWall" x="1825" y="802" width="105" height="59"/>
+  <object name="StaticWall" x="1636" y="643" width="131" height="55"/>
+  <object name="StaticWall" x="1667" y="547" width="30" height="121"/>
+  <object name="StaticWall" x="1795" y="33" width="138" height="156"/>
+  <object name="StaticWall" x="1704" y="226" width="119" height="123"/>
+  <object name="StaticWall" x="1858" y="354" width="53" height="57"/>
+  <object name="StaticWall" x="1889" y="160" width="37" height="669"/>
+  <object name="PushBumper" x="97" y="733" width="61" height="7"/>
+  <object name="Hole" x="361" y="750" width="48" height="41"/>
+  <object name="PushBumper" x="69" y="479" width="23" height="7"/>
+  <object name="PushBumper" x="389" y="479" width="23" height="7"/>
+  <object name="PushBumper" x="196" y="255" width="87" height="7"/>
+  <object name="PushBumper" x="407" y="37" width="8" height="21"/>
+  <object name="PushBumper" x="518" y="345" width="82" height="10"/>
+  <object name="Hole" x="777" y="555" width="16" height="15"/>
+  <object name="Hole" x="807" y="270" width="47" height="44"/>
+  <object name="Hole" x="874" y="397" width="13" height="13"/>
+  <object name="Hole" x="1002" y="429" width="15" height="15"/>
+  <object name="Hole" x="970" y="494" width="45" height="43"/>
+  <object name="Hole" x="773" y="105" width="18" height="18"/>
+  <object name="Hole" x="839" y="171" width="16" height="17"/>
+  <object name="Hole" x="904" y="110" width="49" height="44"/>
+  <object name="Hole" x="969" y="-1" width="47" height="27"/>
+  <object name="PushBumper" x="644" y="1" width="311" height="6"/>
+  <object name="PushBumper" x="1030" y="1" width="147" height="5"/>
+  <object name="Hole" x="1193" y="1" width="47" height="24"/>
+  <object name="PushBumper" x="1253" y="0" width="87" height="6"/>
+  <object name="Hole" x="1129" y="109" width="15" height="15"/>
+  <object name="Hole" x="1065" y="205" width="15" height="15"/>
+  <object name="Hole" x="1128" y="302" width="48" height="43"/>
+  <object name="Hole" x="1161" y="524" width="15" height="15"/>
+  <object name="Hole" x="1161" y="685" width="14" height="15"/>
+  <object name="Hole" x="969" y="653" width="15" height="15"/>
+  <object name="Hole" x="1033" y="780" width="14" height="15"/>
+  <object name="Hole" x="1224" y="812" width="15" height="15"/>
+  <object name="Hole" x="1130" y="878" width="13" height="13"/>
+  <object name="Hole" x="1034" y="941" width="13" height="14"/>
+  <object name="Hole" x="874" y="845" width="14" height="12"/>
+  <object name="Hole" x="841" y="685" width="46" height="44"/>
+  <object name="StaticWall" x="770" y="898" width="62" height="62"/>
+  <object name="PushBumper" x="649" y="953" width="109" height="6"/>
+  <object name="PushBumper" x="837" y="953" width="184" height="5"/>
+  <object name="PushBumper" x="1060" y="952" width="280" height="7"/>
+  <object name="PushBumper" x="1478" y="923" width="52" height="7"/>
+  <object name="PushBumper" x="1831" y="793" width="51" height="7"/>
+  <object name="FinishLine" x="1857" y="864" width="31" height="64"/>
+  <object name="Hole" x="1611" y="591" width="44" height="41"/>
+  <object name="PushBumper" x="1863" y="415" width="17" height="7"/>
+  <object name="Hole" x="1738" y="367" width="44" height="39"/>
+  <object name="PushBumper" x="1863" y="345" width="19" height="8"/>
+  <object name="PushBumper" x="1528" y="326" width="10" height="49"/>
+  <object name="PushBumper" x="1478" y="60" width="20" height="11"/>
+  <object name="PushBumper" x="1880" y="198" width="7" height="18"/>
+  <object name="Ball" x="100" y="900" width="24" height="24">
+   <ellipse/>
+  </object>
+  <object name="PushBumper" x="600" y="166" width="9" height="18"/>
+  <object name="StaticWall" x="1026" y="955" width="31" height="3"/>
+  <object x="752" y="811" height="1"/>
+  <object name="StaticWall" x="604" y="955" width="771" height="3"/>
+  <object name="StaticWall" x="924" y="-1" width="463" height="5"/>
+ </objectgroup>
+</map>

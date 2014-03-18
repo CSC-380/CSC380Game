@@ -40,6 +40,7 @@ public final class WorldPopulator {
 		Ball ball = null;
 		MapLayer layer = map.getLayers().get("collision");
 		for (MapObject obj : layer.getObjects()) {
+			if(obj.getName() != null){
 			if (obj.getName().equals("StaticWall")) {
 				createStaticWall(obj, world, scale);
 			} else if (obj.getName().equals("PushBumper")) {
@@ -52,7 +53,9 @@ public final class WorldPopulator {
 				ball = createBall(obj, world, scale);
 			}
 		}
+		}
 		return ball;
+		
 	}
 
 	public StaticWall createStaticWall(MapObject obj, World world, UnitScale scale) {

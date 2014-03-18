@@ -14,7 +14,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
@@ -27,7 +26,7 @@ import edu.oswego.tiltandtumble.screens.HighScoresScreen;
 import edu.oswego.tiltandtumble.screens.LevelScreen;
 import edu.oswego.tiltandtumble.screens.MainScreen;
 import edu.oswego.tiltandtumble.screens.SettingsScreen;
-import edu.oswego.tiltandtumble.screens.dialogs.PauseDialog;
+
 
 public class TiltAndTumble extends Game {
 
