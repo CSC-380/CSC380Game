@@ -33,8 +33,9 @@ public final class WorldPopulator {
 
 	public Ball populateWorldFromMap(Level level, TiledMap map, World world,
 			UnitScale scale) {
-		// TODO: probably need to return an data structure of all the objects
-		// some may need to be disposed once the world goes away...
+		// TODO: I need to add all these returned objects back into the level.
+		//       so on the level object i need some add() type functions for
+		//       these world objects.
 		Ball ball = null;
 		MapLayer layer = map.getLayers().get("collision");
 		for (MapObject obj : layer.getObjects()) {

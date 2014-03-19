@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import edu.oswego.tiltandtumble.levels.UnitScale;
 
-public class Ball extends AbstractWorldObject {
+public class Ball extends AbstractWorldObject implements MapRenderable {
     public static final float FRICTION = 0.1f;
     public static final float DENSITY = 1.0f;
     public static final float RESTITUTION = 0.7f;
@@ -40,13 +40,12 @@ public class Ball extends AbstractWorldObject {
             y,
             body.getWorldCenter().x,
             body.getWorldCenter().y,
-//            body.getPosition().x,
-//            body.getPosition().y,
             true);
 //        body.applyForceToCenter(x, y, true);
     }
 
-    public void draw(SpriteBatch batch) {
+    @Override
+	public void draw(SpriteBatch batch) {
         sprite.setPosition(getX(), getY());
         sprite.draw(batch);
     }
