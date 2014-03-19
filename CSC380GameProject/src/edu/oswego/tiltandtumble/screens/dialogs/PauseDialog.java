@@ -6,21 +6,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import edu.oswego.tiltandtumble.screens.GameScreen;
 
-public final class ScoreDialog extends Dialog {
 
-	private final GameScreen screen;
+public class PauseDialog extends Dialog {
 
-	public ScoreDialog(String title, Skin skin, GameScreen screen) {
+GameScreen screen;
+	public PauseDialog(String title, Skin skin, GameScreen screen) {
 		super(title, skin);
 		this.screen = screen;
-		text("Score: TODO");
-		button("Continue");
+		text("\nPaused\n");
+		button("Resume");
+		
 	}
 
 	@Override
 	protected void result(Object object) {
 		super.result(object);
 		Gdx.app.log("dialog result", "" + object);
-		screen.loadNextLevel();
+		screen.resume();
 	}
 }
