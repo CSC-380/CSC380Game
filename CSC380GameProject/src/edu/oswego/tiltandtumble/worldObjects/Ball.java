@@ -6,10 +6,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.utils.Disposable;
 
 import edu.oswego.tiltandtumble.levels.UnitScale;
 
-public class Ball extends AbstractWorldObject implements MapRenderable {
+public class Ball extends AbstractWorldObject implements MapRenderable, Disposable {
     public static final float FRICTION = 0.1f;
     public static final float DENSITY = 1.0f;
     public static final float RESTITUTION = 0.7f;
@@ -58,7 +59,8 @@ public class Ball extends AbstractWorldObject implements MapRenderable {
         return scale.metersToPixels(body.getPosition().y) - (sprite.getHeight() * 0.5f);
     }
 
-    public void dispose() {
+    @Override
+	public void dispose() {
         texture.dispose();
     }
 }

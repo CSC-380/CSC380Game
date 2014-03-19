@@ -33,22 +33,20 @@ public final class WorldPopulator {
 
 	public Ball populateWorldFromMap(Level level, TiledMap map, World world,
 			UnitScale scale) {
-		// TODO: I need to add all these returned objects back into the level.
-		//       so on the level object i need some add() type functions for
-		//       these world objects.
 		Ball ball = null;
 		MapLayer layer = map.getLayers().get("collision");
 		for (MapObject obj : layer.getObjects()) {
 			if (obj.getName().equals("StaticWall")) {
-				createStaticWall(obj, world, scale);
+				level.addWorldObject(createStaticWall(obj, world, scale));
 			} else if (obj.getName().equals("PushBumper")) {
-				createPushBumper(obj, world, scale);
+				level.addWorldObject(createPushBumper(obj, world, scale));
 			} else if (obj.getName().equals("FinishLine")) {
-				createFinishLine(obj, level, world, scale);
+				level.addWorldObject(createFinishLine(obj, level, world, scale));
 			} else if (obj.getName().equals("Hole")) {
-				createHole(obj, level, world, scale);
+				level.addWorldObject(createHole(obj, level, world, scale));
 			} else if (obj.getName().equals("Ball")) {
 				ball = createBall(obj, world, scale);
+				level.addWorldObject(ball);
 			}
 		}
 		return ball;

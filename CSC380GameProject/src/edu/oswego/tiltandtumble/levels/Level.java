@@ -1,5 +1,8 @@
 package edu.oswego.tiltandtumble.levels;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -13,6 +16,9 @@ import com.badlogic.gdx.utils.TimeUtils;
 import edu.oswego.tiltandtumble.collisionListener.OurCollisionListener;
 import edu.oswego.tiltandtumble.data.Score;
 import edu.oswego.tiltandtumble.worldObjects.Ball;
+import edu.oswego.tiltandtumble.worldObjects.MapRenderable;
+import edu.oswego.tiltandtumble.worldObjects.WorldObject;
+import edu.oswego.tiltandtumble.worldObjects.WorldUpdateable;
 
 public class Level implements Disposable {
 
@@ -37,6 +43,10 @@ public class Level implements Disposable {
 	//times are in milliseconds
 	private long startTime;
 
+	private final Collection<Disposable> disposableObjects;
+	private final Collection<MapRenderable> renderableObjects;
+	private final Collection<WorldUpdateable> updateableObjects;
+
 	public Level(int level, BallController ballController, WorldPopulator populator) {
 		this.level = level;
 		this.ballController = ballController;
@@ -49,6 +59,10 @@ public class Level implements Disposable {
 		// TODO: allow for map properties to be used to customize the level
 		//       behavior if needed...
 		map = loadMap(level);
+
+		disposableObjects = new LinkedList<Disposable>();
+		renderableObjects = new LinkedList<MapRenderable>();
+		updateableObjects = new LinkedList<WorldUpdateable>();
 
 		ball = populator.populateWorldFromMap(this, map, world, scale);
 		this.ballController.setBall(ball);
@@ -81,6 +95,18 @@ public class Level implements Disposable {
 		return currentState == State.NOT_STARTED;
 	}
 
+	public void addWorldObject(WorldObject obj) {
+		if (obj instanceof Disposable) {
+			disposableObjects.add((Disposable)obj);
+		}
+		if (obj instanceof WorldUpdateable) {
+			updateableObjects.add((WorldUpdateable)obj);
+		}
+		if (obj instanceof MapRenderable) {
+			renderableObjects.add((MapRenderable)obj);
+		}
+		// we dont care about other object types at this point.
+	}
 	public void start() {
 		if (currentState == State.NOT_STARTED) {
 			currentState = State.STARTED;
@@ -122,12 +148,17 @@ public class Level implements Disposable {
 	}
 
 	public void draw(SpriteBatch batch) {
-		ball.draw(batch);
+		for (MapRenderable m : renderableObjects) {
+			m.draw(batch);
+		}
 	}
 
 	public void update() {
 		if (currentState == State.STARTED) {
 			ballController.update();
+			for (WorldUpdateable w : updateableObjects) {
+				w.update();
+			}
 
 			decrementScore();
 
@@ -139,6 +170,8 @@ public class Level implements Disposable {
 	@Override
 	public void dispose() {
 		world.dispose();
-		ball.dispose();
+		for (Disposable d : disposableObjects) {
+			d.dispose();
+		}
 	}
 }
