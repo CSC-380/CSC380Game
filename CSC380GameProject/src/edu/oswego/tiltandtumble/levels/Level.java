@@ -2,6 +2,7 @@ package edu.oswego.tiltandtumble.levels;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
@@ -29,6 +30,8 @@ public class Level implements Disposable {
 	private final UnitScale scale = new UnitScale(1f/64f);
 
 	private final int level;
+	int mapPixelWidth;
+	int mapPixelHeight;
 	private State currentState;
 
 	public Level(int level, BallController ballController, WorldPopulator populator) {
@@ -40,6 +43,15 @@ public class Level implements Disposable {
 		// TODO: allow for map properties to be used to customize the level
 		//       behavior if needed...
 		map = loadMap(level);
+		MapProperties prop = map.getProperties();
+
+		int mapWidth = prop.get("width", Integer.class);
+		int mapHeight = prop.get("height", Integer.class);
+		int tilePixelWidth = prop.get("tilewidth", Integer.class);
+		int tilePixelHeight = prop.get("tileheight", Integer.class);
+
+		mapPixelWidth = mapWidth * tilePixelWidth;
+		mapPixelHeight = mapHeight * tilePixelHeight;
 
 		ball = populator.populateWorldFromMap(this, map, world, scale);
 		this.ballController.setBall(ball);
@@ -50,6 +62,13 @@ public class Level implements Disposable {
 
 	public TiledMap getMap() {
 		return map;
+		
+	}
+	public int getMapWidth(){
+		return mapPixelWidth;
+	}
+	public int getMapHeight(){
+		return mapPixelHeight;
 	}
 
 	public World getWorld() {

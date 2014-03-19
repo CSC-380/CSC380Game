@@ -6,39 +6,46 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
 
 import edu.oswego.tiltandtumble.collisionListener.BallCollisionListener;
-import edu.oswego.tiltandtumble.levels.UnitScale;
 
 public class PushBumper extends AbstractWorldObject implements BallCollisionListener {
     public static final float FRICTION = 0.0f;
     public static final float DENSITY = 2.0f;
     public static final float RESTITUTION = 0.0f;
     public static final BodyType BODY_TYPE = BodyType.StaticBody;
+    
+    public static final float DEFAULT_SPEED = 6;
 
-    public PushBumper(Body body) {
+	private final float speed;
+
+    public PushBumper(Body body, float speed) {
         super(body);
         body.setUserData(this);
+        this.speed = speed;
     }
 
 	@Override
 	public void handleBeginCollision(Contact contact, Ball ball) {
-        Body target = ball.getBody();
-        Gdx.app.log("push bumper", "PUSH Ball!!!!");
-        // TODO: what i want is to be able to instantly accelerate the object
-        //       up to near maximum speed. the math for this could probably
-        //       be better. if we use the center of this object and the
-        //       outside point of contact to create a direction vector. we
-        //       could then use that to more accurately apply the force.
-        //       not sure about the math to determine how much force to apply.
-        float force = 0.5f;
-        target.applyLinearImpulse(
-            force * target.getLinearVelocity().x,
-            force * target.getLinearVelocity().y,
-            // FIXME: what point do i need to use to not create a lot of spin?
-            target.getLocalCenter().x,
-            target.getLocalCenter().y,
-            //target.getPosition().x,
-            //target.getPosition().y,
-            true);
+		// What this does is instantly accelerate the ball to the defined
+    	// "speed" value, if the ball is already moving faster, it will not
+    	// accelerate.
+		Body target = ball.getBody();
+		final float x = Math.abs(target.getLinearVelocity().x);
+		final float y = Math.abs(target.getLinearVelocity().y);
+
+		if (x + y > speed) {
+			Gdx.app.log("PushBumper", "Ball is moving too fast to accelerate");
+			return;
+		}
+
+		Gdx.app.log("PushBumper", "Accelerating ball");
+
+		final float forceX = (speed * x) / (x + y);
+		final float forceY = (speed * y) / (x + y);
+
+		target.setLinearVelocity(
+				Math.copySign(forceX, target.getLinearVelocity().x),
+				Math.copySign(forceY, target.getLinearVelocity().y));
+        
 	}
 
 	@Override

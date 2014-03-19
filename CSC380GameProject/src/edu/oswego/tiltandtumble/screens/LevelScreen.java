@@ -37,6 +37,15 @@ public class LevelScreen extends AbstractScreen {
 		});
 
 		table.row();
+		Button play2 = new TextButton("Click to Play Level Two!", skin);
+		table.add(play2);
+		play2.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				game.showGameScreen(2);
+			}
+		});
+		table.row();
 		Button back = new TextButton("Go Back", skin);
 		table.add(back);
 		back.addListener(new ChangeListener() {

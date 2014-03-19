@@ -23,8 +23,7 @@ public class Hole extends AbstractWorldObject implements BallCollisionListener {
 	public void handleBeginCollision(Contact contact, Ball ball) {
         Body target = ball.getBody();
         Gdx.app.log("HOLE", "FALL!!!");
-       
-       ball.pauseBall();
+       System.out.println("oh shit hole!");
 	}
 
 	@Override

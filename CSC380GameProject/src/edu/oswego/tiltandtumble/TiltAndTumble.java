@@ -46,8 +46,8 @@ public class TiltAndTumble extends Game {
 	private BitmapFont font;
 	private SpriteBatch batch;
 
-	private final int width = 480;
-	private final int height = 320;
+	private int width;
+	private int height;
 
 	private final Settings settings = new Settings();
 
@@ -57,6 +57,8 @@ public class TiltAndTumble extends Game {
 				.isPeripheralAvailable(Peripheral.Accelerometer));
 		batch = new SpriteBatch();
 		stage = new Stage();
+		width = Gdx.graphics.getWidth();
+		height = Gdx.graphics.getHeight();
 		stage.setViewport(width, height, true);
 		font = new BitmapFont();
 		skin = new Skin();
@@ -73,7 +75,6 @@ public class TiltAndTumble extends Game {
 		pixmap.setColor(Color.WHITE);
 		pixmap.fill();
 		skin.add("defaultTexture", new Texture(pixmap));
-
 		// Store the default libgdx font under the name "default".
 		skin.add("default", font);
 
@@ -95,9 +96,9 @@ public class TiltAndTumble extends Game {
 		checkBoxStyle.font = skin.getFont("default");
 		skin.add("default", checkBoxStyle);
 		WindowStyle windowStyle = new WindowStyle();
-		//windowStyle.stageBackground = skin.newDrawable("defaultTexture",
-		//		new Color(Color.CYAN.r, Color.RED.g, Color.GREEN.b, 0.5f));
-		windowStyle.background = skin.newDrawable("defaultTexture", Color.LIGHT_GRAY);
+		windowStyle.stageBackground = skin.newDrawable("defaultTexture",
+				new Color(Color.CYAN.r, Color.RED.g, Color.GREEN.b, 0.5f));
+		windowStyle.background = skin.newDrawable("defaultTexture", Color.BLACK);
 		windowStyle.titleFont = skin.getFont("default");
 		windowStyle.titleFontColor = Color.WHITE;
 		skin.add("default", windowStyle);

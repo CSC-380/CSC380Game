@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+
 import edu.oswego.tiltandtumble.TiltAndTumble;
 import edu.oswego.tiltandtumble.levels.BallController;
 import edu.oswego.tiltandtumble.levels.DebugLevelRenderer;
@@ -31,7 +32,7 @@ public class GameScreen extends AbstractScreen {
 	private final BallController	ballController;
 	private final WorldPopulator 	worldPopulator;
 	private final ScoreDialog scoreDialog;
-	PauseDialog pause;
+	private final PauseDialog pauseDialog;
 	
 	private Level 	level;
 	private LevelRenderer 	renderer;
@@ -46,7 +47,7 @@ public class GameScreen extends AbstractScreen {
 		ballController = new BallController(!game.getSettings().isUseDpad());
 		worldPopulator = new WorldPopulator();
 		scoreDialog = new ScoreDialog("Score\n", skin, this);
-		pause = new PauseDialog("\nGame Paused\n", skin, this);
+		pauseDialog = new PauseDialog("\nGame Paused\n", skin, this);
 		
 		this.loadLevel(currentLevel);		
 	}
@@ -148,7 +149,7 @@ public class GameScreen extends AbstractScreen {
 		
 		Label timerDisplay = new Label("TIMER: TODO", skin );
 		hud.addActor(timerDisplay);
-		
+
 		Texture pauseTexture = new Texture(Gdx.files.internal("data/PauseButton.png"));
 		skin.add("pause", pauseTexture);
 		Image pauseImage = new Image(skin, "pause");
@@ -157,8 +158,12 @@ public class GameScreen extends AbstractScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer,
 					int button) {
-				ballController.pauseBall();
-				pause();
+				if(currentState == State.PLAYING){
+					currentState = State.PAUSED;
+					pause();
+				}else if(currentState == State.PAUSED){
+					resume();
+				}
 				return true;
 			}
 		});
@@ -171,10 +176,9 @@ public class GameScreen extends AbstractScreen {
 	public void show() {
 		Gdx.input.setInputProcessor(inputMux);
 		inputMux.addProcessor(stage);
-		//only have this cause i dont use it but it always comes up
-//		if(game.getSettings().isUseDpad()){
-//			loadDpad();
-//		}
+		if(game.getSettings().isUseDpad()){
+			loadDpad();
+		}
 		loadHUD(level.getLevelNumber());
 	}
 	
@@ -183,10 +187,12 @@ public class GameScreen extends AbstractScreen {
 		renderer.render(game.getSpriteBatch(), game.getFont());
 		if (level.isStarted()) {
 			level.update();
+				
 		} else if (level.hasFinished()) {
 			if (currentState != State.SCORED) {
 				scoreDialog.show(stage);
 				currentState = State.SCORED;
+				ballController.resetBall();
 			}
 		}
 	}
@@ -202,21 +208,17 @@ public class GameScreen extends AbstractScreen {
 		}
 	}
 	
-	public void setStatePause(){
-		this.currentState = State.PAUSED;
-	}
-	
+
 	@Override
 	public void pause() {
-		this.currentState = State.PAUSED;
-		pause.show(stage);
+		pauseDialog.show(stage);
+		ballController.pauseBall();
 	}
-
+	
 	@Override
 	public void resume() {
 		ballController.resumeBall();
 		this.currentState = State.PLAYING;
-
 	}
 }
 

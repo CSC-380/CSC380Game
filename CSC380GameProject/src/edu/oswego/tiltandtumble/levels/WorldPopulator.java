@@ -96,7 +96,8 @@ public final class WorldPopulator {
 		if (obj instanceof EllipseMapObject) {
 			transformCircleBody((EllipseMapObject)obj, body, scale);
 		}
-		return new PushBumper(body);
+		return new PushBumper(body,
+				getFloatProperty(obj, "speed", PushBumper.DEFAULT_SPEED));
 	}
 
 	public Ball createBall(MapObject obj, World world, UnitScale scale) {
@@ -113,7 +114,7 @@ public final class WorldPopulator {
 
 		Body body = world.createBody(bodyDef
 				.reset()
-				.type(Ball.BODY_TYPE)
+				.type(Ball.BODY_TYPE)		
 				.angularDampening(getFloatProperty(obj, "angular dampening", Ball.ANGULAR_DAMPENING))
 				.linearDamping(getFloatProperty(obj, "linear dampening", Ball.LINEAR_DAMPENING))
 				.build());
