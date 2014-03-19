@@ -28,6 +28,7 @@ import edu.oswego.tiltandtumble.screens.LevelScreen;
 import edu.oswego.tiltandtumble.screens.MainScreen;
 import edu.oswego.tiltandtumble.screens.SettingsScreen;
 
+
 public class TiltAndTumble extends Game {
 
 	// NOTE: older phones do not have Deque interface
@@ -46,8 +47,8 @@ public class TiltAndTumble extends Game {
 	private BitmapFont font;
 	private SpriteBatch batch;
 
-	private final int width = 480;
-	private final int height = 320;
+	private int width;
+	private int height;
 
 	private final Settings settings = new Settings();
 	private HighScores scores;
@@ -58,12 +59,13 @@ public class TiltAndTumble extends Game {
 				.isPeripheralAvailable(Peripheral.Accelerometer));
 		batch = new SpriteBatch();
 		stage = new Stage();
+		width = Gdx.graphics.getWidth();
+		height = Gdx.graphics.getHeight();
 		stage.setViewport(width, height, true);
 		font = new BitmapFont();
 		skin = new Skin();
 		loadSkin();
 		scores = HighScores.load();
-
 		showMainScreen();
 	}
 
@@ -75,38 +77,38 @@ public class TiltAndTumble extends Game {
 		pixmap.setColor(Color.WHITE);
 		pixmap.fill();
 		skin.add("defaultTexture", new Texture(pixmap));
-
 		// Store the default libgdx font under the name "default".
 		skin.add("default", font);
 
 		// Configure a TextButtonStyle and name it "default". Skin resources are
 		// stored by type, so this doesn't overwrite the font.
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
-		textButtonStyle.up = skin.newDrawable("defaultTexture", Color.DARK_GRAY);
-		textButtonStyle.down = skin.newDrawable("defaultTexture", Color.DARK_GRAY);
+		textButtonStyle.up = skin.newDrawable("defaultTexture", Color.BLACK);
+		textButtonStyle.down = skin.newDrawable("defaultTexture", Color.BLACK);
 		textButtonStyle.checked = skin.newDrawable("defaultTexture", Color.BLUE);
-		textButtonStyle.over = skin.newDrawable("defaultTexture", Color.LIGHT_GRAY);
+		textButtonStyle.over = skin.newDrawable("defaultTexture", Color.BLACK);
 		textButtonStyle.font = skin.getFont("default");
 		// textButtonStyle.font.setScale(5);
 		skin.add("default", textButtonStyle);
 		CheckBoxStyle checkBoxStyle = new CheckBoxStyle();
-		checkBoxStyle.up = skin.newDrawable("defaultTexture", Color.DARK_GRAY);
-		checkBoxStyle.down = skin.newDrawable("defaultTexture", Color.DARK_GRAY);
+		checkBoxStyle.up = skin.newDrawable("defaultTexture", Color.BLACK);
+		checkBoxStyle.down = skin.newDrawable("defaultTexture", Color.BLACK);
 		checkBoxStyle.checked = skin.newDrawable("defaultTexture", Color.BLUE);
-		checkBoxStyle.over = skin.newDrawable("defaultTexture", Color.LIGHT_GRAY);
+		checkBoxStyle.over = skin.newDrawable("defaultTexture", Color.BLACK);
 		checkBoxStyle.font = skin.getFont("default");
 		skin.add("default", checkBoxStyle);
 		WindowStyle windowStyle = new WindowStyle();
 		windowStyle.stageBackground = skin.newDrawable("defaultTexture",
-				new Color(Color.DARK_GRAY.r, Color.DARK_GRAY.g, Color.DARK_GRAY.b, 0.5f));
-		windowStyle.background = skin.newDrawable("defaultTexture", Color.DARK_GRAY);
+				new Color(Color.CYAN.r, Color.RED.g, Color.GREEN.b, 0.5f));
+		windowStyle.background = skin.newDrawable("defaultTexture", Color.BLACK);
 		windowStyle.titleFont = skin.getFont("default");
 		windowStyle.titleFontColor = Color.WHITE;
 		skin.add("default", windowStyle);
 		LabelStyle labelStyle = new LabelStyle();
-		labelStyle.background = skin.newDrawable("defaultTexture", Color.DARK_GRAY);
+		labelStyle.background = skin.newDrawable("defaultTexture", Color.CLEAR);
 		labelStyle.font = skin.getFont("default");
 		labelStyle.fontColor = Color.WHITE;
+		
 		skin.add("default", labelStyle);
 	}
 
@@ -245,11 +247,12 @@ public class TiltAndTumble extends Game {
 
 	@Override
 	public void pause() {
-		// TODO: implement
+		
 	}
 
 	@Override
 	public void resume() {
-		// TODO: implement
+		
+		
 	}
 }

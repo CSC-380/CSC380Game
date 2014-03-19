@@ -12,10 +12,10 @@ public class PushBumper extends AbstractWorldObject implements BallCollisionList
     public static final float DENSITY = 2.0f;
     public static final float RESTITUTION = 0.0f;
     public static final BodyType BODY_TYPE = BodyType.StaticBody;
-
+    
     public static final float DEFAULT_SPEED = 6;
-
 	private final float speed;
+
 
     public PushBumper(Body body, float speed) {
         super(body);
@@ -25,7 +25,11 @@ public class PushBumper extends AbstractWorldObject implements BallCollisionList
 
     @Override
 	public void handleBeginCollision(Contact contact, Ball ball) {
+
     	// What this does is instantly accelerate the ball to the defined
+
+		// What this does is instantly accelerate the ball to the defined
+
     	// "speed" value, if the ball is already moving faster, it will not
     	// accelerate.
 		Body target = ball.getBody();

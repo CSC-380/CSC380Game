@@ -26,7 +26,7 @@ public class Ball extends AbstractWorldObject {
         super(body);
         this.scale = scale;
         body.setUserData(this);
-
+        
         // http://opengameart.org/content/orbs-wo-drop-shadows
         texture = new Texture(Gdx.files.internal("data/GreenOrb.png"));
         sprite = new Sprite(texture);
@@ -35,21 +35,27 @@ public class Ball extends AbstractWorldObject {
     }
 
     public void applyLinearImpulse(float x, float y) {
+   
         body.applyLinearImpulse(
             x,
             y,
             body.getWorldCenter().x,
             body.getWorldCenter().y,
-//            body.getPosition().x,
-//            body.getPosition().y,
             true);
-//        body.applyForceToCenter(x, y, true);
+    }
+    public void pauseBall(){
+    	body.setActive(false);
+    }
+    public void resumeBall(){
+    	body.setActive(true);
+
     }
 
     public void draw(SpriteBatch batch) {
         sprite.setPosition(getX(), getY());
         sprite.draw(batch);
     }
+  
 
     public float getX() {
         return scale.metersToPixels(body.getPosition().x) - (sprite.getWidth() * 0.5f);
