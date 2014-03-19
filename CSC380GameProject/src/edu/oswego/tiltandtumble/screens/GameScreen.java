@@ -1,5 +1,8 @@
 package edu.oswego.tiltandtumble.screens;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
+import edu.oswego.tiltandtumble.data.Score;
 import edu.oswego.tiltandtumble.levels.BallController;
 import edu.oswego.tiltandtumble.levels.DebugLevelRenderer;
 import edu.oswego.tiltandtumble.levels.DefaultLevelRenderer;
@@ -27,18 +31,17 @@ public class GameScreen extends AbstractScreen {
 	private LevelRenderer renderer;
 	private final BallController ballController;
 
-	private final ScoreDialog scoreDialog;
 	private State currentState;
 
 	private final InputMultiplexer inputMux = new InputMultiplexer();
 
 	private Level level;
+	private final List<Score> scores = new ArrayList<Score>();
 
 	public GameScreen(TiltAndTumble game, int currentLevel) {
 		super(game);
 		ballController = new BallController(!game.getSettings().isUseDpad());
 		worldPopulator = new WorldPopulator();
-		scoreDialog = new ScoreDialog("Score", skin, this);
 		loadLevel(currentLevel);
 	}
 
@@ -62,15 +65,15 @@ public class GameScreen extends AbstractScreen {
 		level.start();
 	}
 
+	public boolean hasMoreLevels() {
+		return Gdx.files.internal("data/level" + (level.getLevelNumber() + 1) + ".tmx").exists();
+	}
+
 	public void loadNextLevel() {
-		try {
+		if (hasMoreLevels()) {
 			loadLevel(level.getLevelNumber() + 1);
 		}
-		catch (Exception ex) {
-			// NOTE: we have ran out of levels. this can be done better.
-			//       we need a way to know there is no further levels before
-			//       we try and load one...
-			Gdx.app.log("load level", ex.getMessage());
+		else {
 			game.showPreviousScreen();
 		}
 	}
@@ -111,6 +114,14 @@ public class GameScreen extends AbstractScreen {
 		stage.addActor(image);
 	}
 
+	public Level getCurrentLevel() {
+		return level;
+	}
+
+	public List<Score> getScores() {
+		return scores;
+	}
+
 	public void loadHUD(){
 		//not working but will work on another time
 	}
@@ -133,7 +144,8 @@ public class GameScreen extends AbstractScreen {
 			level.update();
 		} else if (level.hasFinished()) {
 			if (currentState != State.SCORED) {
-				scoreDialog.show(stage);
+				scores.add(level.getScore());
+				new ScoreDialog("Score", skin, game, this).show(stage);
 				currentState = State.SCORED;
 			}
 		}

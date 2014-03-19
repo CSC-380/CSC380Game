@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
 import edu.oswego.tiltandtumble.collisionListener.OurCollisionListener;
+import edu.oswego.tiltandtumble.data.Score;
 import edu.oswego.tiltandtumble.worldObjects.Ball;
 
 public class Level implements Disposable {
@@ -62,6 +63,12 @@ public class Level implements Disposable {
 
 	public Ball getBall() {
 		return ball;
+	}
+
+	public Score getScore() {
+		// TODO: this should be an instance variable that gets updated as the
+		//       level progresses.
+		return new Score(0, 0);
 	}
 
 	public boolean hasNotStarted() {
