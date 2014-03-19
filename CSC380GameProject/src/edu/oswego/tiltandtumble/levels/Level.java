@@ -10,7 +10,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
 import edu.oswego.tiltandtumble.collisionListener.OurCollisionListener;
-import edu.oswego.tiltandtumble.data.Score;
 import edu.oswego.tiltandtumble.worldObjects.Ball;
 
 public class Level implements Disposable {
@@ -31,11 +30,19 @@ public class Level implements Disposable {
 
 	private final int level;
 	private State currentState;
+	//times are in seconds
+	private double startTime;
+	private double endTime;
+	public double totalTime;
+	public int score;
 
 	public Level(int level, BallController ballController, WorldPopulator populator) {
 		this.level = level;
 		this.ballController = ballController;
-
+		
+		//Setting default score to 1000
+		score = 1000;
+		
 		currentState = State.NOT_STARTED;
 
 		// TODO: allow for map properties to be used to customize the level
@@ -65,12 +72,6 @@ public class Level implements Disposable {
 		return ball;
 	}
 
-	public Score getScore() {
-		// TODO: this should be an instance variable that gets updated as the
-		//       level progresses.
-		return new Score(0, 0);
-	}
-
 	public boolean hasNotStarted() {
 		return currentState == State.NOT_STARTED;
 	}
@@ -79,20 +80,53 @@ public class Level implements Disposable {
 		if (currentState == State.NOT_STARTED) {
 			currentState = State.STARTED;
 		}
+		recordStartTime();
 	}
 
 	public boolean isStarted() {
 		return currentState == State.STARTED;
+	}
+	
+	private void recordStartTime(){
+		if(isStarted()){
+			startTime = System.nanoTime()*Math.pow(10.0, -9.0);
+		}
 	}
 
 	public void finish() {
 		if (currentState == State.STARTED) {
 			currentState = State.FINISHED;
 		}
+		recordEndTime();
 	}
 
 	public boolean hasFinished() {
 		return currentState == State.FINISHED;
+	}
+	
+	private void recordEndTime(){
+		if(hasFinished()){
+			endTime = System.nanoTime()*Math.pow(10.0, -9.0);
+		}
+	}
+	
+	private double getCurrentTime(){
+		
+		double currentTime = System.nanoTime()*Math.pow(10.0, -9.0);
+		return currentTime;
+		
+	}
+	public double getTotalScore(){
+		
+		totalTime = endTime - startTime;
+		return totalTime;
+	}
+	
+	private void decrementScore(){
+		
+		//the "difference" is the difference in seconds and for every 1 second the time elapses, 10 points will be taken off
+		int difference = (int)(getCurrentTime() - startTime);			
+		score = 1000-10*difference;		
 	}
 
 	private TiledMap loadMap(int level) {
@@ -113,7 +147,10 @@ public class Level implements Disposable {
 	public void update() {
 		if (currentState == State.STARTED) {
 			ballController.update();
-
+			
+			//calling to update the score
+			decrementScore();
+			
 			// world.step(1/60f, 6, 2);
 			world.step(1 / 45f, 10, 8);
 		}
