@@ -24,8 +24,9 @@ public class BallController extends ClickListener {
 	private float tiltX = 0;
 	private float tiltY = 0;
 
-	private int keyX = 0;
-	private int keyY = 0;
+	private float keyX = 0;
+	private float keyY = 0;
+	private final float keyIncrement = 0.5f;
 
 	public BallController(boolean useAccelerometer) {
 		this.useAccelerometer = useAccelerometer;
@@ -41,20 +42,21 @@ public class BallController extends ClickListener {
 
 	public void update() {
 		if (useAccelerometer) {
-			// accelerometer is reversed from screen coordinates, we are in landscape mode
-			tiltX = Gdx.input.getAccelerometerY() * 0.001f;
-			tiltY = Gdx.input.getAccelerometerX() * -0.001f;
+			// accelerometer is reversed from screen coordinates
+			// because we are in landscape mode
+			tiltX = Gdx.input.getAccelerometerY();
+			tiltY = Gdx.input.getAccelerometerX();
 		}
 		else {
 			// might as well accept either input
 			updateFromDpad();
 			updateFromKeys();
 
-			tiltX = keyX * 0.001f;
-			tiltY = keyY * -0.001f;
+			tiltX = keyX;
+			tiltY = keyY;
 		}
 		if (ball != null) {
-			ball.applyLinearImpulse(tiltX, tiltY);
+			ball.applyLinearImpulse(tiltX * 0.001f, tiltY * -0.001f);
 		}
 	}
 
@@ -140,7 +142,7 @@ public class BallController extends ClickListener {
 			keyX = 10;
 		}
 		else {
-			keyX += 1;
+			keyX += keyIncrement;
 		}
 	}
 
@@ -149,7 +151,7 @@ public class BallController extends ClickListener {
 			keyX = -10;
 		}
 		else {
-			keyX -= 1;
+			keyX -= keyIncrement;
 		}
 	}
 
@@ -158,7 +160,7 @@ public class BallController extends ClickListener {
 			keyY = 10;
 		}
 		else {
-			keyY += 1;
+			keyY += keyIncrement;
 		}
 	}
 
@@ -167,7 +169,7 @@ public class BallController extends ClickListener {
 			keyY = -10;
 		}
 		else {
-			keyY -= 1;
+			keyY -= keyIncrement;
 		}
 	}
 

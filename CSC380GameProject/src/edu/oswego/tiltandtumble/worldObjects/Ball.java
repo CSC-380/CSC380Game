@@ -38,10 +38,12 @@ public class Ball extends AbstractWorldObject {
         body.applyLinearImpulse(
             x,
             y,
-            body.getPosition().x,
-            body.getPosition().y,
+            body.getWorldCenter().x,
+            body.getWorldCenter().y,
+//            body.getPosition().x,
+//            body.getPosition().y,
             true);
-//        body.applyForceToCenter(x, y, false);
+//        body.applyForceToCenter(x, y, true);
     }
 
     public void draw(SpriteBatch batch) {

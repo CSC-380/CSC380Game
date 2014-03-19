@@ -91,7 +91,8 @@ public final class WorldPopulator {
 		if (obj instanceof EllipseMapObject) {
 			transformCircleBody((EllipseMapObject)obj, body, scale);
 		}
-		return new PushBumper(body);
+		return new PushBumper(body,
+				getFloatProperty(obj, "speed", PushBumper.DEFAULT_SPEED));
 	}
 
 	public Ball createBall(MapObject obj, World world, UnitScale scale) {
