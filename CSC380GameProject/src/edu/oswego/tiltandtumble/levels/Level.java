@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import edu.oswego.tiltandtumble.collisionListener.OurCollisionListener;
 import edu.oswego.tiltandtumble.data.Score;
@@ -32,9 +33,16 @@ public class Level implements Disposable {
 	private final int level;
 	private State currentState;
 
+	private final Score score;
+	//times are in milliseconds
+	private long startTime;
+
 	public Level(int level, BallController ballController, WorldPopulator populator) {
 		this.level = level;
 		this.ballController = ballController;
+
+		// TODO: Setting default score to 1000, figure out a good value for this...
+		score = new Score(1000, 0);
 
 		currentState = State.NOT_STARTED;
 
@@ -66,9 +74,7 @@ public class Level implements Disposable {
 	}
 
 	public Score getScore() {
-		// TODO: this should be an instance variable that gets updated as the
-		//       level progresses.
-		return new Score(0, 0);
+		return score;
 	}
 
 	public boolean hasNotStarted() {
@@ -79,6 +85,7 @@ public class Level implements Disposable {
 		if (currentState == State.NOT_STARTED) {
 			currentState = State.STARTED;
 		}
+		startTime = TimeUtils.millis();
 	}
 
 	public boolean isStarted() {
@@ -88,11 +95,19 @@ public class Level implements Disposable {
 	public void finish() {
 		if (currentState == State.STARTED) {
 			currentState = State.FINISHED;
+			decrementScore();
 		}
 	}
 
 	public boolean hasFinished() {
 		return currentState == State.FINISHED;
+	}
+
+	private void decrementScore() {
+		// the "difference" is the difference in seconds and for every 1 second the time elapses, 10 points will be taken off
+		long difference = (TimeUtils.millis() - startTime) / 1000;
+		score.setPoints((int)(1000 - difference));
+		score.setTime((int)difference);
 	}
 
 	private TiledMap loadMap(int level) {
@@ -113,6 +128,8 @@ public class Level implements Disposable {
 	public void update() {
 		if (currentState == State.STARTED) {
 			ballController.update();
+
+			decrementScore();
 
 			// world.step(1/60f, 6, 2);
 			world.step(1 / 45f, 10, 8);
