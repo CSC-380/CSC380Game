@@ -13,7 +13,7 @@ public class PushBumper extends AbstractWorldObject implements BallCollisionList
     public static final float RESTITUTION = 0.0f;
     public static final BodyType BODY_TYPE = BodyType.StaticBody;
 
-    public static final float DEFAULT_SPEED = 6;
+    public static final float DEFAULT_SPEED = 8;
 
 	private final float speed;
 

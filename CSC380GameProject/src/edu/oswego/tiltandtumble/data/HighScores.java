@@ -22,16 +22,19 @@ public class HighScores implements Serializable{
 	}
 
 	public boolean isHighScore(Score score) {
-		if (scores.size() > 0) {
+		if (scores.size() >= 10) {
 			return score.compareTo(scores.first()) > 0;
 		}
-		return false;
+		return true;
 	}
 
 	public void add(HighScore score) {
+		Gdx.app.log("HighScores", "Adding score: " + score.getPoints());
 		scores.add(score);
-		if (scores.size() > 10) {
-			scores.remove(scores.first());
+		if (scores.size() >= 10) {
+			HighScore bumped = scores.first();
+			Gdx.app.log("HighScores", "Bumping score: " + bumped.getPoints());
+			scores.remove(bumped);
 		}
 	}
 

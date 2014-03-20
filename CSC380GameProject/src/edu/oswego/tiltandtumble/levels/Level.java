@@ -28,6 +28,9 @@ public class Level implements Disposable {
 		FINISHED
 	};
 
+	// TODO: Setting default score to 1000, figure out a good value for this...
+	private static final int DEFAULT_SCORE = 1000;
+
 	private final World world = new World(new Vector2(0, 0), true);
 	private final ContactListener contactListener;
 	private final TiledMap map;
@@ -38,10 +41,12 @@ public class Level implements Disposable {
 
 	private final int level;
 	private State currentState;
+	private boolean failed = false;
 
 	private final Score score;
 	//times are in milliseconds
 	private long startTime;
+	private final int baseScore;
 
 	private final Collection<Disposable> disposableObjects;
 	private final Collection<MapRenderable> renderableObjects;
@@ -51,14 +56,13 @@ public class Level implements Disposable {
 		this.level = level;
 		this.ballController = ballController;
 
-		// TODO: Setting default score to 1000, figure out a good value for this...
-		score = new Score(1000, 0);
 
 		currentState = State.NOT_STARTED;
 
-		// TODO: allow for map properties to be used to customize the level
-		//       behavior if needed...
 		map = loadMap(level);
+
+		baseScore = map.getProperties().get("score", DEFAULT_SCORE, Integer.class);
+		score = new Score(baseScore, 0);
 
 		disposableObjects = new LinkedList<Disposable>();
 		renderableObjects = new LinkedList<MapRenderable>();
@@ -105,7 +109,7 @@ public class Level implements Disposable {
 		if (obj instanceof MapRenderable) {
 			renderableObjects.add((MapRenderable)obj);
 		}
-		// we dont care about other object types at this point.
+		// we don't care about other object types at this time.
 	}
 	public void start() {
 		if (currentState == State.NOT_STARTED) {
@@ -119,20 +123,34 @@ public class Level implements Disposable {
 	}
 
 	public void finish() {
+		finish(false);
+	}
+
+	public void finish(boolean fail) {
 		if (currentState == State.STARTED) {
 			currentState = State.FINISHED;
-			decrementScore();
+			updateScore();
+			failed = fail;
 		}
+	}
+
+	public boolean isFailed() {
+		return failed;
 	}
 
 	public boolean hasFinished() {
 		return currentState == State.FINISHED;
 	}
 
-	private void decrementScore() {
+	private void updateScore() {
 		// the "difference" is the difference in seconds and for every 1 second the time elapses, 10 points will be taken off
 		long difference = (TimeUtils.millis() - startTime) / 1000;
-		score.setPoints((int)(1000 - difference));
+		if (failed || (baseScore - difference) < 0) {
+			score.setPoints(0);
+		}
+		else {
+			score.setPoints((int)(baseScore - difference));
+		}
 		score.setTime((int)difference);
 	}
 
@@ -160,7 +178,7 @@ public class Level implements Disposable {
 				w.update();
 			}
 
-			decrementScore();
+			updateScore();
 
 			// world.step(1/60f, 6, 2);
 			world.step(1 / 45f, 10, 8);

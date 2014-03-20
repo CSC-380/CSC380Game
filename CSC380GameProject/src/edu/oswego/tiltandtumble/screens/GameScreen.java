@@ -70,7 +70,7 @@ public class GameScreen extends AbstractScreen {
 	}
 
 	public void loadNextLevel() {
-		if (hasMoreLevels()) {
+		if (hasMoreLevels() && !level.isFailed()) {
 			loadLevel(level.getLevelNumber() + 1);
 		}
 		else {

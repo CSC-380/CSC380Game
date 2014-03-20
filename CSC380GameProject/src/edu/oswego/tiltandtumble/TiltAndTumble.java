@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 
 import edu.oswego.tiltandtumble.data.HighScores;
@@ -108,6 +109,13 @@ public class TiltAndTumble extends Game {
 		labelStyle.font = skin.getFont("default");
 		labelStyle.fontColor = Color.WHITE;
 		skin.add("default", labelStyle);
+		TextFieldStyle textfieldStyle = new TextFieldStyle();
+		textfieldStyle.background = skin.newDrawable("defaultTexture", Color.BLACK);
+		textfieldStyle.font = skin.getFont("default");
+		textfieldStyle.fontColor = Color.WHITE;
+		textfieldStyle.messageFont = skin.getFont("default");
+		textfieldStyle.messageFontColor = Color.LIGHT_GRAY;
+		skin.add("default", textfieldStyle);
 	}
 
 	public void showMainScreen() {
