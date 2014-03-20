@@ -3,8 +3,10 @@ package edu.oswego.tiltandtumble.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Scaling;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
 
@@ -42,9 +44,15 @@ abstract class AbstractScreen implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		// NOTE: see https://github.com/libgdx/libgdx/wiki/Scene2d
-		//       we may need to do something more complex with viewport scaling
-		stage.setViewport(game.getWidth(), game.getHeight(), true);
-		stage.getCamera().translate(-stage.getGutterWidth(), -stage.getGutterHeight(), 0);
+		//       what this does is letter box the screen if it does not fit the
+		//       current aspect ratio. seems to work pretty well.
+		Vector2 size = Scaling.fit.apply(game.getWidth(), game.getHeight(), width, height);
+	    int viewportX = (int)(width - size.x) / 2;
+	    int viewportY = (int)(height - size.y) / 2;
+	    int viewportWidth = (int)size.x;
+	    int viewportHeight = (int)size.y;
+	    Gdx.gl.glViewport(viewportX, viewportY, viewportWidth, viewportHeight);
+	    stage.setViewport(game.getWidth(), game.getHeight(), true, viewportX, viewportY, viewportWidth, viewportHeight);
 	}
 
 	@Override

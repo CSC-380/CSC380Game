@@ -60,8 +60,20 @@ public class TiltAndTumble extends Game {
 				.isPeripheralAvailable(Peripheral.Accelerometer));
 		batch = new SpriteBatch();
 		stage = new Stage();
-		width = Gdx.graphics.getWidth();
-		height = Gdx.graphics.getHeight();
+
+		// this will set the view port to the screen size, which will cause
+		// things to look big on a low resolution screen and look small on a
+		// high resolution screen. we then probably have to scale the ui
+		// up or down to make things easier to see. If we just hard code
+		// a size then the game engine will just scale the entire render view
+		// to the correct size.
+		//
+		// width = Gdx.graphics.getWidth();
+		// height = Gdx.graphics.getHeight();
+
+		width = 480;
+		height = 320;
+
 		stage.setViewport(width, height, true);
 		font = new BitmapFont();
 		skin = new Skin();
@@ -109,7 +121,7 @@ public class TiltAndTumble extends Game {
 		labelStyle.background = skin.newDrawable("defaultTexture", Color.CLEAR);
 		labelStyle.font = skin.getFont("default");
 		labelStyle.fontColor = Color.WHITE;
-		
+
 		skin.add("default", labelStyle);
 		TextFieldStyle textfieldStyle = new TextFieldStyle();
 		textfieldStyle.background = skin.newDrawable("defaultTexture", Color.BLACK);
@@ -255,12 +267,12 @@ public class TiltAndTumble extends Game {
 
 	@Override
 	public void pause() {
-		
+
 	}
 
 	@Override
 	public void resume() {
-		
-		
+
+
 	}
 }
