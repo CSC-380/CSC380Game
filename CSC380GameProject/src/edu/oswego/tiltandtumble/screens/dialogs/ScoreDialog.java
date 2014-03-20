@@ -54,7 +54,7 @@ public final class ScoreDialog extends Dialog {
 			table.add(total.getFormattedTime()).center();
 			table.add("0").right();
 			table.row().padTop(10);
-			table.add("You Failed!");
+			table.add("You Failed!").colspan(3).center();
 		}
 		else {
 			table.add(total.getFormattedTime()).center();
@@ -76,7 +76,7 @@ public final class ScoreDialog extends Dialog {
 			}
 		}
 
-		getContentTable().add(table).pad(5);
+		getContentTable().add(table).pad(5,5,5,5);
 
 		button("Continue");
 	}

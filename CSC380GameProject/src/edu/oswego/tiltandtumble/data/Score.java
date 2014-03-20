@@ -1,6 +1,9 @@
 package edu.oswego.tiltandtumble.data;
 
-public class Score implements Comparable<Score> {
+import java.io.Serializable;
+
+public class Score implements Comparable<Score>, Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private int points;
 	private int time;
@@ -19,7 +22,9 @@ public class Score implements Comparable<Score> {
 	}
 
 	public String getFormattedTime() {
-		return (int)Math.floor(time / 60) + ":" + (time % 60);
+		return String.format("%02d:%02d",
+				(int)Math.floor(time / 60),
+				(time % 60));
 	}
 
 	public void setPoints(int points) {

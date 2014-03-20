@@ -37,22 +37,22 @@ public final class WorldPopulator {
 		MapLayer layer = map.getLayers().get("collision");
 		for (MapObject obj : layer.getObjects()) {
 			if(obj.getName() != null){
-			if (obj.getName().equals("StaticWall")) {
-				level.addWorldObject(createStaticWall(obj, world, scale));
-			} else if (obj.getName().equals("PushBumper")) {
-				level.addWorldObject(createPushBumper(obj, world, scale));
-			} else if (obj.getName().equals("FinishLine")) {
-				level.addWorldObject(createFinishLine(obj, level, world, scale));
-			} else if (obj.getName().equals("Hole")) {
-				level.addWorldObject(createHole(obj, level, world, scale));
-			} else if (obj.getName().equals("Ball")) {
-				ball = createBall(obj, world, scale);
-				level.addWorldObject(ball);
+				if (obj.getName().equals("StaticWall")) {
+					level.addWorldObject(createStaticWall(obj, world, scale));
+				} else if (obj.getName().equals("PushBumper")) {
+					level.addWorldObject(createPushBumper(obj, world, scale));
+				} else if (obj.getName().equals("FinishLine")) {
+					level.addWorldObject(createFinishLine(obj, level, world, scale));
+				} else if (obj.getName().equals("Hole")) {
+					level.addWorldObject(createHole(obj, level, world, scale));
+				} else if (obj.getName().equals("Ball")) {
+					ball = createBall(obj, world, scale);
+					level.addWorldObject(ball);
+				}
 			}
 		}
-		}
 		return ball;
-		
+
 	}
 
 	public StaticWall createStaticWall(MapObject obj, World world, UnitScale scale) {
@@ -112,7 +112,6 @@ public final class WorldPopulator {
 		Body body = world.createBody(bodyDef
 				.reset()
 				.type(Ball.BODY_TYPE)
-				.type(Ball.BODY_TYPE)		
 				.angularDampening(getFloatProperty(obj, "angular dampening", Ball.ANGULAR_DAMPENING))
 				.linearDamping(getFloatProperty(obj, "linear dampening", Ball.LINEAR_DAMPENING))
 				.build());

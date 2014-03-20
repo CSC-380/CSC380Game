@@ -26,6 +26,7 @@ public class Level implements Disposable {
 	private static enum State {
 		NOT_STARTED,
 		STARTED,
+		PAUSED,
 		FINISHED
 	};
 
@@ -59,7 +60,6 @@ public class Level implements Disposable {
 		this.level = level;
 		this.ballController = ballController;
 
-
 		currentState = State.NOT_STARTED;
 
 		map = loadMap(level);
@@ -89,7 +89,7 @@ public class Level implements Disposable {
 
 	public TiledMap getMap() {
 		return map;
-		
+
 	}
 	public int getMapWidth(){
 		return mapPixelWidth;
@@ -130,6 +130,7 @@ public class Level implements Disposable {
 		}
 		// we don't care about other object types at this time.
 	}
+
 	public void start() {
 		if (currentState == State.NOT_STARTED) {
 			currentState = State.STARTED;
@@ -148,8 +149,8 @@ public class Level implements Disposable {
 	public void finish(boolean fail) {
 		if (currentState == State.STARTED) {
 			currentState = State.FINISHED;
-			updateScore();
 			failed = fail;
+			updateScore();
 		}
 	}
 
@@ -210,5 +211,19 @@ public class Level implements Disposable {
 		for (Disposable d : disposableObjects) {
 			d.dispose();
 		}
+	}
+
+	public void pause() {
+		if (currentState == State.STARTED) {
+			currentState = State.PAUSED;
+		}
+		// TODO: need to stop the game timer.
+	}
+
+	public void resume() {
+		if (currentState == State.PAUSED) {
+			currentState = State.STARTED;
+		}
+		// TODO: need to start the game timer.
 	}
 }

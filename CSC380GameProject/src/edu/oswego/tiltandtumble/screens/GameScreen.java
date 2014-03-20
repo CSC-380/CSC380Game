@@ -5,8 +5,6 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -36,31 +34,35 @@ public class GameScreen extends AbstractScreen {
 		SCORED
 	}
 
-	private final BallController	ballController;
-	private final WorldPopulator 	worldPopulator;
-	private final ScoreDialog scoreDialog;
+	private final BallController ballController;
+	private final WorldPopulator worldPopulator;
 	private final PauseDialog pauseDialog;
-	
-	private Level 	level;
-	private LevelRenderer 	renderer;
+
+	private Level level;
+	private LevelRenderer renderer;
 	InputMultiplexer inputMux = new InputMultiplexer();
-	
+
 	boolean usingDpad = false;
 	private final List<Score> scores = new ArrayList<Score>();
 	private State currentState;
+
+	Label scoreDisplay;
+	Label timerDisplay;
 
 	public GameScreen(TiltAndTumble game, int currentLevel) {
 		super(game);
 		ballController = new BallController(!game.getSettings().isUseDpad());
 		worldPopulator = new WorldPopulator();
-		scoreDialog = new ScoreDialog("Score\n", skin, this);
 		pauseDialog = new PauseDialog("\nGame Paused\n", skin, this);
-		
-		this.loadLevel(currentLevel);		
 
+		this.loadLevel(currentLevel);
+
+		scoreDisplay = new Label(String.valueOf(level.getScore().getPoints()), skin);
+		timerDisplay = new Label(level.getScore().getFormattedTime(), skin);
 	}
 
 	public void loadLevel(int num) {
+		ballController.resetBall();
 		if (level != null) {
 			level.dispose();
 			level = null;
@@ -93,11 +95,7 @@ public class GameScreen extends AbstractScreen {
 		}
 	}
 
-
 	public void loadDpad(){
-
-		
-
 		Texture upTexture = new Texture(Gdx.files.internal("data/UpArrow.png"));
 		Texture rightTexture = new Texture(Gdx.files.internal("data/RightArrow.png"));
 		Texture downTexture = new Texture(Gdx.files.internal("data/DownArrow.png"));
@@ -141,8 +139,7 @@ public class GameScreen extends AbstractScreen {
 		return scores;
 	}
 
-
-	public void loadHUD(int currentLevel){
+	public void loadHUD() {
 		//its not pretty but will fix that when timer and score are done
 		WindowStyle hudStyle = new WindowStyle();
 		hudStyle.background = skin.newDrawable("defaultTexture", Color.DARK_GRAY);
@@ -150,24 +147,30 @@ public class GameScreen extends AbstractScreen {
 		hudStyle.titleFontColor = Color.WHITE;
 		Window window = new Window("",hudStyle);
 		window.setHeight(30);
-		
+
 		window.setPosition(0, stage.getHeight());
 		window.setWidth(stage.getWidth());
 		stage.addActor(window);
-		
+
 		HorizontalGroup hud = new HorizontalGroup();
-		hud.setSpacing(63f);
+		hud.setSpacing(65f);
 		hud.setFillParent(true);
 		window.addActor(hud);
-		
-		Label levelDisplay = new Label("LEVEL " + level.getLevelNumber(), skin );
+
+		Label levelDisplay = new Label("LEVEL " + level.getLevelNumber(), skin);
 		hud.addActor(levelDisplay);
-		
-		Label scoreDisplay = new Label("SCORE: TODO", skin );
-		hud.addActor(scoreDisplay);
-		
-		Label timerDisplay = new Label("TIMER: TODO", skin );
-		hud.addActor(timerDisplay);
+
+		HorizontalGroup subgroup = new HorizontalGroup();
+		subgroup.setSpacing(10f);
+		subgroup.addActor(new Label("SCORE:", skin));
+		subgroup.addActor(scoreDisplay);
+		hud.addActor(subgroup);
+
+		subgroup = new HorizontalGroup();
+		subgroup.setSpacing(10f);
+		subgroup.addActor(new Label("TIMER:", skin));
+		subgroup.addActor(timerDisplay);
+		hud.addActor(subgroup);
 
 		Texture pauseTexture = new Texture(Gdx.files.internal("data/PauseButton.png"));
 		skin.add("pause", pauseTexture);
@@ -177,18 +180,15 @@ public class GameScreen extends AbstractScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer,
 					int button) {
-				if(currentState == State.PLAYING){
-					currentState = State.PAUSED;
+				if (currentState == State.PLAYING){
 					pause();
-				}else if(currentState == State.PAUSED){
+				} else if(currentState == State.PAUSED){
 					resume();
 				}
 				return true;
 			}
 		});
-
 	}
-
 
 	@Override
 	public void show() {
@@ -197,24 +197,25 @@ public class GameScreen extends AbstractScreen {
 		if(game.getSettings().isUseDpad()){
 			loadDpad();
 		}
-		loadHUD(level.getLevelNumber());
+		loadHUD();
 	}
-	
 
 	@Override
 	protected void preStageRenderHook(float delta) {
 		renderer.render(game.getSpriteBatch(), game.getFont());
 		if (level.isStarted()) {
 			level.update();
-				
+
 		} else if (level.hasFinished()) {
 			if (currentState != State.SCORED) {
-				scores.add(level.getScore());
-				scoreDialog.show(stage);
+                scores.add(level.getScore());
+                new ScoreDialog("Score", skin, game, this).show(stage);
 				currentState = State.SCORED;
-				ballController.resetBall();
 			}
 		}
+
+		scoreDisplay.setText(String.valueOf(level.getScore().getPoints()));
+		timerDisplay.setText(level.getScore().getFormattedTime());
 	}
 
 	@Override
@@ -227,18 +228,21 @@ public class GameScreen extends AbstractScreen {
 			renderer.dispose();
 		}
 	}
-	
+
 
 	@Override
 	public void pause() {
 		pauseDialog.show(stage);
-		ballController.pauseBall();
+		ballController.pause();
+		currentState = State.PAUSED;
+		level.pause();
 	}
-	
+
 	@Override
 	public void resume() {
-		ballController.resumeBall();
+		ballController.resume();
 		this.currentState = State.PLAYING;
+		level.resume();
 	}
 
 }

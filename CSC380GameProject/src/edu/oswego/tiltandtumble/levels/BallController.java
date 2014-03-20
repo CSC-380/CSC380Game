@@ -19,7 +19,7 @@ public class BallController extends ClickListener {
 
 	private static enum State {
 		PAUSED,
-		ACTIVE	
+		ACTIVE
 	}
 
 
@@ -69,23 +69,21 @@ public class BallController extends ClickListener {
 			}
 		}
 	}
-	
+
 	public void resetBall(){
 		keyX = 0;
 		tiltX = 0;
 		keyY = 0;
 		tiltY = 0;
 	}
-	
-	public void pauseBall(){
+
+	public void pause(){
 		currentState = State.PAUSED;
-		ball.pauseBall();
 	}
-	public void resumeBall(){
+	public void resume(){
 		currentState = State.ACTIVE;
-		ball.resumeBall();
 	}
-	
+
 
 	private void updateFromDpad() {
 		if (keys.get(MyKeys.UP)) {
@@ -124,13 +122,13 @@ public class BallController extends ClickListener {
 		if (name.equals("up")) {
 			upPressed();
 		}
-		else if (name.equals("down")) {
+		if (name.equals("down")) {
 			downPressed();
 		}
-		else if (name.equals("left")) {
+		if (name.equals("left")) {
 			leftPressed();
 		}
-		else if (name.equals("right")) {
+		if (name.equals("right")) {
 			rightPressed();
 		}
 		return true;
@@ -144,13 +142,13 @@ public class BallController extends ClickListener {
 		if (name.equals("up")) {
 			upReleased();
 		}
-		else if (name.equals("down")) {
+		if (name.equals("down")) {
 			downReleased();
 		}
-		else if (name.equals("left")) {
+		if (name.equals("left")) {
 			leftReleased();
 		}
-		else if (name.equals("right")) {
+		if (name.equals("right")) {
 			rightReleased();
 		}
 	}
