@@ -86,7 +86,7 @@ public final class ScoreDialog extends Dialog {
 		super.result(object);
 		if (object instanceof Score) {
 			String text = initials.getText();
-			if (!text.isEmpty()) {
+			if (text != "") {
 				game.getHighScores().add(new HighScore(text, (Score)object));
 			}
 			game.showPreviousScreen();

@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="60" height="30" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="9ywlq" tilewidth="32" tileheight="32">
-  <image source="9ywlq.png" width="512" height="384"/>
+  <image source="9ywlq.png" width="512" height="512"/>
  </tileset>
- <tileset firstgid="193" name="dg_edging332 256x416 pix" tilewidth="32" tileheight="32">
-  <image source="dg_edging332 256x416 pix.gif" width="256" height="416"/>
+ <tileset firstgid="257" name="dg_edging332 256x416 pix" tilewidth="32" tileheight="32">
+  <image source="dg_edging332 256x416 pix.gif" width="256" height="512"/>
  </tileset>
- <tileset firstgid="297" name="TileA4" tilewidth="32" tileheight="32">
-  <image source="TileA4.png" width="512" height="480"/>
+ <tileset firstgid="385" name="TileA4" tilewidth="32" tileheight="32">
+  <image source="TileA4.png" width="512" height="512"/>
  </tileset>
- <tileset firstgid="537" name="42176783" tilewidth="32" tileheight="32">
-  <image source="42176783.png" width="480" height="1600"/>
+ <tileset firstgid="641" name="42176783" tilewidth="32" tileheight="32">
+  <image source="42176783.png" width="512" height="2048"/>
  </tileset>
- <tileset firstgid="1287" name="tilea2 (1)" tilewidth="32" tileheight="32">
-  <image source="tilea2 (1).png" width="512" height="384"/>
+ <tileset firstgid="1665" name="tilea2 (1)" tilewidth="32" tileheight="32">
+  <image source="tilea2 (1).png" width="512" height="512"/>
  </tileset>
- <tileset firstgid="1479" name="tilea2222" tilewidth="32" tileheight="32">
-  <image source="tilea2222.png" width="512" height="384"/>
+ <tileset firstgid="1921" name="tilea2222" tilewidth="32" tileheight="32">
+  <image source="tilea2222.png" width="512" height="512"/>
  </tileset>
- <tileset firstgid="1671" name="sci-fi-platformer-tiles-32x32-extension_0" tilewidth="32" tileheight="32">
+ <tileset firstgid="2177" name="sci-fi-platformer-tiles-32x32-extension_0" tilewidth="32" tileheight="32">
   <image source="sci-fi-platformer-tiles-32x32-extension_0.png" width="512" height="4096"/>
  </tileset>
  <layer name="Background" width="60" height="30">
   <data encoding="base64" compression="zlib">
-   eJztls0JwzAMRu322BVyLZmkI3SoLtDpOkahkFMxJtQIW7EUxZaLDg9i8kNePknOfHZuJnLzP+C51yly97JQ37HExHhWb9/F1b8rvJbjizFavg+Po803lzWWf22+U8E5XV8GzBfj6iOlnDX6plmHY07/lmpboy+nf2ufpcUXZrrly/12Wnwp+e5xDUh75nw/hP03xzqHUri+GvLF6lkSLb6Bp4uk3ke4a/mf/CffvfUM+/+9scbmhQbflpiv+Ur6wv7kzCR4D2V/t3zNV1s9j+S75Xq0v9Vze9810xa13bN/pfwoM0FDvi3z7j2fqfmM5tsb85X3rZ1RuXNfwN/jag==
+   eJztls0NgzAMRhN1pUqVukXvXDsJO3DrgQE6VDepEEVEVuLEzp9T+fAkUADl8dmG9WLMSuRlT+Da48fbloW6xxAT41m9fe+EPcNrOb4Yo+X7sTjSfH1ZY/mn5jsFnN3zecB8MZ52J5SzRF836+2Y07+h2pboy+nf1GdJ8YWZxny5706KLyXfHNe5gqfP95a552MOuXB9JeSL1XNJpPhuLGbH9a7hLuV/8p98c+sZ9v81co7NCwm+LVFf9S3pC/uTM5PgPZTvu+arvtLqeSTfmGttf63n9r5Hpi1qu2f/lvKjzAQJ+bbMu/d8puYzmm9v1Le8b+qM8q19AWz9c3U=
   </data>
  </layer>
  <layer name="background2" width="60" height="30">
   <data encoding="base64" compression="zlib">
-   eJzNWMtNAzEQ9QYlIHGO4BBx40QFfBrgc6UoGqADSqAMUkGoIxvggFfIaJid8czzesk+yYq8dpJ9fp7nGYeAY9X8fJ41+py3WQiPmfH7RQgPC//Y8QH2jv+NNeO7nQ/7Pcp3F9uHs+2G/e0vnpq8vu+Gvigo3y3wPWvueaM3jhzfpO8F25fXsX8j7ON23p9LofGVtKaaImtjoeO7JG1F+Gv65uI2B42vxMca9yCnJcdm1ueb086DUr5tqB/LHImvF561KOVrPV864taDNcDXA4SvpmmNWO58OjUKqq/kUYexfwTscYRvUMbH5EshedRJ7J86vfsl/PXfLzKG8kV8SILGt2Q/S+vCPf6ZNYkvPaNa8ryGvlqcI36VQwlfbQ1a4XktSPqWnkmvAcsnNA8b6zzq4NEX4V/Tnz9DPyfj0PxCA9cXqRdaYW5Nf0bj2DPf0lfzYg1T52v5s5ZHa3t86nyTvkPz5gSNL41VKUf28OU1Fo/XGvqisOpf7Xzy8EX7EtDz1/KzqfO19EX3ubfe5znFvvT1+vEQv5LuOqR8Mn2mOWPoy/14jPrI69X7iF+pPsoB4Zt01rx6H/Gb4I1jz3nUsnHtvS0+/Izz1BlJXySPpHP5OiD3sZxX0puvh/f3PPDUR8haIPexnBfVi39f6pegpP4tuX/Ovav33q6mvpeRwxXjIdU/FqbON+l7G7neZXQr8SvJoyRw3+naN6C9K74=
+   eJzNWEtOwzAQdRSgvREJsKE3AKm7ih0n4Q7cgCULKnEAuAHcgAUn4LPGEbI0TGfG8xyH5klW5Ma18vw8bzwOAcem+X1eNfqY8zaEe+P94TKEo6X/3U2LfeN/Y8X4PizGzUf59nHeE2frjTVH8NbY+l5m9EVB+R4D8+bGXjd647D4Jn3fma5fsf8taL1d7I6l0PhKWlNNkbXJYeC7Jm1D5tb0teLWgsZX4pN774GlJcdFu8vX0s6DUr7dBLHMkfh64VmLUr6539eOuPVgVTl/IHw1TWvE8uDTqVFQfSWPeor9Z2CPI3wpasQyhcaXQvKol8j11endd+Gv/56N4Iv4kASNb8l+ltaFe/wtaxJfmqO6yvpqcY74lYUSvtoadBX4apD0Lc1JjwE7T2geNlU+GuDRF+Ff059PhTMZh+YXGri+SL2wFcbW9Gc0jj3jc/pqXqxh7nxz/qydo7U9Pne+Sd+x5+YEjW/X2PWuhy+vsXi81tAXRa7+1fKThy/al4Dm35yfzZ1vTl90n3vrfX6m2Je+Xj8e41fSXYd0nkzPNGYKfbkfT1Efeb16H/Er1UcWEL5JZ82r9xG/Cd449uSjjvHRvjvHh+c4T52R9EXOkXQsXwfkPpbz6pX18M7ngac+QtYCuY/lvKhe/P9SvwQl9W/J/bP1rd57u5r6fkQOn4yHVP/kMHe+Sd825qAD4369xK8kj5LAfWdoP9pylGc=
   </data>
  </layer>
  <layer name="map" width="60" height="30">
   <data encoding="base64" compression="zlib">
-   eJzlmE1ug0AMhc0i26zariJWSS/ZXiBtt+0NeoT0OrCpkBpxh85IWLw4nj8CdKBPeopkTODD82M4FESHRFttu9+lqTT3fUz0vuN+nIH5XYl9G9eRbsS5Q3iPHefuj2pcGX9EuhLnSt4743vFDx0b5ubAq9W6oXheF0MJcTmucV7PIeSVPKHjsbx7qPXOMcbnqncK75ku6x7Li+KcqXm1tcoqhVfOZcmLdcR6onBO51hfWVMfb8o4LUU8F15f7pi8VAiPqBrc0nBebfzGjtM56vtJl3NQSuPFPSrm2aTsUb55PoZOlM5rY0/Gz3CefQat4xpD1uypVVNcP0Fd7NX4DfLOdN1bsnLkRd2yPltpPRnyymOu5zSXblmfOZbyrhC6xtRaM6/WY62ZV5OrP7aWcy2GV87nhvLlZfP+I+8thlc7J3de3n/WzivHouwplsLrehfk+9HWK21f1fpJ5uGcH+X/c61v5Yj7vmXlWF+fQrxcZ+yt1sKL+xGP3UrJS+GVe5zrPWMKhfqN0LjFercQz6l+IYW+x7YiD+vF8aXy+u4V806b/v3Zxr82vf8D70vRO3deuUbF5LF/AY97lnw=
+   eJzlmEtOxDAMhtPVHKNsqkqgCo7ACVgBq1FXM1wCbgBbuAFH4EAzJyGRYo1rOYnTR3DLL1mVPGmbb+zETo+VMcdMc3rw17Wpt/M+ZdrBc78UYP5kfI1975XQWjLHMbwn/4z9H8W4tu/9MjKrE7yP1p4Ye/b34bEaeLlYt5WcN8TQIz/Na7yuS6iO8KR+l/IeUKz3gRwvFe8c3hsSdykvFoxZmpfbq5xyeOlaprw4jjieWHhNa4wvjWmMNydPe+LXwhsbOyfvfTW0OYX3324CL5e/0jwtEd9vM1yDVBxvk/nf5NSo2DqfQz8mn9f5Xu31Dd3XeHZOY/bspSXtJ4z3vdvrhxnWJdpbgjTyYk3Zn524ngzzpnrw0pqyP4Mv56yQesfS2jIv12NtmZdTqD/m1pqEl67nVjEvGNQfOjcJL3ePdl6oP1vnpblIe4q18IbOgjAfbr/i6irXTwIPjLlWwBtTiDf1XUtzfGNK8UKc22p7vLgeQe5irjG8tMaFzhlLKNVvpPIWx7sT8mpT6ntsR3hxvMC/Vt7YXPG4293l/Oz8d7uL/QfeMzLtvHSPkowD+wXsKjKQ
   </data>
  </layer>
  <layer name="objects" width="60" height="30">
   <data encoding="base64" compression="zlib">
-   eJztmEsKgDAMBQOurBvvqzfQO/uDQi32I7RpmmQgG58uhthqA1COaQCYTV5ZcrNWHGM4u30lgenbsucWaf2VRGxdK/hoP95Q+PYpBDBOIfNrTTJ4T1vvQdL+Nyj71th3Kfv65PrH7uvJtwTqyxv15Y368qY339T5b7lqjTzfm2+K7ao9kpP1rXR+I+tbCfXlDapvo5mKy+Nr4HvG419381BWYVZ0Am2wDDc=
+   eJztmM0KgCAMgIVu2RvXrWO9cJ3Sg2SC00DdnPtgl2bgx/BvSpVjn5Sal7xw5OawuHQ8Z31HoqUvZs0do9V3JKB1LbRH6vGFwtkn4HPrN1rzZ01izK802HvQaPcNyr419l3KviG5/tC4nnxLIL68EV/eiC9vevNNvf9WExvwf2++KQ4TJ5Cn6lvr/UbVtxbiy5uWvlg9FR/r6/d3/PmE3/18LFejV/QAyKcwgA==
   </data>
  </layer>
- <objectgroup name="collision" width="60" height="30" visible="0">
+ <objectgroup name="collision" width="60" height="30">
   <object name="StaticWall" x="164" y="578" width="153" height="27"/>
   <object name="StaticWall" x="33" y="451" width="28" height="511"/>
   <object name="StaticWall" x="290" y="801" width="158" height="27"/>

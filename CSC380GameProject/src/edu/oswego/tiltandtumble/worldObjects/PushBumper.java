@@ -12,7 +12,7 @@ public class PushBumper extends AbstractWorldObject implements BallCollisionList
     public static final float DENSITY = 2.0f;
     public static final float RESTITUTION = 0.0f;
     public static final BodyType BODY_TYPE = BodyType.StaticBody;
-    
+
     public static final float DEFAULT_SPEED = 8;
 	private final float speed;
 
@@ -44,8 +44,8 @@ public class PushBumper extends AbstractWorldObject implements BallCollisionList
 		final float forceY = (speed * y) / (x + y);
 
 		target.setLinearVelocity(
-				Math.copySign(forceX, target.getLinearVelocity().x),
-				Math.copySign(forceY, target.getLinearVelocity().y));
+				forceX * Math.signum(x),
+				forceY * Math.signum(y));
 	}
 
 	@Override
