@@ -32,7 +32,7 @@ public class BallController extends ClickListener {
 	private State currentState;
 	private float keyX = 0;
 	private float keyY = 0;
-	private final float keyIncrement = 0.5f;
+	private final float keyIncrement = 0.25f;
 
 	public BallController(boolean useAccelerometer) {
 		this.useAccelerometer = useAccelerometer;
@@ -48,12 +48,16 @@ public class BallController extends ClickListener {
 	}
 
 	public void update() {
-
 		if(currentState == State.ACTIVE){
+			float forceX = 0;
+			float forceY = 0;
 			if (useAccelerometer) {
 				// accelerometer is reversed from screen coordinates, we are in landscape mode
 				tiltX = Gdx.input.getAccelerometerY();
 				tiltY = Gdx.input.getAccelerometerX();
+
+				forceX = Math.signum(tiltX) * (float)(Math.pow(tiltX, 2) * 0.001);
+				forceY = Math.signum(tiltY) * (float)(Math.pow(tiltY, 2) * 0.001) * -1;
 			}
 			else {
 				// might as well accept either input
@@ -62,10 +66,12 @@ public class BallController extends ClickListener {
 
 				tiltX = keyX;
 				tiltY = keyY;
+
+				forceX = tiltX * 0.001f;
+				forceY = tiltY * 0.001f * -1;
 			}
 			if (ball != null) {
-				ball.applyLinearImpulse(tiltX* 0.001f, tiltY* -0.001f);
-
+				ball.applyLinearImpulse(forceX, forceY);
 			}
 		}
 	}
@@ -80,22 +86,22 @@ public class BallController extends ClickListener {
 	public void pause(){
 		currentState = State.PAUSED;
 	}
+
 	public void resume(){
 		currentState = State.ACTIVE;
 	}
-
 
 	private void updateFromDpad() {
 		if (keys.get(MyKeys.UP)) {
 			decrementY();
 		}
-		else if (keys.get(MyKeys.DOWN)) {
+		if (keys.get(MyKeys.DOWN)) {
 			incrementY();
 		}
 		if (keys.get(MyKeys.LEFT)) {
 			decrementX();
 		}
-		else if (keys.get(MyKeys.RIGHT)) {
+		if (keys.get(MyKeys.RIGHT)) {
 			incrementX();
 		}
 	}
@@ -104,16 +110,17 @@ public class BallController extends ClickListener {
 		if (Gdx.input.isKeyPressed(Keys.UP)) {
             decrementY();
         }
-        else if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+        if (Gdx.input.isKeyPressed(Keys.DOWN)) {
             incrementY();
         }
         if (Gdx.input.isKeyPressed(Keys.LEFT)) {
             decrementX();
         }
-        else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+        if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
             incrementX();
         }
 	}
+
 	@Override
 	public boolean touchDown(InputEvent event, float x, float y, int pointer,
 			int button) {
@@ -122,13 +129,13 @@ public class BallController extends ClickListener {
 		if (name.equals("up")) {
 			upPressed();
 		}
-		if (name.equals("down")) {
+		else if (name.equals("down")) {
 			downPressed();
 		}
-		if (name.equals("left")) {
+		else if (name.equals("left")) {
 			leftPressed();
 		}
-		if (name.equals("right")) {
+		else if (name.equals("right")) {
 			rightPressed();
 		}
 		return true;
@@ -142,13 +149,13 @@ public class BallController extends ClickListener {
 		if (name.equals("up")) {
 			upReleased();
 		}
-		if (name.equals("down")) {
+		else if (name.equals("down")) {
 			downReleased();
 		}
-		if (name.equals("left")) {
+		else if (name.equals("left")) {
 			leftReleased();
 		}
-		if (name.equals("right")) {
+		else if (name.equals("right")) {
 			rightReleased();
 		}
 	}
@@ -197,9 +204,6 @@ public class BallController extends ClickListener {
 		}
 	}
 
-
-
-
 	// ** Key presses and touches **************** //
 
 	public void leftPressed() {
@@ -213,6 +217,7 @@ public class BallController extends ClickListener {
 	public void upPressed() {
 		keys.get(keys.put(MyKeys.UP, true));
 	}
+
 	public void downPressed(){
 		keys.get(keys.put(MyKeys.DOWN, true));
 	}
@@ -228,6 +233,7 @@ public class BallController extends ClickListener {
 	public void upReleased() {
 		keys.get(keys.put(MyKeys.UP, false));
 	}
+
 	public void downReleased() {
 		keys.get(keys.put(MyKeys.DOWN, false));
 	}
