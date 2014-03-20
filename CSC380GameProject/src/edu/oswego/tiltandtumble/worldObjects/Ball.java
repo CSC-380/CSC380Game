@@ -27,7 +27,7 @@ public class Ball extends AbstractWorldObject implements MapRenderable, Disposab
         super(body);
         this.scale = scale;
         body.setUserData(this);
-
+        
         // http://opengameart.org/content/orbs-wo-drop-shadows
         texture = new Texture(Gdx.files.internal("data/GreenOrb.png"));
         sprite = new Sprite(texture);
@@ -36,13 +36,20 @@ public class Ball extends AbstractWorldObject implements MapRenderable, Disposab
     }
 
     public void applyLinearImpulse(float x, float y) {
+   
         body.applyLinearImpulse(
             x,
             y,
             body.getWorldCenter().x,
             body.getWorldCenter().y,
             true);
-//        body.applyForceToCenter(x, y, true);
+    }
+    public void pauseBall(){
+    	body.setActive(false);
+    }
+    public void resumeBall(){
+    	body.setActive(true);
+
     }
 
     @Override
@@ -50,6 +57,7 @@ public class Ball extends AbstractWorldObject implements MapRenderable, Disposab
         sprite.setPosition(getX(), getY());
         sprite.draw(batch);
     }
+  
 
     public float getX() {
         return scale.metersToPixels(body.getPosition().x) - (sprite.getWidth() * 0.5f);

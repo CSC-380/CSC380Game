@@ -10,20 +10,26 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import edu.oswego.tiltandtumble.worldObjects.Ball;
 
+
 public class BallController extends ClickListener {
 
 	enum MyKeys {
 		LEFT, RIGHT, UP, DOWN
 	}
 
-	private final Map<MyKeys, Boolean> keys = new EnumMap<MyKeys, Boolean>(MyKeys.class);
+	private static enum State {
+		PAUSED,
+		ACTIVE	
+	}
 
+
+	private final Map<MyKeys, Boolean> keys = new EnumMap<MyKeys, Boolean>(MyKeys.class);
 	private final boolean useAccelerometer;
 	private Ball ball;
 
 	private float tiltX = 0;
 	private float tiltY = 0;
-
+	private State currentState;
 	private float keyX = 0;
 	private float keyY = 0;
 	private final float keyIncrement = 0.5f;
@@ -34,6 +40,7 @@ public class BallController extends ClickListener {
 		keys.put(MyKeys.RIGHT, false);
 		keys.put(MyKeys.UP, false);
 		keys.put(MyKeys.DOWN, false);
+		currentState = State.ACTIVE;
 	}
 
 	public void setBall(Ball ball) {
@@ -41,24 +48,44 @@ public class BallController extends ClickListener {
 	}
 
 	public void update() {
-		if (useAccelerometer) {
-			// accelerometer is reversed from screen coordinates
-			// because we are in landscape mode
-			tiltX = Gdx.input.getAccelerometerY();
-			tiltY = Gdx.input.getAccelerometerX();
-		}
-		else {
-			// might as well accept either input
-			updateFromDpad();
-			updateFromKeys();
 
-			tiltX = keyX;
-			tiltY = keyY;
-		}
-		if (ball != null) {
-			ball.applyLinearImpulse(tiltX * 0.001f, tiltY * -0.001f);
+		if(currentState == State.ACTIVE){
+			if (useAccelerometer) {
+				// accelerometer is reversed from screen coordinates, we are in landscape mode
+				tiltX = Gdx.input.getAccelerometerY();
+				tiltY = Gdx.input.getAccelerometerX();
+			}
+			else {
+				// might as well accept either input
+				updateFromDpad();
+				updateFromKeys();
+
+				tiltX = keyX;
+				tiltY = keyY;
+			}
+			if (ball != null) {
+				ball.applyLinearImpulse(tiltX* 0.001f, tiltY* -0.001f);
+
+			}
 		}
 	}
+	
+	public void resetBall(){
+		keyX = 0;
+		tiltX = 0;
+		keyY = 0;
+		tiltY = 0;
+	}
+	
+	public void pauseBall(){
+		currentState = State.PAUSED;
+		ball.pauseBall();
+	}
+	public void resumeBall(){
+		currentState = State.ACTIVE;
+		ball.resumeBall();
+	}
+	
 
 	private void updateFromDpad() {
 		if (keys.get(MyKeys.UP)) {
@@ -89,7 +116,6 @@ public class BallController extends ClickListener {
             incrementX();
         }
 	}
-
 	@Override
 	public boolean touchDown(InputEvent event, float x, float y, int pointer,
 			int button) {
