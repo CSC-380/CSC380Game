@@ -68,31 +68,33 @@ public final class WorldPopulator {
 		MapLayer layer = map.getLayers().get("paths");
 		Map<String, PathPoint> paths = new HashMap<String, PathPoint>();
 
-		for (MapObject obj : layer.getObjects()) {
-			if (obj instanceof PolylineMapObject && obj.getName() != null) {
-				boolean loop = Boolean.valueOf(obj.getProperties().get("loop", "false", String.class));
-				float[] vertices = ((PolylineMapObject)obj).getPolyline().getTransformedVertices();
-				PathPoint head = null;
-				PathPoint last = null;
-				for (int i = 0; i < vertices.length; i += 2) {
-					PathPoint next = new PathPoint(
-						scale.pixelsToMeters(vertices[i]),
-						scale.pixelsToMeters(vertices[i + 1])
-					);
-					if (head == null) {
-						head = next;
+		if (layer != null) {
+			for (MapObject obj : layer.getObjects()) {
+				if (obj instanceof PolylineMapObject && obj.getName() != null) {
+					boolean loop = Boolean.valueOf(obj.getProperties().get("loop", "false", String.class));
+					float[] vertices = ((PolylineMapObject)obj).getPolyline().getTransformedVertices();
+					PathPoint head = null;
+					PathPoint last = null;
+					for (int i = 0; i < vertices.length; i += 2) {
+						PathPoint next = new PathPoint(
+							scale.pixelsToMeters(vertices[i]),
+							scale.pixelsToMeters(vertices[i + 1])
+						);
+						if (head == null) {
+							head = next;
+						}
+						if (last != null) {
+							last.setNext(next);
+							next.setPrevious(last);
+						}
+						last = next;
 					}
-					if (last != null) {
-						last.setNext(next);
-						next.setPrevious(last);
+					if (loop) {
+						last.setNext(head);
+						head.setPrevious(last);
 					}
-					last = next;
+					paths.put(obj.getName(), head);
 				}
-				if (loop) {
-					last.setNext(head);
-					head.setPrevious(last);
-				}
-				paths.put(obj.getName(), head);
 			}
 		}
 		return paths;
