@@ -80,36 +80,36 @@ public class DefaultLevelRenderer implements LevelRenderer {
 	public void updateCamera() {
 		if(this.isBallInSafeXRight() && this.isBallInSafeXLeft()){
 			camera.position.set(
-					level.getBall().getX(),
+					level.getBall().getMapX(),
 					camera.position.y,
 					camera.position.z);
 		}
 		if(this.isBallInSafeYTop() && this.isBallInSafeYBottom()){
 			camera.position.set(
 					camera.position.x,
-					level.getBall().getY(),
+					level.getBall().getMapY(),
 					camera.position.z);
 		}
 		camera.update();
 	}
 
 	private boolean isBallInSafeXRight(){
-		float ballX = level.getBall().getX();
+		float ballX = level.getBall().getMapX();
 		return ballX + (width/2) < mapX;
 	}
 
 	private boolean isBallInSafeXLeft(){
-		float ballX = level.getBall().getX();
+		float ballX = level.getBall().getMapX();
 		return ballX - (width/2) > 0;
 	}
 
 	private boolean isBallInSafeYTop(){
-		float ballY = level.getBall().getY();
+		float ballY = level.getBall().getMapY();
 		return ballY + (height/2) < mapY;
 	}
 
 	private boolean isBallInSafeYBottom(){
-		float ballY = level.getBall().getY();;
+		float ballY = level.getBall().getMapY();;
 		return ballY - (height/2) > 0;
 	}
 

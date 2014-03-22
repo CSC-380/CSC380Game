@@ -42,15 +42,15 @@ public class Ball extends AbstractWorldObject implements MapRenderable,
 
 	@Override
 	public void draw(SpriteBatch batch) {
-		sprite.setPosition(getX(), getY());
+		sprite.setPosition(getMapX(), getMapY());
 		sprite.draw(batch);
 	}
 
-	public float getX() {
+	public float getMapX() {
 		return scale.metersToPixels(body.getPosition().x) - (sprite.getWidth() * 0.5f);
 	}
 
-	public float getY() {
+	public float getMapY() {
 		return scale.metersToPixels(body.getPosition().y) - (sprite.getHeight() * 0.5f);
 	}
 

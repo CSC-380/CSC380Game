@@ -104,20 +104,24 @@ public final class WorldPopulator {
 		Body body = world.createBody(bodyDef.reset().type(MovingWall.BODY_TYPE)
 				.build());
 		Shape shape = createShape(obj, scale, body);
+		// TODO: This should move to the spot that its closest on the line to
+		//       the center of the shape, this would allow multiple staggered
+		//       walls that are working on the same path.
 		body.setTransform(head.x, head.y, 0);
 		body.createFixture(fixtureDef.reset().shape(shape)
 				.friction(getFloatProperty(obj, "friction", MovingWall.FRICTION))
 				.density(getFloatProperty(obj, "density", MovingWall.DENSITY))
 				.restitution(getFloatProperty(obj, "restitution", MovingWall.RESTITUTION))
 				.build());
+		Vector2 dimensions = getDimensions(obj);
 		// dispose after creating fixture
 		shape.dispose();
-
-		// TODO: this will need some sort of graphic passed into it...
 
 		return new MovingWall(body,
 				getFloatProperty(obj, "speed", MovingWall.DEFAULT_SPEED),
 				head,
+				obj.getProperties().get("sprite", MovingWall.DEFAULT_SPRITE, String.class),
+				dimensions,
 				scale);
 	}
 
@@ -260,7 +264,7 @@ public final class WorldPopulator {
 		Polygon polygon = object.getPolygon();
 		float[] vertices = polygon.getVertices();
 		float[] worldVertices = new float[vertices.length];
-		for (int i = 0; i < vertices.length; ++i) {
+		for (int i = 0; i < vertices.length; i++) {
 			worldVertices[i] = scale.pixelsToMeters(vertices[i]);
 		}
 		shape.set(worldVertices);
@@ -300,6 +304,50 @@ public final class WorldPopulator {
 		return shape;
 	}
 
+	private Vector2 getDimensions(MapObject object) {
+		Vector2 dimensions = new Vector2();
+		if (object instanceof PolygonMapObject) {
+			Polygon p = ((PolygonMapObject)object).getPolygon();
+			dimensions.x = p.getBoundingRectangle().width;
+			dimensions.y = p.getBoundingRectangle().height;
+		} else if (object instanceof RectangleMapObject) {
+			Rectangle r = ((RectangleMapObject)object).getRectangle();
+			dimensions.x = r.width;
+			dimensions.y = r.height;
+		} else if (object instanceof EllipseMapObject) {
+			Ellipse e = ((EllipseMapObject)object).getEllipse();
+			dimensions.x = (e.width + e.height) / 2;
+			dimensions.y = (e.width + e.height) / 2;
+		} else if (object instanceof PolylineMapObject) {
+			Polyline p = ((PolylineMapObject)object).getPolyline();
+			float maxX = 0;
+			float maxY = 0;
+			float minX = 0;
+			float minY = 0;
+			boolean isX = true;
+			for (float v : p.getVertices()) {
+				if (isX) {
+					if (v < minX) {
+						minX = v;
+					} else if (v > maxX) {
+						maxX = v;
+					}
+				} else {
+					if (v < minY) {
+						minY = v;
+					} else if (v > maxY) {
+						maxY = v;
+					}
+				}
+				isX = !isX;
+			}
+		} else {
+			throw new IllegalArgumentException(object.getName()
+					+ " Unsupported MapObject: "
+					+ object.getClass().getName());
+		}
+		return dimensions;
+	}
 	private float getFloatProperty(MapObject object, String key, float def) {
 		String prop = object.getProperties().get(key, null, String.class);
 		if (prop == null) {

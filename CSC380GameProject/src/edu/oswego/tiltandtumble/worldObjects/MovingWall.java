@@ -1,14 +1,18 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.utils.Disposable;
 
 import edu.oswego.tiltandtumble.levels.UnitScale;
 
 public class MovingWall extends AbstractWorldObject
-		implements MapRenderable, WorldUpdateable {
+		implements MapRenderable, WorldUpdateable, Disposable {
 	public static final float FRICTION = 0.5f;
 	public static final float DENSITY = 5.0f;
 	public static final float RESTITUTION = 0.0f;
@@ -16,12 +20,17 @@ public class MovingWall extends AbstractWorldObject
 
 	// in meters per second
 	public static final float DEFAULT_SPEED = 1f;
+	public static final String DEFAULT_SPRITE = "WallGrey2x2.png";
 
 	private final float speed;
 	private final PathTraverser nodes;
 	private final UnitScale scale;
 
-	public MovingWall(Body body, float speed, PathPoint path, UnitScale scale) {
+	private final Texture texture;
+	private final Sprite sprite;
+
+	public MovingWall(Body body, float speed, PathPoint path,
+			String spriteName, Vector2 dimensions, UnitScale scale) {
 		super(body);
 
 		this.speed = speed;
@@ -29,11 +38,24 @@ public class MovingWall extends AbstractWorldObject
 
 		nodes = new PathTraverser(path);
 		nodes.next();
+
+		texture = new Texture(Gdx.files.internal("data/" + spriteName));
+		sprite = new Sprite(texture);
+		sprite.setSize(dimensions.x, dimensions.y);
 	}
 
 	@Override
 	public void draw(SpriteBatch batch) {
-		// TODO: render the sprite for this object
+		sprite.setPosition(getMapX(), getMapY());
+		sprite.draw(batch);
+	}
+
+	public float getMapX() {
+		return scale.metersToPixels(body.getPosition().x) - (sprite.getWidth() * 0.5f);
+	}
+
+	public float getMapY() {
+		return scale.metersToPixels(body.getPosition().y) - (sprite.getHeight() * 0.5f);
 	}
 
 	@Override
@@ -98,5 +120,10 @@ public class MovingWall extends AbstractWorldObject
 			}
 			return current;
 		}
+	}
+
+	@Override
+	public void dispose() {
+		texture.dispose();
 	}
 }
