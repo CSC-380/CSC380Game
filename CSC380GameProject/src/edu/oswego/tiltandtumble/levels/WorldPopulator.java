@@ -1,5 +1,8 @@
 package edu.oswego.tiltandtumble.levels;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
@@ -24,6 +27,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import edu.oswego.tiltandtumble.worldObjects.Ball;
 import edu.oswego.tiltandtumble.worldObjects.FinishLine;
 import edu.oswego.tiltandtumble.worldObjects.Hole;
+import edu.oswego.tiltandtumble.worldObjects.MovingWall;
+import edu.oswego.tiltandtumble.worldObjects.PathPoint;
 import edu.oswego.tiltandtumble.worldObjects.PushBumper;
 import edu.oswego.tiltandtumble.worldObjects.StaticWall;
 
@@ -35,10 +40,13 @@ public final class WorldPopulator {
 			UnitScale scale) {
 		Ball ball = null;
 		MapLayer layer = map.getLayers().get("collision");
+		Map<String, PathPoint> paths = getPaths(map, world, scale);
 		for (MapObject obj : layer.getObjects()) {
-			if(obj.getName() != null){
+			if (obj.getName() != null) {
 				if (obj.getName().equals("StaticWall")) {
 					level.addWorldObject(createStaticWall(obj, world, scale));
+				} else if (obj.getName().equals("MovingWall")) {
+					level.addWorldObject(createMovingWall(obj, world, scale, paths));
 				} else if (obj.getName().equals("PushBumper")) {
 					level.addWorldObject(createPushBumper(obj, world, scale));
 				} else if (obj.getName().equals("FinishLine")) {
@@ -52,7 +60,79 @@ public final class WorldPopulator {
 			}
 		}
 		return ball;
+	}
 
+	public Map<String, PathPoint> getPaths(TiledMap map, World world, UnitScale scale) {
+		MapLayer layer = map.getLayers().get("paths");
+		Map<String, PathPoint> paths = new HashMap<String, PathPoint>();
+
+		for (MapObject obj : layer.getObjects()) {
+			if (obj instanceof PolylineMapObject && obj.getName() != null) {
+				boolean loop = Boolean.valueOf(obj.getProperties().get("loop", "false", String.class));
+				float[] vertices = ((PolylineMapObject)obj).getPolyline().getTransformedVertices();
+				PathPoint head = null;
+				PathPoint last = null;
+				for (int i = 0; i < vertices.length; i += 2) {
+					PathPoint next = new PathPoint(
+						scale.pixelsToMeters(vertices[i]),
+						scale.pixelsToMeters(vertices[i + 1])
+					);
+					if (head == null) {
+						head = next;
+					}
+					if (last != null) {
+						last.setNext(next);
+						next.setPrevious(last);
+					}
+					last = next;
+				}
+				if (loop) {
+					last.setNext(head);
+					head.setPrevious(last);
+				}
+				paths.put(obj.getName(), head);
+			}
+		}
+		return paths;
+	}
+
+	public MovingWall createMovingWall(MapObject obj, World world,
+			UnitScale scale, Map<String, PathPoint> paths) {
+		// TODO: i need to reorient all the other shapes so that they are
+		//       built at the origin and then transformed to the correct
+		//       position.
+
+//		Shape shape = createShape(obj, scale);
+		PathPoint head = paths.get(obj.getProperties().get("path", String.class));
+
+		PolygonShape shape = new PolygonShape();
+		Rectangle rectangle = ((RectangleMapObject)obj).getRectangle();
+		shape.setAsBox(scale.pixelsToMeters(rectangle.width * 0.5f),
+				scale.pixelsToMeters(rectangle.height * 0.5f));
+
+		Body body = world.createBody(bodyDef.reset().type(MovingWall.BODY_TYPE)
+				.build());
+
+		body.createFixture(fixtureDef.reset().shape(shape)
+				.friction(getFloatProperty(obj, "friction", MovingWall.FRICTION))
+				.density(getFloatProperty(obj, "density", MovingWall.DENSITY))
+				.restitution(getFloatProperty(obj, "restitution", MovingWall.RESTITUTION))
+				.build());
+		// dispose after creating fixture
+		shape.dispose();
+
+		body.setTransform(head.x, head.y, 0);
+
+		if (obj instanceof EllipseMapObject) {
+			transformCircleBody((EllipseMapObject)obj, body, scale);
+		}
+
+		// TODO: this will need some sort of graphic passed into it...
+
+		return new MovingWall(body,
+				getFloatProperty(obj, "speed", MovingWall.DEFAULT_SPEED),
+				head,
+				scale);
 	}
 
 	public StaticWall createStaticWall(MapObject obj, World world, UnitScale scale) {
@@ -182,7 +262,7 @@ public final class WorldPopulator {
 					+ " Unsupported MapObject: "
 					+ object.getClass().getName());
 		}
-		Gdx.app.log("populating map", "adding " + object.getName()
+		Gdx.app.log("WorldPopulator", "Creating " + object.getName()
 				+ " - " + object.getClass().getSimpleName()
 				+ " > "+ shape.getClass().getSimpleName());
 		return shape;

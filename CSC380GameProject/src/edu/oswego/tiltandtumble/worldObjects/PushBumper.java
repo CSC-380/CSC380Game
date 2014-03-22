@@ -19,7 +19,6 @@ public class PushBumper extends AbstractWorldObject implements BallCollisionList
 
     public PushBumper(Body body, float speed) {
         super(body);
-        body.setUserData(this);
         this.speed = speed;
     }
 

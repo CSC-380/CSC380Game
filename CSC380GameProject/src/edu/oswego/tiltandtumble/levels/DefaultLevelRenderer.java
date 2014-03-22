@@ -30,7 +30,7 @@ public class DefaultLevelRenderer implements LevelRenderer {
 		// camera.setToOrtho call below.
 		mapRenderer = new OrthogonalTiledMapRenderer(level.getMap(), 1);
 		mapRenderer.setView(camera);
-		
+
 
 		// TODO: figure out how to scale this to different screen sizes
 		camera.setToOrtho(false, width, height);
@@ -38,13 +38,13 @@ public class DefaultLevelRenderer implements LevelRenderer {
 			camera.position.set(
 					width/2,
 					height/2,
-					camera.position.z);	
+					camera.position.z);
 		camera.update();
 		}else if(!this.isBallInSafeXRight()){
 			camera.position.set(
 					mapX - width/2,
 					height/2,
-					camera.position.z);	
+					camera.position.z);
 		camera.update();
 		}
 	}
@@ -60,7 +60,7 @@ public class DefaultLevelRenderer implements LevelRenderer {
 	}
 
 	@Override
-	public void render(SpriteBatch batch, BitmapFont font) {
+	public void render(float delta, SpriteBatch batch, BitmapFont font) {
 		updateCamera();
 
 		// clear the screen
@@ -78,53 +78,39 @@ public class DefaultLevelRenderer implements LevelRenderer {
 
 	@Override
 	public void updateCamera() {
-
 		if(this.isBallInSafeXRight() && this.isBallInSafeXLeft()){
 			camera.position.set(
-					level.getScale().metersToPixels(
-							level.getBall().getBody().getPosition().x),
+					level.getBall().getX(),
 					camera.position.y,
-					camera.position.z);	
-			camera.update();
-		}if(this.isBallInSafeYTop() && this.isBallInSafeYBottom()){
+					camera.position.z);
+		}
+		if(this.isBallInSafeYTop() && this.isBallInSafeYBottom()){
 			camera.position.set(
 					camera.position.x,
-					level.getScale().metersToPixels(
-							level.getBall().getBody().getPosition().y),
+					level.getBall().getY(),
 					camera.position.z);
-			camera.update();
 		}
-		
+		camera.update();
 	}
-	
 
 	private boolean isBallInSafeXRight(){
-		float ballX = level.getScale().metersToPixels(level.getBall().getBody().getPosition().x);
-		if(ballX + (width/2) < mapX){
-			return true;
-		}
-		return false;
+		float ballX = level.getBall().getX();
+		return ballX + (width/2) < mapX;
 	}
+
 	private boolean isBallInSafeXLeft(){
-		float ballX = level.getScale().metersToPixels(level.getBall().getBody().getPosition().x);
-		if(ballX - (width/2) > 0){
-			return true;
-		}
-		return false;
+		float ballX = level.getBall().getX();
+		return ballX - (width/2) > 0;
 	}
+
 	private boolean isBallInSafeYTop(){
-		float ballY = level.getScale().metersToPixels(level.getBall().getBody().getPosition().y);
-		if(ballY + (height/2) < mapY){
-			return true;
-		}
-		return false;
+		float ballY = level.getBall().getY();
+		return ballY + (height/2) < mapY;
 	}
+
 	private boolean isBallInSafeYBottom(){
-		float ballY = level.getScale().metersToPixels(level.getBall().getBody().getPosition().y);
-		if(ballY - (height/2) > 0){
-			return true;
-		}
-		return false;
+		float ballY = level.getBall().getY();;
+		return ballY - (height/2) > 0;
 	}
 
 	@Override

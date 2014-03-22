@@ -17,7 +17,6 @@ public class FinishLine extends AbstractWorldObject implements BallCollisionList
 	public FinishLine(Body body, Level level) {
 		super(body);
 		this.level = level;
-        body.setUserData(this);
 	}
 
 	/**

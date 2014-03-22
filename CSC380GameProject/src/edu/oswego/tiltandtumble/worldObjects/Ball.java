@@ -26,7 +26,6 @@ public class Ball extends AbstractWorldObject implements MapRenderable, Disposab
     public Ball(Body body, float diameter, UnitScale scale) {
         super(body);
         this.scale = scale;
-        body.setUserData(this);
 
         // http://opengameart.org/content/orbs-wo-drop-shadows
         texture = new Texture(Gdx.files.internal("data/GreenOrb.png"));

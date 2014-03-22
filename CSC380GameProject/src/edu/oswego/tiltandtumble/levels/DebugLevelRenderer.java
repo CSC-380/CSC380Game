@@ -30,8 +30,8 @@ public class DebugLevelRenderer implements LevelRenderer {
 	}
 
 	@Override
-	public void render(SpriteBatch batch, BitmapFont font) {
-		decorated.render(batch, font);
+	public void render(float delta, SpriteBatch batch, BitmapFont font) {
+		decorated.render(delta, batch, font);
 
 		OrthographicCamera camera = getCamera();
 		Level level = getLevel();

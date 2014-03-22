@@ -17,7 +17,6 @@ public class Hole extends AbstractWorldObject implements BallCollisionListener {
 	public Hole(Body body, Level level) {
 		super(body);
 		this.level = level;
-		body.setUserData(this);
 	}
 
 	@Override

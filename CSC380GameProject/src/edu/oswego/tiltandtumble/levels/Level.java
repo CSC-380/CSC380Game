@@ -39,6 +39,7 @@ public class Level implements Disposable {
 	private final Ball ball;
 	private final BallController ballController;
 
+	// NOTE: 1/64 means 1px end up being about 1.6cm in world physics
 	private final UnitScale scale = new UnitScale(1f/64f);
 
 	private final int level;
@@ -191,11 +192,11 @@ public class Level implements Disposable {
 		}
 	}
 
-	public void update() {
+	public void update(float delta) {
 		if (currentState == State.STARTED) {
-			ballController.update();
+			ballController.update(delta);
 			for (WorldUpdateable w : updateableObjects) {
-				w.update();
+				w.update(delta);
 			}
 
 			updateScore();

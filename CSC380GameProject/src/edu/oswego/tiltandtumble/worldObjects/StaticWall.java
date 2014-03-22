@@ -11,6 +11,5 @@ public class StaticWall extends AbstractWorldObject {
 
     public StaticWall(Body body) {
         super(body);
-        body.setUserData(this);
     }
 }

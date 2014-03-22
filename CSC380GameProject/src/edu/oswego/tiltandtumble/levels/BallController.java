@@ -47,7 +47,7 @@ public class BallController extends ClickListener {
 		this.ball = ball;
 	}
 
-	public void update() {
+	public void update(float delta) {
 		if(currentState == State.ACTIVE){
 			float forceX = 0;
 			float forceY = 0;

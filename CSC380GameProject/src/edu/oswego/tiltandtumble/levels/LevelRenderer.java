@@ -11,7 +11,7 @@ public interface LevelRenderer extends Disposable {
 
 	public abstract Level getLevel();
 
-	public abstract void render(SpriteBatch batch, BitmapFont font);
+	public abstract void render(float delta, SpriteBatch batch, BitmapFont font);
 
 	public void updateCamera();
 }

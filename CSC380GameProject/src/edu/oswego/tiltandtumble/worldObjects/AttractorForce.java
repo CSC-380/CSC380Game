@@ -8,6 +8,5 @@ public class AttractorForce extends AbstractWorldObject {
 
 	public AttractorForce(Body body) {
 		super(body);
-        body.setUserData(this);
 	}
 }

@@ -202,9 +202,9 @@ public class GameScreen extends AbstractScreen {
 
 	@Override
 	protected void preStageRenderHook(float delta) {
-		renderer.render(game.getSpriteBatch(), game.getFont());
+		renderer.render(delta, game.getSpriteBatch(), game.getFont());
 		if (level.isStarted()) {
-			level.update();
+			level.update(delta);
 
 		} else if (level.hasFinished()) {
 			if (currentState != State.SCORED) {
