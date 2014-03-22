@@ -12,6 +12,8 @@ import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Ellipse;
+import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Polyline;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -98,21 +100,11 @@ public final class WorldPopulator {
 
 	public MovingWall createMovingWall(MapObject obj, World world,
 			UnitScale scale, Map<String, PathPoint> paths) {
-		// TODO: i need to reorient all the other shapes so that they are
-		//       built at the origin and then transformed to the correct
-		//       position.
-
-//		Shape shape = createShape(obj, scale);
 		PathPoint head = paths.get(obj.getProperties().get("path", String.class));
-
-		PolygonShape shape = new PolygonShape();
-		Rectangle rectangle = ((RectangleMapObject)obj).getRectangle();
-		shape.setAsBox(scale.pixelsToMeters(rectangle.width * 0.5f),
-				scale.pixelsToMeters(rectangle.height * 0.5f));
-
 		Body body = world.createBody(bodyDef.reset().type(MovingWall.BODY_TYPE)
 				.build());
-
+		Shape shape = createShape(obj, scale, body);
+		body.setTransform(head.x, head.y, 0);
 		body.createFixture(fixtureDef.reset().shape(shape)
 				.friction(getFloatProperty(obj, "friction", MovingWall.FRICTION))
 				.density(getFloatProperty(obj, "density", MovingWall.DENSITY))
@@ -120,12 +112,6 @@ public final class WorldPopulator {
 				.build());
 		// dispose after creating fixture
 		shape.dispose();
-
-		body.setTransform(head.x, head.y, 0);
-
-		if (obj instanceof EllipseMapObject) {
-			transformCircleBody((EllipseMapObject)obj, body, scale);
-		}
 
 		// TODO: this will need some sort of graphic passed into it...
 
@@ -136,43 +122,33 @@ public final class WorldPopulator {
 	}
 
 	public StaticWall createStaticWall(MapObject obj, World world, UnitScale scale) {
-		Shape shape = createShape(obj, scale);
-
 		Body body = world.createBody(bodyDef.reset().type(StaticWall.BODY_TYPE)
 				.build());
+		Shape shape = createShape(obj, scale, body);
 		body.createFixture(fixtureDef.reset().shape(shape)
 				.friction(getFloatProperty(obj, "friction", StaticWall.FRICTION))
 				.density(getFloatProperty(obj, "density", StaticWall.DENSITY))
 				.restitution(getFloatProperty(obj, "restitution", StaticWall.RESTITUTION))
 				.build());
-
 		// dispose after creating fixture
 		shape.dispose();
 
-		if (obj instanceof EllipseMapObject) {
-			transformCircleBody((EllipseMapObject)obj, body, scale);
-		}
 		return new StaticWall(body);
 	}
 
 	public PushBumper createPushBumper(MapObject obj, World world,
 			UnitScale scale) {
-		Shape shape = createShape(obj, scale);
-
 		Body body = world.createBody(bodyDef.reset().type(PushBumper.BODY_TYPE)
 				.build());
+		Shape shape = createShape(obj, scale, body);
 		body.createFixture(fixtureDef.reset().shape(shape)
 				.friction(getFloatProperty(obj, "friction", PushBumper.FRICTION))
 				.density(getFloatProperty(obj, "density", PushBumper.DENSITY))
 				.restitution(getFloatProperty(obj, "restitution", PushBumper.RESTITUTION))
 				.build());
-
 		// dispose after creating fixture
 		shape.dispose();
 
-		if (obj instanceof EllipseMapObject) {
-			transformCircleBody((EllipseMapObject)obj, body, scale);
-		}
 		return new PushBumper(body,
 				getFloatProperty(obj, "speed", PushBumper.DEFAULT_SPEED));
 	}
@@ -184,79 +160,62 @@ public final class WorldPopulator {
 					+ obj.getClass().getName());
 		}
 
-		Shape shape = createShape((EllipseMapObject)obj, scale);
-		Gdx.app.log("populating map", "adding " + obj.getName()
-				+ " - " + obj.getClass().getSimpleName()
-				+ " > "+ shape.getClass().getSimpleName());
-
 		Body body = world.createBody(bodyDef
 				.reset()
 				.type(Ball.BODY_TYPE)
 				.angularDampening(getFloatProperty(obj, "angular dampening", Ball.ANGULAR_DAMPENING))
 				.linearDamping(getFloatProperty(obj, "linear dampening", Ball.LINEAR_DAMPENING))
 				.build());
-
+		Shape shape = createShape(obj, scale, body);
 		body.createFixture(fixtureDef.reset().shape(shape)
 				.friction(getFloatProperty(obj, "friction", Ball.FRICTION))
 				.density(getFloatProperty(obj, "density", Ball.DENSITY))
 				.restitution(getFloatProperty(obj, "restitution", Ball.RESTITUTION))
 				.build());
-
 		float diameter = scale.metersToPixels(shape.getRadius()) * 2;
-
 		// dispose after creating fixture
 		shape.dispose();
 
-		transformCircleBody((EllipseMapObject)obj, body, scale);
 		return new Ball(body, diameter, scale);
 	}
 
 	public FinishLine createFinishLine(MapObject obj, Level level,
 			World world, UnitScale scale) {
-		Shape shape = createShape(obj, scale);
-
 		Body body = world.createBody(bodyDef.reset().type(FinishLine.BODY_TYPE)
 				.build());
+		Shape shape = createShape(obj, scale, body);
 		body.createFixture(fixtureDef.reset().shape(shape)
 				.isSensor(FinishLine.IS_SENSOR).build());
-
 		// dispose after creating fixture
 		shape.dispose();
 
-		if (obj instanceof EllipseMapObject) {
-			transformCircleBody((EllipseMapObject)obj, body, scale);
-		}
 		return new FinishLine(body, level);
 	}
 
 	public Hole createHole(MapObject obj, Level level, World world,
 			UnitScale scale) {
-		Shape shape = createShape(obj, scale);
-
 		Body body = world.createBody(bodyDef.reset().type(Hole.BODY_TYPE)
 				.build());
+		Shape shape = createShape(obj, scale, body);
 		body.createFixture(fixtureDef.reset().shape(shape)
 				.isSensor(Hole.IS_SENSOR).build());
 
 		// dispose after creating fixture
 		shape.dispose();
 
-		if (obj instanceof EllipseMapObject) {
-			transformCircleBody((EllipseMapObject)obj, body, scale);
-		}
 		return new Hole(body, level);
 	}
 
-	private Shape createShape(MapObject object, UnitScale scale) {
+	private Shape createShape(MapObject object, UnitScale scale, Body body) {
 		Shape shape;
 		if (object instanceof PolygonMapObject) {
-			shape = createShape((PolygonMapObject)object, scale);
+			shape = createShape((PolygonMapObject)object, scale, body);
 		} else if (object instanceof RectangleMapObject) {
-			shape = createShape((RectangleMapObject)object, scale);
+			shape = createShape((RectangleMapObject)object, scale, body);
 		} else if (object instanceof EllipseMapObject) {
-			shape = createShape((EllipseMapObject)object, scale);
+			shape = createShape((EllipseMapObject)object, scale, body);
 		} else if (object instanceof PolylineMapObject) {
-			shape = createShape((PolylineMapObject)object, scale);
+			shape = createShape((PolylineMapObject)object, scale, body);
 		} else {
 			throw new IllegalArgumentException(object.getName()
 					+ " Unsupported MapObject: "
@@ -268,9 +227,10 @@ public final class WorldPopulator {
 		return shape;
 	}
 
-	private Shape createShape(PolylineMapObject object, UnitScale scale) {
+	private Shape createShape(PolylineMapObject object, UnitScale scale, Body body) {
 		ChainShape shape = new ChainShape();
-		float[] vertices = object.getPolyline().getTransformedVertices();
+		Polyline polyline = object.getPolyline();
+		float[] vertices = polyline.getTransformedVertices();
 		Vector2[] worldVertices = new Vector2[vertices.length / 2];
 		for (int i = 0; i < worldVertices.length; ++i) {
 			worldVertices[i] = new Vector2(
@@ -284,60 +244,60 @@ public final class WorldPopulator {
 		else {
 			shape.createChain(worldVertices);
 		}
+		body.setTransform(
+				scale.pixelsToMeters(polyline.getOriginX()),
+				scale.pixelsToMeters(polyline.getOriginY()),
+				0);
 		return shape;
 	}
 
-	private Shape createShape(PolygonMapObject object, UnitScale scale) {
+	private Shape createShape(PolygonMapObject object, UnitScale scale, Body body) {
 		// NOTE: when creating the map objects the polygons must have no
 		// more than 8 vertices and must not be concave. this is a
 		// limitation of the physics engine. so complex shapes need to be
 		// composed of multiple adjacent polygons.
 		PolygonShape shape = new PolygonShape();
-		float[] vertices = object.getPolygon().getTransformedVertices();
+		Polygon polygon = object.getPolygon();
+		float[] vertices = polygon.getVertices();
 		float[] worldVertices = new float[vertices.length];
 		for (int i = 0; i < vertices.length; ++i) {
 			worldVertices[i] = scale.pixelsToMeters(vertices[i]);
 		}
 		shape.set(worldVertices);
+		body.setTransform(
+				scale.pixelsToMeters(polygon.getX()),
+				scale.pixelsToMeters(polygon.getY()),
+				0);
 		return shape;
 	}
 
-	private Shape createShape(RectangleMapObject object, UnitScale scale) {
+	private Shape createShape(RectangleMapObject object, UnitScale scale, Body body) {
 		PolygonShape shape = new PolygonShape();
 		Rectangle rectangle = object.getRectangle();
-		Vector2 center = new Vector2(scale.pixelsToMeters(rectangle.x
-				+ (rectangle.width * 0.5f)), scale.pixelsToMeters(rectangle.y
-				+ (rectangle.height * 0.5f)));
 		shape.setAsBox(scale.pixelsToMeters(rectangle.width * 0.5f),
-				scale.pixelsToMeters(rectangle.height * 0.5f), center, 0.0f);
+				scale.pixelsToMeters(rectangle.height * 0.5f));
+		Vector2 center = new Vector2();
+		rectangle.getCenter(center);
+		center.scl(scale.getScale());
+		body.setTransform(center, 0);
 		return shape;
 	}
 
-	private Shape createShape(EllipseMapObject object, UnitScale scale) {
+	private Shape createShape(EllipseMapObject object, UnitScale scale, Body body) {
 		Gdx.app.log("warning", "Converting ellipse to a circle");
 		// NOTE: there are no ellipse shapes so just convert it to a circle
 		Ellipse ellipse = object.getEllipse();
 		CircleShape shape = new CircleShape();
 		shape.setRadius(scale
 				.pixelsToMeters(((ellipse.width * 0.5f) + (ellipse.height * 0.5f)) * 0.5f));
-		// NOTE: setting position here seems to cause really weird things to happen.
-		//       seems like a bug somewhere with libgdx or box2d.
-		return shape;
-	}
 
-	private void transformCircleBody(EllipseMapObject obj, Body body,
-			UnitScale scale) {
-		// NOTE: there seems to be some sort of bug with setting the position
-		//       on the shape and then having it translate to the body.
-		//       This works fine for everything but CircleShape. So we need
-		//       to transform the body instead.
-		Ellipse ellipse = obj.getEllipse();
 		body.setTransform(
 				scale.pixelsToMeters(ellipse.x
 						+ (ellipse.width * 0.5f)),
 				scale.pixelsToMeters(ellipse.y
 						+ (ellipse.height * 0.5f)),
 				body.getAngle());
+		return shape;
 	}
 
 	private float getFloatProperty(MapObject object, String key, float def) {

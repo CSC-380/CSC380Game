@@ -10,7 +10,7 @@
  </layer>
  <layer name="map" width="100" height="20">
   <data encoding="base64" compression="zlib">
-   eJztmMsNwjAQRFfENANccoYrPdADdBAKoAYKogXawRH2xdpN1rtJ5MM8aQ5ObEeap3yUfk/UI03l2BFdY04xgCd3NXX+5ewvX2N0cUtOAM+WPs7JxQU+REof0tgSaU8gY+3u3f2jmQsfdmq7g491sTyLpLXlcVCPpjv42A74aIup76ul9gR64KMtuO6073HtGOiBj7bQPp/gw89hJydj8TEHfPDU/Gua6xA+/Gh8lHM1a7ncA9En5hHgYwm8HY4uvskJfPjxdjgkF89Qf28h6+cH0bZbrQ==
+   eJztmMsNwjAQRFfEUAxwyRmu9EAP0AEUAC1QEC3QDo5iC2R2w66dRD7Mk+bgxE6kecq3XRK1SFXZNEQHn60P4IldDe2/FfYXz9G5OAYngGdOH7vgYg8fIqkPaZwT6ZhAJre7R9NHMxc+8rF2Bx/TknMvktam24EdTXfwMR/wURdD71djHRPogY+64LrTPse1Y6AHPuqC6/6++uR7XrpGOwY964WciPZ5Yf1mhI9fLP+a/nUIH+VofKRzNWu5nBzR0+fs4GMMSjvsXLyCE/gop7TDS3BxdfZrC5k+b/O0XVo=
   </data>
  </layer>
  <objectgroup name="collision" width="100" height="20">
@@ -25,8 +25,6 @@
   <object name="StaticWall" x="2" y="1" width="28" height="637"/>
   <object name="StaticWall" x="1" y="610" width="3196" height="27"/>
   <object name="StaticWall" x="2977" y="192" width="125" height="93"/>
-  <object name="StaticWall" x="3040" y="352" width="63" height="95"/>
-  <object name="StaticWall" x="2912" y="353" width="62" height="92"/>
   <object name="StaticWall" x="2688" y="512" width="383" height="30"/>
   <object name="StaticWall" x="2624" y="30" width="30" height="97"/>
   <object name="StaticWall" x="2655" y="96" width="450" height="30"/>
@@ -48,6 +46,15 @@
    <properties>
     <property name="path" value="p1"/>
    </properties>
+  </object>
+  <object name="StaticWall" x="2911" y="351">
+   <polygon points="0,0 1,96 65,96 65,0"/>
+  </object>
+  <object name="StaticWall" x="3039" y="351">
+   <polygon points="0,0 0,97 64,97 65,0"/>
+  </object>
+  <object name="Hole" x="2656" y="417">
+   <polyline points="0,0 4,16 89,16 96,-1"/>
   </object>
  </objectgroup>
  <objectgroup name="paths" width="100" height="20">
