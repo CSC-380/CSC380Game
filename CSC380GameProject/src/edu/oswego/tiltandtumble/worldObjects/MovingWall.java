@@ -60,6 +60,7 @@ public class MovingWall extends AbstractWorldObject
 
 	@Override
 	public void update(float delta) {
+		// TODO: this can be cleaned up some using the functions on the Vector2 class
 		Vector2 start = body.getPosition();
 		float distanceToTravel = speed * delta;
 		float distanceToPoint = getDistanceToNextPoint(nodes.current());

@@ -106,7 +106,14 @@ public final class WorldPopulator {
 		Shape shape = createShape(obj, scale, body);
 		// TODO: This should move to the spot that its closest on the line to
 		//       the center of the shape, this would allow multiple staggered
-		//       walls that are working on the same path.
+		//       walls that are working on the same path. use the Vector2 class
+		//       for this.
+		//       This link could be useful.
+		//       http://nic-gamedev.blogspot.com/2011/11/using-vector-mathematics-and-bit-of_08.html
+		//       I would need to iterate over each segment getting the distance
+		//       to each one. Then take the one with the shortest distance and
+		//       treat that as the starting point.
+
 		body.setTransform(head.x, head.y, 0);
 		body.createFixture(fixtureDef.reset().shape(shape)
 				.friction(getFloatProperty(obj, "friction", MovingWall.FRICTION))
