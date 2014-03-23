@@ -1,10 +1,12 @@
 package edu.oswego.tiltandtumble.levels;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class DefaultLevelRenderer implements LevelRenderer {
@@ -12,17 +14,27 @@ public class DefaultLevelRenderer implements LevelRenderer {
 	private final OrthogonalTiledMapRenderer mapRenderer;
 
 	private final Level level;
-	float width;
-	float height;
-	int mapX;
-	int mapY;
+	private final float width;
+	private final float height;
+	private final int mapWidth;
+	private final int mapHeight;
+
+	private final Texture texture;
+	private final TextureRegion background;
 
 	public DefaultLevelRenderer(Level level, float viewportWidth, float viewportHeight) {
 		this.level = level;
 		width = viewportWidth;
 		height = viewportHeight;
-		mapX = level.getMapWidth();
-		mapY = level.getMapHeight() + 30;//adding 30 for HUD
+
+		MapProperties prop = level.getMap().getProperties();
+
+		mapWidth = prop.get("width", Integer.class)
+				* prop.get("tilewidth", Integer.class);
+		mapHeight = (prop.get("height", Integer.class)
+				* prop.get("tileheight", Integer.class))
+				+ 32; // adding extra for HUD
+
 		camera = new OrthographicCamera();
 
 		// NOTE: if we set the scaling based on the texture size then
@@ -31,22 +43,14 @@ public class DefaultLevelRenderer implements LevelRenderer {
 		mapRenderer = new OrthogonalTiledMapRenderer(level.getMap(), 1);
 		mapRenderer.setView(camera);
 
-
-		// TODO: figure out how to scale this to different screen sizes
 		camera.setToOrtho(false, width, height);
-		if(!this.isBallInSafeXLeft()){
-			camera.position.set(
-					width/2,
-					height/2,
-					camera.position.z);
-		camera.update();
-		}else if(!this.isBallInSafeXRight()){
-			camera.position.set(
-					mapX - width/2,
-					height/2,
-					camera.position.z);
-		camera.update();
-		}
+
+		updateCamera();
+
+		// TODO: parallax scrolling would be kind of cool to add...
+		String bgFile = prop.get("background image", String.class);
+		texture = new Texture(Gdx.files.internal("data/" + bgFile));
+		background = new TextureRegion(texture);
 	}
 
 	@Override
@@ -63,9 +67,11 @@ public class DefaultLevelRenderer implements LevelRenderer {
 	public void render(float delta, SpriteBatch batch, BitmapFont font) {
 		updateCamera();
 
-		// clear the screen
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		if (background != null) {
+			batch.begin();
+			batch.draw(background, 0, 0);
+			batch.end();
+		}
 
 		mapRenderer.setView(camera);
 		mapRenderer.render();
@@ -78,43 +84,36 @@ public class DefaultLevelRenderer implements LevelRenderer {
 
 	@Override
 	public void updateCamera() {
-		if(this.isBallInSafeXRight() && this.isBallInSafeXLeft()){
-			camera.position.set(
-					level.getBall().getMapX(),
-					camera.position.y,
-					camera.position.z);
+		// we need to always set the position and update the camera
+		// but we need to make sure the position is valid...
+
+		float x = level.getBall().getMapX();
+		if (x > (mapWidth - (width / 2))) {
+			x = mapWidth - (width / 2);
+		} else if (x < (width / 2)) {
+			x = width / 2;
 		}
-		if(this.isBallInSafeYTop() && this.isBallInSafeYBottom()){
-			camera.position.set(
-					camera.position.x,
-					level.getBall().getMapY(),
-					camera.position.z);
+
+		float y = level.getBall().getMapY();
+		if (y > (mapHeight - (height / 2))) {
+			y = mapHeight - (height / 2);
+		} else if (y < (height / 2)) {
+			y = height / 2;
 		}
+
+		// the camera center.
+		camera.position.set(
+				x,
+				y,
+				camera.position.z);
 		camera.update();
-	}
-
-	private boolean isBallInSafeXRight(){
-		float ballX = level.getBall().getMapX();
-		return ballX + (width/2) < mapX;
-	}
-
-	private boolean isBallInSafeXLeft(){
-		float ballX = level.getBall().getMapX();
-		return ballX - (width/2) > 0;
-	}
-
-	private boolean isBallInSafeYTop(){
-		float ballY = level.getBall().getMapY();
-		return ballY + (height/2) < mapY;
-	}
-
-	private boolean isBallInSafeYBottom(){
-		float ballY = level.getBall().getMapY();;
-		return ballY - (height/2) > 0;
 	}
 
 	@Override
 	public void dispose() {
 		mapRenderer.dispose();
+		if (texture != null) {
+			texture.dispose();
+		}
 	}
 }

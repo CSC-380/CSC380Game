@@ -146,7 +146,7 @@ public class GameScreen extends AbstractScreen {
 		hudStyle.titleFont = skin.getFont("default");
 		hudStyle.titleFontColor = Color.WHITE;
 		Window window = new Window("",hudStyle);
-		window.setHeight(30);
+		window.setHeight(32);
 
 		window.setPosition(0, stage.getHeight());
 		window.setWidth(stage.getWidth());
@@ -229,7 +229,6 @@ public class GameScreen extends AbstractScreen {
 		}
 	}
 
-
 	@Override
 	public void pause() {
 		pauseDialog.show(stage);
@@ -244,5 +243,4 @@ public class GameScreen extends AbstractScreen {
 		this.currentState = State.PLAYING;
 		level.resume();
 	}
-
 }

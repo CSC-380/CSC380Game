@@ -31,6 +31,7 @@ import edu.oswego.tiltandtumble.worldObjects.FinishLine;
 import edu.oswego.tiltandtumble.worldObjects.Hole;
 import edu.oswego.tiltandtumble.worldObjects.MovingWall;
 import edu.oswego.tiltandtumble.worldObjects.PathPoint;
+import edu.oswego.tiltandtumble.worldObjects.PathPointTraverser;
 import edu.oswego.tiltandtumble.worldObjects.PushBumper;
 import edu.oswego.tiltandtumble.worldObjects.StaticWall;
 import edu.oswego.tiltandtumble.worldObjects.Teleporter;
@@ -46,9 +47,6 @@ public final class WorldPopulator {
 	public Ball populateWorldFromMap(Level level, TiledMap map, World world,
 			UnitScale scale) {
 		Ball ball = null;
-for (MapLayer layer : map.getLayers()) {
-	Gdx.app.log("Layers", layer.toString() + " " + layer.getName());
-}
 		MapLayer layer = map.getLayers().get("collision");
 		Map<String, PathPoint> paths = getPaths(map, world, scale);
 		TeleportationMeshHelper meshHelper = new TeleportationMeshHelper();
@@ -121,7 +119,8 @@ for (MapLayer layer : map.getLayers()) {
 				body,
 				selector,
 				Boolean.valueOf(obj.getProperties().get("reset velocity", "true", String.class)),
-				level.getBallController());
+				level.getBallController(),
+				getFloatProperty(obj, "wait time", Teleporter.WAIT_TIME));
 		meshHelper.add(
 				obj.getProperties().get("id", String.class),
 				teleporter, selector,
@@ -135,9 +134,33 @@ for (MapLayer layer : map.getLayers()) {
 
 		if (layer != null) {
 			for (MapObject obj : layer.getObjects()) {
-				if (obj instanceof PolylineMapObject && obj.getName() != null) {
+				if (obj.getName() != null) {
+					float[] vertices;
 					boolean loop = Boolean.valueOf(obj.getProperties().get("loop", "false", String.class));
-					float[] vertices = ((PolylineMapObject)obj).getPolyline().getTransformedVertices();
+					if (obj instanceof PolylineMapObject) {
+						vertices = ((PolylineMapObject)obj).getPolyline().getTransformedVertices();
+					}
+					else if (obj instanceof PolygonMapObject) {
+						vertices = ((PolygonMapObject)obj).getPolygon().getTransformedVertices();
+						loop = true;
+					}
+					else if (obj instanceof RectangleMapObject) {
+						vertices = new float[8];
+						Rectangle r = ((RectangleMapObject)obj).getRectangle();
+						vertices[0] = r.x;
+						vertices[1] = r.y;
+						vertices[2] = r.x + r.width;
+						vertices[3] = r.y;
+						vertices[4] = r.x + r.width;
+						vertices[5] = r.y + r.height;
+						vertices[6] = r.x;
+						vertices[7] = r.y + r.height;
+						loop = true;
+					}
+					else {
+						// we don't support circles for this at this point in time...
+						continue;
+					}
 					PathPoint head = null;
 					PathPoint last = null;
 					for (int i = 0; i < vertices.length; i += 2) {
@@ -246,9 +269,10 @@ for (MapLayer layer : map.getLayers()) {
 		// dispose after creating fixture
 		shape.dispose();
 
+		float speed = getFloatProperty(obj, "speed", MovingWall.DEFAULT_SPEED);
 		return new MovingWall(body,
-				getFloatProperty(obj, "speed", MovingWall.DEFAULT_SPEED),
-				result.head,
+				Math.abs(speed),
+				new PathPointTraverser(result.head, speed >= 0),
 				obj.getProperties().get("sprite", MovingWall.DEFAULT_SPRITE, String.class),
 				dimensions,
 				scale);

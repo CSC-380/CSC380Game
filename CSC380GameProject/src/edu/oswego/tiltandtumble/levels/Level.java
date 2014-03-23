@@ -5,7 +5,6 @@ import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
@@ -43,8 +42,6 @@ public class Level implements Disposable {
 	private final UnitScale scale = new UnitScale(1f/64f);
 
 	private final int level;
-	int mapPixelWidth;
-	int mapPixelHeight;
 	private State currentState;
 	private boolean failed = false;
 
@@ -64,15 +61,6 @@ public class Level implements Disposable {
 		currentState = State.NOT_STARTED;
 
 		map = loadMap(level);
-		MapProperties prop = map.getProperties();
-
-		int mapWidth = prop.get("width", Integer.class);
-		int mapHeight = prop.get("height", Integer.class);
-		int tilePixelWidth = prop.get("tilewidth", Integer.class);
-		int tilePixelHeight = prop.get("tileheight", Integer.class);
-
-		mapPixelWidth = mapWidth * tilePixelWidth;
-		mapPixelHeight = mapHeight * tilePixelHeight;
 
 		baseScore = map.getProperties().get("score", DEFAULT_SCORE, Integer.class);
 		score = new Score(baseScore, 0);
@@ -91,12 +79,6 @@ public class Level implements Disposable {
 	public TiledMap getMap() {
 		return map;
 
-	}
-	public int getMapWidth(){
-		return mapPixelWidth;
-	}
-	public int getMapHeight(){
-		return mapPixelHeight;
 	}
 
 	public World getWorld() {

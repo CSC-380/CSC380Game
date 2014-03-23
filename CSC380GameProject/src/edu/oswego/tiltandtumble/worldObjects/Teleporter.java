@@ -14,6 +14,7 @@ public class Teleporter extends TeleporterTarget
 
 	// in seconds
 	public static final float WAIT_TIME = 3;
+	private final float waitTime;
 
 	private static enum State {
 		DISABLED,
@@ -26,9 +27,10 @@ public class Teleporter extends TeleporterTarget
 	private State currentState;
 
 	public Teleporter(Body body, TeleporterSelectorStrategy selector,
-			boolean resetVelocity, BallController ballController) {
+			boolean resetVelocity, BallController ballController, float waitTime) {
 		super(body, resetVelocity, ballController);
 		this.selector = selector;
+		this.waitTime = waitTime;
 		currentState = State.ACTIVE;
 	}
 
@@ -44,7 +46,7 @@ public class Teleporter extends TeleporterTarget
 		super.update(delta);
 		if (currentState == State.WAITING) {
 			disabledTime += delta;
-			if (disabledTime > WAIT_TIME) {
+			if (disabledTime > waitTime) {
 				currentState = State.ACTIVE;
 			}
 		}

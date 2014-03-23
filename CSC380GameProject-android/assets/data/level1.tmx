@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="100" height="20" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="background image" value="NASA_HiddenUniverse_08.jpg"/>
+ </properties>
  <tileset firstgid="1" name="sci-fi-platformer-tiles-32x32-extension_0" tilewidth="32" tileheight="32">
   <image source="sci-fi-platformer-tiles-32x32-extension_0.png" width="512" height="4096"/>
  </tileset>
@@ -10,7 +13,7 @@
  </layer>
  <layer name="map" width="100" height="20">
   <data encoding="base64" compression="zlib">
-   eJztmNENwiAURYlFh1F/+q2/7uAOuoEOoB8s4ECu4DrSFGKl8PooFJt4T3JjqkCTe0JbWy+FqJFZZVMJcdDZ6gA/tivq91tif/YcjYujcaKIc/4zJX3sjIs99kcQ10foeEx8ayrnE3wz5CPEo2rDGctdE/SJ7Q4+pmXMtSg01/0exDPUnYKPonC6g49yUM9XudYEfOBjXrjdKeIaFJqD61U+fN3Bx+/wdX9ffdId587hHoOW9SIcC/d+EfufET76xLxrojq09xTuOyj48MPx4Y7lzPXlJIV46pwlfOQgtcPGxcs4gY80FLFvuFyMi6uM31vI9HkD9m1h6g==
+   eJztmM8NwiAchYmlDqNeetarO7iDbqAD6IEFHMgVXEeaQkoof34Ipca8L3kHLGDyvpRqu5axDlk0Gj3eNowdZXYywrgORuzuXNfvTZnv6F2clBP4cFPTx165OGTu98/4zhZ7XOK8Ei3uixgxHz6ezRDKXOqeYEpqd/AxL9+cRb619ucgnVh3Aj6qQukOPuoR+n1Vak9ABz5+C7s7ETiDfGtwXpXD1R18LIer+8d6jDnPXkMdg4HNyh8N9XmR+p8RPqakvGsKdaifKdR3UfDhhuLDnktZ68qZM/aSuXD4KEFuh72Lt3ICH/nkdnhVLm48/d5C5onp9gNAHWES
   </data>
  </layer>
  <objectgroup name="collision" width="100" height="20">
@@ -20,10 +23,10 @@
   <object name="Ball" x="3108" y="548" width="24" height="24">
    <ellipse/>
   </object>
-  <object name="StaticWall" x="0" y="2" width="3197" height="27"/>
+  <object name="StaticWall" x="0" y="2" width="3103" height="29"/>
   <object name="StaticWall" x="3169" y="1" width="29" height="636"/>
   <object name="StaticWall" x="2" y="1" width="28" height="637"/>
-  <object name="StaticWall" x="1" y="610" width="3196" height="27"/>
+  <object name="StaticWall" x="1" y="610" width="3103" height="29"/>
   <object name="StaticWall" x="2977" y="192" width="125" height="93"/>
   <object name="StaticWall" x="2688" y="512" width="383" height="30"/>
   <object name="StaticWall" x="2624" y="30" width="30" height="97"/>
@@ -63,6 +66,7 @@
   <object name="MovingWall" x="3104" y="129" width="64" height="64">
    <properties>
     <property name="path" value="p1"/>
+    <property name="speed" value="-1.5"/>
     <property name="sprite" value="WallGrey2x2.png"/>
    </properties>
   </object>
@@ -83,9 +87,9 @@
     <property name="target" value="start"/>
    </properties>
   </object>
-  <object name="Teleporter" x="136" y="135" width="16" height="16">
+  <object name="Teleporter" x="39" y="137" width="16" height="16">
    <properties>
-    <property name="id" value="end2"/>
+    <property name="id" value="end4"/>
     <property name="target" value="start"/>
    </properties>
   </object>
@@ -95,16 +99,20 @@
     <property name="target" value="start"/>
    </properties>
   </object>
-  <object name="Teleporter" x="2536" y="585" width="16" height="14">
+  <object name="Teleporter" x="3105" y="10" width="62" height="6">
    <properties>
     <property name="id" value="velocity1"/>
+    <property name="reset velocity" value="false"/>
     <property name="target" value="velocity2"/>
+    <property name="wait time" value="0"/>
    </properties>
   </object>
-  <object name="TeleporterTarget" x="2824" y="568" width="16" height="14">
+  <object name="Teleporter" x="3106" y="625" width="62" height="5">
    <properties>
     <property name="id" value="velocity2"/>
     <property name="reset velocity" value="false"/>
+    <property name="target" value="velocity1"/>
+    <property name="wait time" value="0"/>
    </properties>
   </object>
   <object name="Teleporter" x="2631" y="359" width="16" height="14">
@@ -131,10 +139,41 @@
     <property name="target" value="trm1,trm2,trm3"/>
    </properties>
   </object>
+  <object name="MovingWall" x="46" y="159" width="64" height="64">
+   <properties>
+    <property name="path" value="pexit"/>
+    <property name="speed" value="2"/>
+   </properties>
+  </object>
+  <object name="MovingWall" x="160" y="46" width="64" height="64">
+   <properties>
+    <property name="path" value="pexit"/>
+    <property name="speed" value="2"/>
+   </properties>
+  </object>
+  <object name="MovingWall" x="47" y="-67" width="64" height="64">
+   <properties>
+    <property name="path" value="pexit"/>
+    <property name="speed" value="2"/>
+   </properties>
+  </object>
+  <object name="StaticWall" x="3104" y="638">
+   <polyline points="0,0 66,0"/>
+  </object>
+  <object name="StaticWall" x="3103" y="3">
+   <polyline points="0,0 67,0"/>
+  </object>
+  <object name="Teleporter" x="137" y="39" width="16" height="16">
+   <properties>
+    <property name="id" value="end2"/>
+    <property name="target" value="start"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="paths" width="100" height="20">
   <object name="p1" x="3157" y="400">
    <polyline points="-149,79 -149,-80 -21,-81 -20,-239 -213,-239 -213,-80 -405,-80"/>
   </object>
+  <object name="pexit" x="-33" y="-35" width="226" height="226"/>
  </objectgroup>
 </map>

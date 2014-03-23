@@ -23,20 +23,23 @@ public class MovingWall extends AbstractWorldObject
 	public static final String DEFAULT_SPRITE = "WallGrey2x2.png";
 
 	private final float speed;
-	private final PathTraverser nodes;
+	private final PathPointTraverser nodes;
 	private final UnitScale scale;
 
 	private final Texture texture;
 	private final Sprite sprite;
 
-	public MovingWall(Body body, float speed, PathPoint path,
+	private final Vector2 startNode = new Vector2();
+	private final Vector2 endNode = new Vector2();
+
+	public MovingWall(Body body, float speed, PathPointTraverser nodes,
 			String spriteName, Vector2 dimensions, UnitScale scale) {
 		super(body);
 
 		this.speed = speed;
 		this.scale = scale;
 
-		nodes = new PathTraverser(path);
+		this.nodes = nodes;
 		nodes.next();
 
 		texture = new Texture(Gdx.files.internal("data/" + spriteName));
@@ -60,67 +63,26 @@ public class MovingWall extends AbstractWorldObject
 
 	@Override
 	public void update(float delta) {
-		// TODO: this can be cleaned up some using the functions on the Vector2 class
-		Vector2 start = body.getPosition();
+		startNode.set(body.getPosition());
 		float distanceToTravel = speed * delta;
-		float distanceToPoint = getDistanceToNextPoint(nodes.current());
+		float distanceToPoint = body.getPosition()
+				.dst(nodes.current().x, nodes.current().y);
 		// move along the path until we find the segment we need to stop on
 		while (distanceToTravel > distanceToPoint) {
 			distanceToTravel = distanceToTravel - distanceToPoint;
-			start.x = nodes.current().x;
-			start.y = nodes.current().y;
+			startNode.set(nodes.current().x, nodes.current().y);
+
 			nodes.next();
-			distanceToPoint = getDistanceToNextPoint(nodes.current());
+			distanceToPoint = body.getPosition()
+					.dst(nodes.current().x, nodes.current().y);
 		}
+		endNode.set(nodes.current().x, nodes.current().y);
+
 		// now we have a valid distance on the next line segment.
 		// C = A + k(B - A)
 		final float distance = distanceToTravel / distanceToPoint;
 		body.setTransform(
-				start.x + (distance * (nodes.current().x - start.x)),
-				start.y + (distance * (nodes.current().y - start.y)),
-				0);
-
-	}
-
-	private float getDistanceToNextPoint(PathPoint point) {
-		float x1 = body.getPosition().x;
-		float y1 = body.getPosition().y;
-		float x2 = point.x;
-		float y2 = point.y;
-
-		return (float)Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-	}
-
-	private static class PathTraverser {
-		private boolean forward = true;
-		private PathPoint current;
-
-		PathTraverser(PathPoint node) {
-			current = node;
-		}
-
-		PathPoint current() {
-			return current;
-		}
-
-		PathPoint next() {
-			if (forward) {
-				if (current.hasNext()) {
-					current = current.getNext();
-				} else {
-					forward = !forward;
-					current = current.getPrevious();
-				}
-			} else {
-				if (current.hasPrevious()) {
-					current = current.getPrevious();
-				} else {
-					forward = !forward;
-					current = current.getNext();
-				}
-			}
-			return current;
-		}
+				endNode.sub(startNode).scl(distance).add(startNode), 0);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
@@ -12,6 +13,7 @@ public class TeleporterTarget extends AbstractWorldObject implements WorldUpdate
 	private final boolean resetVelocity;
 	private final BallController ballController;
 	private Ball pendingWarp = null;
+	private Vector2 pendingVelocity = null;
 
 	public TeleporterTarget(Body body, boolean resetVelocity, BallController ballController) {
 		super(body);
@@ -25,6 +27,9 @@ public class TeleporterTarget extends AbstractWorldObject implements WorldUpdate
 			ball.getBody().setAngularVelocity(0);
 			ballController.resetBall();
 		}
+		else {
+			pendingVelocity = ball.getBody().getLinearVelocity();
+		}
 		pendingWarp = ball;
 	}
 
@@ -34,6 +39,11 @@ public class TeleporterTarget extends AbstractWorldObject implements WorldUpdate
 			// calling setTransform from inside the contact listener will
 			// crash the game, so we wait and do it in the update
 			pendingWarp.getBody().setTransform(body.getPosition(), 0);
+			if (pendingVelocity != null) {
+				// see if this fixes the velocity issue....
+				pendingWarp.getBody().setLinearVelocity(pendingVelocity);
+				pendingVelocity = null;
+			}
 			pendingWarp = null;
 		}
 	}
