@@ -33,6 +33,11 @@ import edu.oswego.tiltandtumble.worldObjects.MovingWall;
 import edu.oswego.tiltandtumble.worldObjects.PathPoint;
 import edu.oswego.tiltandtumble.worldObjects.PushBumper;
 import edu.oswego.tiltandtumble.worldObjects.StaticWall;
+import edu.oswego.tiltandtumble.worldObjects.Teleporter;
+import edu.oswego.tiltandtumble.worldObjects.TeleporterRandomSelector;
+import edu.oswego.tiltandtumble.worldObjects.TeleporterRoundRobinSelector;
+import edu.oswego.tiltandtumble.worldObjects.TeleporterSelectorStrategy;
+import edu.oswego.tiltandtumble.worldObjects.TeleporterTarget;
 
 public final class WorldPopulator {
 	private final BodyDefBuilder bodyDef = new BodyDefBuilder();
@@ -41,8 +46,12 @@ public final class WorldPopulator {
 	public Ball populateWorldFromMap(Level level, TiledMap map, World world,
 			UnitScale scale) {
 		Ball ball = null;
+for (MapLayer layer : map.getLayers()) {
+	Gdx.app.log("Layers", layer.toString() + " " + layer.getName());
+}
 		MapLayer layer = map.getLayers().get("collision");
 		Map<String, PathPoint> paths = getPaths(map, world, scale);
+		TeleportationMeshHelper meshHelper = new TeleportationMeshHelper();
 		for (MapObject obj : layer.getObjects()) {
 			if (obj.getName() != null) {
 				if (obj.getName().equals("StaticWall")) {
@@ -55,13 +64,69 @@ public final class WorldPopulator {
 					level.addWorldObject(createFinishLine(obj, level, world, scale));
 				} else if (obj.getName().equals("Hole")) {
 					level.addWorldObject(createHole(obj, level, world, scale));
+				} else if (obj.getName().equals("Teleporter")) {
+					level.addWorldObject(createTeleporter(obj, level, world, scale, meshHelper));
+				} else if (obj.getName().equals("TeleporterTarget")) {
+					level.addWorldObject(createTeleporterTarget(obj, level, world, scale, meshHelper));
 				} else if (obj.getName().equals("Ball")) {
 					ball = createBall(obj, world, scale);
 					level.addWorldObject(ball);
 				}
 			}
 		}
+		meshHelper.buildMesh();
 		return ball;
+	}
+
+	public TeleporterTarget createTeleporterTarget(MapObject obj, Level level,
+			World world, UnitScale scale, TeleportationMeshHelper meshHelper) {
+		Body body = world.createBody(bodyDef.reset().type(TeleporterTarget.BODY_TYPE)
+				.build());
+		Shape shape = createShape(obj, scale, body);
+		body.createFixture(fixtureDef.reset().shape(shape)
+				.isSensor(TeleporterTarget.IS_SENSOR).build());
+		// dispose after creating fixture
+		shape.dispose();
+
+		TeleporterTarget target = new TeleporterTarget(
+				body,
+				Boolean.valueOf(obj.getProperties().get("reset velocity", "true", String.class)),
+				level.getBallController());
+		meshHelper.add(
+				obj.getProperties().get("id", String.class),
+				target);
+		return target;
+	}
+
+	public Teleporter createTeleporter(MapObject obj, Level level, World world,
+			UnitScale scale, TeleportationMeshHelper meshHelper) {
+		Body body = world.createBody(bodyDef.reset().type(Teleporter.BODY_TYPE)
+				.build());
+		Shape shape = createShape(obj, scale, body);
+		body.createFixture(fixtureDef.reset().shape(shape)
+				.isSensor(Teleporter.IS_SENSOR).build());
+
+		// dispose after creating fixture
+		shape.dispose();
+
+		String selectorName = obj.getProperties().get("selector", "Random", String.class);
+		TeleporterSelectorStrategy selector;
+		if (selectorName.equals("Random")) {
+			selector = new TeleporterRandomSelector();
+		} else {
+			selector = new TeleporterRoundRobinSelector();
+		}
+
+		Teleporter teleporter = new Teleporter(
+				body,
+				selector,
+				Boolean.valueOf(obj.getProperties().get("reset velocity", "true", String.class)),
+				level.getBallController());
+		meshHelper.add(
+				obj.getProperties().get("id", String.class),
+				teleporter, selector,
+				obj.getProperties().get("target", "", String.class).split(","));
+		return teleporter;
 	}
 
 	public Map<String, PathPoint> getPaths(TiledMap map, World world, UnitScale scale) {
@@ -100,23 +165,78 @@ public final class WorldPopulator {
 		return paths;
 	}
 
+	private PathResult findClosestPointOnPathToPoint(PathPoint path, Vector2 objPoint) {
+		Vector2 bestPoint = new Vector2(path.x, path.y);
+		float bestDistance = Float.MAX_VALUE;
+		PathPoint bestPath = path;
+
+		PathPoint current = path;
+		PathPoint next = current.getNext();
+		Vector2 start = new Vector2();
+		Vector2 end = new Vector2();
+		int idx = 0;
+		do {
+			start.x = current.x;
+			start.y = current.y;
+			end.x = next.x;
+			end.y = next.y;
+			Gdx.app.log("PointOnPath", "Checking leg " + (++idx) + " " + start + " " + end);
+
+			Vector2 point = findClosestPointOnLineToPoint(start, end, objPoint);
+			if (!point.equals(Vector2.Zero)) {
+				float distance = objPoint.dst(point);
+				Gdx.app.log("PointOnPath", "Distance: " + distance);
+				if (distance < bestDistance) {
+					bestDistance = distance;
+					bestPoint.set(point);
+					bestPath = current;
+					Gdx.app.log("PointOnPath", "New Best Distance!");
+					Gdx.app.log("PointOnPath", "New Best Point: " + bestPoint + " for " + objPoint);
+				}
+			}
+			else {
+				Gdx.app.log("PointOnPath", "Invalid leg found");
+			}
+			current = next;
+			next = current.getNext();
+		} while (next != null && !next.equals(path));
+		Gdx.app.log("PointOnPath", "Best Point: " + bestPoint + " for " + objPoint);
+		return new PathResult(bestPath, bestPoint);
+	}
+
+	private Vector2 findClosestPointOnLineToPoint(Vector2 start, Vector2 end,
+			Vector2 point) {
+		// http://nic-gamedev.blogspot.com/2011/11/using-vector-mathematics-and-bit-of_08.html
+		Vector2 diff = new Vector2(end);
+		diff.sub(start);
+		float len2 = diff.len2();
+
+		Vector2 toPoint = new Vector2(point);
+		toPoint.sub(start);
+		float dot = diff.dot(toPoint);
+
+		float percent = dot / len2;
+		if (percent < 0.0f || percent > 1.0f) {
+			point = Vector2.Zero;
+		}
+
+		return ((new Vector2(end)
+			.sub(start))
+			.scl(percent))
+			.add(start);
+	}
+
 	public MovingWall createMovingWall(MapObject obj, World world,
 			UnitScale scale, Map<String, PathPoint> paths) {
 		PathPoint head = paths.get(obj.getProperties().get("path", String.class));
 		Body body = world.createBody(bodyDef.reset().type(MovingWall.BODY_TYPE)
 				.build());
 		Shape shape = createShape(obj, scale, body);
-		// TODO: This should move to the spot that its closest on the line to
-		//       the center of the shape, this would allow multiple staggered
-		//       walls that are working on the same path. use the Vector2 class
-		//       for this.
-		//       This link could be useful.
-		//       http://nic-gamedev.blogspot.com/2011/11/using-vector-mathematics-and-bit-of_08.html
-		//       I would need to iterate over each segment getting the distance
-		//       to each one. Then take the one with the shortest distance and
-		//       treat that as the starting point.
-
-		body.setTransform(head.x, head.y, 0);
+		// warp to the point closest to the shapes point on the path, just to make sure
+		// we are on the path.
+		PathResult result = findClosestPointOnPathToPoint(head,
+				getCenter(obj).scl(scale.getScale()));
+		body.setTransform(result.point, 0);
 		body.createFixture(fixtureDef.reset().shape(shape)
 				.friction(getFloatProperty(obj, "friction", MovingWall.FRICTION))
 				.density(getFloatProperty(obj, "density", MovingWall.DENSITY))
@@ -128,7 +248,7 @@ public final class WorldPopulator {
 
 		return new MovingWall(body,
 				getFloatProperty(obj, "speed", MovingWall.DEFAULT_SPEED),
-				head,
+				result.head,
 				obj.getProperties().get("sprite", MovingWall.DEFAULT_SPRITE, String.class),
 				dimensions,
 				scale);
@@ -243,7 +363,7 @@ public final class WorldPopulator {
 	private Shape createShape(PolylineMapObject object, UnitScale scale, Body body) {
 		ChainShape shape = new ChainShape();
 		Polyline polyline = object.getPolyline();
-		float[] vertices = polyline.getTransformedVertices();
+		float[] vertices = polyline.getVertices();
 		Vector2[] worldVertices = new Vector2[vertices.length / 2];
 		for (int i = 0; i < worldVertices.length; ++i) {
 			worldVertices[i] = new Vector2(
@@ -258,8 +378,8 @@ public final class WorldPopulator {
 			shape.createChain(worldVertices);
 		}
 		body.setTransform(
-				scale.pixelsToMeters(polyline.getOriginX()),
-				scale.pixelsToMeters(polyline.getOriginY()),
+				scale.pixelsToMeters(polyline.getX()),
+				scale.pixelsToMeters(polyline.getY()),
 				0);
 		return shape;
 	}
@@ -299,18 +419,42 @@ public final class WorldPopulator {
 	private Shape createShape(EllipseMapObject object, UnitScale scale, Body body) {
 		Gdx.app.log("warning", "Converting ellipse to a circle");
 		// NOTE: there are no ellipse shapes so just convert it to a circle
-		Ellipse ellipse = object.getEllipse();
 		CircleShape shape = new CircleShape();
-		shape.setRadius(scale
-				.pixelsToMeters(((ellipse.width * 0.5f) + (ellipse.height * 0.5f)) * 0.5f));
+
+		Vector2 dimensions = getDimensions(object);
+		shape.setRadius(scale.pixelsToMeters(dimensions.x * 0.5f));
+		Vector2 center = getCenter(object);
 
 		body.setTransform(
-				scale.pixelsToMeters(ellipse.x
-						+ (ellipse.width * 0.5f)),
-				scale.pixelsToMeters(ellipse.y
-						+ (ellipse.height * 0.5f)),
+				scale.pixelsToMeters(center.x),
+				scale.pixelsToMeters(center.y),
 				body.getAngle());
 		return shape;
+	}
+
+	private Vector2 getCenter(MapObject object) {
+		Vector2 center = new Vector2();
+		if (object instanceof PolygonMapObject) {
+			Polygon p = ((PolygonMapObject)object).getPolygon();
+			center.x = p.getX();
+			center.y = p.getY();
+		} else if (object instanceof RectangleMapObject) {
+			Rectangle r = ((RectangleMapObject)object).getRectangle();
+			r.getCenter(center);
+		} else if (object instanceof EllipseMapObject) {
+			Ellipse e = ((EllipseMapObject)object).getEllipse();
+			center.x = e.x + (e.width * 0.5f);
+			center.y = e.y + (e.height * 0.5f);
+		} else if (object instanceof PolylineMapObject) {
+			Polyline p = ((PolylineMapObject)object).getPolyline();
+			center.x = p.getX();
+			center.y = p.getY();
+		} else {
+			throw new IllegalArgumentException(object.getName()
+					+ " Unsupported MapObject: "
+					+ object.getClass().getName());
+		}
+		return center;
 	}
 
 	private Vector2 getDimensions(MapObject object) {
@@ -325,8 +469,8 @@ public final class WorldPopulator {
 			dimensions.y = r.height;
 		} else if (object instanceof EllipseMapObject) {
 			Ellipse e = ((EllipseMapObject)object).getEllipse();
-			dimensions.x = (e.width + e.height) / 2;
-			dimensions.y = (e.width + e.height) / 2;
+			dimensions.x = (e.width + e.height) * 0.5f;
+			dimensions.y = dimensions.x;
 		} else if (object instanceof PolylineMapObject) {
 			Polyline p = ((PolylineMapObject)object).getPolyline();
 			float maxX = 0;
@@ -350,6 +494,8 @@ public final class WorldPopulator {
 				}
 				isX = !isX;
 			}
+			dimensions.x = maxX - minX;
+			dimensions.y = maxY - minY;
 		} else {
 			throw new IllegalArgumentException(object.getName()
 					+ " Unsupported MapObject: "
@@ -357,6 +503,7 @@ public final class WorldPopulator {
 		}
 		return dimensions;
 	}
+
 	private float getFloatProperty(MapObject object, String key, float def) {
 		String prop = object.getProperties().get(key, null, String.class);
 		if (prop == null) {
@@ -511,6 +658,46 @@ public final class WorldPopulator {
 			def.restitution = 0;
 			def.isSensor = false;
 			return this;
+		}
+	}
+
+	private static class PathResult {
+		public final PathPoint head;
+		public final Vector2 point;
+
+		public PathResult(PathPoint head, Vector2 point) {
+			this.head = head;
+			this.point = point;
+		}
+	}
+
+	private static class TeleportationMeshHelper {
+		// i need 3 hashes...
+		// map of id to selector
+		// map of id to list of TeleporterTargets
+		// map of id to list of target ids
+		Map<String, TeleporterSelectorStrategy> strategies = new HashMap<String, TeleporterSelectorStrategy>();
+		Map<String, TeleporterTarget> targets = new HashMap<String, TeleporterTarget>();
+		Map<String, String[]> associations = new HashMap<String, String[]>();
+
+		public void add(String id, TeleporterTarget target) {
+			targets.put(id, target);
+		}
+
+		public void add(String id, TeleporterTarget target,
+				TeleporterSelectorStrategy strategy, String[] endPoints) {
+			targets.put(id, target);
+			strategies.put(id, strategy);
+			associations.put(id, endPoints);
+		}
+
+		public void buildMesh() {
+			for (String source : strategies.keySet()) {
+				for (String target : associations.get(source)) {
+					strategies.get(source).addTarget(targets.get(target));
+					Gdx.app.log("TeleporterMesh", "Linking: " + source + " -> " + target);
+				}
+			}
 		}
 	}
 }

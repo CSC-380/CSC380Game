@@ -5,12 +5,12 @@
  </tileset>
  <layer name="background" width="100" height="20">
   <data encoding="base64" compression="zlib">
-   eJztwwENAAAMw6CKmn9tF3JIWDVVVVVVVVVVff4AZ/CWUA==
+   eJzt0cENACAIA0CGcv/Z3MAYPqBck/sXuiJiAQDAcJlUd/5ZJtWdf5ZJh37Vf7NHXYcO957SoV/13150G3vYY6Lb2OMd9gBgsg33o3p8
   </data>
  </layer>
  <layer name="map" width="100" height="20">
   <data encoding="base64" compression="zlib">
-   eJztmMsNwjAQRFfEUAxwyRmu9EAP0AEUAC1QEC3QDo5iC2R2w66dRD7Mk+bgxE6kecq3XRK1SFXZNEQHn60P4IldDe2/FfYXz9G5OAYngGdOH7vgYg8fIqkPaZwT6ZhAJre7R9NHMxc+8rF2Bx/TknMvktam24EdTXfwMR/wURdD71djHRPogY+64LrTPse1Y6AHPuqC6/6++uR7XrpGOwY964WciPZ5Yf1mhI9fLP+a/nUIH+VofKRzNWu5nBzR0+fs4GMMSjvsXLyCE/gop7TDS3BxdfZrC5k+b/O0XVo=
+   eJztmNENwiAURYlFh1F/+q2/7uAOuoEOoB8s4ECu4DrSFGKl8PooFJt4T3JjqkCTe0JbWy+FqJFZZVMJcdDZ6gA/tivq91tif/YcjYujcaKIc/4zJX3sjIs99kcQ10foeEx8ayrnE3wz5CPEo2rDGctdE/SJ7Q4+pmXMtSg01/0exDPUnYKPonC6g49yUM9XudYEfOBjXrjdKeIaFJqD61U+fN3Bx+/wdX9ffdId587hHoOW9SIcC/d+EfufET76xLxrojq09xTuOyj48MPx4Y7lzPXlJIV46pwlfOQgtcPGxcs4gY80FLFvuFyMi6uM31vI9HkD9m1h6g==
   </data>
  </layer>
  <objectgroup name="collision" width="100" height="20">
@@ -42,7 +42,7 @@
   <object name="PushBumper" x="2654" y="30" width="8" height="66"/>
   <object name="PushBumper" x="2817" y="126" width="64" height="8"/>
   <object name="Hole" x="2207" y="462" width="225" height="17"/>
-  <object name="MovingWall" x="2976" y="448" width="64" height="64">
+  <object name="MovingWall" x="2975" y="445" width="64" height="64">
    <properties>
     <property name="path" value="p1"/>
     <property name="sprite" value="WallGrey2x2.png"/>
@@ -56,6 +56,80 @@
   </object>
   <object name="Hole" x="2656" y="417">
    <polyline points="0,0 4,16 89,16 96,-1"/>
+  </object>
+  <object name="Hole" x="331" y="235" width="392" height="137"/>
+  <object name="Hole" x="1065" y="394" width="301" height="76"/>
+  <object name="Hole" x="1612" y="299" width="169" height="204"/>
+  <object name="MovingWall" x="3104" y="129" width="64" height="64">
+   <properties>
+    <property name="path" value="p1"/>
+    <property name="sprite" value="WallGrey2x2.png"/>
+   </properties>
+  </object>
+  <object name="MovingWall" x="2724" y="287" width="64" height="64">
+   <properties>
+    <property name="path" value="p1"/>
+    <property name="sprite" value="WallGrey2x2.png"/>
+   </properties>
+  </object>
+  <object name="TeleporterTarget" x="3103" y="543" width="31" height="31">
+   <properties>
+    <property name="id" value="start"/>
+   </properties>
+  </object>
+  <object name="Teleporter" x="136" y="71" width="16" height="16">
+   <properties>
+    <property name="id" value="end1"/>
+    <property name="target" value="start"/>
+   </properties>
+  </object>
+  <object name="Teleporter" x="136" y="135" width="16" height="16">
+   <properties>
+    <property name="id" value="end2"/>
+    <property name="target" value="start"/>
+   </properties>
+  </object>
+  <object name="Teleporter" x="72" y="136" width="16" height="16">
+   <properties>
+    <property name="id" value="end3"/>
+    <property name="target" value="start"/>
+   </properties>
+  </object>
+  <object name="Teleporter" x="2536" y="585" width="16" height="14">
+   <properties>
+    <property name="id" value="velocity1"/>
+    <property name="target" value="velocity2"/>
+   </properties>
+  </object>
+  <object name="TeleporterTarget" x="2824" y="568" width="16" height="14">
+   <properties>
+    <property name="id" value="velocity2"/>
+    <property name="reset velocity" value="false"/>
+   </properties>
+  </object>
+  <object name="Teleporter" x="2631" y="359" width="16" height="14">
+   <properties>
+    <property name="id" value="trm1"/>
+    <property name="target" value="trm2,trm3,trm4"/>
+   </properties>
+  </object>
+  <object name="Teleporter" x="2791" y="488" width="16" height="14">
+   <properties>
+    <property name="id" value="trm2"/>
+    <property name="target" value="trm1,trm3,trm4"/>
+   </properties>
+  </object>
+  <object name="Teleporter" x="2856" y="488" width="16" height="14">
+   <properties>
+    <property name="id" value="trm3"/>
+    <property name="target" value="trm1,trm2,trm4"/>
+   </properties>
+  </object>
+  <object name="Teleporter" x="2760" y="233" width="16" height="14">
+   <properties>
+    <property name="id" value="trm4"/>
+    <property name="target" value="trm1,trm2,trm3"/>
+   </properties>
   </object>
  </objectgroup>
  <objectgroup name="paths" width="100" height="20">

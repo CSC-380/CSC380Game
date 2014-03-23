@@ -115,6 +115,10 @@ public class Level implements Disposable {
 		return score;
 	}
 
+	public BallController getBallController() {
+		return ballController;
+	}
+
 	public boolean hasNotStarted() {
 		return currentState == State.NOT_STARTED;
 	}

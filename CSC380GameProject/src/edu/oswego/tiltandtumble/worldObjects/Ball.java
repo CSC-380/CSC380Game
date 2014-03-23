@@ -14,7 +14,7 @@ public class Ball extends AbstractWorldObject implements MapRenderable,
 		Disposable {
 	public static final float FRICTION = 0.1f;
 	public static final float DENSITY = 1.0f;
-	public static final float RESTITUTION = 0.7f;
+	public static final float RESTITUTION = 0.5f;
 	public static final BodyType BODY_TYPE = BodyType.DynamicBody;
 	public static final float ANGULAR_DAMPENING = 0.1f;
 	public static final float LINEAR_DAMPENING = 0.1f;
