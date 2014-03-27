@@ -6,19 +6,11 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Peripheral;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 
 import edu.oswego.tiltandtumble.data.HighScores;
 import edu.oswego.tiltandtumble.screens.CreditScreen;
@@ -83,53 +75,8 @@ public class TiltAndTumble extends Game {
 	}
 
 	private void loadSkin() {
-		// TODO: this should load the skin from a resource file.
-
-		// Generate a 1x1 white texture and store it in the skin named "defaultTexture".
-		Pixmap pixmap = new Pixmap(1, 1, Format.RGBA8888);
-		pixmap.setColor(Color.WHITE);
-		pixmap.fill();
-		skin.add("defaultTexture", new Texture(pixmap));
-		// Store the default libgdx font under the name "default".
-		skin.add("default", font);
-
-		// Configure a TextButtonStyle and name it "default". Skin resources are
-		// stored by type, so this doesn't overwrite the font.
-		TextButtonStyle textButtonStyle = new TextButtonStyle();
-		textButtonStyle.up = skin.newDrawable("defaultTexture", Color.BLACK);
-		textButtonStyle.down = skin.newDrawable("defaultTexture", Color.BLACK);
-		textButtonStyle.checked = skin.newDrawable("defaultTexture", Color.BLUE);
-		textButtonStyle.over = skin.newDrawable("defaultTexture", Color.BLACK);
-		textButtonStyle.font = skin.getFont("default");
-		// textButtonStyle.font.setScale(5);
-		skin.add("default", textButtonStyle);
-		CheckBoxStyle checkBoxStyle = new CheckBoxStyle();
-		checkBoxStyle.up = skin.newDrawable("defaultTexture", Color.BLACK);
-		checkBoxStyle.down = skin.newDrawable("defaultTexture", Color.BLACK);
-		checkBoxStyle.checked = skin.newDrawable("defaultTexture", Color.BLUE);
-		checkBoxStyle.over = skin.newDrawable("defaultTexture", Color.BLACK);
-		checkBoxStyle.font = skin.getFont("default");
-		skin.add("default", checkBoxStyle);
-		WindowStyle windowStyle = new WindowStyle();
-		windowStyle.stageBackground = skin.newDrawable("defaultTexture",
-				new Color(Color.CYAN.r, Color.RED.g, Color.GREEN.b, 0.5f));
-		windowStyle.background = skin.newDrawable("defaultTexture", Color.BLACK);
-		windowStyle.titleFont = skin.getFont("default");
-		windowStyle.titleFontColor = Color.WHITE;
-		skin.add("default", windowStyle);
-		LabelStyle labelStyle = new LabelStyle();
-		labelStyle.background = skin.newDrawable("defaultTexture", Color.CLEAR);
-		labelStyle.font = skin.getFont("default");
-		labelStyle.fontColor = Color.WHITE;
-
-		skin.add("default", labelStyle);
-		TextFieldStyle textfieldStyle = new TextFieldStyle();
-		textfieldStyle.background = skin.newDrawable("defaultTexture", Color.BLACK);
-		textfieldStyle.font = skin.getFont("default");
-		textfieldStyle.fontColor = Color.WHITE;
-		textfieldStyle.messageFont = skin.getFont("default");
-		textfieldStyle.messageFontColor = Color.LIGHT_GRAY;
-		skin.add("default", textfieldStyle);
+		skin.addRegions(new TextureAtlas(Gdx.files.internal("data/ui/tiltandtumble.pack")));
+		skin.load(Gdx.files.internal("data/ui/skin.json"));
 	}
 
 	public void showMainScreen() {

@@ -61,7 +61,6 @@
   <object name="StaticWall" x="419" y="-13" width="97" height="74"/>
   <object name="StaticWall" x="324" y="100" width="23" height="88"/>
   <object name="StaticWall" x="321" y="161" width="113" height="81"/>
-  <object x="454" y="235" width="1" height="1"/>
   <object name="StaticWall" x="609" y="133" width="33" height="155"/>
   <object name="StaticWall" x="418" y="223" width="95" height="162"/>
   <object name="StaticWall" x="495" y="355" width="133" height="33"/>
@@ -139,7 +138,6 @@
   </object>
   <object name="PushBumper" x="600" y="166" width="9" height="18"/>
   <object name="StaticWall" x="1026" y="955" width="31" height="3"/>
-  <object x="752" y="811" height="1"/>
   <object name="StaticWall" x="604" y="955" width="771" height="3"/>
   <object name="StaticWall" x="924" y="-1" width="463" height="5"/>
  </objectgroup>

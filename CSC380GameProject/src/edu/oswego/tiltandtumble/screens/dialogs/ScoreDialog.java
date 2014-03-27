@@ -19,11 +19,11 @@ public final class ScoreDialog extends Dialog {
 	TextField initials = null;
 
 	public ScoreDialog(String title, Skin skin, TiltAndTumble game, GameScreen screen) {
-		super(title, skin);
+		super(title, skin, "dialog");
 		this.game = game;
 		this.screen = screen;
 
-		padTop(25);
+		padTop(50);
         setModal(true);
         setMovable(false);
 
@@ -33,12 +33,12 @@ public final class ScoreDialog extends Dialog {
 		table.setFillParent(true);
 		table.add("Level #" + scores.size() + " Completed")
 			.colspan(3).center();
-		table.row().padTop(10);
+		table.row().padTop(10).uniformX();
 
-		table.add("Level");
-		table.add("Time");
-		table.add("Score");
-		table.row().padBottom(5);
+		table.add("Level").left();
+		table.add("Time").center();
+		table.add("Score").right();
+		table.row().padBottom(5).uniformX();
 		Score total = new Score(0, 0);
 		for (int i = 0; i < scores.size(); ++i) {
 			Score s = scores.get(i);
@@ -47,13 +47,13 @@ public final class ScoreDialog extends Dialog {
 			table.add(String.valueOf(s.getPoints())).right();
 			total.setPoints(total.getPoints() + s.getPoints());
 			total.setTime(total.getTime() + s.getTime());
-			table.row();
+			table.row().uniformX();
 		}
 		table.add("Total:").right();
 		if (screen.getCurrentLevel().isFailed()) {
 			table.add(total.getFormattedTime()).center();
 			table.add("0").right();
-			table.row().padTop(10);
+			table.row().padTop(10).uniformX();
 			table.add("You Failed!").colspan(3).center();
 		}
 		else {
@@ -67,10 +67,10 @@ public final class ScoreDialog extends Dialog {
 					table.add("New High Score!").colspan(3).center();
 					table.row();
 					table.add("Initials:");
-					initials = new TextField("", skin);
+					initials = new TextField("AAA", skin);
 					initials.setMaxLength(3);
 					initials.setMessageText("AAA");
-					table.add(initials).width(40);
+					table.add(initials).width(50);
 					button("Save", total);
 				}
 			}

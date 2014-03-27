@@ -49,8 +49,14 @@ public class DefaultLevelRenderer implements LevelRenderer {
 
 		// TODO: parallax scrolling would be kind of cool to add...
 		String bgFile = prop.get("background image", String.class);
-		texture = new Texture(Gdx.files.internal("data/" + bgFile));
-		background = new TextureRegion(texture);
+		if (bgFile != null) {
+			texture = new Texture(Gdx.files.internal("data/" + bgFile));
+			background = new TextureRegion(texture);
+		}
+		else {
+			texture = null;
+			background = null;
+		}
 	}
 
 	@Override

@@ -22,15 +22,19 @@ public class MainScreen extends AbstractScreen {
     public void show() {
         Gdx.input.setInputProcessor(stage);
 
-        Window window = new Window("\nTilt and Tumble!",skin);
+        Window window = new Window("\nTilt and Tumble", skin);
         window.setFillParent(true);
+        window.setModal(true);
+        window.setMovable(false);
         stage.addActor(window);
         Table table = new Table();
         table.setFillParent(true);
+        table.bottom();
         window.addActor(table);
 
-        Button play = new TextButton("Click to Select Level!", skin);
-        table.add(play);
+        Button play = new TextButton("Play", skin);
+        table.add();
+        table.add(play).fillX().pad(25);
         play.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -38,8 +42,8 @@ public class MainScreen extends AbstractScreen {
             }
         });
 
-        table.row();
-        Button settings = new TextButton("Click to View Settings!", skin);
+        table.row().pad(25).uniform().fill();
+        Button settings = new TextButton("Settings", skin);
         table.add(settings);
         settings.addListener(new ChangeListener() {
             @Override
@@ -48,8 +52,7 @@ public class MainScreen extends AbstractScreen {
             }
         });
 
-        table.row();
-        Button scores = new TextButton("Click to View Scores!", skin);
+        Button scores = new TextButton("Scores", skin);
         table.add(scores);
         scores.addListener(new ChangeListener() {
             @Override
@@ -58,8 +61,7 @@ public class MainScreen extends AbstractScreen {
             }
         });
 
-        table.row();
-        Button credits = new TextButton("Click to View Credits!", skin);
+        Button credits = new TextButton("Credits", skin);
         table.add(credits);
         credits.addListener(new ChangeListener() {
             @Override

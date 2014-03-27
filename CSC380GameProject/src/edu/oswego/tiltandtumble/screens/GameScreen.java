@@ -5,14 +5,10 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
@@ -53,12 +49,12 @@ public class GameScreen extends AbstractScreen {
 		super(game);
 		ballController = new BallController(!game.getSettings().isUseDpad());
 		worldPopulator = new WorldPopulator();
-		pauseDialog = new PauseDialog("\nGame Paused\n", skin, this);
+		pauseDialog = new PauseDialog("Paused", skin, this);
 
 		this.loadLevel(currentLevel);
 
-		scoreDisplay = new Label(String.valueOf(level.getScore().getPoints()), skin);
-		timerDisplay = new Label(level.getScore().getFormattedTime(), skin);
+		scoreDisplay = new Label(String.valueOf(level.getScore().getPoints()), skin, "hud-values");
+		timerDisplay = new Label(level.getScore().getFormattedTime(), skin, "hud-values");
 	}
 
 	public void loadLevel(int num) {
@@ -96,34 +92,25 @@ public class GameScreen extends AbstractScreen {
 	}
 
 	public void loadDpad(){
-		Texture upTexture = new Texture(Gdx.files.internal("data/UpArrow.png"));
-		Texture rightTexture = new Texture(Gdx.files.internal("data/RightArrow.png"));
-		Texture downTexture = new Texture(Gdx.files.internal("data/DownArrow.png"));
-		Texture leftTexture = new Texture(Gdx.files.internal("data/LeftArrow.png"));
-		skin.add("up", upTexture);
-		skin.add("right", rightTexture);
-		skin.add("left", leftTexture);
-		skin.add("down", downTexture);
-
-		Image image = new Image(skin, "up");
+		Image image = new Image(skin, "UpArrow");
 		image.setName("up");
 		image.setPosition(image.getWidth(), image.getHeight() * 2);
 		image.addListener(ballController);
 		stage.addActor(image);
 
-		image = new Image(skin, "right");
+		image = new Image(skin, "RightArrow");
 		image.setName("right");
 		image.setPosition(image.getWidth() * 2, image.getHeight());
 		image.addListener(ballController);
 		stage.addActor(image);
 
-		image = new Image(skin, "left");
+		image = new Image(skin, "LeftArrow");
 		image.setName("left");
 		image.setPosition(0, image.getHeight());
 		image.addListener(ballController);
 		stage.addActor(image);
 
-		image = new Image(skin, "down");
+		image = new Image(skin, "DownArrow");
 		image.setName("down");
 		image.setPosition(image.getWidth(), 0);
 		image.addListener(ballController);
@@ -141,17 +128,37 @@ public class GameScreen extends AbstractScreen {
 
 	public void loadHUD() {
 		//its not pretty but will fix that when timer and score are done
-		WindowStyle hudStyle = new WindowStyle();
-		hudStyle.background = skin.newDrawable("defaultTexture", Color.DARK_GRAY);
-		hudStyle.titleFont = skin.getFont("default");
-		hudStyle.titleFontColor = Color.WHITE;
-		Window window = new Window("",hudStyle);
+		Window window = new Window("", skin, "hud");
 		window.setHeight(32);
 
 		window.setPosition(0, stage.getHeight());
 		window.setWidth(stage.getWidth());
 		stage.addActor(window);
 
+		window.row().uniform().expandX();
+		window.add("Level: ").right().padLeft(10);
+		window.add(String.valueOf(level.getLevelNumber()), "hud-values").left();
+		window.add("Score: ").right();
+		window.add(scoreDisplay).left();
+		window.add("Time: ").right();
+		window.add(timerDisplay).left();
+
+		Image pauseImage = new Image(skin, "PauseButton2");
+		window.add(pauseImage).right().fill(false).padRight(10);
+		pauseImage.addListener(new ClickListener(){
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				if (currentState == State.PLAYING){
+					pause();
+				} else if(currentState == State.PAUSED){
+					resume();
+				}
+				return true;
+			}
+		});
+
+/*
 		HorizontalGroup hud = new HorizontalGroup();
 		hud.setSpacing(65f);
 		hud.setFillParent(true);
@@ -172,9 +179,7 @@ public class GameScreen extends AbstractScreen {
 		subgroup.addActor(timerDisplay);
 		hud.addActor(subgroup);
 
-		Texture pauseTexture = new Texture(Gdx.files.internal("data/PauseButton.png"));
-		skin.add("pause", pauseTexture);
-		Image pauseImage = new Image(skin, "pause");
+		Image pauseImage = new Image(skin, "PauseButton2");
 		hud.addActor(pauseImage);
 		pauseImage.addListener(new ClickListener(){
 			@Override
@@ -188,6 +193,7 @@ public class GameScreen extends AbstractScreen {
 				return true;
 			}
 		});
+*/
 	}
 
 	@Override

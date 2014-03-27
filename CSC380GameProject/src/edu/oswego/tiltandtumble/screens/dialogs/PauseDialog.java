@@ -11,11 +11,15 @@ public class PauseDialog extends Dialog {
 
 GameScreen screen;
 	public PauseDialog(String title, Skin skin, GameScreen screen) {
-		super(title, skin);
+		super(title, skin, "dialog");
 		this.screen = screen;
-		text("\nPaused\n");
+		padTop(50);
+        setModal(true);
+        setMovable(false);
+
+        text("TODO: add menu options");
 		button("Resume");
-		
+
 	}
 
 	@Override
