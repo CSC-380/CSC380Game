@@ -55,7 +55,7 @@ public class GameScreen extends AbstractScreen {
 		worldPopulator = new WorldPopulator();
 		pauseDialog = new PauseDialog("Paused", skin, this);
 		startPauseDialog = new StartPauseDialog("\n\n\n", skin, this);
-		
+
 		this.loadLevel(currentLevel);
 		scoreDisplay = new Label(String.valueOf(level.getScore().getPoints()), skin, "hud-values");
 		timerDisplay = new Label(level.getScore().getFormattedTime(), skin, "hud-values");
@@ -159,45 +159,8 @@ public class GameScreen extends AbstractScreen {
 				return true;
 			}
 		});
-
-/*
-		HorizontalGroup hud = new HorizontalGroup();
-		hud.setSpacing(65f);
-		hud.setFillParent(true);
-		window.addActor(hud);
-
-		Label levelDisplay = new Label("LEVEL " + level.getLevelNumber(), skin);
-		hud.addActor(levelDisplay);
-
-		HorizontalGroup subgroup = new HorizontalGroup();
-		subgroup.setSpacing(10f);
-		subgroup.addActor(new Label("SCORE:", skin));
-		subgroup.addActor(scoreDisplay);
-		hud.addActor(subgroup);
-
-		subgroup = new HorizontalGroup();
-		subgroup.setSpacing(10f);
-		subgroup.addActor(new Label("TIMER:", skin));
-		subgroup.addActor(timerDisplay);
-		hud.addActor(subgroup);
-
-		Image pauseImage = new Image(skin, "PauseButton2");
-		hud.addActor(pauseImage);
-		pauseImage.addListener(new ClickListener(){
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer,
-					int button) {
-				if (currentState == State.PLAYING){
-					pause();
-				} else if(currentState == State.PAUSED){
-					resume();
-				}
-				return true;
-			}
-		});
-*/
 	}
-	
+
 	public void startPause() {
 		startPauseDialog.show(stage);
 		ballController.pause();
@@ -212,7 +175,7 @@ public class GameScreen extends AbstractScreen {
 				level.start();
 				return true;
 			}
-		});	
+		});
 	}
 
 	@Override
@@ -243,7 +206,7 @@ public class GameScreen extends AbstractScreen {
 		scoreDisplay.setText(String.valueOf(level.getScore().getPoints()));
 		timerDisplay.setText(level.getScore().getFormattedTime());
 	}
-	
+
 	@Override
 	public void dispose() {
 		super.dispose();
