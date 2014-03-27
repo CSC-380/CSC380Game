@@ -48,6 +48,7 @@ public class Level implements Disposable {
 	private final Score score;
 	//times are in milliseconds
 	private long startTime;
+	private long pauseTime = 0;
 	private final int baseScore;
 
 	private final Collection<Disposable> disposableObjects;
@@ -203,14 +204,15 @@ public class Level implements Disposable {
 	public void pause() {
 		if (currentState == State.STARTED) {
 			currentState = State.PAUSED;
+			pauseTime = TimeUtils.millis();
 		}
-		// TODO: need to stop the game timer.
 	}
 
 	public void resume() {
 		if (currentState == State.PAUSED) {
 			currentState = State.STARTED;
+			startTime += (TimeUtils.millis() - pauseTime);
+			pauseTime = 0;
 		}
-		// TODO: need to start the game timer.
 	}
 }
