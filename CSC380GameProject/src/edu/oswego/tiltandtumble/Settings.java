@@ -1,6 +1,6 @@
 package edu.oswego.tiltandtumble;
 public class Settings {
-    private boolean useDpad;
+    private boolean useDpad = false;
     private boolean debugRender = false;
     private boolean music = false;
     private boolean soundEffect = false;
