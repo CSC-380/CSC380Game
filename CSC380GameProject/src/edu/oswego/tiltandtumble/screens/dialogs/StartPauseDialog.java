@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-
 import edu.oswego.tiltandtumble.levels.Level;
 import edu.oswego.tiltandtumble.screens.GameScreen;
 
@@ -16,11 +15,11 @@ GameScreen screen;
 Level level;
 
 	public StartPauseDialog(String title, Skin skin, GameScreen screen) {
-		super(title, skin);
+		super(title, skin, "dialog");
 		this.screen = screen;
 		this.setClip(false);
 	}
-	
+
 	@Override
 	protected void result(Object object) {
 		super.result(object);

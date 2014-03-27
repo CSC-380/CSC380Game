@@ -54,7 +54,7 @@ public class GameScreen extends AbstractScreen {
 		ballController = new BallController(!game.getSettings().isUseDpad());
 		worldPopulator = new WorldPopulator();
 		pauseDialog = new PauseDialog("Paused", skin, this);
-		startPauseDialog = new StartPauseDialog("\n\n\n", skin, this);
+		startPauseDialog = new StartPauseDialog("", skin, this);
 
 		this.loadLevel(currentLevel);
 		scoreDisplay = new Label(String.valueOf(level.getScore().getPoints()), skin, "hud-values");
