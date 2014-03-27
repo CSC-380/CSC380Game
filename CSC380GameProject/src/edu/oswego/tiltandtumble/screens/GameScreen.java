@@ -8,9 +8,11 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -25,6 +27,7 @@ import edu.oswego.tiltandtumble.levels.LevelRenderer;
 import edu.oswego.tiltandtumble.levels.WorldPopulator;
 import edu.oswego.tiltandtumble.screens.dialogs.PauseDialog;
 import edu.oswego.tiltandtumble.screens.dialogs.ScoreDialog;
+import edu.oswego.tiltandtumble.screens.dialogs.StartPauseDialog;
 
 public class GameScreen extends AbstractScreen {
 
@@ -37,6 +40,7 @@ public class GameScreen extends AbstractScreen {
 	private final BallController ballController;
 	private final WorldPopulator worldPopulator;
 	private final PauseDialog pauseDialog;
+	private final StartPauseDialog startPauseDialog;
 
 	private Level level;
 	private LevelRenderer renderer;
@@ -54,9 +58,9 @@ public class GameScreen extends AbstractScreen {
 		ballController = new BallController(!game.getSettings().isUseDpad());
 		worldPopulator = new WorldPopulator();
 		pauseDialog = new PauseDialog("\nGame Paused\n", skin, this);
-
+		startPauseDialog = new StartPauseDialog("\n\n\n", skin, this);
+		
 		this.loadLevel(currentLevel);
-
 		scoreDisplay = new Label(String.valueOf(level.getScore().getPoints()), skin);
 		timerDisplay = new Label(level.getScore().getFormattedTime(), skin);
 	}
@@ -76,10 +80,8 @@ public class GameScreen extends AbstractScreen {
 		if (game.getSettings().isDebugRender()) {
 			renderer = new DebugLevelRenderer(renderer, ballController);
 		}
-		currentState = State.PLAYING;
-
-		// TODO: move this to someplace more meaningful as part of issue #19
-		level.start();
+		//currentState = State.PLAYING;
+		//level.start();
 	}
 
 	public boolean hasMoreLevels() {
@@ -189,6 +191,23 @@ public class GameScreen extends AbstractScreen {
 			}
 		});
 	}
+	
+	public void startPause() {
+		startPauseDialog.show(stage);
+		ballController.pause();
+		currentState = State.PAUSED;
+		Button start = new TextButton("start", skin);
+		startPauseDialog.button(start);
+		start.addListener(new ClickListener(){
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y, int pointer,
+					int button) {
+				currentState = State.PLAYING;
+				level.start();
+				return true;
+			}
+		});	
+	}
 
 	@Override
 	public void show() {
@@ -198,6 +217,7 @@ public class GameScreen extends AbstractScreen {
 			loadDpad();
 		}
 		loadHUD();
+		startPause();
 	}
 
 	@Override
@@ -217,7 +237,7 @@ public class GameScreen extends AbstractScreen {
 		scoreDisplay.setText(String.valueOf(level.getScore().getPoints()));
 		timerDisplay.setText(level.getScore().getFormattedTime());
 	}
-
+	
 	@Override
 	public void dispose() {
 		super.dispose();
