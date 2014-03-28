@@ -41,8 +41,9 @@ public class GameScreen extends AbstractScreen {
 	private Level level;
 	private LevelRenderer renderer;
 	InputMultiplexer inputMux = new InputMultiplexer();
-
+	
 	boolean usingDpad = false;
+	boolean firstStartPause = true;
 	private final List<Score> scores = new ArrayList<Score>();
 	private State currentState;
 
@@ -76,8 +77,6 @@ public class GameScreen extends AbstractScreen {
 		if (game.getSettings().isDebugRender()) {
 			renderer = new DebugLevelRenderer(renderer, ballController);
 		}
-		//currentState = State.PLAYING;
-		//level.start();
 	}
 
 	public boolean hasMoreLevels() {
@@ -85,6 +84,7 @@ public class GameScreen extends AbstractScreen {
 	}
 
 	public void loadNextLevel() {
+		startPause();
 		if (hasMoreLevels() && !level.isFailed()) {
 			loadLevel(level.getLevelNumber() + 1);
 		}
@@ -166,7 +166,10 @@ public class GameScreen extends AbstractScreen {
 		ballController.pause();
 		currentState = State.PAUSED;
 		Button start = new TextButton("start", skin);
-		startPauseDialog.button(start);
+		if(firstStartPause==true) {
+			startPauseDialog.button(start);
+			firstStartPause=false;
+		}
 		start.addListener(new ClickListener(){
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer,
