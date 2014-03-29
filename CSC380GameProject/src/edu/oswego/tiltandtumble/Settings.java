@@ -8,12 +8,14 @@ public class Settings {
     private boolean debugRender = false;
     private boolean music = false;
     private boolean soundEffect = false;
-    Preferences prefs = Gdx.app.getPreferences("My Preferences");
+    Preferences prefs;
     String dpadVal = "DPad Value";
     String debugVal = "Debug Value";
     String musicVal = "Music Value";
     String sEffVal = "Sound Effect Value";
-    
+    public Settings() {
+    	prefs = Gdx.app.getPreferences("My Preferences");
+    }
     public boolean isUseDpad() {
     	this.useDpad = prefs.getBoolean(dpadVal);
         return useDpad;

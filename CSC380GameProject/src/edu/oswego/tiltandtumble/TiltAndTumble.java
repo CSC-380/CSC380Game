@@ -51,11 +51,12 @@ public class TiltAndTumble extends Game {
 	private int width;
 	private int height;
 
-	private final Settings settings = new Settings();
+	private Settings settings;
 	private HighScores scores;
 
 	@Override
 	public void create() {
+		settings = new Settings();
 		settings.setUseDpad(!Gdx.input
 				.isPeripheralAvailable(Peripheral.Accelerometer));
 		batch = new SpriteBatch();
