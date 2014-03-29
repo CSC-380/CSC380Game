@@ -241,6 +241,7 @@ public class TiltAndTumble extends Game {
 			highScoresScreen.dispose();
 		}
 		if (settingsScreen != null) {
+			settings.saveSettings();
 			settingsScreen.dispose();
 		}
 		if (levelScreen != null) {
