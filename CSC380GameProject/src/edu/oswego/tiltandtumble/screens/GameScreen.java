@@ -47,8 +47,10 @@ public class GameScreen extends AbstractScreen {
 	private final List<Score> scores = new ArrayList<Score>();
 	private State currentState;
 
-	Label scoreDisplay;
-	Label timerDisplay;
+	private final Label scoreDisplay;
+	private final Label timerDisplay;
+
+	private float countdownTime;
 
 	public GameScreen(TiltAndTumble game, int currentLevel) {
 		super(game);
@@ -188,9 +190,11 @@ public class GameScreen extends AbstractScreen {
 	private void startCountDown() {
 		if (currentState != State.WAITING) return;
 		currentState = State.STARTING;
+		countdownTime = 0;
 	}
 
-	private void showCountDown() {
+	private void showCountDown(float delta) {
+		countdownTime += delta;
 		// TODO: do some rendering
 		//       keep track of a timer and show the correct number for the time
 		//       once time is up, call endCountDown();
@@ -219,7 +223,7 @@ public class GameScreen extends AbstractScreen {
 	protected void preStageRenderHook(float delta) {
 		renderer.render(delta, game.getSpriteBatch(), game.getFont());
 		if (currentState == State.STARTING) {
-			showCountDown();
+			showCountDown(delta);
 		} else {
 			if (level.isStarted()) {
 				level.update(delta);
