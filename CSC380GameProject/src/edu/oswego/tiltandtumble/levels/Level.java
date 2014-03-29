@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 import edu.oswego.tiltandtumble.collisionListener.OurCollisionListener;
 import edu.oswego.tiltandtumble.data.Score;
+import edu.oswego.tiltandtumble.worldObjects.Audible;
 import edu.oswego.tiltandtumble.worldObjects.Ball;
 import edu.oswego.tiltandtumble.worldObjects.MapRenderable;
 import edu.oswego.tiltandtumble.worldObjects.WorldObject;
@@ -54,6 +55,7 @@ public class Level implements Disposable {
 	private final Collection<Disposable> disposableObjects;
 	private final Collection<MapRenderable> renderableObjects;
 	private final Collection<WorldUpdateable> updateableObjects;
+	private final Collection<Audible> audibleObjects;
 
 	public Level(int level, BallController ballController, WorldPopulator populator) {
 		this.level = level;
@@ -69,6 +71,7 @@ public class Level implements Disposable {
 		disposableObjects = new LinkedList<Disposable>();
 		renderableObjects = new LinkedList<MapRenderable>();
 		updateableObjects = new LinkedList<WorldUpdateable>();
+		audibleObjects = new LinkedList<Audible>();
 
 		ball = populator.populateWorldFromMap(this, map, world, scale);
 		this.ballController.setBall(ball);
@@ -79,7 +82,6 @@ public class Level implements Disposable {
 
 	public TiledMap getMap() {
 		return map;
-
 	}
 
 	public World getWorld() {
@@ -102,6 +104,10 @@ public class Level implements Disposable {
 		return ballController;
 	}
 
+	public Collection<Audible> getAudibles() {
+		return audibleObjects;
+	}
+
 	public boolean hasNotStarted() {
 		return currentState == State.NOT_STARTED;
 	}
@@ -115,6 +121,9 @@ public class Level implements Disposable {
 		}
 		if (obj instanceof MapRenderable) {
 			renderableObjects.add((MapRenderable)obj);
+		}
+		if (obj instanceof Audible) {
+			audibleObjects.add((Audible)obj);
 		}
 		// we don't care about other object types at this time.
 	}

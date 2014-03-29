@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
 import edu.oswego.tiltandtumble.data.Score;
+import edu.oswego.tiltandtumble.levels.AudioManager;
 import edu.oswego.tiltandtumble.levels.BallController;
 import edu.oswego.tiltandtumble.levels.DebugLevelRenderer;
 import edu.oswego.tiltandtumble.levels.DefaultLevelRenderer;
@@ -40,8 +41,9 @@ public class GameScreen extends AbstractScreen {
 
 	private Level level;
 	private LevelRenderer renderer;
+	private AudioManager audio;
 	InputMultiplexer inputMux = new InputMultiplexer();
-	
+
 	boolean usingDpad = false;
 	boolean firstStartPause = true;
 	private final List<Score> scores = new ArrayList<Score>();
@@ -72,11 +74,21 @@ public class GameScreen extends AbstractScreen {
 			renderer.dispose();
 			renderer = null;
 		}
+		if (audio != null) {
+			game.getSettings().removeObserver(audio);
+			audio.dispose();
+			audio = null;
+		}
 		level = new Level(num, ballController, worldPopulator);
 		renderer = new DefaultLevelRenderer(level,game.getWidth(), game.getHeight());
 		if (game.getSettings().isDebugRender()) {
 			renderer = new DebugLevelRenderer(renderer, ballController);
 		}
+		audio = new AudioManager(
+				level,
+				game.getSettings().isMusicOn(),
+				game.getSettings().isSoundEffectOn());
+		game.getSettings().addObserver(audio);
 	}
 
 	public boolean hasMoreLevels() {
@@ -175,6 +187,7 @@ public class GameScreen extends AbstractScreen {
 			public boolean touchDown(InputEvent event, float x, float y, int pointer,
 					int button) {
 				currentState = State.PLAYING;
+				audio.start();
 				level.start();
 				return true;
 			}
@@ -200,6 +213,7 @@ public class GameScreen extends AbstractScreen {
 
 		} else if (level.hasFinished()) {
 			if (currentState != State.SCORED) {
+				audio.pause();
                 scores.add(level.getScore());
                 new ScoreDialog("Score", skin, game, this).show(stage);
 				currentState = State.SCORED;
@@ -219,20 +233,25 @@ public class GameScreen extends AbstractScreen {
 		if (renderer != null) {
 			renderer.dispose();
 		}
+		if (audio != null) {
+			audio.dispose();
+		}
 	}
 
 	@Override
 	public void pause() {
 		pauseDialog.show(stage);
-		ballController.pause();
 		currentState = State.PAUSED;
+		ballController.pause();
+		audio.pause();
 		level.pause();
 	}
 
 	@Override
 	public void resume() {
-		ballController.resume();
 		this.currentState = State.PLAYING;
+		ballController.resume();
+		audio.start();
 		level.resume();
 	}
 }
