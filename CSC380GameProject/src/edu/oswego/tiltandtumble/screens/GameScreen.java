@@ -6,7 +6,6 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -24,11 +23,12 @@ import edu.oswego.tiltandtumble.levels.LevelRenderer;
 import edu.oswego.tiltandtumble.levels.WorldPopulator;
 import edu.oswego.tiltandtumble.screens.dialogs.PauseDialog;
 import edu.oswego.tiltandtumble.screens.dialogs.ScoreDialog;
-import edu.oswego.tiltandtumble.screens.dialogs.StartPauseDialog;
 
 public class GameScreen extends AbstractScreen {
 
 	private static enum State {
+		WAITING,
+		STARTING,
 		PAUSED,
 		PLAYING,
 		SCORED
@@ -36,8 +36,6 @@ public class GameScreen extends AbstractScreen {
 
 	private final BallController ballController;
 	private final WorldPopulator worldPopulator;
-	private final PauseDialog pauseDialog;
-	private final StartPauseDialog startPauseDialog;
 
 	private Level level;
 	private LevelRenderer renderer;
@@ -56,8 +54,6 @@ public class GameScreen extends AbstractScreen {
 		super(game);
 		ballController = new BallController(!game.getSettings().isUseDpad());
 		worldPopulator = new WorldPopulator();
-		pauseDialog = new PauseDialog("Paused", skin, this);
-		startPauseDialog = new StartPauseDialog("", skin, this);
 
 		this.loadLevel(currentLevel);
 		scoreDisplay = new Label(String.valueOf(level.getScore().getPoints()), skin, "hud-values");
@@ -65,7 +61,7 @@ public class GameScreen extends AbstractScreen {
 	}
 
 	public void loadLevel(int num) {
-		ballController.resetBall();
+		currentState = State.WAITING;
 		if (level != null) {
 			level.dispose();
 			level = null;
@@ -89,6 +85,7 @@ public class GameScreen extends AbstractScreen {
 				game.getSettings().isMusicOn(),
 				game.getSettings().isSoundEffectOn());
 		game.getSettings().addObserver(audio);
+		showStartPause();
 	}
 
 	public boolean hasMoreLevels() {
@@ -96,7 +93,6 @@ public class GameScreen extends AbstractScreen {
 	}
 
 	public void loadNextLevel() {
-		startPause();
 		if (hasMoreLevels() && !level.isFailed()) {
 			loadLevel(level.getLevelNumber() + 1);
 		}
@@ -141,7 +137,6 @@ public class GameScreen extends AbstractScreen {
 	}
 
 	public void loadHUD() {
-		//its not pretty but will fix that when timer and score are done
 		Window window = new Window("", skin, "hud");
 		window.setHeight(32);
 
@@ -173,25 +168,40 @@ public class GameScreen extends AbstractScreen {
 		});
 	}
 
-	public void startPause() {
-		startPauseDialog.show(stage);
-		ballController.pause();
-		currentState = State.PAUSED;
-		Button start = new TextButton("start", skin);
-		if(firstStartPause==true) {
-			startPauseDialog.button(start);
-			firstStartPause=false;
-		}
-		start.addListener(new ClickListener(){
+	private void showStartPause() {
+		final Window window = new Window("", skin, "dialog");
+		stage.addActor(window);
+		TextButton button = new TextButton("Start", skin);
+		window.add(button);
+		button.addListener(new ClickListener() {
 			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer,
-					int button) {
-				currentState = State.PLAYING;
-				audio.start();
-				level.start();
-				return true;
+			public void clicked(InputEvent event, float x, float y) {
+				GameScreen.this.startCountDown();
+				window.remove();
 			}
 		});
+		window.setClip(false);
+		window.setSize(0, 0);
+		window.setPosition(stage.getWidth() / 2 , stage.getHeight() / 2);
+	}
+
+	private void startCountDown() {
+		if (currentState != State.WAITING) return;
+		currentState = State.STARTING;
+	}
+
+	private void showCountDown() {
+		// TODO: do some rendering
+		//       keep track of a timer and show the correct number for the time
+		//       once time is up, call endCountDown();
+		endCountDown();
+	}
+
+	private void endCountDown() {
+		if (currentState != State.STARTING) return;
+		currentState = State.PLAYING;
+		ballController.resetBall();
+		level.start();
 	}
 
 	@Override
@@ -202,26 +212,29 @@ public class GameScreen extends AbstractScreen {
 			loadDpad();
 		}
 		loadHUD();
-		startPause();
+		showStartPause();
 	}
 
 	@Override
 	protected void preStageRenderHook(float delta) {
 		renderer.render(delta, game.getSpriteBatch(), game.getFont());
-		if (level.isStarted()) {
-			level.update(delta);
-
-		} else if (level.hasFinished()) {
-			if (currentState != State.SCORED) {
-				audio.pause();
-                scores.add(level.getScore());
-                new ScoreDialog("Score", skin, game, this).show(stage);
-				currentState = State.SCORED;
+		if (currentState == State.STARTING) {
+			showCountDown();
+		} else {
+			if (level.isStarted()) {
+				level.update(delta);
+			} else if (level.hasFinished()) {
+				if (currentState != State.SCORED) {
+					audio.pause();
+					scores.add(level.getScore());
+					new ScoreDialog("Score", skin, game, this).show(stage);
+					currentState = State.SCORED;
+				}
 			}
-		}
 
-		scoreDisplay.setText(String.valueOf(level.getScore().getPoints()));
-		timerDisplay.setText(level.getScore().getFormattedTime());
+			scoreDisplay.setText(String.valueOf(level.getScore().getPoints()));
+			timerDisplay.setText(level.getScore().getFormattedTime());
+		}
 	}
 
 	@Override
@@ -240,7 +253,8 @@ public class GameScreen extends AbstractScreen {
 
 	@Override
 	public void pause() {
-		pauseDialog.show(stage);
+		if (currentState != State.PLAYING) return;
+		new PauseDialog("Paused", skin, this).show(stage);
 		currentState = State.PAUSED;
 		ballController.pause();
 		audio.pause();
@@ -249,6 +263,7 @@ public class GameScreen extends AbstractScreen {
 
 	@Override
 	public void resume() {
+		if (currentState != State.PAUSED) return;
 		this.currentState = State.PLAYING;
 		ballController.resume();
 		audio.start();
