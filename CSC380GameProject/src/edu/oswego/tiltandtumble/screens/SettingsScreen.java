@@ -34,7 +34,6 @@ public class SettingsScreen extends AbstractScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 settings.setUseDpad(useDpad.isChecked()); 
-              //  settings.saveSettings();
                 useDpad.setText("Use DPad: " + (settings.isUseDpad() ? "X" : " "));
                
             }
@@ -51,7 +50,6 @@ public class SettingsScreen extends AbstractScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 settings.setDebugRender(debugView.isChecked());
-          //      settings.saveSettings();
                 debugView.setText("Debug View: " + (settings.isDebugRender() ? "X" : " "));
             }
         });
@@ -65,7 +63,6 @@ public class SettingsScreen extends AbstractScreen {
         	@Override
         	public void changed(ChangeEvent event, Actor actor){
         		settings.setMusic(music.isChecked());    		
-        //		settings.saveSettings();
         		music.setText("Sound: " + (settings.isMusicOn() ? "X" : " "));
         	}
         });
@@ -80,7 +77,6 @@ public class SettingsScreen extends AbstractScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 settings.setSoundEffect(soundEffect.isChecked());
-        //        settings.saveSettings();
                 soundEffect.setText("Sound Effects: " + (settings.isSoundEffectOn() ? "X" : " "));
             }
         });

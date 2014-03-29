@@ -57,8 +57,8 @@ public class TiltAndTumble extends Game {
 	@Override
 	public void create() {
 		settings = new Settings();
-		settings.setUseDpad(!Gdx.input
-				.isPeripheralAvailable(Peripheral.Accelerometer));
+	//	settings.setUseDpad(!Gdx.input
+	//			.isPeripheralAvailable(Peripheral.Accelerometer));
 		batch = new SpriteBatch();
 		stage = new Stage();
 
