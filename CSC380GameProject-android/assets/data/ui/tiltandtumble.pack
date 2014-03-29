@@ -177,6 +177,13 @@ grey_cross
   orig: 18, 18
   offset: 0, 0
   index: -1
+orange_cross
+  rotate: false
+  xy: 451, 107
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1
 hudback
   rotate: false
   xy: 23, 15
