@@ -206,6 +206,7 @@ public class GameScreen extends AbstractScreen {
 		currentState = State.PLAYING;
 		ballController.resetBall();
 		level.start();
+		audio.start();
 	}
 
 	@Override
