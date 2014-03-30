@@ -52,6 +52,9 @@ public class Level implements Disposable {
 	private long pauseTime = 0;
 	private final int baseScore;
 
+	private final int mapWidth;
+	private final int mapHeight;
+
 	private final Collection<Disposable> disposableObjects;
 	private final Collection<MapRenderable> renderableObjects;
 	private final Collection<WorldUpdateable> updateableObjects;
@@ -64,6 +67,12 @@ public class Level implements Disposable {
 		currentState = State.NOT_STARTED;
 
 		map = loadMap(level);
+
+		mapWidth = map.getProperties().get("width", Integer.class)
+				* map.getProperties().get("tilewidth", Integer.class);
+		mapHeight = (map.getProperties().get("height", Integer.class)
+				* map.getProperties().get("tileheight", Integer.class))
+				+ 32; // adding extra for HUD
 
 		baseScore = map.getProperties().get("score", DEFAULT_SCORE, Integer.class);
 		score = new Score(baseScore, 0);
@@ -190,6 +199,9 @@ public class Level implements Disposable {
 
 	public void update(float delta) {
 		if (currentState == State.STARTED) {
+			if (isBallOutsideLevel()) {
+				finish(true);
+			}
 			ballController.update(delta);
 			for (WorldUpdateable w : updateableObjects) {
 				w.update(delta);
@@ -200,6 +212,13 @@ public class Level implements Disposable {
 			// world.step(1/60f, 6, 2);
 			world.step(1 / 45f, 10, 8);
 		}
+	}
+
+	private boolean isBallOutsideLevel() {
+		return ball.getMapX() < 0
+				|| ball.getMapX() > mapWidth
+				|| ball.getMapY() < 0
+				|| ball.getMapY() > mapHeight;
 	}
 
 	@Override
