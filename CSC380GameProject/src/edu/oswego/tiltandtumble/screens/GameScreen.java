@@ -205,6 +205,7 @@ public class GameScreen extends AbstractScreen {
 		if (currentState != State.STARTING) return;
 		currentState = State.PLAYING;
 		ballController.resetBall();
+		ballController.resume();
 		level.start();
 		audio.start();
 	}
@@ -217,7 +218,11 @@ public class GameScreen extends AbstractScreen {
 			loadDpad();
 		}
 		loadHUD();
-		showStartPause();
+		if (currentState == State.PAUSED) {
+			new PauseDialog("Paused", skin, this, game).show(stage);
+		} else {
+			showStartPause();
+		}
 	}
 
 	@Override
@@ -259,7 +264,7 @@ public class GameScreen extends AbstractScreen {
 	@Override
 	public void pause() {
 		if (currentState != State.PLAYING) return;
-		new PauseDialog("Paused", skin, this).show(stage);
+		new PauseDialog("Paused", skin, this, game).show(stage);
 		currentState = State.PAUSED;
 		ballController.pause();
 		audio.pause();

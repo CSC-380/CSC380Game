@@ -201,25 +201,4 @@ public class TiltAndTumble extends Game {
 		font.dispose();
 		skin.dispose();
 	}
-
-	@Override
-	public void render() {
-		super.render();
-	}
-
-	@Override
-	public void resize(int width, int height) {
-		// NOTE: we probably don't need this
-	}
-
-	@Override
-	public void pause() {
-
-	}
-
-	@Override
-	public void resume() {
-
-
-	}
 }

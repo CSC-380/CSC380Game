@@ -170,6 +170,21 @@
     <property name="target" value="start"/>
    </properties>
   </object>
+  <object x="1504" y="191" width="384" height="384">
+   <ellipse/>
+  </object>
+  <object x="974" y="302" width="256" height="256">
+   <ellipse/>
+  </object>
+  <object x="1200" y="303" width="256" height="256">
+   <ellipse/>
+  </object>
+  <object x="222" y="127" width="352" height="352">
+   <ellipse/>
+  </object>
+  <object x="481" y="126" width="352" height="352">
+   <ellipse/>
+  </object>
  </objectgroup>
  <objectgroup name="paths" width="100" height="20">
   <object name="p1" x="3157" y="400">
