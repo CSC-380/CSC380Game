@@ -6,6 +6,7 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -50,6 +51,7 @@ public class GameScreen extends AbstractScreen {
 	private final Label scoreDisplay;
 	private final Label timerDisplay;
 
+	private Dialog pauseDialog;
 	private float countdownTime;
 
 	public GameScreen(TiltAndTumble game, int currentLevel) {
@@ -219,7 +221,7 @@ public class GameScreen extends AbstractScreen {
 		}
 		loadHUD();
 		if (currentState == State.PAUSED) {
-			new PauseDialog("Paused", skin, this, game).show(stage);
+			pauseDialog = new PauseDialog("Paused", skin, this, game).show(stage);
 		} else {
 			showStartPause();
 		}
@@ -264,7 +266,7 @@ public class GameScreen extends AbstractScreen {
 	@Override
 	public void pause() {
 		if (currentState != State.PLAYING) return;
-		new PauseDialog("Paused", skin, this, game).show(stage);
+		pauseDialog = new PauseDialog("Paused", skin, this, game).show(stage);
 		currentState = State.PAUSED;
 		ballController.pause();
 		audio.pause();
@@ -274,6 +276,14 @@ public class GameScreen extends AbstractScreen {
 	@Override
 	public void resume() {
 		if (currentState != State.PAUSED) return;
+		// isVisible seems to always return true, not sure why...
+		// make sure the dialog goes away, this can be called from the system
+		// level rather than direct user interaction so we want to make sure
+		// the game does not start playing before the window goes away.
+		if (pauseDialog != null && pauseDialog.isVisible()) {
+			pauseDialog.hide();
+			pauseDialog = null;
+		}
 		this.currentState = State.PLAYING;
 		ballController.resume();
 		audio.start();
