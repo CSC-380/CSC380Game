@@ -7,12 +7,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.utils.Disposable;
 
+import edu.oswego.tiltandtumble.collisionListener.BallCollisionListener;
+import edu.oswego.tiltandtumble.levels.Level;
 import edu.oswego.tiltandtumble.levels.UnitScale;
 
 public class MovingWall extends AbstractWorldObject
-		implements MapRenderable, WorldUpdateable, Disposable {
+		implements MapRenderable, WorldUpdateable, Disposable,
+		BallCollisionListener {
 	public static final float FRICTION = 0.5f;
 	public static final float DENSITY = 5.0f;
 	public static final float RESTITUTION = 0.0f;
@@ -32,12 +36,17 @@ public class MovingWall extends AbstractWorldObject
 	private final Vector2 startNode = new Vector2();
 	private final Vector2 endNode = new Vector2();
 
+	private boolean collidingWithBall = false;
+	private Ball ball;
+    private final Level level;
+
 	public MovingWall(Body body, float speed, PathPointTraverser nodes,
-			String spriteName, Vector2 dimensions, UnitScale scale) {
+			String spriteName, Vector2 dimensions, UnitScale scale, Level level) {
 		super(body);
 
 		this.speed = speed;
 		this.scale = scale;
+		this.level = level;
 
 		this.nodes = nodes;
 		nodes.next();
@@ -63,8 +72,19 @@ public class MovingWall extends AbstractWorldObject
 
 	@Override
 	public void update(float delta) {
+		move(delta);
+
+		if (collidingWithBall) {
+			if (body.getFixtureList().get(0).testPoint(ball.getBody().getPosition())) {
+				Gdx.app.log("MovingWall", "Wall SMASH Ball!");
+				level.finish(true);
+			}
+		}
+	}
+
+	private void move(float timeDelta) {
 		startNode.set(body.getPosition());
-		float distanceToTravel = speed * delta;
+		float distanceToTravel = speed * timeDelta;
 		float distanceToPoint = body.getPosition()
 				.dst(nodes.current().x, nodes.current().y);
 		// move along the path until we find the segment we need to stop on
@@ -88,5 +108,17 @@ public class MovingWall extends AbstractWorldObject
 	@Override
 	public void dispose() {
 		texture.dispose();
+	}
+
+	@Override
+	public void handleBeginCollision(Contact contact, Ball ball) {
+		collidingWithBall = true;
+		this.ball = ball;
+	}
+
+	@Override
+	public void handleEndCollision(Contact contact, Ball ball) {
+		collidingWithBall = false;
+		this.ball = null;
 	}
 }

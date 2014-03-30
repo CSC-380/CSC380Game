@@ -53,9 +53,9 @@ public final class WorldPopulator {
 		for (MapObject obj : layer.getObjects()) {
 			if (obj.getName() != null) {
 				if (obj.getName().equals("StaticWall")) {
-					level.addWorldObject(createStaticWall(obj, world, scale));
+					level.addWorldObject(createStaticWall(obj, level, world, scale));
 				} else if (obj.getName().equals("MovingWall")) {
-					level.addWorldObject(createMovingWall(obj, world, scale, paths));
+					level.addWorldObject(createMovingWall(obj, level, world, scale, paths));
 				} else if (obj.getName().equals("PushBumper")) {
 					level.addWorldObject(createPushBumper(obj, world, scale));
 				} else if (obj.getName().equals("FinishLine")) {
@@ -249,7 +249,7 @@ public final class WorldPopulator {
 			.add(start);
 	}
 
-	public MovingWall createMovingWall(MapObject obj, World world,
+	public MovingWall createMovingWall(MapObject obj, Level level, World world,
 			UnitScale scale, Map<String, PathPoint> paths) {
 		PathPoint head = paths.get(obj.getProperties().get("path", String.class));
 		Body body = world.createBody(bodyDef.reset().type(MovingWall.BODY_TYPE)
@@ -275,10 +275,12 @@ public final class WorldPopulator {
 				new PathPointTraverser(result.head, speed >= 0),
 				obj.getProperties().get("sprite", MovingWall.DEFAULT_SPRITE, String.class),
 				dimensions,
-				scale);
+				scale,
+				level);
 	}
 
-	public StaticWall createStaticWall(MapObject obj, World world, UnitScale scale) {
+	public StaticWall createStaticWall(MapObject obj, Level level, World world,
+			UnitScale scale) {
 		Body body = world.createBody(bodyDef.reset().type(StaticWall.BODY_TYPE)
 				.build());
 		Shape shape = createShape(obj, scale, body);
@@ -290,7 +292,7 @@ public final class WorldPopulator {
 		// dispose after creating fixture
 		shape.dispose();
 
-		return new StaticWall(body);
+		return new StaticWall(body, level);
 	}
 
 	public PushBumper createPushBumper(MapObject obj, World world,
