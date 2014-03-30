@@ -43,13 +43,13 @@ public class TiltAndTumble extends Game {
 	private int width;
 	private int height;
 
-	private final Settings settings = new Settings();
+	private Settings settings;
 	private HighScores scores;
 
 	@Override
 	public void create() {
-		settings.setUseDpad(!Gdx.input
-				.isPeripheralAvailable(Peripheral.Accelerometer));
+		settings = new Settings();
+	
 		batch = new SpriteBatch();
 		stage = new Stage();
 
@@ -177,7 +177,8 @@ public class TiltAndTumble extends Game {
 	@Override
 	public void dispose() {
 		HighScores.save(scores);
-		mainScreen.dispose();
+		//settings.saveSettings();
+		mainScreen.dispose();	
 		if (creditScreen != null) {
 			creditScreen.dispose();
 		}
@@ -188,6 +189,7 @@ public class TiltAndTumble extends Game {
 			highScoresScreen.dispose();
 		}
 		if (settingsScreen != null) {
+			
 			settingsScreen.dispose();
 		}
 		if (levelScreen != null) {
