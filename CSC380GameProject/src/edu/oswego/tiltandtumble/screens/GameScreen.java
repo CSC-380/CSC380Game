@@ -80,7 +80,7 @@ public class GameScreen extends AbstractScreen {
 			audio = null;
 		}
 		level = new Level(num, ballController, worldPopulator);
-		renderer = new DefaultLevelRenderer(level,game.getWidth(), game.getHeight());
+		renderer = new DefaultLevelRenderer(level,game.getWidth(), game.getHeight(), game.getSpriteBatch());
 		if (game.getSettings().isDebugRender()) {
 			renderer = new DebugLevelRenderer(renderer, ballController);
 		}

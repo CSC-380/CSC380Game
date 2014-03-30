@@ -21,11 +21,14 @@ public class DefaultLevelRenderer implements LevelRenderer {
 
 	private final Texture texture;
 	private final TextureRegion background;
+	private final SpriteBatch batch;
 
-	public DefaultLevelRenderer(Level level, float viewportWidth, float viewportHeight) {
+	public DefaultLevelRenderer(Level level, float viewportWidth,
+			float viewportHeight, SpriteBatch batch) {
 		this.level = level;
 		width = viewportWidth;
 		height = viewportHeight;
+		this.batch = batch;
 
 		MapProperties prop = level.getMap().getProperties();
 
@@ -40,7 +43,7 @@ public class DefaultLevelRenderer implements LevelRenderer {
 		// NOTE: if we set the scaling based on the texture size then
 		// we can use tile counts, instead of pixels, for the
 		// camera.setToOrtho call below.
-		mapRenderer = new OrthogonalTiledMapRenderer(level.getMap(), 1);
+		mapRenderer = new OrthogonalTiledMapRenderer(level.getMap(), 1, batch);
 		mapRenderer.setView(camera);
 
 		camera.setToOrtho(false, width, height);
