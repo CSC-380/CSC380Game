@@ -21,14 +21,12 @@ public class DefaultLevelRenderer implements LevelRenderer {
 
 	private final Texture texture;
 	private final TextureRegion background;
-	private final SpriteBatch batch;
 
 	public DefaultLevelRenderer(Level level, float viewportWidth,
 			float viewportHeight, SpriteBatch batch) {
 		this.level = level;
 		width = viewportWidth;
 		height = viewportHeight;
-		this.batch = batch;
 
 		MapProperties prop = level.getMap().getProperties();
 

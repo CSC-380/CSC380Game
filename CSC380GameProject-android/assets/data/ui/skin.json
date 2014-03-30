@@ -15,10 +15,12 @@
         small-orange: { file: data/ui/fonts/font_small_orange.fnt },
         medium: { file: data/ui/fonts/font_medium.fnt },
         large: { file: data/ui/fonts/font_large.fnt },
-        large-blue: { file: data/ui/fonts/font_large_blue.fnt }
+        large-blue: { file: data/ui/fonts/font_large_blue.fnt },
+        jumbo-orange: { file: data/ui/fonts/font_jumbo_orange.fnt },
     },
     com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
-        dialogDim: { name: whitePixel, color: { r: 0, g: 0, b: 0, a: 0.45 } }
+        dialogDim: { name: whitePixel, color: { r: 0, g: 0, b: 0, a: 0.45 } },
+        clear: { name: whitePixel, color: { r: 1, g: 1, b: 1, a: 0 } }
     },    
     com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
         default: {
@@ -36,7 +38,12 @@
             titleFontColor: white,
             background: dark_grey_panel,
             stageBackground: dialogDim
-        }
+        },
+        countdown: {
+            titleFont: large-blue,
+            titleFontColor: white,
+            background: dialogDim,
+        },
     },
     com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
         default: {
@@ -46,7 +53,11 @@
         hud-values: {
             font: small-orange,
             fontColor: white
-        }
+        },
+        countdown: {
+            font: jumbo-orange,
+            fontColor: white,
+        },
     },
     com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
         default: {

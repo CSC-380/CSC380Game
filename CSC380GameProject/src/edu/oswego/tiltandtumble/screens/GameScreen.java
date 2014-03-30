@@ -3,8 +3,6 @@ package edu.oswego.tiltandtumble.screens;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -45,7 +43,7 @@ public class GameScreen extends AbstractScreen {
 	private Level level;
 	private LevelRenderer renderer;
 	private AudioManager audio;
-	private final Window startPauseWindow = new Window("", skin);
+	private final Window countdownDisplay;
 	InputMultiplexer inputMux = new InputMultiplexer();
 
 	boolean usingDpad = false;
@@ -66,6 +64,8 @@ public class GameScreen extends AbstractScreen {
 		this.loadLevel(currentLevel);
 		scoreDisplay = new Label(String.valueOf(level.getScore().getPoints()), skin, "hud-values");
 		timerDisplay = new Label(level.getScore().getFormattedTime(), skin, "hud-values");
+
+		countdownDisplay = new Window("", skin, "countdown");
 	}
 
 	public void loadLevel(int num) {
@@ -201,21 +201,18 @@ public class GameScreen extends AbstractScreen {
 
 	private void showCountDown(float delta) {
 		countdownTime += delta;
-		// TODO: do some rendering
-		//       keep track of a timer and show the correct number for the time
-		//       once time is up, call endCountDown();
-		countdownTime += delta;
-		int count = (int) Math.floor(MAX_COUNT - countdownTime);
-			
-		if(startPauseWindow.hasParent() == false) {
-			stage.addActor(startPauseWindow);
-			startPauseWindow.setSize(0, 0);
-			startPauseWindow.setPosition(stage.getWidth() / 2 , stage.getHeight() / 2);
+		int count = (int)Math.floor(MAX_COUNT - countdownTime);
+
+		if(countdownDisplay.hasParent() == false) {
+			stage.addActor(countdownDisplay);
+			countdownDisplay.setSize(stage.getWidth(), stage.getHeight());
+			countdownDisplay.setPosition(stage.getWidth() / 2 , stage.getHeight() / 2);
+			countdownDisplay.setClip(false);
 		}
-		startPauseWindow.clear();
-		startPauseWindow.add((String.valueOf(count)));
+		countdownDisplay.clear();
+		countdownDisplay.add(String.valueOf(count), "countdown");
 		if (countdownTime >MAX_COUNT) {
-			startPauseWindow.remove();
+			countdownDisplay.remove();
 			endCountDown();
 		}
 	}
