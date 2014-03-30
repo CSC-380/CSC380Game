@@ -6,9 +6,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.utils.Disposable;
 
-import edu.oswego.tiltandtumble.Settings.Setting;
 import edu.oswego.tiltandtumble.settings.SettingsObserver;
 import edu.oswego.tiltandtumble.settings.SettingsUpdate;
+import edu.oswego.tiltandtumble.settings.Settings.Setting;
 import edu.oswego.tiltandtumble.worldObjects.Audible;
 
 public class AudioManager implements SettingsObserver, Disposable {

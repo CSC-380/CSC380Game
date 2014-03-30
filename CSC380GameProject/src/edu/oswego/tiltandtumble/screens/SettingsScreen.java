@@ -8,8 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-import edu.oswego.tiltandtumble.Settings;
 import edu.oswego.tiltandtumble.TiltAndTumble;
+import edu.oswego.tiltandtumble.settings.Settings;
 
 public class SettingsScreen extends AbstractScreen {
 
@@ -94,7 +94,7 @@ public class SettingsScreen extends AbstractScreen {
         back.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-            	settings.saveSettings();
+            	settings.save();
                 game.showPreviousScreen();
             }
         });

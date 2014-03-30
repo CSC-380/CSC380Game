@@ -4,7 +4,6 @@ import java.util.Stack;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Peripheral;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,6 +19,7 @@ import edu.oswego.tiltandtumble.screens.HighScoresScreen;
 import edu.oswego.tiltandtumble.screens.LevelScreen;
 import edu.oswego.tiltandtumble.screens.MainScreen;
 import edu.oswego.tiltandtumble.screens.SettingsScreen;
+import edu.oswego.tiltandtumble.settings.Settings;
 
 
 public class TiltAndTumble extends Game {
@@ -49,7 +49,7 @@ public class TiltAndTumble extends Game {
 	@Override
 	public void create() {
 		settings = new Settings();
-	
+
 		batch = new SpriteBatch();
 		stage = new Stage();
 
@@ -177,8 +177,7 @@ public class TiltAndTumble extends Game {
 	@Override
 	public void dispose() {
 		HighScores.save(scores);
-		//settings.saveSettings();
-		mainScreen.dispose();	
+		mainScreen.dispose();
 		if (creditScreen != null) {
 			creditScreen.dispose();
 		}
@@ -189,7 +188,7 @@ public class TiltAndTumble extends Game {
 			highScoresScreen.dispose();
 		}
 		if (settingsScreen != null) {
-			
+
 			settingsScreen.dispose();
 		}
 		if (levelScreen != null) {

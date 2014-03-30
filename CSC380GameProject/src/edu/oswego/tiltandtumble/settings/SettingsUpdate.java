@@ -1,6 +1,6 @@
 package edu.oswego.tiltandtumble.settings;
 
-import edu.oswego.tiltandtumble.Settings.Setting;
+import edu.oswego.tiltandtumble.settings.Settings.Setting;
 
 public class SettingsUpdate {
 	private final Setting name;
