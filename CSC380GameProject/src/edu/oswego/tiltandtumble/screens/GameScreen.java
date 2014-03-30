@@ -3,6 +3,8 @@ package edu.oswego.tiltandtumble.screens;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -35,16 +37,18 @@ public class GameScreen extends AbstractScreen {
 		SCORED
 	}
 
+	private static final float MAX_COUNT = 4;
+
 	private final BallController ballController;
 	private final WorldPopulator worldPopulator;
 
 	private Level level;
 	private LevelRenderer renderer;
 	private AudioManager audio;
+	private final Window startPauseWindow = new Window("", skin);
 	InputMultiplexer inputMux = new InputMultiplexer();
 
 	boolean usingDpad = false;
-	boolean firstStartPause = true;
 	private final List<Score> scores = new ArrayList<Score>();
 	private State currentState;
 
@@ -200,7 +204,20 @@ public class GameScreen extends AbstractScreen {
 		// TODO: do some rendering
 		//       keep track of a timer and show the correct number for the time
 		//       once time is up, call endCountDown();
-		endCountDown();
+		countdownTime += delta;
+		int count = (int) Math.floor(MAX_COUNT - countdownTime);
+			
+		if(startPauseWindow.hasParent() == false) {
+			stage.addActor(startPauseWindow);
+			startPauseWindow.setSize(0, 0);
+			startPauseWindow.setPosition(stage.getWidth() / 2 , stage.getHeight() / 2);
+		}
+		startPauseWindow.clear();
+		startPauseWindow.add((String.valueOf(count)));
+		if (countdownTime >MAX_COUNT) {
+			startPauseWindow.remove();
+			endCountDown();
+		}
 	}
 
 	private void endCountDown() {
