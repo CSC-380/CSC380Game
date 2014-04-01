@@ -1,17 +1,14 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.utils.Disposable;
 
 import edu.oswego.tiltandtumble.collisionListener.BallCollisionListener;
 import edu.oswego.tiltandtumble.levels.BallController;
 
 public class Teleporter extends TeleporterTarget
-		implements BallCollisionListener, WorldUpdateable, Audible, Disposable {
+		implements BallCollisionListener {
 	public static final BodyType BODY_TYPE = BodyType.StaticBody;
 	public static final boolean IS_SENSOR = true;
 
@@ -28,8 +25,6 @@ public class Teleporter extends TeleporterTarget
 	private final TeleporterSelectorStrategy selector;
 	private float disabledTime = 0;
 	private State currentState;
-	private boolean playSound;
-	private final Sound sound;
 
 	public Teleporter(Body body, TeleporterSelectorStrategy selector,
 			boolean resetVelocity, BallController ballController, float waitTime) {
@@ -37,8 +32,6 @@ public class Teleporter extends TeleporterTarget
 		this.selector = selector;
 		this.waitTime = waitTime;
 		currentState = State.ACTIVE;
-		playSound = true;
-		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/laser4.mp3"));
 	}
 
 	@Override
@@ -46,9 +39,6 @@ public class Teleporter extends TeleporterTarget
 		super.warp(ball);
 		currentState = State.DISABLED;
 		disabledTime = 0;
-		if (playSound) {
-			sound.play();
-		}
 	}
 
 	@Override
@@ -74,15 +64,5 @@ public class Teleporter extends TeleporterTarget
 		if (currentState == State.DISABLED) {
 			currentState = State.WAITING;
 		}
-	}
-
-	@Override
-	public void setPlaySound(boolean value) {
-		playSound = value;
-	}
-
-	@Override
-	public void dispose() {
-		sound.dispose();
 	}
 }

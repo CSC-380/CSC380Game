@@ -54,7 +54,6 @@ public class TiltAndTumble extends Game {
 		settings = new Settings();
 
 		batch = new SpriteBatch();
-		stage = new Stage();
 
 		// this will set the view port to the screen size, which will cause
 		// things to look big on a low resolution screen and look small on a
@@ -69,7 +68,8 @@ public class TiltAndTumble extends Game {
 		width = 480;
 		height = 320;
 
-		stage.setViewport(width, height, true);
+		stage = new Stage(width, height, true, batch);
+
 		font = new BitmapFont();
 		skin = new Skin();
 		loadSkin();

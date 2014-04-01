@@ -18,8 +18,8 @@
  <tileset firstgid="1921" name="tilea2222" tilewidth="32" tileheight="32">
   <image source="tilea2222.png" width="512" height="512"/>
  </tileset>
- <tileset firstgid="2177" name="sci-fi-platformer-tiles-32x32-extension_0" tilewidth="32" tileheight="32">
-  <image source="sci-fi-platformer-tiles-32x32-extension_0.png" width="512" height="4096"/>
+ <tileset firstgid="2177" name="sci-fi-platformer-tiles-6" tilewidth="32" tileheight="32">
+  <image source="tiles/sci-fi-platformer-tiles-6.png" width="512" height="512"/>
  </tileset>
  <layer name="Background" width="60" height="30">
   <data encoding="base64" compression="zlib">
@@ -38,7 +38,7 @@
  </layer>
  <layer name="objects" width="60" height="30">
   <data encoding="base64" compression="zlib">
-   eJztmM0KgCAMgIVu2RvXrWO9cJ3Sg2SC00DdnPtgl2bgx/BvSpVjn5Sal7xw5OawuHQ8Z31HoqUvZs0do9V3JKB1LbRH6vGFwtkn4HPrN1rzZ01izK802HvQaPcNyr419l3KviG5/tC4nnxLIL68EV/eiC9vevNNvf9WExvwf2++KQ4TJ5Cn6lvr/UbVtxbiy5uWvlg9FR/r6/d3/PmE3/18LFejV/QAyKcwgA==
+   eJztmMEKgCAMQIUu/nPdOtYHV6f0IJnQNFA3tz3YpRn5GGrOmHqskzGXLYtAaQ6LA/i295VET1/Mmgek1VcS0LpW+qP1eEPh7FPwOe0TvfmzJjHmVxvsPUja/wZl3xb7LmXflFJ/aNxIvjVQX96oL2/Ulzej+ebuf7OLBXh/NN8cm4sdyFP1bXV/o+rbCvXlTU9frJ5KjPeN+zvxfNLncf4r16JXdAOjh0jk
   </data>
  </layer>
  <objectgroup name="collision" width="60" height="30">
