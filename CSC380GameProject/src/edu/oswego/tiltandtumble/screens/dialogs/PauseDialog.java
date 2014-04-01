@@ -46,7 +46,6 @@ public class PauseDialog extends Dialog {
 			Buttons b = (Buttons)object;
 			if (b == Buttons.QUIT) {
 				game.showPreviousScreen();
-				// FIXME: need to reset the state of the game screen when we leave it...
 			} else if (b == Buttons.SETTINGS) {
 				game.showSettingsScreen();
 			} else if (b == Buttons.RETRY) {
