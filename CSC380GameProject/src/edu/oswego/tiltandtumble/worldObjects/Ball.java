@@ -1,6 +1,7 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,7 +12,7 @@ import com.badlogic.gdx.utils.Disposable;
 import edu.oswego.tiltandtumble.levels.UnitScale;
 
 public class Ball extends AbstractWorldObject implements MapRenderable,
-		Disposable {
+		Disposable, Audible {
 	public static final float FRICTION = 0.1f;
 	public static final float DENSITY = 1.0f;
 	public static final float RESTITUTION = 0.5f;
@@ -22,17 +23,21 @@ public class Ball extends AbstractWorldObject implements MapRenderable,
 	private final Texture texture;
 	private final Sprite sprite;
 
-	UnitScale scale;
+	private final UnitScale scale;
+	private boolean playSound;
+	private final Sound sound;
 
 	public Ball(Body body, float diameter, UnitScale scale) {
 		super(body);
 		this.scale = scale;
 
-		// http://opengameart.org/content/orbs-wo-drop-shadows
 		texture = new Texture(Gdx.files.internal("data/GreenOrb.png"));
 		sprite = new Sprite(texture);
 
 		sprite.setSize(diameter, diameter);
+
+		playSound = true;
+		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/boing1.wav"));
 	}
 
 	public void applyLinearImpulse(float x, float y) {
@@ -57,5 +62,18 @@ public class Ball extends AbstractWorldObject implements MapRenderable,
 	@Override
 	public void dispose() {
 		texture.dispose();
+		sound.dispose();
+	}
+
+	@Override
+	public void setPlaySound(boolean value) {
+		playSound = value;
+	}
+
+	@Override
+	public void playSound() {
+		if (playSound) {
+			sound.play(0.2f);
+		}
 	}
 }

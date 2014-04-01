@@ -114,6 +114,7 @@ public class MovingWall extends AbstractWorldObject
 	public void handleBeginCollision(Contact contact, Ball ball) {
 		collidingWithBall = true;
 		this.ball = ball;
+		ball.playSound();
 	}
 
 	@Override

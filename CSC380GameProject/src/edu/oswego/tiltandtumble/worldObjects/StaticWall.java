@@ -28,6 +28,7 @@ public class StaticWall extends AbstractWorldObject implements WorldUpdateable,
 	public void handleBeginCollision(Contact contact, Ball ball) {
 		collidingWithBall = true;
 		this.ball = ball;
+		ball.playSound();
 	}
 
 	@Override

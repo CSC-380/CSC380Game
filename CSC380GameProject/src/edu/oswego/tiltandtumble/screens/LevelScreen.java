@@ -3,7 +3,6 @@ package edu.oswego.tiltandtumble.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -20,15 +19,15 @@ public class LevelScreen extends AbstractScreen {
 	public void show() {
 		Gdx.input.setInputProcessor(stage);
 
-		Window window = new Window("\nLevels",skin);
+		Window window = new Window("\nLevels", skin);
         window.setFillParent(true);
+        window.setModal(true);
+        window.setMovable(false);
         stage.addActor(window);
-		Table table = new Table();
-		table.setFillParent(true);
-		window.addActor(table);
 
+		window.row().padTop(100).fillX();
 		Button play = new TextButton("Click to Play Level One!", skin);
-		table.add(play);
+		window.add(play);
 		play.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -36,18 +35,19 @@ public class LevelScreen extends AbstractScreen {
 			}
 		});
 
-		table.row();
+		window.row().padTop(10).fillX();
 		Button play2 = new TextButton("Click to Play Level Two!", skin);
-		table.add(play2);
+		window.add(play2);
 		play2.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				game.showGameScreen(2);
 			}
 		});
-		table.row();
+
+		window.row().padTop(50).bottom().fillX();
 		Button back = new TextButton("Go Back", skin);
-		table.add(back);
+		window.add(back);
 		back.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {

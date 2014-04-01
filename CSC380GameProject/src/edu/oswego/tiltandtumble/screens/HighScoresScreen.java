@@ -3,8 +3,8 @@ package edu.oswego.tiltandtumble.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
@@ -19,8 +19,10 @@ public class HighScoresScreen extends AbstractScreen {
 	public void show() {
         Gdx.input.setInputProcessor(stage);
 
-        Table table = new Table();
-        table.setFillParent(true);
+		Window table = new Window("\nHigh Scores", skin);
+		table.setFillParent(true);
+		table.setModal(true);
+		table.setMovable(false);
         stage.addActor(table);
 
         table.row();
