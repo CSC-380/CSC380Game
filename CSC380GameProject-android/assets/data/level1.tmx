@@ -18,7 +18,7 @@
  </tileset>
  <layer name="background" width="100" height="20">
   <data encoding="base64" compression="zlib">
-   eJzt0cENADAIAzG6E/vP1h36aQRG8j/o+lQ1AAAs93K/N0+mR5b0HgkbEv7VQw89MlrrocdGesyjBwCbXaqxgcM=
+   eJzt0cEJADAIBEHTs/2THvLJoSPM/2T7VDUAACz3cr83T6ZHlvQeCRsS/tVDDz0yWuuhx0Z6zKMHAJtdPvJToQ==
   </data>
  </layer>
  <layer name="map" width="100" height="20">
@@ -94,7 +94,7 @@
     <property name="target" value="start"/>
    </properties>
   </object>
-  <object name="Teleporter" x="3105" y="10" width="62" height="6">
+  <object name="Teleporter" x="3105" y="13" width="62" height="6">
    <properties>
     <property name="id" value="velocity1"/>
     <property name="reset velocity" value="false"/>
@@ -102,7 +102,7 @@
     <property name="wait time" value="0"/>
    </properties>
   </object>
-  <object name="Teleporter" x="3106" y="628" width="62" height="5">
+  <object name="Teleporter" x="3104" y="621" width="62" height="5">
    <properties>
     <property name="id" value="velocity2"/>
     <property name="reset velocity" value="false"/>
@@ -179,7 +179,7 @@
   <object name="StaticWall" x="1438" y="638">
    <polyline points="0,0 67,0"/>
   </object>
-  <object name="Teleporter" x="1439" y="7" width="62" height="5">
+  <object name="Teleporter" x="1440" y="14" width="62" height="5">
    <properties>
     <property name="id" value="midtop"/>
     <property name="reset velocity" value="false"/>
@@ -187,7 +187,7 @@
     <property name="wait time" value="0"/>
    </properties>
   </object>
-  <object name="Teleporter" x="1440" y="626" width="62" height="5">
+  <object name="Teleporter" x="1440" y="619" width="62" height="5">
    <properties>
     <property name="id" value="midbottom"/>
     <property name="reset velocity" value="false"/>
@@ -218,7 +218,7 @@
   <object name="StaticWall" x="1185" y="257" width="62" height="125"/>
   <object name="StaticWall" x="513" y="129" width="30" height="93"/>
   <object name="StaticWall" x="513" y="384" width="30" height="95"/>
-  <object name="StaticWall" x="225" y="128" width="29" height="95"/>
+  <object name="StaticWall" x="225" y="128" width="30" height="102"/>
   <object name="StaticWall" x="129" y="225" width="126" height="29"/>
   <object name="StaticWall" x="929" y="1" width="510" height="30"/>
   <object name="StaticWall" x="930" y="608" width="509" height="32"/>
@@ -228,7 +228,7 @@
   <object name="StaticWall" x="862" y="638">
    <polyline points="0,0 67,0"/>
   </object>
-  <object name="Teleporter" x="865" y="629" width="62" height="5">
+  <object name="Teleporter" x="865" y="619" width="62" height="5">
    <properties>
     <property name="id" value="mid2bottom"/>
     <property name="reset velocity" value="false"/>
@@ -236,7 +236,7 @@
     <property name="wait time" value="0"/>
    </properties>
   </object>
-  <object name="Teleporter" x="865" y="7" width="62" height="5">
+  <object name="Teleporter" x="864" y="14" width="62" height="5">
    <properties>
     <property name="id" value="mid2top"/>
     <property name="reset velocity" value="false"/>
