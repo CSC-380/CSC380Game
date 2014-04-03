@@ -57,7 +57,7 @@ public class MovingWall extends AbstractWorldObject
 	}
 
 	@Override
-	public void draw(SpriteBatch batch) {
+	public void draw(float delta, SpriteBatch batch) {
 		sprite.setPosition(getMapX(), getMapY());
 		sprite.draw(batch);
 	}

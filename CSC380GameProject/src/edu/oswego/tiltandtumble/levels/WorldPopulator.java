@@ -89,7 +89,7 @@ public final class WorldPopulator {
 		TeleporterTarget target = new TeleporterTarget(
 				body,
 				Boolean.valueOf(obj.getProperties().get("reset velocity", "true", String.class)),
-				level.getBallController());
+				level.getBallController(), scale);
 		meshHelper.add(
 				obj.getProperties().get("id", String.class),
 				target);
@@ -120,6 +120,7 @@ public final class WorldPopulator {
 				selector,
 				Boolean.valueOf(obj.getProperties().get("reset velocity", "true", String.class)),
 				level.getBallController(),
+				scale,
 				getFloatProperty(obj, "wait time", Teleporter.WAIT_TIME));
 		meshHelper.add(
 				obj.getProperties().get("id", String.class),

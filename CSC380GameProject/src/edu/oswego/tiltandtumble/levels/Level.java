@@ -191,9 +191,9 @@ public class Level implements Disposable {
 		return level;
 	}
 
-	public void draw(SpriteBatch batch) {
+	public void draw(float delta, SpriteBatch batch) {
 		for (MapRenderable m : renderableObjects) {
-			m.draw(batch);
+			m.draw(delta, batch);
 		}
 	}
 

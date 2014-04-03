@@ -85,7 +85,7 @@ public class DefaultLevelRenderer implements LevelRenderer {
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		level.draw(batch);
+		level.draw(delta, batch);
 		batch.end();
 	}
 

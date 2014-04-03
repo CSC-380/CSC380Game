@@ -2,15 +2,18 @@ package edu.oswego.tiltandtumble.worldObjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Disposable;
 
 import edu.oswego.tiltandtumble.levels.BallController;
+import edu.oswego.tiltandtumble.levels.UnitScale;
 
 public class TeleporterTarget extends AbstractWorldObject
-		implements WorldUpdateable, Audible, Disposable {
+		implements WorldUpdateable, Audible, Disposable, MapRenderable {
 	public static final BodyType BODY_TYPE = BodyType.StaticBody;
 	public static final boolean IS_SENSOR = true;
 
@@ -21,14 +24,22 @@ public class TeleporterTarget extends AbstractWorldObject
 
 	private boolean playSound;
 	private final Sound sound;
+	private final ParticleEffect effect;
 
-	public TeleporterTarget(Body body, boolean resetVelocity, BallController ballController) {
+	public TeleporterTarget(Body body, boolean resetVelocity,
+			BallController ballController, UnitScale scale) {
 		super(body);
 		this.resetVelocity = resetVelocity;
 		this.ballController = ballController;
 
 		playSound = true;
 		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/laser4.mp3"));
+
+		effect = new ParticleEffect();
+		effect.load(Gdx.files.internal("data/teleporter.p"), Gdx.files.internal("data"));
+		effect.setPosition(
+				scale.metersToPixels(body.getPosition().x),
+				scale.metersToPixels(body.getPosition().y));
 	}
 
 	public void warp(Ball ball) {
@@ -55,6 +66,7 @@ public class TeleporterTarget extends AbstractWorldObject
 				pendingVelocity = null;
 			}
 			playSound();
+			effect.start();
 			pendingWarp = null;
 		}
 	}
@@ -74,5 +86,11 @@ public class TeleporterTarget extends AbstractWorldObject
 	@Override
 	public void dispose() {
 		sound.dispose();
+		effect.dispose();
+	}
+
+	@Override
+	public void draw(float delta, SpriteBatch batch) {
+		effect.draw(batch, delta);
 	}
 }

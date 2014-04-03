@@ -46,7 +46,7 @@ public class Ball extends AbstractWorldObject implements MapRenderable,
 	}
 
 	@Override
-	public void draw(SpriteBatch batch) {
+	public void draw(float delta, SpriteBatch batch) {
 		sprite.setPosition(getMapX(), getMapY());
 		sprite.draw(batch);
 	}

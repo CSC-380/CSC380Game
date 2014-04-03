@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 
 import edu.oswego.tiltandtumble.collisionListener.BallCollisionListener;
 import edu.oswego.tiltandtumble.levels.BallController;
+import edu.oswego.tiltandtumble.levels.UnitScale;
 
 public class Teleporter extends TeleporterTarget
 		implements BallCollisionListener {
@@ -27,8 +28,9 @@ public class Teleporter extends TeleporterTarget
 	private State currentState;
 
 	public Teleporter(Body body, TeleporterSelectorStrategy selector,
-			boolean resetVelocity, BallController ballController, float waitTime) {
-		super(body, resetVelocity, ballController);
+			boolean resetVelocity, BallController ballController,
+			UnitScale scale, float waitTime) {
+		super(body, resetVelocity, ballController, scale);
 		this.selector = selector;
 		this.waitTime = waitTime;
 		currentState = State.ACTIVE;
