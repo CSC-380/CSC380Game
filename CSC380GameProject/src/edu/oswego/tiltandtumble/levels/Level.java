@@ -23,13 +23,6 @@ import edu.oswego.tiltandtumble.worldObjects.WorldUpdateable;
 
 public class Level implements Disposable {
 
-	private static enum State {
-		NOT_STARTED,
-		STARTED,
-		PAUSED,
-		FINISHED
-	};
-
 	// TODO: Setting default score to 1000, figure out a good value for this...
 	private static final int DEFAULT_SCORE = 1000;
 
@@ -43,13 +36,12 @@ public class Level implements Disposable {
 	private final UnitScale scale = new UnitScale(1f/64f);
 
 	private final int level;
-	private State currentState;
 	private boolean failed = false;
+	private State currentState;
 
 	private final Score score;
 	//times are in milliseconds
 	private long startTime;
-	private long pauseTime = 0;
 	private final int baseScore;
 
 	private final int mapWidth;
@@ -64,7 +56,7 @@ public class Level implements Disposable {
 		this.level = level;
 		this.ballController = ballController;
 
-		currentState = State.NOT_STARTED;
+		currentState = new NotStarted();
 
 		map = loadMap(level);
 
@@ -118,7 +110,7 @@ public class Level implements Disposable {
 	}
 
 	public boolean hasNotStarted() {
-		return currentState == State.NOT_STARTED;
+		return currentState instanceof NotStarted;
 	}
 
 	public void addWorldObject(WorldObject obj) {
@@ -138,14 +130,11 @@ public class Level implements Disposable {
 	}
 
 	public void start() {
-		if (currentState == State.NOT_STARTED) {
-			currentState = State.STARTED;
-		}
-		startTime = TimeUtils.millis();
+		currentState.start();
 	}
 
 	public boolean isStarted() {
-		return currentState == State.STARTED;
+		return currentState instanceof Started;
 	}
 
 	public void finish() {
@@ -153,11 +142,7 @@ public class Level implements Disposable {
 	}
 
 	public void finish(boolean fail) {
-		if (currentState == State.STARTED) {
-			currentState = State.FINISHED;
-			failed = fail;
-			updateScore();
-		}
+		currentState.finish(fail);
 	}
 
 	public boolean isFailed() {
@@ -165,7 +150,7 @@ public class Level implements Disposable {
 	}
 
 	public boolean hasFinished() {
-		return currentState == State.FINISHED;
+		return currentState instanceof Finished;
 	}
 
 	private void updateScore() {
@@ -198,20 +183,7 @@ public class Level implements Disposable {
 	}
 
 	public void update(float delta) {
-		if (currentState == State.STARTED) {
-			if (isBallOutsideLevel()) {
-				finish(true);
-			}
-			ballController.update(delta);
-			for (WorldUpdateable w : updateableObjects) {
-				w.update(delta);
-			}
-
-			updateScore();
-
-			// world.step(1/60f, 6, 2);
-			world.step(1 / 45f, 10, 8);
-		}
+		currentState.update(delta);
 	}
 
 	private boolean isBallOutsideLevel() {
@@ -230,17 +202,78 @@ public class Level implements Disposable {
 	}
 
 	public void pause() {
-		if (currentState == State.STARTED) {
-			currentState = State.PAUSED;
-			pauseTime = TimeUtils.millis();
-		}
+		currentState.pause();
 	}
 
 	public void resume() {
-		if (currentState == State.PAUSED) {
-			currentState = State.STARTED;
-			startTime += (TimeUtils.millis() - pauseTime);
-			pauseTime = 0;
+		currentState.resume();
+	}
+
+	private abstract class State {
+		public void start() {
 		}
+
+		public void pause() {
+		}
+
+		public void resume() {
+		}
+
+		public void finish(boolean fail) {
+		}
+
+		public void update(float delta) {
+		}
+	}
+
+	private class NotStarted extends State {
+		@Override
+		public void start() {
+			startTime = TimeUtils.millis();
+			currentState = new Started();
+		}
+	}
+
+	private class Started extends State {
+		@Override
+		public void pause() {
+			currentState = new Paused();
+		}
+
+		@Override
+		public void finish(boolean fail) {
+			failed = fail;
+			updateScore();
+			currentState = new Finished();
+		}
+
+		@Override
+		public void update(float delta) {
+			if (isBallOutsideLevel()) {
+				finish(true);
+			}
+			ballController.update(delta);
+			for (WorldUpdateable w : updateableObjects) {
+				w.update(delta);
+			}
+
+			updateScore();
+
+			// world.step(1/60f, 6, 2);
+			world.step(1 / 45f, 10, 8);
+		}
+	}
+
+	private class Paused extends State {
+		private final long pauseTime = TimeUtils.millis();
+
+		@Override
+		public void resume() {
+			startTime += (TimeUtils.millis() - pauseTime);
+			currentState = new Started();
+		}
+	}
+
+	private class Finished extends State {
 	}
 }
