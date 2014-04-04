@@ -26,15 +26,6 @@ import edu.oswego.tiltandtumble.screens.dialogs.PauseDialog;
 import edu.oswego.tiltandtumble.screens.dialogs.ScoreDialog;
 
 public class GameScreen extends AbstractScreen {
-
-	private static enum State {
-		WAITING,
-		STARTING,
-		PAUSED,
-		PLAYING,
-		SCORED
-	}
-
 	private static final float MAX_COUNT = 4;
 
 	private final BallController ballController;
@@ -69,7 +60,7 @@ public class GameScreen extends AbstractScreen {
 	}
 
 	public void loadLevel(int num) {
-		currentState = State.WAITING;
+		changeState(State.WAITING);
 		if (level != null) {
 			level.dispose();
 			level = null;
@@ -109,7 +100,7 @@ public class GameScreen extends AbstractScreen {
 		}
 	}
 
-	public void loadDpad(){
+	private void loadDpad() {
 		Image image = new Image(skin, "UpArrow");
 		image.setName("up");
 		image.setPosition(image.getWidth(), image.getHeight() * 2);
@@ -133,7 +124,6 @@ public class GameScreen extends AbstractScreen {
 		image.setPosition(image.getWidth(), 0);
 		image.addListener(ballController);
 		stage.addActor(image);
-
 	}
 
 	public Level getCurrentLevel() {
@@ -144,7 +134,7 @@ public class GameScreen extends AbstractScreen {
 		return scores;
 	}
 
-	public void loadHUD() {
+	private void loadHUD() {
 		Window window = new Window("", skin, "hud");
 		window.setHeight(32);
 
@@ -166,11 +156,7 @@ public class GameScreen extends AbstractScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				if (currentState == State.PLAYING){
-					pause();
-				} else if(currentState == State.PAUSED){
-					resume();
-				}
+				currentState.togglePause(GameScreen.this);
 				return true;
 			}
 		});
@@ -184,7 +170,7 @@ public class GameScreen extends AbstractScreen {
 		button.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				GameScreen.this.startCountDown();
+				currentState.start(GameScreen.this);
 				window.remove();
 			}
 		});
@@ -193,74 +179,21 @@ public class GameScreen extends AbstractScreen {
 		window.setPosition(stage.getWidth() / 2 , stage.getHeight() / 2);
 	}
 
-	private void startCountDown() {
-		if (currentState != State.WAITING) return;
-		currentState = State.STARTING;
-		countdownTime = 0;
-	}
-
-	private void showCountDown(float delta) {
-		countdownTime += delta;
-		int count = (int)Math.floor(MAX_COUNT - countdownTime);
-
-		if(countdownDisplay.hasParent() == false) {
-			stage.addActor(countdownDisplay);
-			countdownDisplay.setSize(stage.getWidth(), stage.getHeight());
-			countdownDisplay.setPosition(stage.getWidth() / 2 , stage.getHeight() / 2);
-			countdownDisplay.setClip(false);
-		}
-		countdownDisplay.clear();
-		countdownDisplay.add(String.valueOf(count), "countdown");
-		if (countdownTime >MAX_COUNT) {
-			countdownDisplay.remove();
-			endCountDown();
-		}
-	}
-
-	private void endCountDown() {
-		if (currentState != State.STARTING) return;
-		currentState = State.PLAYING;
-		ballController.resetBall();
-		ballController.resume();
-		level.start();
-		audio.start();
-	}
-
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(inputMux);
 		inputMux.addProcessor(stage);
-		if(game.getSettings().isUseDpad()){
+		if (game.getSettings().isUseDpad()){
 			loadDpad();
 		}
 		loadHUD();
-		if (currentState == State.PAUSED) {
-			pauseDialog = new PauseDialog("Paused", skin, this, game).show(stage);
-		} else {
-			showStartPause();
-		}
+		currentState.show(this);
 	}
 
 	@Override
 	protected void preStageRenderHook(float delta) {
 		renderer.render(delta, game.getSpriteBatch(), game.getFont());
-		if (currentState == State.STARTING) {
-			showCountDown(delta);
-		} else {
-			if (level.isStarted()) {
-				level.update(delta);
-			} else if (level.hasFinished()) {
-				if (currentState != State.SCORED) {
-					audio.pause();
-					scores.add(level.getScore());
-					new ScoreDialog("Score", skin, game, this).show(stage);
-					currentState = State.SCORED;
-				}
-			}
-
-			scoreDisplay.setText(String.valueOf(level.getScore().getPoints()));
-			timerDisplay.setText(level.getScore().getFormattedTime());
-		}
+		currentState.render(this, delta);
 	}
 
 	@Override
@@ -279,28 +212,119 @@ public class GameScreen extends AbstractScreen {
 
 	@Override
 	public void pause() {
-		if (currentState != State.PLAYING) return;
-		pauseDialog = new PauseDialog("Paused", skin, this, game).show(stage);
-		currentState = State.PAUSED;
-		ballController.pause();
-		audio.pause();
-		level.pause();
+		currentState.pause(this);
 	}
 
 	@Override
 	public void resume() {
-		if (currentState != State.PAUSED) return;
-		// isVisible seems to always return true, not sure why...
-		// make sure the dialog goes away, this can be called from the system
-		// level rather than direct user interaction so we want to make sure
-		// the game does not start playing before the window goes away.
-		if (pauseDialog != null && pauseDialog.isVisible()) {
-			pauseDialog.hide();
-			pauseDialog = null;
-		}
-		this.currentState = State.PLAYING;
-		ballController.resume();
-		audio.start();
-		level.resume();
+		currentState.resume(this);
+	}
+
+	private void changeState(State state) {
+		currentState = state;
+	}
+
+	private static enum State {
+		WAITING {
+			@Override
+			public void show(GameScreen s) {
+				s.showStartPause();
+			}
+
+			@Override
+			public void start(GameScreen s) {
+				s.changeState(State.STARTING);
+			}
+		},
+		STARTING {
+			@Override
+			public void render(GameScreen s, float delta) {
+				s.countdownTime += delta;
+				int count = (int)Math.floor(MAX_COUNT - s.countdownTime);
+
+				if (s.countdownDisplay.hasParent() == false) {
+					s.stage.addActor(s.countdownDisplay);
+					s.countdownDisplay.setSize(s.stage.getWidth(), s.stage.getHeight());
+					s.countdownDisplay.setPosition(s.stage.getWidth() / 2 , s.stage.getHeight() / 2);
+					s.countdownDisplay.setClip(false);
+				}
+				s.countdownDisplay.clear();
+				s.countdownDisplay.add(String.valueOf(count), "countdown");
+				if (s.countdownTime > MAX_COUNT) {
+					s.countdownDisplay.remove();
+					s.ballController.resetBall();
+					s.ballController.resume();
+					s.level.start();
+					s.audio.start();
+					s.changeState(State.PLAYING);
+				}
+			}
+		},
+		PAUSED {
+			@Override
+			public void resume(GameScreen s) {
+				// isVisible seems to always return true, not sure why...
+				// make sure the dialog goes away, this can be called from the system
+				// level rather than direct user interaction so we want to make sure
+				// the game does not start playing before the window goes away.
+				if (s.pauseDialog != null && s.pauseDialog.isVisible()) {
+					s.pauseDialog.hide();
+					s.pauseDialog = null;
+				}
+				s.ballController.resume();
+				s.audio.start();
+				s.level.resume();
+				s.changeState(State.PLAYING);
+			}
+
+			@Override
+			public void show(GameScreen s) {
+				s.pauseDialog = new PauseDialog("Paused", s.skin, s, s.game).show(s.stage);
+			}
+
+			@Override
+			public void togglePause(GameScreen s) {
+				resume(s);
+			}
+		},
+		PLAYING {
+			@Override
+			public void render(GameScreen s, float delta) {
+				if (s.level.hasFinished()) {
+					s.audio.pause();
+					s.scores.add(s.level.getScore());
+					new ScoreDialog("Score", s.skin, s.game, s).show(s.stage);
+					s.changeState(State.SCORED);
+				}
+				else {
+					s.level.update(delta);
+				}
+
+				s.scoreDisplay.setText(String.valueOf(s.level.getScore().getPoints()));
+				s.timerDisplay.setText(s.level.getScore().getFormattedTime());
+			}
+
+			@Override
+			public void pause(GameScreen s) {
+				s.pauseDialog = new PauseDialog("Paused", s.skin, s, s.game).show(s.stage);
+				s.ballController.pause();
+				s.audio.pause();
+				s.level.pause();
+				s.changeState(State.PAUSED);
+			}
+
+			@Override
+			public void togglePause(GameScreen s) {
+				pause(s);
+			}
+		},
+		SCORED;
+
+		public void start(GameScreen s) {}
+		public void togglePause(GameScreen s) {}
+		public void pause(GameScreen s) {}
+		public void resume(GameScreen s) {}
+		public void show(GameScreen s) {}
+		public void render(GameScreen s, float delta) {}
 	}
 }
