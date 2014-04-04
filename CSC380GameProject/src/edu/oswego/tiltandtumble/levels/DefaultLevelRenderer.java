@@ -39,9 +39,11 @@ public class DefaultLevelRenderer implements LevelRenderer {
 		camera = new OrthographicCamera();
 
 		// NOTE: if we set the scaling based on the texture size then
-		// we can use tile counts, instead of pixels, for the
-		// camera.setToOrtho call below.
-		mapRenderer = new OrthogonalTiledMapRenderer(level.getMap(), 1, batch);
+		//       we can use tile counts, instead of pixels, for the
+		//       camera.setToOrtho call below.
+		// NOTE: reusing the sprite batch in the map renderer seems to cause
+		//       a slowdown in rendering.
+		mapRenderer = new OrthogonalTiledMapRenderer(level.getMap(), 1);
 		mapRenderer.setView(camera);
 
 		camera.setToOrtho(false, width, height);
