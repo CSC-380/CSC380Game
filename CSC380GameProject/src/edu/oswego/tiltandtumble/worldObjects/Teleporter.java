@@ -17,12 +17,6 @@ public class Teleporter extends TeleporterTarget
 	public static final float WAIT_TIME = 3;
 	private final float waitTime;
 
-	private static enum State {
-		DISABLED,
-		WAITING,
-		ACTIVE
-	}
-
 	private final TeleporterSelectorStrategy selector;
 	private float disabledTime = 0;
 	private State currentState;
@@ -39,32 +33,61 @@ public class Teleporter extends TeleporterTarget
 	@Override
 	public void warp(Ball ball) {
 		super.warp(ball);
-		currentState = State.DISABLED;
-		disabledTime = 0;
+		currentState.warp(this);
 	}
 
 	@Override
 	public void update(float delta) {
 		super.update(delta);
-		if (currentState == State.WAITING) {
-			disabledTime += delta;
-			if (disabledTime > waitTime) {
-				currentState = State.ACTIVE;
-			}
-		}
+		currentState.update(this, delta);
 	}
 
 	@Override
 	public void handleBeginCollision(Contact contact, Ball ball) {
-		if (currentState != State.ACTIVE) return;
-		TeleporterTarget target = selector.getNext();
-		target.warp(ball);
+		currentState.handleBeginCollision(this, ball);
 	}
 
 	@Override
 	public void handleEndCollision(Contact contact, Ball ball) {
-		if (currentState == State.DISABLED) {
-			currentState = State.WAITING;
-		}
+		currentState.handleEndCollision(this, ball);
+	}
+
+	private void changeState(State state) {
+		currentState = state;
+	}
+
+	private static enum State {
+		DISABLED {
+			@Override
+			public void handleEndCollision(Teleporter t, Ball b) {
+				t.changeState(WAITING);
+			}
+		},
+		WAITING {
+			@Override
+			public void update(Teleporter t, float delta) {
+				t.disabledTime += delta;
+				if (t.disabledTime > t.waitTime) {
+					t.changeState(ACTIVE);
+				}
+			}
+		},
+		ACTIVE {
+			@Override
+			public void warp(Teleporter t) {
+				t.disabledTime = 0;
+				t.changeState(DISABLED);
+			}
+			@Override
+			public void handleBeginCollision(Teleporter t, Ball b) {
+				TeleporterTarget target = t.selector.getNext();
+				target.warp(b);
+			}
+		};
+
+		public void warp(Teleporter t) {}
+		public void handleBeginCollision(Teleporter t, Ball b) {}
+		public void handleEndCollision(Teleporter t, Ball b) {}
+		public void update(Teleporter t, float delta) {}
 	}
 }

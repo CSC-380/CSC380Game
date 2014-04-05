@@ -13,15 +13,12 @@ import edu.oswego.tiltandtumble.worldObjects.Ball;
 
 public class BallController extends ClickListener {
 
-	enum MyKeys {
+	private static final float KEY_MAX = 10;
+	private static final float KEY_INCREMENT = 0.25f;
+
+	private enum MyKeys {
 		LEFT, RIGHT, UP, DOWN
 	}
-
-	private static enum State {
-		PAUSED,
-		ACTIVE
-	}
-
 
 	private final Map<MyKeys, Boolean> keys = new EnumMap<MyKeys, Boolean>(MyKeys.class);
 	private final boolean useAccelerometer;
@@ -32,7 +29,6 @@ public class BallController extends ClickListener {
 	private State currentState;
 	private float keyX = 0;
 	private float keyY = 0;
-	private final float keyIncrement = 0.25f;
 
 	public BallController(boolean useAccelerometer) {
 		this.useAccelerometer = useAccelerometer;
@@ -48,47 +44,22 @@ public class BallController extends ClickListener {
 	}
 
 	public void update(float delta) {
-		if(currentState == State.ACTIVE){
-			float forceX = 0;
-			float forceY = 0;
-			if (useAccelerometer) {
-				// accelerometer is reversed from screen coordinates, we are in landscape mode
-				tiltX = Gdx.input.getAccelerometerY();
-				tiltY = Gdx.input.getAccelerometerX();
-
-				forceX = Math.signum(tiltX) * (float)(Math.pow(tiltX, 2) * 0.001);
-				forceY = Math.signum(tiltY) * (float)(Math.pow(tiltY, 2) * 0.001) * -1;
-			}
-			else {
-				// might as well accept either input
-				updateFromDpad();
-				updateFromKeys();
-
-				tiltX = keyX;
-				tiltY = keyY;
-
-				forceX = tiltX * 0.001f;
-				forceY = tiltY * 0.001f * -1;
-			}
-			if (ball != null) {
-				ball.applyLinearImpulse(forceX, forceY);
-			}
-		}
+		currentState.update(this, delta);
 	}
 
-	public void resetBall(){
+	public void resetBall() {
 		keyX = 0;
 		tiltX = 0;
 		keyY = 0;
 		tiltY = 0;
 	}
 
-	public void pause(){
-		currentState = State.PAUSED;
+	public void pause() {
+		currentState.pause(this);
 	}
 
-	public void resume(){
-		currentState = State.ACTIVE;
+	public void resume() {
+		currentState.resume(this);
 	}
 
 	private void updateFromDpad() {
@@ -169,72 +140,122 @@ public class BallController extends ClickListener {
 	}
 
 	private void incrementX() {
-		if (keyX >= 10) {
-			keyX = 10;
+		if (keyX >= KEY_MAX) {
+			keyX = KEY_MAX;
 		}
 		else {
-			keyX += keyIncrement;
+			keyX += KEY_INCREMENT;
 		}
 	}
 
 	private void decrementX() {
-		if (keyX <= -10) {
-			keyX = -10;
+		if (keyX <= -KEY_MAX) {
+			keyX = -KEY_MAX;
 		}
 		else {
-			keyX -= keyIncrement;
+			keyX -= KEY_INCREMENT;
 		}
 	}
 
 	private void incrementY() {
-		if (keyY >= 10) {
-			keyY = 10;
+		if (keyY >= KEY_MAX) {
+			keyY = KEY_MAX;
 		}
 		else {
-			keyY += keyIncrement;
+			keyY += KEY_INCREMENT;
 		}
 	}
 
 	private void decrementY() {
-		if (keyY <= -10) {
-			keyY = -10;
+		if (keyY <= -KEY_MAX) {
+			keyY = -KEY_MAX;
 		}
 		else {
-			keyY -= keyIncrement;
+			keyY -= KEY_INCREMENT;
 		}
 	}
 
 	// ** Key presses and touches **************** //
 
-	public void leftPressed() {
+	private void leftPressed() {
 		keys.get(keys.put(MyKeys.LEFT, true));
 	}
 
-	public void rightPressed() {
+	private void rightPressed() {
 		keys.get(keys.put(MyKeys.RIGHT, true));
 	}
 
-	public void upPressed() {
+	private void upPressed() {
 		keys.get(keys.put(MyKeys.UP, true));
 	}
 
-	public void downPressed(){
+	private void downPressed(){
 		keys.get(keys.put(MyKeys.DOWN, true));
 	}
 
-	public void leftReleased() {
+	private void leftReleased() {
 		keys.get(keys.put(MyKeys.LEFT, false));
 	}
 
-	public void rightReleased() {
+	private void rightReleased() {
 		keys.get(keys.put(MyKeys.RIGHT, false));
 	}
 
-	public void upReleased() {
+	private void upReleased() {
 		keys.get(keys.put(MyKeys.UP, false));
 	}
 
-	public void downReleased() {
+	private void downReleased() {
 		keys.get(keys.put(MyKeys.DOWN, false));
+	}
+
+	private void changeState(State state) {
+		currentState = state;
+	}
+
+	private static enum State {
+		PAUSED {
+			@Override
+			public void resume(BallController b) {
+				b.changeState(ACTIVE);
+			}
+		},
+		ACTIVE {
+			@Override
+			public void pause(BallController b) {
+				b.changeState(PAUSED);
+			}
+			@Override
+			public void update(BallController b, float delta) {
+				float forceX = 0;
+				float forceY = 0;
+				if (b.useAccelerometer) {
+					// accelerometer is reversed from screen coordinates, we are in landscape mode
+					b.tiltX = Gdx.input.getAccelerometerY();
+					b.tiltY = Gdx.input.getAccelerometerX();
+
+					forceX = Math.signum(b.tiltX) * (float)(Math.pow(b.tiltX, 2) * 0.001);
+					forceY = Math.signum(b.tiltY) * (float)(Math.pow(b.tiltY, 2) * 0.001) * -1;
+				}
+				else {
+					// might as well accept either input
+					b.updateFromDpad();
+					b.updateFromKeys();
+
+					b.tiltX = b.keyX;
+					b.tiltY = b.keyY;
+
+					forceX = b.tiltX * 0.001f;
+					forceY = b.tiltY * 0.001f * -1;
+				}
+				if (b.ball != null) {
+					b.ball.applyLinearImpulse(forceX, forceY);
+				}
+			}
+		};
+
+		public void pause(BallController b) {}
+		public void resume(BallController b) {}
+		public void update(BallController b, float delta) {}
 	}
 }
