@@ -5,13 +5,7 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
 import edu.oswego.tiltandtumble.data.Score;
@@ -24,39 +18,35 @@ import edu.oswego.tiltandtumble.levels.LevelRenderer;
 import edu.oswego.tiltandtumble.levels.WorldPopulator;
 import edu.oswego.tiltandtumble.screens.dialogs.PauseDialog;
 import edu.oswego.tiltandtumble.screens.dialogs.ScoreDialog;
+import edu.oswego.tiltandtumble.screens.widgets.DPad;
+import edu.oswego.tiltandtumble.screens.widgets.Hud;
+import edu.oswego.tiltandtumble.screens.widgets.Starter;
 
 public class GameScreen extends AbstractScreen {
-	private static final float MAX_COUNT = 4;
-
 	private final BallController ballController;
 	private final WorldPopulator worldPopulator;
 
 	private Level level;
 	private LevelRenderer renderer;
 	private AudioManager audio;
-	private final Window countdownDisplay;
 	InputMultiplexer inputMux = new InputMultiplexer();
 
 	boolean usingDpad = false;
 	private final List<Score> scores = new ArrayList<Score>();
 	private State currentState;
 
-	private final Label scoreDisplay;
-	private final Label timerDisplay;
+	private final Hud hud;
 
 	private Dialog pauseDialog;
-	private float countdownTime;
 
 	public GameScreen(TiltAndTumble game, int currentLevel) {
 		super(game);
 		ballController = new BallController(!game.getSettings().isUseDpad());
 		worldPopulator = new WorldPopulator();
 
-		this.loadLevel(currentLevel);
-		scoreDisplay = new Label(String.valueOf(level.getScore().getPoints()), skin, "hud-values");
-		timerDisplay = new Label(level.getScore().getFormattedTime(), skin, "hud-values");
-
-		countdownDisplay = new Window("", skin, "countdown");
+		hud = new Hud(this, skin);
+		loadLevel(currentLevel);
+		hud.setScore(level.getScore());
 	}
 
 	public void loadLevel(int num) {
@@ -84,7 +74,8 @@ public class GameScreen extends AbstractScreen {
 				game.getSettings().isMusicOn(),
 				game.getSettings().isSoundEffectOn());
 		game.getSettings().addObserver(audio);
-		showStartPause();
+		hud.setLevel(num);
+		new Starter(this, skin).show(stage);
 	}
 
 	public boolean hasMoreLevels() {
@@ -100,32 +91,6 @@ public class GameScreen extends AbstractScreen {
 		}
 	}
 
-	private void loadDpad() {
-		Image image = new Image(skin, "UpArrow");
-		image.setName("up");
-		image.setPosition(image.getWidth(), image.getHeight() * 2);
-		image.addListener(ballController);
-		stage.addActor(image);
-
-		image = new Image(skin, "RightArrow");
-		image.setName("right");
-		image.setPosition(image.getWidth() * 2, image.getHeight());
-		image.addListener(ballController);
-		stage.addActor(image);
-
-		image = new Image(skin, "LeftArrow");
-		image.setName("left");
-		image.setPosition(0, image.getHeight());
-		image.addListener(ballController);
-		stage.addActor(image);
-
-		image = new Image(skin, "DownArrow");
-		image.setName("down");
-		image.setPosition(image.getWidth(), 0);
-		image.addListener(ballController);
-		stage.addActor(image);
-	}
-
 	public Level getCurrentLevel() {
 		return level;
 	}
@@ -134,59 +99,20 @@ public class GameScreen extends AbstractScreen {
 		return scores;
 	}
 
-	private void loadHUD() {
-		Window window = new Window("", skin, "hud");
-		window.setHeight(32);
-
-		window.setPosition(0, stage.getHeight());
-		window.setWidth(stage.getWidth());
-		stage.addActor(window);
-
-		window.row().uniform().expandX();
-		window.add("Level: ").right().padLeft(10);
-		window.add(String.valueOf(level.getLevelNumber()), "hud-values").left();
-		window.add("Score: ").right();
-		window.add(scoreDisplay).left();
-		window.add("Time: ").right();
-		window.add(timerDisplay).left();
-
-		Image pauseImage = new Image(skin, "PauseButton2");
-		window.add(pauseImage).right().fill(false).padRight(10);
-		pauseImage.addListener(new ClickListener(){
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y,
-					int pointer, int button) {
-				currentState.togglePause(GameScreen.this);
-				return true;
-			}
-		});
-	}
-
-	private void showStartPause() {
-		final Window window = new Window("", skin, "dialog");
-		stage.addActor(window);
-		TextButton button = new TextButton("Start", skin);
-		window.add(button);
-		button.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				currentState.start(GameScreen.this);
-				window.remove();
-			}
-		});
-		window.setClip(false);
-		window.setSize(0, 0);
-		window.setPosition(stage.getWidth() / 2 , stage.getHeight() / 2);
-	}
-
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(inputMux);
 		inputMux.addProcessor(stage);
 		if (game.getSettings().isUseDpad()){
-			loadDpad();
+			DPad dpad = new DPad(skin, ballController);
+			dpad.setPosition(0, 0);
+			stage.addActor(dpad);
 		}
-		loadHUD();
+		hud.setPosition(0, stage.getHeight());
+		hud.setHeight(32);
+		hud.setWidth(stage.getWidth());
+		stage.addActor(hud);
+
 		currentState.show(this);
 	}
 
@@ -210,6 +136,10 @@ public class GameScreen extends AbstractScreen {
 		}
 	}
 
+	public void togglePause() {
+		currentState.togglePause(this);
+	}
+
 	@Override
 	public void pause() {
 		currentState.pause(this);
@@ -220,6 +150,10 @@ public class GameScreen extends AbstractScreen {
 		currentState.resume(this);
 	}
 
+	public void start() {
+		currentState.start(this);
+	}
+
 	private void changeState(State state) {
 		currentState = state;
 	}
@@ -228,36 +162,16 @@ public class GameScreen extends AbstractScreen {
 		WAITING {
 			@Override
 			public void show(GameScreen s) {
-				s.showStartPause();
+				new Starter(s, s.skin).show(s.stage);
 			}
 
 			@Override
 			public void start(GameScreen s) {
-				s.changeState(State.STARTING);
-			}
-		},
-		STARTING {
-			@Override
-			public void render(GameScreen s, float delta) {
-				s.countdownTime += delta;
-				int count = (int)Math.floor(MAX_COUNT - s.countdownTime);
-
-				if (s.countdownDisplay.hasParent() == false) {
-					s.stage.addActor(s.countdownDisplay);
-					s.countdownDisplay.setSize(s.stage.getWidth(), s.stage.getHeight());
-					s.countdownDisplay.setPosition(s.stage.getWidth() / 2 , s.stage.getHeight() / 2);
-					s.countdownDisplay.setClip(false);
-				}
-				s.countdownDisplay.clear();
-				s.countdownDisplay.add(String.valueOf(count), "countdown");
-				if (s.countdownTime > MAX_COUNT) {
-					s.countdownDisplay.remove();
-					s.ballController.resetBall();
-					s.ballController.resume();
-					s.level.start();
-					s.audio.start();
-					s.changeState(State.PLAYING);
-				}
+				s.ballController.resetBall();
+				s.ballController.resume();
+				s.level.start();
+				s.audio.start();
+				s.changeState(State.PLAYING);
 			}
 		},
 		PAUSED {
@@ -267,7 +181,7 @@ public class GameScreen extends AbstractScreen {
 				// make sure the dialog goes away, this can be called from the system
 				// level rather than direct user interaction so we want to make sure
 				// the game does not start playing before the window goes away.
-				if (s.pauseDialog != null && s.pauseDialog.isVisible()) {
+				if (s.pauseDialog != null && s.pauseDialog.hasParent()) {
 					s.pauseDialog.hide();
 					s.pauseDialog = null;
 				}
@@ -300,8 +214,7 @@ public class GameScreen extends AbstractScreen {
 					s.level.update(delta);
 				}
 
-				s.scoreDisplay.setText(String.valueOf(s.level.getScore().getPoints()));
-				s.timerDisplay.setText(s.level.getScore().getFormattedTime());
+				s.hud.setScore(s.level.getScore());
 			}
 
 			@Override
