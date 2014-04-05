@@ -82,4 +82,8 @@ public class HighScores implements Serializable{
 		}
 		return scores;
 	}
+	public SortedSet<HighScore> getHighScore(){
+		
+		return scores;
+	}
 }
