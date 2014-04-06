@@ -1,8 +1,6 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -13,6 +11,8 @@ import com.badlogic.gdx.utils.Disposable;
 import edu.oswego.tiltandtumble.collisionListener.BallCollisionListener;
 import edu.oswego.tiltandtumble.levels.Level;
 import edu.oswego.tiltandtumble.levels.UnitScale;
+import edu.oswego.tiltandtumble.worldObjects.graphics.GraphicComponent;
+import edu.oswego.tiltandtumble.worldObjects.graphics.SpriteGraphic;
 
 public class MovingWall extends AbstractWorldObject
 		implements MapRenderable, WorldUpdateable, Disposable,
@@ -30,8 +30,7 @@ public class MovingWall extends AbstractWorldObject
 	private final PathPointTraverser nodes;
 	private final UnitScale scale;
 
-	private final Texture texture;
-	private final Sprite sprite;
+	private final GraphicComponent graphic;
 
 	private final Vector2 startNode = new Vector2();
 	private final Vector2 endNode = new Vector2();
@@ -51,23 +50,19 @@ public class MovingWall extends AbstractWorldObject
 		this.nodes = nodes;
 		nodes.next();
 
-		texture = new Texture(Gdx.files.internal("data/" + spriteName));
-		sprite = new Sprite(texture);
-		sprite.setSize(dimensions.x, dimensions.y);
+		graphic = new SpriteGraphic("data/WorldObjects/" + spriteName,
+				dimensions.x, dimensions.y);
 	}
 
 	@Override
-	public void draw(float delta, SpriteBatch batch) {
-		sprite.setPosition(getMapX(), getMapY());
-		sprite.draw(batch);
+	public void drawBeforeBall(float delta, SpriteBatch batch) {
 	}
 
-	public float getMapX() {
-		return scale.metersToPixels(body.getPosition().x) - (sprite.getWidth() * 0.5f);
-	}
-
-	public float getMapY() {
-		return scale.metersToPixels(body.getPosition().y) - (sprite.getHeight() * 0.5f);
+	@Override
+	public void drawAfterBall(float delta, SpriteBatch batch) {
+		graphic.setPosition(scale.metersToPixels(body.getPosition().x),
+				scale.metersToPixels(body.getPosition().y));
+		graphic.draw(delta, batch);
 	}
 
 	@Override
@@ -107,7 +102,7 @@ public class MovingWall extends AbstractWorldObject
 
 	@Override
 	public void dispose() {
-		texture.dispose();
+		graphic.dispose();
 	}
 
 	@Override

@@ -2,17 +2,16 @@ package edu.oswego.tiltandtumble.worldObjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Disposable;
 
 import edu.oswego.tiltandtumble.levels.UnitScale;
+import edu.oswego.tiltandtumble.worldObjects.graphics.GraphicComponent;
+import edu.oswego.tiltandtumble.worldObjects.graphics.SpriteGraphic;
 
-public class Ball extends AbstractWorldObject implements MapRenderable,
-		Disposable, Audible {
+public class Ball extends AbstractWorldObject implements Disposable, Audible {
 	public static final float FRICTION = 0.1f;
 	public static final float DENSITY = 1.0f;
 	public static final float RESTITUTION = 0.5f;
@@ -20,8 +19,7 @@ public class Ball extends AbstractWorldObject implements MapRenderable,
 	public static final float ANGULAR_DAMPENING = 0.1f;
 	public static final float LINEAR_DAMPENING = 0.1f;
 
-	private final Texture texture;
-	private final Sprite sprite;
+	private final GraphicComponent graphic;
 
 	private final UnitScale scale;
 	private boolean playSound;
@@ -31,10 +29,7 @@ public class Ball extends AbstractWorldObject implements MapRenderable,
 		super(body);
 		this.scale = scale;
 
-		texture = new Texture(Gdx.files.internal("data/GreenOrb.png"));
-		sprite = new Sprite(texture);
-
-		sprite.setSize(diameter, diameter);
+		graphic = new SpriteGraphic("data/WorldObjects/GreenOrb.png", diameter, diameter);
 
 		playSound = true;
 		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/boing1.wav"));
@@ -45,23 +40,22 @@ public class Ball extends AbstractWorldObject implements MapRenderable,
 				body.getPosition().y, true);
 	}
 
-	@Override
 	public void draw(float delta, SpriteBatch batch) {
-		sprite.setPosition(getMapX(), getMapY());
-		sprite.draw(batch);
+		graphic.setPosition(getMapX(), getMapY());
+		graphic.draw(delta, batch);
 	}
 
 	public float getMapX() {
-		return scale.metersToPixels(body.getPosition().x) - (sprite.getWidth() * 0.5f);
+		return scale.metersToPixels(body.getPosition().x);
 	}
 
 	public float getMapY() {
-		return scale.metersToPixels(body.getPosition().y) - (sprite.getHeight() * 0.5f);
+		return scale.metersToPixels(body.getPosition().y);
 	}
 
 	@Override
 	public void dispose() {
-		texture.dispose();
+		graphic.dispose();
 		sound.dispose();
 	}
 

@@ -179,7 +179,11 @@ public class Level implements Disposable {
 
 	public void draw(float delta, SpriteBatch batch) {
 		for (MapRenderable m : renderableObjects) {
-			m.draw(delta, batch);
+			m.drawBeforeBall(delta, batch);
+		}
+		ball.draw(delta, batch);
+		for (MapRenderable m : renderableObjects) {
+			m.drawAfterBall(delta, batch);
 		}
 	}
 
