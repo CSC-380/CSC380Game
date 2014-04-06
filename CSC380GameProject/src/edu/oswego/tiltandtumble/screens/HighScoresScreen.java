@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 //import java.util.SortedSet;
-
+import java.text.DateFormat;
 import edu.oswego.tiltandtumble.TiltAndTumble;
 import edu.oswego.tiltandtumble.data.*;
 
@@ -31,7 +31,7 @@ public class HighScoresScreen extends AbstractScreen {
 		table.setMovable(false);
         stage.addActor(table);
         
-        StringBuilder scoreString = new StringBuilder();
+        
         HighScores score = game.getHighScores();
         /*SortedSet<HighScore> temp = score.getHighScore();
         temp.add(new HighScore("BG",1000,100));
@@ -53,23 +53,30 @@ public class HighScoresScreen extends AbstractScreen {
 		}
 		else{
 			table.row();
-			table.add("       Scores    Time    Initials                       Date").expand().bottom().left();
 			
+			table.add("Score").expand().bottom().right().width(100);
+			table.add("Time").bottom().right().width(100);
+			table.add("Initials").bottom().right().width(100);
+			table.add("Date").bottom().right().width(100);
 			table.row();
 			
 			for(HighScore s : score.getHighScore()){
 				
-				scoreString.append(s.getPoints());
-				scoreString.append("          ");
-				scoreString.append(s.getTime());
-				scoreString.append("          ");
-				scoreString.append(s.getInitials());
-				scoreString.append("          ");
-				scoreString.append(s.getDate().toString());
-				table.add(scoreString.toString());
+				
+				table.add(new Integer(s.getPoints()).toString());
+			
+				table.add(new Integer(s.getPoints()).toString()).left();
+			
+				table.add(s.getInitials());
+				
+				DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+				
+						
+				
+				table.add(formatter.format(s.getDate()).toString()).left();
 				
 				table.row();
-				scoreString = new StringBuilder();
+				
 			}
 		}
         table.row();
