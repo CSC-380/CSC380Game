@@ -13,6 +13,7 @@
     com.badlogic.gdx.graphics.g2d.BitmapFont: {
         small: { file: data/ui/fonts/font_small.fnt },
         small-orange: { file: data/ui/fonts/font_small_orange.fnt },
+        small-blue: { file: data/ui/fonts/font_small_blue.fnt },
         medium: { file: data/ui/fonts/font_medium.fnt },
         large: { file: data/ui/fonts/font_large.fnt },
         large-blue: { file: data/ui/fonts/font_large_blue.fnt },
@@ -56,6 +57,10 @@
         },
         countdown: {
             font: jumbo-orange,
+            fontColor: white,
+        },
+        header: {
+            font: small-blue,
             fontColor: white,
         },
     },

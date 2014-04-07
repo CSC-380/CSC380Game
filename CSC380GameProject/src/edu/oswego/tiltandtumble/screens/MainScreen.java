@@ -42,7 +42,7 @@ public class MainScreen extends AbstractScreen {
             }
         });
 
-        table.row().pad(25).uniform().fill();
+        table.row().pad(25).uniform().fill().bottom();
         Button settings = new TextButton("Settings", skin);
         table.add(settings);
         settings.addListener(new ChangeListener() {

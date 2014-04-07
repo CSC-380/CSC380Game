@@ -1,5 +1,8 @@
 package edu.oswego.tiltandtumble.screens;
 
+import java.text.DateFormat;
+import java.util.Collection;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -7,15 +10,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-//import java.util.SortedSet;
-import java.text.DateFormat;
 import edu.oswego.tiltandtumble.TiltAndTumble;
-import edu.oswego.tiltandtumble.data.*;
+import edu.oswego.tiltandtumble.data.HighScore;
+//import java.util.SortedSet;
 
 public class HighScoresScreen extends AbstractScreen {
-	
-	
-    
+
+
+
 
 	public HighScoresScreen(final TiltAndTumble game){
 		super(game);
@@ -30,58 +32,31 @@ public class HighScoresScreen extends AbstractScreen {
 		table.setModal(true);
 		table.setMovable(false);
         stage.addActor(table);
-        
-        
-        HighScores score = game.getHighScores();
-        /*SortedSet<HighScore> temp = score.getHighScore();
-        temp.add(new HighScore("BG",1000,100));
-        temp.add(new HighScore("BG",900,100));
-        temp.add(new HighScore("BG",800,100));
-        temp.add(new HighScore("BG",700,100));
-        temp.add(new HighScore("BG",600,100));
-        temp.add(new HighScore("BG",500,100));
-        temp.add(new HighScore("BG",400,100));
-        temp.add(new HighScore("BG",300,100));
-        temp.add(new HighScore("BG",200,100));
-        temp.add(new HighScore("BG",100,100));*/
-        
-		//I don't get this part, getHighScore should return a SortedSet, but isEmpty() is a TreeSet method, How come?
-		if(score.getHighScore().isEmpty()){
-			
-			table.add("No HighScores Avalible!").expandY();			
-			
-		}
-		else{
+
+        table.row().center().uniform().padTop(50);
+		table.add("Score", "header");
+		table.add("Time", "header");
+		table.add("Initials", "header");
+		table.add("Date", "header");
+
+		Collection<HighScore> scores = game.getHighScores().getScores();
+		if (scores.isEmpty()) {
 			table.row();
-			
-			table.add("Score").expand().bottom().right().width(100);
-			table.add("Time").bottom().right().width(100);
-			table.add("Initials").bottom().right().width(100);
-			table.add("Date").bottom().right().width(100);
-			table.row();
-			
-			for(HighScore s : score.getHighScore()){
-				
-				
-				table.add(new Integer(s.getPoints()).toString());
-			
-				table.add(new Integer(s.getPoints()).toString()).left();
-			
+			table.add("No High Scores!").colspan(4).center();
+		} else {
+			DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+			for (HighScore s : scores) {
+				table.row().center();
+				table.add(String.valueOf(s.getPoints()));
+				table.add(s.getFormattedTime());
 				table.add(s.getInitials());
-				
-				DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
-				
-						
-				
-				table.add(formatter.format(s.getDate()).toString()).left();
-				
-				table.row();
-				
+				table.add(formatter.format(s.getDate()));
 			}
 		}
-        table.row();
+
+		table.row().expand().padBottom(10);
         Button back = new TextButton("Go Back", skin);
-        table.add(back).expandY().colspan(5);
+        table.add(back).colspan(4).bottom();
 
         back.addListener(new ChangeListener() {
             @Override

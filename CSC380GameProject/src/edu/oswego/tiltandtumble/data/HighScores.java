@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -82,8 +83,8 @@ public class HighScores implements Serializable{
 		}
 		return scores;
 	}
-	public SortedSet<HighScore> getHighScore(){
-		
+
+	public Collection<HighScore> getScores(){
 		return scores;
 	}
 }
