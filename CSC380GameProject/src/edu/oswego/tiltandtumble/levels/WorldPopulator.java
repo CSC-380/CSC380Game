@@ -70,7 +70,7 @@ public final class WorldPopulator {
 				} else if (obj.getName().equals("Ball")) {
 					ball = createBall(obj, world, scale);
 					level.addWorldObject(ball);
-				} else if (obj.getName().equals("Attractor")) {
+				} else if (obj.getName().equals("AttractorForce")) {
 					level.addWorldObject(createAttractorForce(obj, level, world, scale));
 				}
 			}
@@ -368,18 +368,18 @@ public final class WorldPopulator {
 
 		return new Hole(body, level);
 	}
-	
+
 	public AttractorForce createAttractorForce(MapObject obj, Level level, World world, UnitScale scale)
 	{
 		Body body = world.createBody(bodyDef.reset().type(AttractorForce.BODY_TYPE).build());
 		Shape shape = createShape(obj, scale, body);
 		body.createFixture(fixtureDef.reset().shape(shape).isSensor(AttractorForce.IS_SENSOR).build());
-		
+
 		//dispose after creating fixture
 		shape.dispose();
-		
+
 		return new AttractorForce(body, getFloatProperty(obj, "speed", AttractorForce.DEFAULT_SPEED), scale);
-	
+
 	}
 
 	private Shape createShape(MapObject object, UnitScale scale, Body body) {
