@@ -12,7 +12,6 @@ import edu.oswego.tiltandtumble.collisionListener.BallCollisionListener;
 import edu.oswego.tiltandtumble.levels.Level;
 import edu.oswego.tiltandtumble.levels.UnitScale;
 import edu.oswego.tiltandtumble.worldObjects.graphics.GraphicComponent;
-import edu.oswego.tiltandtumble.worldObjects.graphics.SpriteGraphic;
 
 public class MovingWall extends AbstractWorldObject
 		implements MapRenderable, WorldUpdateable, Disposable,
@@ -40,18 +39,16 @@ public class MovingWall extends AbstractWorldObject
     private final Level level;
 
 	public MovingWall(Body body, float speed, PathPointTraverser nodes,
-			String spriteName, Vector2 dimensions, UnitScale scale, Level level) {
+			GraphicComponent graphic, UnitScale scale, Level level) {
 		super(body);
 
 		this.speed = speed;
 		this.scale = scale;
 		this.level = level;
+		this.graphic = graphic;
 
 		this.nodes = nodes;
 		nodes.next();
-
-		graphic = new SpriteGraphic("data/WorldObjects/" + spriteName,
-				dimensions.x, dimensions.y);
 	}
 
 	@Override

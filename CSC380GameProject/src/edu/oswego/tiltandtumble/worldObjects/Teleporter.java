@@ -7,8 +7,6 @@ import com.badlogic.gdx.physics.box2d.Contact;
 
 import edu.oswego.tiltandtumble.collisionListener.BallCollisionListener;
 import edu.oswego.tiltandtumble.levels.BallController;
-import edu.oswego.tiltandtumble.levels.UnitScale;
-import edu.oswego.tiltandtumble.worldObjects.graphics.AnimationGraphic;
 import edu.oswego.tiltandtumble.worldObjects.graphics.GraphicComponent;
 
 public class Teleporter extends TeleporterTarget
@@ -28,20 +26,11 @@ public class Teleporter extends TeleporterTarget
 
 	public Teleporter(Body body, TeleporterSelectorStrategy selector,
 			boolean resetVelocity, BallController ballController,
-			UnitScale scale, float waitTime) {
-		super(body, resetVelocity, ballController, scale);
+			GraphicComponent effect, float waitTime, GraphicComponent teleporter) {
+		super(body, resetVelocity, ballController, effect);
 		this.selector = selector;
 		this.waitTime = waitTime;
-
-		String sheetName = "teleporter-glow.png";
-		int rows = 1;
-		int columns = 8;
-
-		graphic = new AnimationGraphic("data/WorldObjects/" + sheetName,
-				rows, columns, 1);
-		graphic.setPosition(
-				scale.metersToPixels(body.getPosition().x),
-				scale.metersToPixels(body.getPosition().y));
+		this.graphic = teleporter;
 		currentState = State.ACTIVE;
 	}
 

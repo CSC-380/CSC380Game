@@ -9,9 +9,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Disposable;
 
 import edu.oswego.tiltandtumble.levels.BallController;
-import edu.oswego.tiltandtumble.levels.UnitScale;
 import edu.oswego.tiltandtumble.worldObjects.graphics.GraphicComponent;
-import edu.oswego.tiltandtumble.worldObjects.graphics.ParticleEffectGraphic;
 
 public class TeleporterTarget extends AbstractWorldObject
 		implements WorldUpdateable, Audible, Disposable, MapRenderable {
@@ -28,7 +26,7 @@ public class TeleporterTarget extends AbstractWorldObject
 	private final GraphicComponent graphic;
 
 	public TeleporterTarget(Body body, boolean resetVelocity,
-			BallController ballController, UnitScale scale) {
+			BallController ballController, GraphicComponent graphic) {
 		super(body);
 		this.resetVelocity = resetVelocity;
 		this.ballController = ballController;
@@ -36,11 +34,7 @@ public class TeleporterTarget extends AbstractWorldObject
 		playSound = true;
 		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/laser4.mp3"));
 
-		graphic = new ParticleEffectGraphic("data/WorldObjects/teleporter.p",
-				"data/WorldObjects");
-		graphic.setPosition(
-				scale.metersToPixels(body.getPosition().x),
-				scale.metersToPixels(body.getPosition().y));
+		this.graphic = graphic;
 	}
 
 	public void warp(Ball ball) {
