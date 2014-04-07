@@ -1,6 +1,7 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Peripheral;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -45,7 +46,9 @@ public class PushBumper extends AbstractWorldObject implements BallCollisionList
 		target.setLinearVelocity(
 				forceX * Math.signum(target.getLinearVelocity().x),
 				forceY * Math.signum(target.getLinearVelocity().y));
-		Gdx.input.vibrate(100);
+		if (Gdx.input.isPeripheralAvailable(Peripheral.Vibrator)) {
+			Gdx.input.vibrate(100);
+		}
 	}
 
 	@Override
