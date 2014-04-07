@@ -2,7 +2,6 @@ package edu.oswego.tiltandtumble.worldObjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -10,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Disposable;
 
 import edu.oswego.tiltandtumble.levels.BallController;
-import edu.oswego.tiltandtumble.levels.UnitScale;
+import edu.oswego.tiltandtumble.worldObjects.graphics.GraphicComponent;
 
 public class TeleporterTarget extends AbstractWorldObject
 		implements WorldUpdateable, Audible, Disposable, MapRenderable {
@@ -24,10 +23,10 @@ public class TeleporterTarget extends AbstractWorldObject
 
 	private boolean playSound;
 	private final Sound sound;
-	private final ParticleEffect effect;
+	private final GraphicComponent graphic;
 
 	public TeleporterTarget(Body body, boolean resetVelocity,
-			BallController ballController, UnitScale scale) {
+			BallController ballController, GraphicComponent graphic) {
 		super(body);
 		this.resetVelocity = resetVelocity;
 		this.ballController = ballController;
@@ -35,11 +34,7 @@ public class TeleporterTarget extends AbstractWorldObject
 		playSound = true;
 		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/laser4.mp3"));
 
-		effect = new ParticleEffect();
-		effect.load(Gdx.files.internal("data/teleporter.p"), Gdx.files.internal("data"));
-		effect.setPosition(
-				scale.metersToPixels(body.getPosition().x),
-				scale.metersToPixels(body.getPosition().y));
+		this.graphic = graphic;
 	}
 
 	public void warp(Ball ball) {
@@ -66,7 +61,7 @@ public class TeleporterTarget extends AbstractWorldObject
 				pendingVelocity = null;
 			}
 			playSound();
-			effect.start();
+			graphic.start();
 			pendingWarp = null;
 		}
 	}
@@ -86,11 +81,15 @@ public class TeleporterTarget extends AbstractWorldObject
 	@Override
 	public void dispose() {
 		sound.dispose();
-		effect.dispose();
+		graphic.dispose();
 	}
 
 	@Override
-	public void draw(float delta, SpriteBatch batch) {
-		effect.draw(batch, delta);
+	public void drawBeforeBall(float delta, SpriteBatch batch) {
+	}
+
+	@Override
+	public void drawAfterBall(float delta, SpriteBatch batch) {
+		graphic.draw(delta, batch);
 	}
 }

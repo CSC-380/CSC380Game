@@ -96,6 +96,7 @@
   </object>
   <object name="Teleporter" x="3105" y="13" width="62" height="6">
    <properties>
+    <property name="animation" value="none"/>
     <property name="id" value="velocity1"/>
     <property name="reset velocity" value="false"/>
     <property name="target" value="velocity2"/>
@@ -104,6 +105,7 @@
   </object>
   <object name="Teleporter" x="3104" y="621" width="62" height="5">
    <properties>
+    <property name="animation" value="none"/>
     <property name="id" value="velocity2"/>
     <property name="reset velocity" value="false"/>
     <property name="target" value="velocity1"/>
@@ -181,6 +183,7 @@
   </object>
   <object name="Teleporter" x="1440" y="14" width="62" height="5">
    <properties>
+    <property name="animation" value="none"/>
     <property name="id" value="midtop"/>
     <property name="reset velocity" value="false"/>
     <property name="target" value="midbottom"/>
@@ -189,6 +192,7 @@
   </object>
   <object name="Teleporter" x="1440" y="619" width="62" height="5">
    <properties>
+    <property name="animation" value="none"/>
     <property name="id" value="midbottom"/>
     <property name="reset velocity" value="false"/>
     <property name="target" value="midtop"/>
@@ -230,6 +234,7 @@
   </object>
   <object name="Teleporter" x="865" y="619" width="62" height="5">
    <properties>
+    <property name="animation" value="none"/>
     <property name="id" value="mid2bottom"/>
     <property name="reset velocity" value="false"/>
     <property name="target" value="mid2top"/>
@@ -238,6 +243,7 @@
   </object>
   <object name="Teleporter" x="864" y="14" width="62" height="5">
    <properties>
+    <property name="animation" value="none"/>
     <property name="id" value="mid2top"/>
     <property name="reset velocity" value="false"/>
     <property name="target" value="mid2bottom"/>

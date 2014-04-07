@@ -6,6 +6,7 @@ import java.util.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
@@ -40,6 +41,11 @@ import edu.oswego.tiltandtumble.worldObjects.TeleporterRandomSelector;
 import edu.oswego.tiltandtumble.worldObjects.TeleporterRoundRobinSelector;
 import edu.oswego.tiltandtumble.worldObjects.TeleporterSelectorStrategy;
 import edu.oswego.tiltandtumble.worldObjects.TeleporterTarget;
+import edu.oswego.tiltandtumble.worldObjects.graphics.AnimationGraphic;
+import edu.oswego.tiltandtumble.worldObjects.graphics.GraphicComponent;
+import edu.oswego.tiltandtumble.worldObjects.graphics.NullGraphic;
+import edu.oswego.tiltandtumble.worldObjects.graphics.ParticleEffectGraphic;
+import edu.oswego.tiltandtumble.worldObjects.graphics.SpriteGraphic;
 
 public final class WorldPopulator {
 	private final BodyDefBuilder bodyDef = new BodyDefBuilder();
@@ -89,12 +95,31 @@ public final class WorldPopulator {
 		// dispose after creating fixture
 		shape.dispose();
 
+		MapProperties props = obj.getProperties();
+
+		GraphicComponent effect;
+		String name = props.get("effect", String.class);
+		if (name == null) {
+			name = "teleporter.p";
+		}
+		if (name.equals("none")) {
+			effect = new NullGraphic();
+		} else {
+			effect = new ParticleEffectGraphic(
+					"data/WorldObjects/" + name,
+					"data/WorldObjects");
+			effect.setPosition(
+					scale.metersToPixels(body.getPosition().x),
+					scale.metersToPixels(body.getPosition().y));
+		}
+
 		TeleporterTarget target = new TeleporterTarget(
 				body,
-				Boolean.valueOf(obj.getProperties().get("reset velocity", "true", String.class)),
-				level.getBallController(), scale);
+				Boolean.valueOf(props.get("reset velocity", "true", String.class)),
+				level.getBallController(),
+				effect);
 		meshHelper.add(
-				obj.getProperties().get("id", String.class),
+				props.get("id", String.class),
 				target);
 		return target;
 	}
@@ -110,7 +135,9 @@ public final class WorldPopulator {
 		// dispose after creating fixture
 		shape.dispose();
 
-		String selectorName = obj.getProperties().get("selector", "Random", String.class);
+		MapProperties props = obj.getProperties();
+
+		String selectorName = props.get("selector", "Random", String.class);
 		TeleporterSelectorStrategy selector;
 		if (selectorName.equals("Random")) {
 			selector = new TeleporterRandomSelector();
@@ -118,17 +145,51 @@ public final class WorldPopulator {
 			selector = new TeleporterRoundRobinSelector();
 		}
 
+		GraphicComponent effect;
+		String name = props.get("effect", String.class);
+		if (name == null) {
+			name = "teleporter.p";
+		}
+		if (name.equals("none")) {
+			effect = new NullGraphic();
+		} else {
+			effect = new ParticleEffectGraphic(
+					"data/WorldObjects/" + name,
+					"data/WorldObjects");
+			effect.setPosition(
+					scale.metersToPixels(body.getPosition().x),
+					scale.metersToPixels(body.getPosition().y));
+		}
+
+		GraphicComponent animation;
+		name = props.get("animation", String.class);
+		if (name == null) {
+			name = "teleporter-glow.png";
+		}
+		if (name.equals("none")) {
+			animation = new NullGraphic();
+		} else {
+			animation = new AnimationGraphic("data/WorldObjects/" + name,
+					props.get("animation rows", 1, Integer.class),
+					props.get("animation columns", 8, Integer.class),
+					props.get("animation duration", 1, Integer.class));
+			animation.setPosition(
+					scale.metersToPixels(body.getPosition().x),
+					scale.metersToPixels(body.getPosition().y));
+		}
+
 		Teleporter teleporter = new Teleporter(
 				body,
 				selector,
-				Boolean.valueOf(obj.getProperties().get("reset velocity", "true", String.class)),
+				Boolean.valueOf(props.get("reset velocity", "true", String.class)),
 				level.getBallController(),
-				scale,
-				getFloatProperty(obj, "wait time", Teleporter.WAIT_TIME));
+				effect,
+				getFloatProperty(obj, "wait time", Teleporter.WAIT_TIME),
+				animation);
 		meshHelper.add(
-				obj.getProperties().get("id", String.class),
+				props.get("id", String.class),
 				teleporter, selector,
-				obj.getProperties().get("target", "", String.class).split(","));
+				props.get("target", "", String.class).split(","));
 		return teleporter;
 	}
 
@@ -274,11 +335,15 @@ public final class WorldPopulator {
 		shape.dispose();
 
 		float speed = getFloatProperty(obj, "speed", MovingWall.DEFAULT_SPEED);
+
+		GraphicComponent graphic = new SpriteGraphic("data/WorldObjects/"
+				+ obj.getProperties().get("sprite", MovingWall.DEFAULT_SPRITE, String.class),
+				dimensions.x, dimensions.y);
+
 		return new MovingWall(body,
 				Math.abs(speed),
 				new PathPointTraverser(result.head, speed >= 0),
-				obj.getProperties().get("sprite", MovingWall.DEFAULT_SPRITE, String.class),
-				dimensions,
+				graphic,
 				scale,
 				level);
 	}
