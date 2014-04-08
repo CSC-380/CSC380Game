@@ -39,6 +39,9 @@
   </object>
   <object name="StaticWall" x="32" y="224" width="256" height="64"/>
   <object name="AttractorForce" x="320" y="64" width="160" height="160">
+   <properties>
+    <property name="" value=""/>
+   </properties>
    <ellipse/>
   </object>
   <object name="StaticWall" x="480" y="32" width="32" height="256"/>

@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
 
+
 import edu.oswego.tiltandtumble.collisionListener.BallCollisionListener;
 import edu.oswego.tiltandtumble.levels.UnitScale;
 
@@ -17,7 +18,7 @@ public class AttractorForce extends AbstractWorldObject implements WorldUpdateab
 	public static final float DEFAULT_SPEED = 5f;
 
 	private final UnitScale scale;
-
+	private final float speed;
 
 	private boolean collidingWithBall = false;
 	private Ball ball;
@@ -25,38 +26,31 @@ public class AttractorForce extends AbstractWorldObject implements WorldUpdateab
 	public AttractorForce(Body body, float speed, UnitScale scale) {
 		super(body);
 		this.scale = scale;
+		this.speed = -speed;
 	}
 
 	@Override
 	public void update(float delta) {
 		if(collidingWithBall) {
 			
-			float distanceToMiddle = ball.getMapX() - scale.metersToPixels(body.getPosition().x);
-			float radius = distanceToMiddle;
-			float tempX, tempY;
-		
-			Vector2 ballPosition = new Vector2();
-			ballPosition.x = ball.getMapX();
-			ballPosition.y = ball.getMapY();
-			Vector2 ballDistance = new Vector2(0,0);
-			ballDistance.add(ballPosition);
-			ballDistance.sub(body.getPosition());
-			float finalDistance = ballDistance.len();
-		
-			tempY = -ballDistance.y;
-			tempX = -ballDistance.x;
-			ballDistance.x = tempY;
-			ballDistance.y = tempX;
-
-			float vectorSum = Math.abs(ballDistance.x) + Math.abs(ballDistance.y);
-			ballDistance.mul((1/vectorSum)*radius/finalDistance);
-		
-			ball.applyLinearImpulse(ballDistance.x, ballDistance.y);
-
-
+			Vector2 direction = new Vector2();
+			double angle = angle(body, ball);
+							 
+			int intensity = 1;
+			Vector2 currentVelocity = ball.body.getLinearVelocity();
+			
+			direction.x = (float) (currentVelocity.x + intensity * Math.cos(angle)/10);
+			direction.y = (float) (currentVelocity.y + intensity * Math.sin(angle)/10);
+	
+			ball.body.setLinearVelocity(direction);
 		}
 	}
-
+	private float angle(Body a, Ball b)
+	{
+		float dx = scale.metersToPixels(a.getPosition().x) - b.getMapX();
+		float dy = scale.metersToPixels(a.getPosition().y) - b.getMapY();
+		return (float) Math.atan2(dy, dx);
+	}
 	@Override
 	public void handleBeginCollision(Contact contact, Ball ball) {
 		collidingWithBall = true;

@@ -45,7 +45,7 @@ public class PushBumper extends AbstractWorldObject implements BallCollisionList
 		target.setLinearVelocity(
 				forceX * Math.signum(target.getLinearVelocity().x),
 				forceY * Math.signum(target.getLinearVelocity().y));
-		Gdx.input.vibrate(100);
+		//Gdx.input.vibrate(100);
 	}
 
 	@Override
