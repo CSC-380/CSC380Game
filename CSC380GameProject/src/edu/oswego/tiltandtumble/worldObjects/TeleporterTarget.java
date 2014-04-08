@@ -32,7 +32,7 @@ public class TeleporterTarget extends AbstractWorldObject
 		this.ballController = ballController;
 
 		playSound = true;
-		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/laser4.mp3"));
+		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/laser4.ogg"));
 
 		this.graphic = graphic;
 	}

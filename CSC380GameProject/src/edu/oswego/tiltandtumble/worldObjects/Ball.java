@@ -32,7 +32,7 @@ public class Ball extends AbstractWorldObject implements Disposable, Audible {
 		graphic = new SpriteGraphic("data/WorldObjects/GreenOrb.png", diameter, diameter);
 
 		playSound = true;
-		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/boing1.wav"));
+		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/boing1.ogg"));
 	}
 
 	public void applyLinearImpulse(float x, float y) {
@@ -67,7 +67,7 @@ public class Ball extends AbstractWorldObject implements Disposable, Audible {
 	@Override
 	public void playSound() {
 		if (playSound) {
-			sound.play(0.2f);
+			sound.play();
 		}
 	}
 }

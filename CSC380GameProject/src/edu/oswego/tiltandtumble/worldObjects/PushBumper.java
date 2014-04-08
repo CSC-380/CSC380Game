@@ -2,13 +2,16 @@ package edu.oswego.tiltandtumble.worldObjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Peripheral;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.utils.Disposable;
 
 import edu.oswego.tiltandtumble.collisionListener.BallCollisionListener;
 
-public class PushBumper extends AbstractWorldObject implements BallCollisionListener {
+public class PushBumper extends AbstractWorldObject
+		implements BallCollisionListener, Audible, Disposable {
     public static final float FRICTION = 0.0f;
     public static final float DENSITY = 2.0f;
     public static final float RESTITUTION = 0.0f;
@@ -17,10 +20,15 @@ public class PushBumper extends AbstractWorldObject implements BallCollisionList
     public static final float DEFAULT_SPEED = 8;
 	private final float speed;
 
+	private boolean playSound;
+	private final Sound sound;
 
     public PushBumper(Body body, float speed) {
         super(body);
         this.speed = speed;
+
+        playSound = true;
+		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/bonus-fast.ogg"));
     }
 
     @Override
@@ -49,9 +57,27 @@ public class PushBumper extends AbstractWorldObject implements BallCollisionList
 		if (Gdx.input.isPeripheralAvailable(Peripheral.Vibrator)) {
 			Gdx.input.vibrate(100);
 		}
+		playSound();
 	}
 
 	@Override
 	public void handleEndCollision(Contact contact, Ball ball) {
+	}
+
+	@Override
+	public void setPlaySound(boolean value) {
+		playSound = value;
+	}
+
+	@Override
+	public void playSound() {
+		if (playSound) {
+			sound.play();
+		}
+	}
+
+	@Override
+	public void dispose() {
+		sound.dispose();
 	}
 }
