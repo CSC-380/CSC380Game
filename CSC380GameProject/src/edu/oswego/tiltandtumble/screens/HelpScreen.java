@@ -42,9 +42,9 @@ public class HelpScreen extends AbstractScreen {
         table.row();
         table.add("HighScore: ", "header").expandX();
         table.row();
-        table.add("You can check th top ten high scores you achieved"); 
+        table.add("You can check the top ten high scores you achieved"); 
         table.row();
-        table.add("in this game.");
+        table.add("in the game.");
         
         table.row().expand().padBottom(10);
         
