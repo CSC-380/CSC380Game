@@ -38,7 +38,7 @@ public class HelpScreen extends AbstractScreen {
         table.row();
         table.add("Dpad, debug mode, music and sound effect can be");
         table.row();
-        table.add("enabled or disabled in the settings.");
+        table.add("enabled or disabled inside settings.");
         table.row();
         table.add("HighScore: ", "header").expandX();
         table.row();
