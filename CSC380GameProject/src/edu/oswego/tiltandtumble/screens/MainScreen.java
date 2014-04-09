@@ -41,6 +41,15 @@ public class MainScreen extends AbstractScreen {
                 game.showLevelScreen();
             }
         });
+        
+        Button help = new TextButton("Help", skin);
+        table.add(help).fillX().pad(25);
+        help.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.showHelpScreen();
+            }
+        });
 
         table.row().pad(25).uniform().fill().bottom();
         Button settings = new TextButton("Settings", skin);
