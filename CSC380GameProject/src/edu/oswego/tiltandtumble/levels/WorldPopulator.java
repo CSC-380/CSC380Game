@@ -1,6 +1,8 @@
 package edu.oswego.tiltandtumble.levels;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
@@ -27,25 +29,33 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 
+import edu.oswego.tiltandtumble.worldObjects.Activatable;
 import edu.oswego.tiltandtumble.worldObjects.AttractorForce;
 import edu.oswego.tiltandtumble.worldObjects.Ball;
 import edu.oswego.tiltandtumble.worldObjects.FinishLine;
 import edu.oswego.tiltandtumble.worldObjects.Hole;
+import edu.oswego.tiltandtumble.worldObjects.MomentarySwitch;
 import edu.oswego.tiltandtumble.worldObjects.MovingWall;
-import edu.oswego.tiltandtumble.worldObjects.PathPoint;
-import edu.oswego.tiltandtumble.worldObjects.PathPointTraverser;
 import edu.oswego.tiltandtumble.worldObjects.PushBumper;
 import edu.oswego.tiltandtumble.worldObjects.StaticWall;
+import edu.oswego.tiltandtumble.worldObjects.Switch;
 import edu.oswego.tiltandtumble.worldObjects.Teleporter;
 import edu.oswego.tiltandtumble.worldObjects.TeleporterRandomSelector;
 import edu.oswego.tiltandtumble.worldObjects.TeleporterRoundRobinSelector;
 import edu.oswego.tiltandtumble.worldObjects.TeleporterSelectorStrategy;
 import edu.oswego.tiltandtumble.worldObjects.TeleporterTarget;
+import edu.oswego.tiltandtumble.worldObjects.TimedSwitch;
+import edu.oswego.tiltandtumble.worldObjects.ToggleSwitch;
 import edu.oswego.tiltandtumble.worldObjects.graphics.AnimationGraphic;
 import edu.oswego.tiltandtumble.worldObjects.graphics.GraphicComponent;
 import edu.oswego.tiltandtumble.worldObjects.graphics.NullGraphic;
 import edu.oswego.tiltandtumble.worldObjects.graphics.ParticleEffectGraphic;
 import edu.oswego.tiltandtumble.worldObjects.graphics.SpriteGraphic;
+import edu.oswego.tiltandtumble.worldObjects.paths.ConstantMovement;
+import edu.oswego.tiltandtumble.worldObjects.paths.MovementStrategy;
+import edu.oswego.tiltandtumble.worldObjects.paths.NodeStopMovement;
+import edu.oswego.tiltandtumble.worldObjects.paths.PathPoint;
+import edu.oswego.tiltandtumble.worldObjects.paths.PathPointTraverser;
 
 public final class WorldPopulator {
 	private final BodyDefBuilder bodyDef = new BodyDefBuilder();
@@ -57,12 +67,13 @@ public final class WorldPopulator {
 		MapLayer layer = map.getLayers().get("collision");
 		Map<String, PathPoint> paths = getPaths(map, world, scale);
 		TeleportationMeshHelper meshHelper = new TeleportationMeshHelper();
+		SwitchConnectionHelper switchHelper = new SwitchConnectionHelper();
 		for (MapObject obj : layer.getObjects()) {
 			if (obj.getName() != null) {
 				if (obj.getName().equals("StaticWall")) {
 					level.addWorldObject(createStaticWall(obj, level, world, scale));
 				} else if (obj.getName().equals("MovingWall")) {
-					level.addWorldObject(createMovingWall(obj, level, world, scale, paths));
+					level.addWorldObject(createMovingWall(obj, level, world, scale, paths, switchHelper));
 				} else if (obj.getName().equals("PushBumper")) {
 					level.addWorldObject(createPushBumper(obj, world, scale));
 				} else if (obj.getName().equals("FinishLine")) {
@@ -78,10 +89,17 @@ public final class WorldPopulator {
 					level.addWorldObject(ball);
 				} else if (obj.getName().equals("AttractorForce")) {
 					level.addWorldObject(createAttractorForce(obj, level, world, scale));
+				} else if (obj.getName().equals("ToggleSwitch")) {
+					level.addWorldObject(createToggleSwitch(obj, world, scale, switchHelper));
+				} else if (obj.getName().equals("TimedSwitch")) {
+					level.addWorldObject(createTimedSwitch(obj, world, scale, switchHelper));
+				} else if (obj.getName().equals("MomentarySwitch")) {
+					level.addWorldObject(createMomentarySwitch(obj, world, scale, switchHelper));
 				}
 			}
 		}
 		meshHelper.buildMesh();
+		switchHelper.wireSwitches();
 		return ball;
 	}
 
@@ -315,7 +333,8 @@ public final class WorldPopulator {
 	}
 
 	public MovingWall createMovingWall(MapObject obj, Level level, World world,
-			UnitScale scale, Map<String, PathPoint> paths) {
+			UnitScale scale, Map<String, PathPoint> paths,
+			SwitchConnectionHelper switchHelper) {
 		PathPoint head = paths.get(obj.getProperties().get("path", String.class));
 		Body body = world.createBody(bodyDef.reset().type(MovingWall.BODY_TYPE)
 				.build());
@@ -334,18 +353,40 @@ public final class WorldPopulator {
 		// dispose after creating fixture
 		shape.dispose();
 
+		MapProperties props = obj.getProperties();
+
 		float speed = getFloatProperty(obj, "speed", MovingWall.DEFAULT_SPEED);
 
 		GraphicComponent graphic = new SpriteGraphic("data/WorldObjects/"
 				+ obj.getProperties().get("sprite", MovingWall.DEFAULT_SPRITE, String.class),
 				dimensions.x, dimensions.y);
 
-		return new MovingWall(body,
-				Math.abs(speed),
-				new PathPointTraverser(result.head, speed >= 0),
+		MovementStrategy movement;
+		if (props.containsKey("movement")
+				&& !props.get("movement", String.class).equals("Constant")) {
+			if (props.get("movement", String.class).equals("NodeStop")) {
+				movement = new NodeStopMovement(
+						new PathPointTraverser(result.head, speed >= 0),
+						Math.abs(speed));
+			} else {
+				throw new IllegalArgumentException("Invalid movement type: "
+						+ props.get("movement", String.class));
+			}
+		} else {
+			movement = new ConstantMovement(
+					new PathPointTraverser(result.head, speed >= 0),
+					Math.abs(speed));
+		}
+
+		MovingWall wall = new MovingWall(body,
+				movement,
 				graphic,
 				scale,
 				level);
+		if (props.containsKey("switch")) {
+			switchHelper.add(wall, props.get("switch", String.class));
+		}
+		return wall;
 	}
 
 	public StaticWall createStaticWall(MapObject obj, Level level, World world,
@@ -434,17 +475,77 @@ public final class WorldPopulator {
 		return new Hole(body, level);
 	}
 
-	public AttractorForce createAttractorForce(MapObject obj, Level level, World world, UnitScale scale)
+	public AttractorForce createAttractorForce(MapObject obj, Level level,
+			World world, UnitScale scale)
 	{
-		Body body = world.createBody(bodyDef.reset().type(AttractorForce.BODY_TYPE).build());
+		Body body = world.createBody(bodyDef.reset()
+				.type(AttractorForce.BODY_TYPE).build());
 		Shape shape = createShape(obj, scale, body);
-		body.createFixture(fixtureDef.reset().shape(shape).isSensor(AttractorForce.IS_SENSOR).build());
+		body.createFixture(fixtureDef.reset().shape(shape)
+				.isSensor(AttractorForce.IS_SENSOR).build());
 
-		//dispose after creating fixture
+		float radius = shape.getRadius();
+		// dispose after creating fixture
 		shape.dispose();
 
-		return new AttractorForce(body, getFloatProperty(obj, "speed", AttractorForce.DEFAULT_SPEED), scale);
+		return new AttractorForce(body,
+				getFloatProperty(obj, "speed", AttractorForce.DEFAULT_SPEED),
+				radius);
+	}
 
+	public ToggleSwitch createToggleSwitch(MapObject obj, World world,
+			UnitScale scale, SwitchConnectionHelper switchHelper) {
+		Body body = world.createBody(bodyDef.reset().type(ToggleSwitch.BODY_TYPE)
+				.build());
+		Shape shape = createShape(obj, scale, body);
+		body.createFixture(fixtureDef.reset().shape(shape)
+				.isSensor(ToggleSwitch.IS_SENSOR).build());
+
+		// dispose after creating fixture
+		shape.dispose();
+
+		MapProperties props = obj.getProperties();
+
+		ToggleSwitch swtch = new ToggleSwitch(body);
+		switchHelper.add(props.get("id", String.class), swtch);
+		return swtch;
+	}
+
+	public TimedSwitch createTimedSwitch(MapObject obj, World world,
+			UnitScale scale, SwitchConnectionHelper switchHelper) {
+		Body body = world.createBody(bodyDef.reset().type(TimedSwitch.BODY_TYPE)
+				.build());
+		Shape shape = createShape(obj, scale, body);
+		body.createFixture(fixtureDef.reset().shape(shape)
+				.isSensor(TimedSwitch.IS_SENSOR).build());
+
+		// dispose after creating fixture
+		shape.dispose();
+
+		MapProperties props = obj.getProperties();
+
+		TimedSwitch swtch = new TimedSwitch(body,
+				getFloatProperty(obj, "density", TimedSwitch.DEFAULT_INTERVAL));
+		switchHelper.add(props.get("id", String.class), swtch);
+		return swtch;
+	}
+
+	public MomentarySwitch createMomentarySwitch(MapObject obj, World world,
+			UnitScale scale, SwitchConnectionHelper switchHelper) {
+		Body body = world.createBody(bodyDef.reset().type(MomentarySwitch.BODY_TYPE)
+				.build());
+		Shape shape = createShape(obj, scale, body);
+		body.createFixture(fixtureDef.reset().shape(shape)
+				.isSensor(MomentarySwitch.IS_SENSOR).build());
+
+		// dispose after creating fixture
+		shape.dispose();
+
+		MapProperties props = obj.getProperties();
+
+		MomentarySwitch swtch = new MomentarySwitch(body);
+		switchHelper.add(props.get("id", String.class), swtch);
+		return swtch;
 	}
 
 	private Shape createShape(MapObject object, UnitScale scale, Body body) {
@@ -779,11 +880,34 @@ public final class WorldPopulator {
 		}
 	}
 
+	private static class SwitchConnectionHelper {
+		Map<String, Switch> switches = new HashMap<String, Switch>();
+		Map<String, List<Activatable>> activatables = new HashMap<String, List<Activatable>>();
+
+		public void add(String id, Switch swtch) {
+			switches.put(id, swtch);
+		}
+
+		public void add(Activatable item, String switchId) {
+			if (!activatables.containsKey(switchId)) {
+				activatables.put(switchId, new ArrayList<Activatable>());
+			}
+			activatables.get(switchId).add(item);
+		}
+
+		public void wireSwitches() {
+			for (String id : switches.keySet()) {
+				if (activatables.containsKey(id)) {
+					for (Activatable a : activatables.get(id)) {
+						switches.get(id).addActivatable(a);
+						Gdx.app.log("SwitchWire", "Linking: " + id + " -> " + a.getClass().getSimpleName());
+					}
+				}
+			}
+		}
+	}
+
 	private static class TeleportationMeshHelper {
-		// i need 3 hashes...
-		// map of id to selector
-		// map of id to list of TeleporterTargets
-		// map of id to list of target ids
 		Map<String, TeleporterSelectorStrategy> strategies = new HashMap<String, TeleporterSelectorStrategy>();
 		Map<String, TeleporterTarget> targets = new HashMap<String, TeleporterTarget>();
 		Map<String, String[]> associations = new HashMap<String, String[]>();

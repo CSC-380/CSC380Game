@@ -1,4 +1,4 @@
-package edu.oswego.tiltandtumble.worldObjects;
+package edu.oswego.tiltandtumble.worldObjects.paths;
 
 
 public class PathPoint {

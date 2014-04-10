@@ -67,7 +67,7 @@ public final class ScoreDialog extends Dialog {
 					table.add("New High Score!").colspan(3).center();
 					table.row();
 					table.add("Initials:");
-					initials = new TextField("AAA", skin);
+					initials = new TextField("", skin);
 					initials.setMaxLength(3);
 					initials.setMessageText("AAA");
 					table.add(initials).width(50);

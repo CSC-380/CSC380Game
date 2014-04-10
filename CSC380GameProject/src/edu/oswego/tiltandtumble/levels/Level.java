@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -21,7 +22,7 @@ import edu.oswego.tiltandtumble.worldObjects.MapRenderable;
 import edu.oswego.tiltandtumble.worldObjects.WorldObject;
 import edu.oswego.tiltandtumble.worldObjects.WorldUpdateable;
 
-public class Level implements Disposable {
+public class Level implements Disposable, Audible {
 
 	// TODO: Setting default score to 1000, figure out a good value for this...
 	private static final int DEFAULT_SCORE = 1000;
@@ -47,6 +48,9 @@ public class Level implements Disposable {
 
 	private final int mapWidth;
 	private final int mapHeight;
+
+	private boolean playSound;
+	private final Sound failSound;
 
 	private final Collection<Disposable> disposableObjects;
 	private final Collection<MapRenderable> renderableObjects;
@@ -75,8 +79,13 @@ public class Level implements Disposable {
 		updateableObjects = new LinkedList<WorldUpdateable>();
 		audibleObjects = new LinkedList<Audible>();
 
+		audibleObjects.add(this);
+
 		ball = populator.populateWorldFromMap(this, map, world, scale);
 		this.ballController.setBall(ball);
+
+		playSound = true;
+		failSound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/failure-2.ogg"));
 
 		contactListener = new OurCollisionListener();
 		world.setContactListener(contactListener);
@@ -177,6 +186,20 @@ public class Level implements Disposable {
 		return level;
 	}
 
+	@Override
+	public void setPlaySound(boolean value) {
+		playSound = value;
+	}
+
+	@Override
+	public void playSound() {
+		if (playSound) {
+			if (isFailed()) {
+				failSound.play();
+			}
+		}
+	}
+
 	public void draw(float delta, SpriteBatch batch) {
 		for (MapRenderable m : renderableObjects) {
 			m.drawBeforeBall(delta, batch);
@@ -204,6 +227,7 @@ public class Level implements Disposable {
 		for (Disposable d : disposableObjects) {
 			d.dispose();
 		}
+		failSound.dispose();
 	}
 
 	public void pause() {
@@ -238,6 +262,7 @@ public class Level implements Disposable {
     			l.failed = fail;
     			l.updateScore();
     			l.changeState(FINISHED);
+    			l.playSound();
     		}
 
     		@Override

@@ -6,26 +6,24 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
 
 import edu.oswego.tiltandtumble.collisionListener.BallCollisionListener;
-import edu.oswego.tiltandtumble.levels.UnitScale;
 
-public class AttractorForce extends AbstractWorldObject implements WorldUpdateable, BallCollisionListener {
-
+public class AttractorForce extends AbstractWorldObject
+		implements WorldUpdateable, BallCollisionListener {
 	public static final BodyType BODY_TYPE = BodyType.StaticBody;
 	public static final boolean IS_SENSOR = true;
 
-	//in meters per second
 	public static final float DEFAULT_SPEED = 1f;
 
-	private final UnitScale scale;
 	private final float speed;
+	private final float radius;
 
 	private boolean collidingWithBall = false;
 	private Ball ball;
 
-	public AttractorForce(Body body, float speed, UnitScale scale) {
+	public AttractorForce(Body body, float speed, float radius) {
 		super(body);
-		this.scale = scale;
 		this.speed = speed;
+		this.radius = radius;
 	}
 
 	@Override
@@ -37,11 +35,15 @@ public class AttractorForce extends AbstractWorldObject implements WorldUpdateab
 
 			// we want some affect from the delta to help normalize the force
 			// across frame rates, scale with distance as well.
-            float intensity = (speed * delta)
-            		/ body.getPosition().dst(ball.getBody().getPosition());
+			float distance = body.getPosition().dst(ball.getBody().getPosition());
+			if (distance == 0) return;
+			float intensity = (speed * delta) * (radius / distance);
+
 			Vector2 direction = new Vector2();
-			direction.x = currentVelocity.x + (intensity * (float)Math.cos(angle));
-			direction.y = currentVelocity.y + (intensity * (float)Math.sin(angle));
+			direction.x = currentVelocity.x
+					+ (intensity * (float)Math.cos(angle));
+			direction.y = currentVelocity.y
+					+ (intensity * (float)Math.sin(angle));
 
 			ball.body.setLinearVelocity(direction);
 		}
@@ -64,6 +66,5 @@ public class AttractorForce extends AbstractWorldObject implements WorldUpdateab
 	public void handleEndCollision(Contact contact, Ball ball) {
 		collidingWithBall = false;
 		this.ball = null;
-
 	}
 }

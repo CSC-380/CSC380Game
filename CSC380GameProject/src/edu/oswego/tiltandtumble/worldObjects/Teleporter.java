@@ -10,7 +10,7 @@ import edu.oswego.tiltandtumble.levels.BallController;
 import edu.oswego.tiltandtumble.worldObjects.graphics.GraphicComponent;
 
 public class Teleporter extends TeleporterTarget
-		implements BallCollisionListener {
+		implements BallCollisionListener, Activatable {
 	public static final BodyType BODY_TYPE = BodyType.StaticBody;
 	public static final boolean IS_SENSOR = true;
 
@@ -68,11 +68,27 @@ public class Teleporter extends TeleporterTarget
 		graphic.dispose();
 	}
 
+	@Override
+	public void activate() {
+		currentState.activate(this);
+	}
+
+	@Override
+	public void deactivate() {
+		currentState.deactivate(this);
+	}
+
 	private void changeState(State state) {
 		currentState = state;
 	}
 
 	private static enum State {
+		DEACTIVATED {
+			@Override
+			public void activate(Teleporter t) {
+				t.changeState(ACTIVE);
+			}
+		},
 		DISABLED {
 			@Override
 			public void handleEndCollision(Teleporter t, Ball b) {
@@ -106,6 +122,10 @@ public class Teleporter extends TeleporterTarget
 			}
 		};
 
+		public void activate(Teleporter t) {}
+		public void deactivate(Teleporter t) {
+			t.changeState(DEACTIVATED);
+		}
 		public void warp(Teleporter t) {}
 		public void handleBeginCollision(Teleporter t, Ball b) {}
 		public void handleEndCollision(Teleporter t, Ball b) {}

@@ -2,7 +2,6 @@ package edu.oswego.tiltandtumble.worldObjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -12,10 +11,11 @@ import edu.oswego.tiltandtumble.collisionListener.BallCollisionListener;
 import edu.oswego.tiltandtumble.levels.Level;
 import edu.oswego.tiltandtumble.levels.UnitScale;
 import edu.oswego.tiltandtumble.worldObjects.graphics.GraphicComponent;
+import edu.oswego.tiltandtumble.worldObjects.paths.MovementStrategy;
 
 public class MovingWall extends AbstractWorldObject
 		implements MapRenderable, WorldUpdateable, Disposable,
-		BallCollisionListener {
+		BallCollisionListener, Activatable {
 	public static final float FRICTION = 0.5f;
 	public static final float DENSITY = 5.0f;
 	public static final float RESTITUTION = 0.0f;
@@ -25,30 +25,23 @@ public class MovingWall extends AbstractWorldObject
 	public static final float DEFAULT_SPEED = 1f;
 	public static final String DEFAULT_SPRITE = "WallGrey2x2.png";
 
-	private final float speed;
-	private final PathPointTraverser nodes;
 	private final UnitScale scale;
-
+	private final MovementStrategy movement;
 	private final GraphicComponent graphic;
-
-	private final Vector2 startNode = new Vector2();
-	private final Vector2 endNode = new Vector2();
 
 	private boolean collidingWithBall = false;
 	private Ball ball;
     private final Level level;
 
-	public MovingWall(Body body, float speed, PathPointTraverser nodes,
+	public MovingWall(Body body, MovementStrategy movement,
 			GraphicComponent graphic, UnitScale scale, Level level) {
 		super(body);
 
-		this.speed = speed;
 		this.scale = scale;
 		this.level = level;
 		this.graphic = graphic;
 
-		this.nodes = nodes;
-		nodes.next();
+		this.movement = movement;
 	}
 
 	@Override
@@ -75,26 +68,7 @@ public class MovingWall extends AbstractWorldObject
 	}
 
 	private void move(float timeDelta) {
-		startNode.set(body.getPosition());
-		float distanceToTravel = speed * timeDelta;
-		float distanceToPoint = body.getPosition()
-				.dst(nodes.current().x, nodes.current().y);
-		// move along the path until we find the segment we need to stop on
-		while (distanceToTravel > distanceToPoint) {
-			distanceToTravel = distanceToTravel - distanceToPoint;
-			startNode.set(nodes.current().x, nodes.current().y);
-
-			nodes.next();
-			distanceToPoint = body.getPosition()
-					.dst(nodes.current().x, nodes.current().y);
-		}
-		endNode.set(nodes.current().x, nodes.current().y);
-
-		// now we have a valid distance on the next line segment.
-		// C = A + k(B - A)
-		final float distance = distanceToTravel / distanceToPoint;
-		body.setTransform(
-				endNode.sub(startNode).scl(distance).add(startNode), 0);
+		body.setTransform(movement.move(body.getPosition(), timeDelta), 0);
 	}
 
 	@Override
@@ -113,5 +87,15 @@ public class MovingWall extends AbstractWorldObject
 	public void handleEndCollision(Contact contact, Ball ball) {
 		collidingWithBall = false;
 		this.ball = null;
+	}
+
+	@Override
+	public void activate() {
+		movement.activate();
+	}
+
+	@Override
+	public void deactivate() {
+		movement.deactivate();
 	}
 }

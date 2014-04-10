@@ -1,37 +1,42 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
-import com.badlogic.gdx.Gdx;
+import java.util.Collection;
+import java.util.LinkedList;
+
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.utils.Disposable;
 
 import edu.oswego.tiltandtumble.collisionListener.BallCollisionListener;
-import edu.oswego.tiltandtumble.levels.Level;
 
-public class Hole extends AbstractWorldObject implements BallCollisionListener,
-		Disposable {
+public class MomentarySwitch extends AbstractWorldObject implements
+	BallCollisionListener, Switch  {
 	public static final BodyType BODY_TYPE = BodyType.StaticBody;
 	public static final boolean IS_SENSOR = true;
 
-	private final Level level;
+	private final Collection<Activatable> activatables;
 
-	public Hole(Body body, Level level) {
+	public MomentarySwitch(Body body) {
 		super(body);
-		this.level = level;
+		activatables = new LinkedList<Activatable>();
 	}
 
 	@Override
 	public void handleBeginCollision(Contact contact, Ball ball) {
-		Gdx.app.log("Hole", "FALL!!");
-		level.finish(true);
+		for (Activatable a : activatables) {
+			a.activate();
+		}
 	}
 
 	@Override
 	public void handleEndCollision(Contact contact, Ball ball) {
+		for (Activatable a : activatables) {
+			a.deactivate();
+		}
 	}
 
 	@Override
-	public void dispose() {
+	public void addActivatable(Activatable a) {
+		activatables.add(a);
 	}
 }
