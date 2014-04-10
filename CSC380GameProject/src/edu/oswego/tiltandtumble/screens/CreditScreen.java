@@ -27,8 +27,30 @@ public class CreditScreen extends AbstractScreen {
 		table.setModal(true);
 		table.setMovable(false);
         stage.addActor(table);
-
         table.row();
+        
+        //More contents can be added to credits once the audio sources are ready
+        
+        table.add("Tilt and Tumble v1.0", "header").expandX();
+        table.row();
+        table.add("\nDesign and Develop:", "header");
+        table.row();
+        table.add("Bo Guan");
+        table.row();
+        table.add("Dylan Loomis");
+        table.row();
+        table.add("James Dejong");
+        table.row();
+        table.add("Kelly Maestri");
+        table.row();
+        table.add("Kevin Winahradsky");
+        table.row();
+        table.add();
+        table.row();
+        table.row();
+        table.row();
+        table.row();
+        
         Button back = new TextButton("Go Back", skin);
         table.add(back);
         back.addListener(new ChangeListener() {
