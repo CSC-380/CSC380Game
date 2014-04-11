@@ -20,7 +20,7 @@ public class ToggleSwitch extends AbstractWorldObject
 	public ToggleSwitch(Body body) {
 		super(body);
 		activatables = new LinkedList<Activatable>();
-		currentState = State.ON;
+		currentState = State.OFF;
 	}
 
 	@Override

@@ -29,7 +29,7 @@ public class Ball extends AbstractWorldObject implements Disposable, Audible {
 		super(body);
 		this.scale = scale;
 
-		graphic = new SpriteGraphic("data/WorldObjects/GreenOrb.png", diameter, diameter);
+		graphic = new SpriteGraphic("data/WorldObjects/unpacked/GreenOrb.png", diameter, diameter);
 
 		playSound = true;
 		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/boing1.ogg"));

@@ -10,7 +10,6 @@ import com.badlogic.gdx.utils.Array;
 
 public class AnimationGraphic implements GraphicComponent {
 	private final Texture texture;
-	private final TextureRegion[] frames;
 	private final Animation ani;
 	private final Vector2 position;
 	private final int width;
@@ -25,7 +24,7 @@ public class AnimationGraphic implements GraphicComponent {
 		height = texture.getHeight() / rows;
 
 		TextureRegion[][] tmp = TextureRegion.split(texture, width, height);
-		frames = new TextureRegion[rows * columns];
+		TextureRegion[] frames = new TextureRegion[rows * columns];
         int index = 0;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {

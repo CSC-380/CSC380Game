@@ -23,7 +23,7 @@
  </layer>
  <layer name="map" width="100" height="20">
   <data encoding="base64" compression="zlib">
-   eJzVmUtuAjEMhiOybG8Au6rdUlZdMlugp6i66A36OAPcuVjEkmv5lUkGpr9kKZPHJOMvcULYpJQ2VzLUXN4zF+Pfc7dI6f1s92c75tSkjZB3ynK+1n6XL4bjG4y6WH4Sxk3zDuf0W7FXoe7BKKN9WeP+6OA7MGDxWZj0FGev9a/Vs1isnXIujceepHeGP6/JY1lYrDrwsNZitL2UXgtlQ+XY+BrA573gRy2WeM894pUWoyI+hDraGq99F69n+R+eaTzy4hVI4yExqeWh6SdfLOpLbw1G3lHLA9LPwXqS+FrButbcA0l7hBbHeHv0q1buae48NCYeD2RR4wsQ+v1B2LMlThHf1MYira3VpzW/WiSNTWICefsSP3j/dF2M5SExsXhofvD8c8w2Dy3d0+eWtPkxCPU0P2yNsojoGqFMpuCRku/3sXtSD/F+wR/S+fBAfndIcfCr+LKFB18jFg++b+AYNF9q+2JEt+TBv5HXtcYVPa9waXt37f5h8Wjx5y15eHVrYkFUPXhoseaY5XwrHk0Rr8aer1rVi4fGSIpTKGl94Jj+Aw9+fzVHHpE5haI86H6B9247ts5o+tY8vDnT0m+tojzwvC0Z779nXJ2CR4/YD7HYumeWfp9HFOXB9whpTtGzt3amwj0lemc+Vx6Wau91UWP2cosHaCvkW20lg/86Hst/HVPysM5/kCfdqXqKsLC+icd20Jj9I9pfRMDipTBpfdfTIn6+ooI20j0SSopX2r3Vd/5rWIfmafL+o/JEx+T1pWlZWKwW/lrqbai5vGcuRr/nFwUctIY=
+   eJzVWTtuwzAMFaKxvUGyFe2aZuoYr0l6iqJDb9DPGZI7N0REgCX4kyUn7gMIyPpR5hNJWd6klDZXEsRc5pmL8Pe5W6T0fpb7sxxzMrGxm8X2U/bH0fG7fBFc32D0xfaTsG5adziX34q8Cn0PRhvVZa37w7GdB9QBXHwWTiJjaua3xml7hJYHZe61086h8bEn5Z1hz2vysSxcrDrwYflidE1SeS20DcE5EdwH8Hkv2FGLJd5zj3ilxaiIDaGP5uO1c/F+lv3hmcYjL14BND4kTmr50PCTLxK1peeDkTlq+YDyc7CfBO4r2NfaewApR2hxjI9Hu2rtHubOh8aJxwdyUWMLANr9QcjZEk8R29TGIm2spdPaXy2Q1iZxAnX7Ej+4fuoXY/mQOLH40Ozg2eeYbT60ck+bW9D2xyD00+ywNdoioD5COZmCj5R8u4/NST3A9YI9pPPhgXx3SHHwq9iyhQ/uIxYfPG/gGjRbankxglvywd+R97XWFT2vcGi5uzZ/WHy02POWfHh9a2JBFD340GLNMcv1VjyaIl6NPV+1ohcfGkdSnEJI/oFr+g988PurOfIR2VMIygfNF3jvtmN+Rsu35sPbMy16axHlA8/bknD9PePqFHz0iP0Qi617Zun7PIIoHzxHSHuKnr21MxXmFO/OnOttwRR8WKi910WMyeUWH4CtUG+NlQT+dTyWfx1T8mGd/6BOulP1EOHCeice2wFj8kdUXwTAxUvhpHWup0X8fEUBY6R7JIQUr7R7q+/8V7APrdPg/aPyQNfk6dKwLFysFr4v9RbEXOaZi9D3+QUQ3LUZ
   </data>
  </layer>
  <objectgroup name="collision" width="100" height="20">
@@ -252,17 +252,17 @@
   </object>
   <object name="StaticWall" x="929" y="160" width="30" height="448"/>
   <object name="StaticWall" x="834" y="32" width="28" height="447"/>
-  <object name="MovingWall" x="864" y="256" width="64" height="64">
+  <object name="MovingWall" x="864" y="263" width="64" height="64">
    <properties>
     <property name="path" value="pmid1"/>
     <property name="speed" value="1"/>
     <property name="sprite" value="WallGrey2x2.png"/>
    </properties>
   </object>
-  <object name="MovingWall" x="864" y="320" width="64" height="64">
+  <object name="MovingWall" x="864" y="314" width="64" height="64">
    <properties>
     <property name="path" value="pmid2"/>
-    <property name="speed" value="-1"/>
+    <property name="speed" value="1"/>
     <property name="sprite" value="WallGrey2x2.png"/>
    </properties>
   </object>
@@ -426,6 +426,29 @@
     <property name="target" value="midtrap"/>
    </properties>
   </object>
+  <object name="StaticWall" x="384" y="27" width="32" height="99"/>
+  <object name="TimedSwitch" x="488" y="584" width="14" height="15">
+   <properties>
+    <property name="id" value="switchExit"/>
+    <property name="interval" value="10"/>
+   </properties>
+  </object>
+  <object name="MovingWall" x="46" y="226" width="64" height="64">
+   <properties>
+    <property name="movement" value="NodeStop"/>
+    <property name="path" value="switchExit1"/>
+    <property name="speed" value="1"/>
+    <property name="switch" value="switchExit"/>
+   </properties>
+  </object>
+  <object name="MovingWall" x="223" y="47" width="64" height="64">
+   <properties>
+    <property name="movement" value="NodeStop"/>
+    <property name="path" value="switchExit2"/>
+    <property name="speed" value="1"/>
+    <property name="switch" value="switchExit"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="paths" width="100" height="20">
   <object name="p1" x="3157" y="400">
@@ -437,6 +460,12 @@
   </object>
   <object name="pmid1" x="895" y="287">
    <polyline points="0,8 0,-256 0,-224 64,-224 64,-159 160,-160"/>
+  </object>
+  <object name="switchExit2" x="256" y="80">
+   <polyline points="0,0 95,0"/>
+  </object>
+  <object name="switchExit1" x="80" y="256">
+   <polyline points="0,0 0,96"/>
   </object>
  </objectgroup>
 </map>

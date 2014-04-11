@@ -24,7 +24,7 @@ public class TimedSwitch extends AbstractWorldObject implements
 		super(body);
 		this.interval = interval;
 		activatables = new LinkedList<Activatable>();
-		currentState = State.ON;
+		currentState = State.OFF;
 	}
 
 	@Override
@@ -55,20 +55,21 @@ public class TimedSwitch extends AbstractWorldObject implements
 		ON {
 			@Override
 			public void off(TimedSwitch s) {
-				s.changeState(OFF);
-				for (Activatable a : s.activatables) {
-					a.deactivate();
+				if (s.elapsed >= s.interval) {
+					s.changeState(OFF);
+					for (Activatable a : s.activatables) {
+						a.deactivate();
+					}
 				}
 			}
 		},
 		OFF {
 			@Override
 			public void on(TimedSwitch s) {
-				if (s.elapsed >= s.interval) {
-					s.changeState(ON);
-					for (Activatable a : s.activatables) {
-						a.activate();
-					}
+				s.elapsed = 0;
+				s.changeState(ON);
+				for (Activatable a : s.activatables) {
+					a.activate();
 				}
 			}
 		};

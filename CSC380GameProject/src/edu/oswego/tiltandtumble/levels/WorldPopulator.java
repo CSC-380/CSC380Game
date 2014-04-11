@@ -125,7 +125,7 @@ public final class WorldPopulator {
 		} else {
 			effect = new ParticleEffectGraphic(
 					"data/WorldObjects/" + name,
-					"data/WorldObjects");
+					"data/WorldObjects/unpacked");
 			effect.setPosition(
 					scale.metersToPixels(body.getPosition().x),
 					scale.metersToPixels(body.getPosition().y));
@@ -173,7 +173,7 @@ public final class WorldPopulator {
 		} else {
 			effect = new ParticleEffectGraphic(
 					"data/WorldObjects/" + name,
-					"data/WorldObjects");
+					"data/WorldObjects/unpacked");
 			effect.setPosition(
 					scale.metersToPixels(body.getPosition().x),
 					scale.metersToPixels(body.getPosition().y));
@@ -187,7 +187,7 @@ public final class WorldPopulator {
 		if (name.equals("none")) {
 			animation = new NullGraphic();
 		} else {
-			animation = new AnimationGraphic("data/WorldObjects/" + name,
+			animation = new AnimationGraphic("data/WorldObjects/unpacked/" + name,
 					props.get("animation rows", 1, Integer.class),
 					props.get("animation columns", 8, Integer.class),
 					props.get("animation duration", 1, Integer.class));
@@ -357,7 +357,7 @@ public final class WorldPopulator {
 
 		float speed = getFloatProperty(obj, "speed", MovingWall.DEFAULT_SPEED);
 
-		GraphicComponent graphic = new SpriteGraphic("data/WorldObjects/"
+		GraphicComponent graphic = new SpriteGraphic("data/WorldObjects/unpacked/"
 				+ obj.getProperties().get("sprite", MovingWall.DEFAULT_SPRITE, String.class),
 				dimensions.x, dimensions.y);
 
