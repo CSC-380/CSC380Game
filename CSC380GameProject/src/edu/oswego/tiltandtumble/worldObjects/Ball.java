@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.Disposable;
 
 import edu.oswego.tiltandtumble.levels.UnitScale;
 import edu.oswego.tiltandtumble.worldObjects.graphics.GraphicComponent;
-import edu.oswego.tiltandtumble.worldObjects.graphics.SpriteGraphic;
 
 public class Ball extends AbstractWorldObject implements Disposable, Audible {
 	public static final float FRICTION = 0.1f;
@@ -25,11 +24,11 @@ public class Ball extends AbstractWorldObject implements Disposable, Audible {
 	private boolean playSound;
 	private final Sound sound;
 
-	public Ball(Body body, float diameter, UnitScale scale) {
+	public Ball(Body body, GraphicComponent graphic, UnitScale scale) {
 		super(body);
 		this.scale = scale;
 
-		graphic = new SpriteGraphic("data/WorldObjects/unpacked/GreenOrb.png", diameter, diameter);
+		this.graphic = graphic;
 
 		playSound = true;
 		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/boing1.ogg"));

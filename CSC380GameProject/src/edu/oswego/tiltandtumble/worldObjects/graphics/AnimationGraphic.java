@@ -1,29 +1,26 @@
 package edu.oswego.tiltandtumble.worldObjects.graphics;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 public class AnimationGraphic implements GraphicComponent {
-	private final Texture texture;
 	private final Animation ani;
 	private final Vector2 position;
 	private final int width;
 	private final int height;
 	private float aniTime;
 
-	public AnimationGraphic(String name, int rows, int columns, float duration) {
+	public AnimationGraphic(Sprite texture, int rows, int columns, float duration) {
 		position = new Vector2();
 
-		texture = new Texture(Gdx.files.internal(name));
-		width = texture.getWidth() / columns;
-		height = texture.getHeight() / rows;
+		width = (int)texture.getWidth() / columns;
+		height = (int)texture.getHeight() / rows;
 
-		TextureRegion[][] tmp = TextureRegion.split(texture, width, height);
+		TextureRegion[][] tmp = texture.split(width, height);
 		TextureRegion[] frames = new TextureRegion[rows * columns];
         int index = 0;
         for (int i = 0; i < rows; i++) {
@@ -58,7 +55,5 @@ public class AnimationGraphic implements GraphicComponent {
 	}
 
 	@Override
-	public void dispose() {
-		texture.dispose();
-	}
+	public void dispose() { }
 }

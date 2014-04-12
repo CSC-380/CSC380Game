@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
@@ -28,6 +30,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Disposable;
 
 import edu.oswego.tiltandtumble.worldObjects.Activatable;
 import edu.oswego.tiltandtumble.worldObjects.AttractorForce;
@@ -57,9 +60,19 @@ import edu.oswego.tiltandtumble.worldObjects.paths.NodeStopMovement;
 import edu.oswego.tiltandtumble.worldObjects.paths.PathPoint;
 import edu.oswego.tiltandtumble.worldObjects.paths.PathPointTraverser;
 
-public final class WorldPopulator {
+public final class WorldPopulator implements Disposable {
 	private final BodyDefBuilder bodyDef = new BodyDefBuilder();
 	private final FixtureDefBuilder fixtureDef = new FixtureDefBuilder();
+	private final TextureAtlas atlas;
+
+	public WorldPopulator() {
+		atlas = new TextureAtlas(Gdx.files.internal("data/WorldObjects/worldobjects.pack"));
+	}
+
+	@Override
+	public void dispose() {
+		atlas.dispose();
+	}
 
 	public Ball populateWorldFromMap(Level level, TiledMap map, World world,
 			UnitScale scale) {
@@ -125,7 +138,7 @@ public final class WorldPopulator {
 		} else {
 			effect = new ParticleEffectGraphic(
 					"data/WorldObjects/" + name,
-					"data/WorldObjects/unpacked");
+					atlas);
 			effect.setPosition(
 					scale.metersToPixels(body.getPosition().x),
 					scale.metersToPixels(body.getPosition().y));
@@ -173,7 +186,7 @@ public final class WorldPopulator {
 		} else {
 			effect = new ParticleEffectGraphic(
 					"data/WorldObjects/" + name,
-					"data/WorldObjects/unpacked");
+					atlas);
 			effect.setPosition(
 					scale.metersToPixels(body.getPosition().x),
 					scale.metersToPixels(body.getPosition().y));
@@ -182,12 +195,13 @@ public final class WorldPopulator {
 		GraphicComponent animation;
 		name = props.get("animation", String.class);
 		if (name == null) {
-			name = "teleporter-glow.png";
+			name = "teleporter-glow";
 		}
 		if (name.equals("none")) {
 			animation = new NullGraphic();
 		} else {
-			animation = new AnimationGraphic("data/WorldObjects/unpacked/" + name,
+			Sprite sprite = atlas.createSprite(name);
+			animation = new AnimationGraphic(sprite,
 					props.get("animation rows", 1, Integer.class),
 					props.get("animation columns", 8, Integer.class),
 					props.get("animation duration", 1, Integer.class));
@@ -357,9 +371,9 @@ public final class WorldPopulator {
 
 		float speed = getFloatProperty(obj, "speed", MovingWall.DEFAULT_SPEED);
 
-		GraphicComponent graphic = new SpriteGraphic("data/WorldObjects/unpacked/"
-				+ obj.getProperties().get("sprite", MovingWall.DEFAULT_SPRITE, String.class),
-				dimensions.x, dimensions.y);
+		Sprite sprite = atlas.createSprite(props.get("sprite", MovingWall.DEFAULT_SPRITE, String.class));
+		sprite.setSize(dimensions.x, dimensions.y);
+		GraphicComponent graphic = new SpriteGraphic(sprite);
 
 		MovementStrategy movement;
 		if (props.containsKey("movement")
@@ -445,7 +459,11 @@ public final class WorldPopulator {
 		// dispose after creating fixture
 		shape.dispose();
 
-		return new Ball(body, diameter, scale);
+		Sprite sprite = atlas.createSprite("GreenOrb");
+		sprite.setSize(diameter, diameter);
+		GraphicComponent graphic = new SpriteGraphic(sprite);
+
+		return new Ball(body, graphic, scale);
 	}
 
 	public FinishLine createFinishLine(MapObject obj, Level level,

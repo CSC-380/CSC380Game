@@ -1,18 +1,13 @@
 package edu.oswego.tiltandtumble.worldObjects.graphics;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class SpriteGraphic implements GraphicComponent {
-	private final Texture texture;
 	private final Sprite sprite;
 
-	public SpriteGraphic(String name, float width, float height) {
-		texture = new Texture(Gdx.files.internal(name));
-		sprite = new Sprite(texture);
-		sprite.setSize(width, height);
+	public SpriteGraphic(Sprite sprite) {
+		this.sprite = sprite;
 	}
 
 	@Override
@@ -30,7 +25,5 @@ public class SpriteGraphic implements GraphicComponent {
 	}
 
 	@Override
-	public void dispose() {
-		texture.dispose();
-	}
+	public void dispose() { }
 }

@@ -49,13 +49,11 @@
   <object name="MovingWall" x="224" y="288" width="64" height="64">
    <properties>
     <property name="path" value="p1"/>
-    <property name="sprite" value="WallGrey2x2.png"/>
    </properties>
   </object>
   <object name="MovingWall" x="608" y="576" width="64" height="64">
    <properties>
     <property name="path" value="p3"/>
-    <property name="sprite" value="WallGrey2x2.png"/>
    </properties>
   </object>
   <object name="Teleporter" x="360" y="520" width="16" height="14">
@@ -72,7 +70,6 @@
   <object name="MovingWall" x="512" y="224" width="64" height="64">
    <properties>
     <property name="path" value="p2"/>
-    <property name="sprite" value="WallGrey2x2.png"/>
    </properties>
   </object>
   <object name="FinishLine" x="56" y="600" width="48" height="48">

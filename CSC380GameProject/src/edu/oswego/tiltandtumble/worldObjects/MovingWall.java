@@ -23,7 +23,7 @@ public class MovingWall extends AbstractWorldObject
 
 	// in meters per second
 	public static final float DEFAULT_SPEED = 1f;
-	public static final String DEFAULT_SPRITE = "WallGrey2x2.png";
+	public static final String DEFAULT_SPRITE = "WallGrey2x2";
 
 	private final UnitScale scale;
 	private final MovementStrategy movement;
