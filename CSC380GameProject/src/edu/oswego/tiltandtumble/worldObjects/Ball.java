@@ -44,6 +44,11 @@ public class Ball extends AbstractWorldObject implements Disposable, Audible {
 		graphic.draw(delta, batch);
 	}
 
+	public float getRadius() {
+		return scale.metersToPixels(
+				body.getFixtureList().get(0).getShape().getRadius());
+	}
+
 	public float getMapX() {
 		return scale.metersToPixels(body.getPosition().x);
 	}

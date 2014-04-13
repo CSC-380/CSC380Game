@@ -19,4 +19,10 @@ public class NullGraphic implements GraphicComponent {
 
 	@Override
 	public void draw(float delta, SpriteBatch batch) { }
+
+	@Override
+	public void setRotation(float degrees) { }
+
+	@Override
+	public void setSize(float width, float height) { }
 }

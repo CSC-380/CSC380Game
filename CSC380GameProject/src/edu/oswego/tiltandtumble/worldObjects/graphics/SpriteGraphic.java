@@ -15,13 +15,22 @@ public class SpriteGraphic implements GraphicComponent {
 
 	@Override
 	public void setPosition(float x, float y) {
-		sprite.setPosition(x - (sprite.getWidth() * 0.5f),
-				y - (sprite.getHeight() * 0.5f));
+		sprite.setPosition(x - sprite.getOriginX(), y - sprite.getOriginY());
+	}
+
+	@Override
+	public void setRotation(float degrees) {
+		sprite.setRotation(degrees);
 	}
 
 	@Override
 	public void draw(float delta, SpriteBatch batch) {
 		sprite.draw(batch);
+	}
+
+	@Override
+	public void setSize(float width, float height) {
+		sprite.setSize(width, height);
 	}
 
 	@Override

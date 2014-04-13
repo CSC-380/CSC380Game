@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
@@ -200,14 +202,16 @@ public final class WorldPopulator implements Disposable {
 		if (name.equals("none")) {
 			animation = new NullGraphic();
 		} else {
-			Sprite sprite = atlas.createSprite(name);
-			animation = new AnimationGraphic(sprite,
+			TextureRegion sheet = atlas.findRegion(name);
+			animation = new AnimationGraphic.Builder(sheet,
 					props.get("animation rows", 1, Integer.class),
 					props.get("animation columns", 8, Integer.class),
-					props.get("animation duration", 1, Integer.class));
-			animation.setPosition(
-					scale.metersToPixels(body.getPosition().x),
-					scale.metersToPixels(body.getPosition().y));
+					props.get("animation duration", 1, Integer.class))
+					.position(scale.metersToPixels(body.getPosition().x),
+							scale.metersToPixels(body.getPosition().y))
+					.center()
+					.looping(Animation.LOOP_PINGPONG)
+					.build();
 		}
 
 		Teleporter teleporter = new Teleporter(
@@ -461,6 +465,7 @@ public final class WorldPopulator implements Disposable {
 
 		Sprite sprite = atlas.createSprite("GreenOrb");
 		sprite.setSize(diameter, diameter);
+		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
 		GraphicComponent graphic = new SpriteGraphic(sprite);
 
 		return new Ball(body, graphic, scale);
@@ -506,9 +511,19 @@ public final class WorldPopulator implements Disposable {
 		// dispose after creating fixture
 		shape.dispose();
 
+		Sprite sprite = atlas.createSprite("attractor");
+		// No idea why i need to do -4 on this to get it to line up correctly
+		sprite.setOrigin((sprite.getWidth() / 2) - 4, 0);
+		GraphicComponent graphic = new SpriteGraphic(sprite);
+		graphic.setPosition(
+				scale.metersToPixels(body.getPosition().x),
+				scale.metersToPixels(body.getPosition().y));
+
 		return new AttractorForce(body,
 				getFloatProperty(obj, "speed", AttractorForce.DEFAULT_SPEED),
-				radius);
+				radius,
+				graphic,
+				scale);
 	}
 
 	public ToggleSwitch createToggleSwitch(MapObject obj, World world,

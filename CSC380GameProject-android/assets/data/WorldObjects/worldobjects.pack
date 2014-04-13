@@ -5,21 +5,28 @@ filter: Nearest,Nearest
 repeat: none
 teleporter-glow
   rotate: false
-  xy: 1, 67
+  xy: 1, 131
   size: 256, 32
   orig: 256, 32
   offset: 0, 0
   index: -1
-GreenOrb
+attractor
   rotate: false
   xy: 1, 1
+  size: 32, 128
+  orig: 32, 128
+  offset: 0, 0
+  index: -1
+GreenOrb
+  rotate: false
+  xy: 35, 65
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 WallGrey2x2
   rotate: false
-  xy: 67, 1
+  xy: 101, 65
   size: 64, 64
   orig: 64, 64
   offset: 0, 0

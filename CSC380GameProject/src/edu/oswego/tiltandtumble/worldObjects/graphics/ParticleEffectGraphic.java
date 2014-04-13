@@ -25,6 +25,16 @@ public class ParticleEffectGraphic implements GraphicComponent {
 	}
 
 	@Override
+	public void setRotation(float degrees) {
+		// noop
+	}
+
+	@Override
+	public void setSize(float width, float height) {
+		// noop
+	}
+
+	@Override
 	public void draw(float delta, SpriteBatch batch) {
 		effect.draw(batch, delta);
 	}

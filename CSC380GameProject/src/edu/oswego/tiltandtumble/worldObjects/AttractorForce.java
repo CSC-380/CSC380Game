@@ -1,14 +1,19 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.utils.Disposable;
 
 import edu.oswego.tiltandtumble.collisionListener.BallCollisionListener;
+import edu.oswego.tiltandtumble.levels.UnitScale;
+import edu.oswego.tiltandtumble.worldObjects.graphics.GraphicComponent;
 
 public class AttractorForce extends AbstractWorldObject
-		implements WorldUpdateable, BallCollisionListener {
+		implements WorldUpdateable, BallCollisionListener, MapRenderable,
+		Disposable {
 	public static final BodyType BODY_TYPE = BodyType.StaticBody;
 	public static final boolean IS_SENSOR = true;
 
@@ -17,13 +22,19 @@ public class AttractorForce extends AbstractWorldObject
 	private final float speed;
 	private final float radius;
 
+	private final GraphicComponent graphic;
+	private final UnitScale scale;
+
 	private boolean collidingWithBall = false;
 	private Ball ball;
 
-	public AttractorForce(Body body, float speed, float radius) {
+	public AttractorForce(Body body, float speed, float radius,
+			GraphicComponent graphic, UnitScale scale) {
 		super(body);
 		this.speed = speed;
 		this.radius = radius;
+		this.graphic = graphic;
+		this.scale = scale;
 	}
 
 	@Override
@@ -45,7 +56,14 @@ public class AttractorForce extends AbstractWorldObject
 			direction.y = currentVelocity.y
 					+ (intensity * (float)Math.sin(angle));
 
-			ball.body.setLinearVelocity(direction);
+			ball.getBody().setLinearVelocity(direction);
+
+			// TODO: make the graphic scale in size to the distance for the ball
+			Vector2 line = new Vector2(ball.getBody().getPosition());
+			line.sub(body.getPosition());
+			graphic.setRotation(line.angle() - 90);
+			float len = ball.body.getPosition().dst(body.getPosition());
+			graphic.setSize(ball.getRadius() * 2, scale.metersToPixels(len));
 		}
 	}
 
@@ -60,11 +78,28 @@ public class AttractorForce extends AbstractWorldObject
 	public void handleBeginCollision(Contact contact, Ball ball) {
 		collidingWithBall = true;
 		this.ball = ball;
+		graphic.start();
 	}
 
 	@Override
 	public void handleEndCollision(Contact contact, Ball ball) {
 		collidingWithBall = false;
 		this.ball = null;
+	}
+
+	@Override
+	public void drawBeforeBall(float delta, SpriteBatch batch) {
+	}
+
+	@Override
+	public void drawAfterBall(float delta, SpriteBatch batch) {
+		if (collidingWithBall) {
+			graphic.draw(delta, batch);
+		}
+	}
+
+	@Override
+	public void dispose() {
+		graphic.dispose();
 	}
 }
