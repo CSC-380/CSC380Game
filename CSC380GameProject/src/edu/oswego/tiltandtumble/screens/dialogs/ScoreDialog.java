@@ -50,19 +50,20 @@ public final class ScoreDialog extends Dialog {
 			table.row().uniformX();
 		}
 		table.add("Total:").right();
+		boolean isHighScore = false;
 		if (screen.getCurrentLevel().isFailed()) {
 			table.add(total.getFormattedTime()).center();
 			table.add("0").right();
 			table.row().padTop(10).uniformX();
 			table.add("You Failed!").colspan(3).center();
-		}
-		else {
+		} else {
 			table.add(total.getFormattedTime()).center();
 			table.add(String.valueOf(total.getPoints())).right();
 			if (!screen.hasMoreLevels()) {
 				table.row().padTop(10);
 				table.add("Game Over!").colspan(3).center();
 				if (game.getHighScores().isHighScore(total)) {
+					isHighScore = true;
 					table.row();
 					table.add("New High Score!").colspan(3).center();
 					table.row();
@@ -71,14 +72,17 @@ public final class ScoreDialog extends Dialog {
 					initials.setMaxLength(3);
 					initials.setMessageText("AAA");
 					table.add(initials).width(50);
-					button("Save", total);
 				}
 			}
 		}
 
 		getContentTable().add(table).pad(5,5,5,5);
 
-		button("Continue");
+		if (isHighScore) {
+			button("Continue", total);
+		} else {
+			button("Continue");
+		}
 	}
 
 	@Override
@@ -90,8 +94,7 @@ public final class ScoreDialog extends Dialog {
 				game.getHighScores().add(new HighScore(text, (Score)object));
 			}
 			game.showPreviousScreen();
-		}
-		else {
+		} else {
 			screen.loadNextLevel();
 		}
 	}
