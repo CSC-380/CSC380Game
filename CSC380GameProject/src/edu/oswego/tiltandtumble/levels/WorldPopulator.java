@@ -515,17 +515,10 @@ public final class WorldPopulator implements Disposable {
 		GraphicComponent graphic = new AnimationGraphic.Builder(sheet, 1, 8, 1)
 				.position(scale.metersToPixels(body.getPosition().x),
 						scale.metersToPixels(body.getPosition().y))
+				// No idea why i need to do -4 on this to get it to line up correctly
 				.origin(16 - 4, 0)
 				.looping(Animation.LOOP)
 				.build();
-
-//		Sprite sprite = atlas.createSprite("attractor");
-//		// No idea why i need to do -4 on this to get it to line up correctly
-//		sprite.setOrigin((sprite.getWidth() / 2) - 4, 0);
-//		GraphicComponent graphic = new SpriteGraphic(sprite);
-//		graphic.setPosition(
-//				scale.metersToPixels(body.getPosition().x),
-//				scale.metersToPixels(body.getPosition().y));
 
 		return new AttractorForce(body,
 				getFloatProperty(obj, "speed", AttractorForce.DEFAULT_SPEED),

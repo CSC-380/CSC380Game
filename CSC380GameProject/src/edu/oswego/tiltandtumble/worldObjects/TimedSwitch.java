@@ -3,14 +3,17 @@ package edu.oswego.tiltandtumble.worldObjects;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.utils.Disposable;
 
 import edu.oswego.tiltandtumble.collisionListener.BallCollisionListener;
 
 public class TimedSwitch extends AbstractWorldObject implements
-		BallCollisionListener, WorldUpdateable, Switch {
+		BallCollisionListener, WorldUpdateable, Switch, Audible, Disposable {
 	public static final BodyType BODY_TYPE = BodyType.StaticBody;
 	public static final boolean IS_SENSOR = true;
 	public static final float DEFAULT_INTERVAL = 3;
@@ -20,11 +23,17 @@ public class TimedSwitch extends AbstractWorldObject implements
 	private final float interval;
 	private float elapsed;
 
+	private boolean playSound;
+	private final Sound sound;
+
 	public TimedSwitch(Body body, float interval) {
 		super(body);
 		this.interval = interval;
 		activatables = new LinkedList<Activatable>();
 		currentState = State.OFF;
+
+		playSound = true;
+		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/switch.ogg"));
 	}
 
 	@Override
@@ -47,6 +56,21 @@ public class TimedSwitch extends AbstractWorldObject implements
 		currentState.off(this);
 	}
 
+	@Override
+	public void setPlaySound(boolean value) {
+		playSound = value;
+	}
+
+	@Override
+	public void playSound() {
+		sound.play();
+	}
+
+	@Override
+	public void dispose() {
+		sound.dispose();
+	}
+
 	private void changeState(State state) {
 		currentState = state;
 	}
@@ -67,6 +91,7 @@ public class TimedSwitch extends AbstractWorldObject implements
 			@Override
 			public void on(TimedSwitch s) {
 				s.elapsed = 0;
+				s.playSound();
 				s.changeState(ON);
 				for (Activatable a : s.activatables) {
 					a.activate();
