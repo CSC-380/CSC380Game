@@ -3,30 +3,37 @@ worldobjects.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+attractor-ani
+  rotate: false
+  xy: 1, 101
+  size: 256, 128
+  orig: 256, 128
+  offset: 0, 0
+  index: -1
 teleporter-glow
   rotate: false
-  xy: 1, 131
+  xy: 1, 67
   size: 256, 32
   orig: 256, 32
   offset: 0, 0
   index: -1
 attractor
   rotate: false
-  xy: 1, 1
+  xy: 259, 101
   size: 32, 128
   orig: 32, 128
   offset: 0, 0
   index: -1
 GreenOrb
   rotate: false
-  xy: 35, 65
+  xy: 1, 1
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 WallGrey2x2
   rotate: false
-  xy: 101, 65
+  xy: 293, 165
   size: 64, 64
   orig: 64, 64
   offset: 0, 0

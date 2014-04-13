@@ -10,7 +10,6 @@ public class AnimationGraphic implements GraphicComponent {
 	private final Animation ani;
 	private final Vector2 position;
 	private final Vector2 origin;
-	private final Vector2 offset;
 	private final Vector2 dimension;
 	private final Vector2 scale;
 	private final boolean looping;
@@ -22,7 +21,6 @@ public class AnimationGraphic implements GraphicComponent {
 	public static class Builder {
 		private final TextureRegion[] frames;
 		private final Vector2 origin = new Vector2(0, 0);
-		private final Vector2 offset = new Vector2(0, 0);
 		private final Vector2 position = new Vector2(0, 0);
 		private final Vector2 dimension = new Vector2();
 		private final Vector2 scale = new Vector2(1, 1);
@@ -75,7 +73,17 @@ public class AnimationGraphic implements GraphicComponent {
 		}
 
 		public Builder center() {
-			offset.set(dimension.x / 2, dimension.y / 2);
+			origin.set(dimension.x / 2, dimension.y / 2);
+			return this;
+		}
+
+		public Builder centerX() {
+			origin.set(dimension.x / 2, 0);
+			return this;
+		}
+
+		public Builder centerY() {
+			origin.set(0, dimension.y / 2);
 			return this;
 		}
 
@@ -87,7 +95,6 @@ public class AnimationGraphic implements GraphicComponent {
 	private AnimationGraphic(Builder builder) {
 		position = builder.position;
 		origin = builder.origin;
-		offset = builder.offset;
 		dimension = builder.dimension;
 		scale = builder.scale;
 
@@ -129,7 +136,7 @@ public class AnimationGraphic implements GraphicComponent {
 		aniTime += delta;
 		TextureRegion region = ani.getKeyFrame(aniTime, looping);
 		batch.draw(region,
-				position.x - offset.x, position.y - offset.y,
+				position.x - origin.x, position.y - origin.y,
 				origin.x, origin.y,
 				dimension.x, dimension.y,
 				scale.x, scale.y,
