@@ -1,5 +1,7 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -13,7 +15,7 @@ import edu.oswego.tiltandtumble.worldObjects.graphics.GraphicComponent;
 
 public class AttractorForce extends AbstractWorldObject
 		implements WorldUpdateable, BallCollisionListener, MapRenderable,
-		Disposable {
+		Disposable, Audible {
 	public static final BodyType BODY_TYPE = BodyType.StaticBody;
 	public static final boolean IS_SENSOR = true;
 
@@ -28,6 +30,9 @@ public class AttractorForce extends AbstractWorldObject
 	private boolean collidingWithBall = false;
 	private Ball ball;
 
+	private boolean playSound;
+	private final Sound sound;
+
 	public AttractorForce(Body body, float speed, float radius,
 			GraphicComponent graphic, UnitScale scale) {
 		super(body);
@@ -35,6 +40,9 @@ public class AttractorForce extends AbstractWorldObject
 		this.radius = radius;
 		this.graphic = graphic;
 		this.scale = scale;
+
+		playSound = true;
+		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/attractor.ogg"));
 	}
 
 	@Override
@@ -79,12 +87,16 @@ public class AttractorForce extends AbstractWorldObject
 		collidingWithBall = true;
 		this.ball = ball;
 		graphic.start();
+		if (playSound) {
+			sound.loop();
+		}
 	}
 
 	@Override
 	public void handleEndCollision(Contact contact, Ball ball) {
 		collidingWithBall = false;
 		this.ball = null;
+		sound.stop();
 	}
 
 	@Override
@@ -99,7 +111,20 @@ public class AttractorForce extends AbstractWorldObject
 	}
 
 	@Override
+	public void setPlaySound(boolean value) {
+		playSound = value;
+	}
+
+	@Override
+	public void playSound() {
+		if (playSound) {
+			sound.play();
+		}
+	}
+
+	@Override
 	public void dispose() {
+		sound.dispose();
 		graphic.dispose();
 	}
 }

@@ -63,7 +63,9 @@ public class TimedSwitch extends AbstractWorldObject implements
 
 	@Override
 	public void playSound() {
-		sound.play();
+		if (playSound) {
+			sound.play();
+		}
 	}
 
 	@Override
