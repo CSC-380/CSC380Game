@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import edu.oswego.tiltandtumble.data.HighScores;
+import edu.oswego.tiltandtumble.screens.ChallengeScreen;
 import edu.oswego.tiltandtumble.screens.CreditScreen;
 import edu.oswego.tiltandtumble.screens.GameScreen;
 import edu.oswego.tiltandtumble.screens.HelpScreen;
@@ -28,6 +29,8 @@ public class TiltAndTumble extends Game {
 	// NOTE: older phones do not have Deque interface
 	Stack<Screen> screenStack = new Stack<Screen>();
 
+	private boolean challengeMode = false;
+	
 	private MainScreen mainScreen;
 	private CreditScreen creditScreen;
 	private HelpScreen helpScreen;
@@ -35,6 +38,7 @@ public class TiltAndTumble extends Game {
 	private SettingsScreen settingsScreen;
 	private LevelScreen levelScreen;
 	private GameScreen gameScreen;
+	private ChallengeScreen challengeScreen;
 
 	private Skin skin;
 	private Stage stage;
@@ -131,6 +135,14 @@ public class TiltAndTumble extends Game {
 		screenStack.push(getScreen());
 		setScreen(levelScreen);
 	}
+	
+	public void showChallengeScreen() {
+		if (challengeScreen == null) {
+			challengeScreen = new ChallengeScreen(this);
+		}
+		screenStack.push(getScreen());
+		setScreen(challengeScreen);
+	}
 
 	public void showGameScreen(int level) {
 		if (gameScreen != null) {
@@ -176,6 +188,14 @@ public class TiltAndTumble extends Game {
 	public float getHeight() {
 		return height;
 	}
+	
+	public boolean isChallengeMode(){
+		return challengeMode;
+	}
+	
+	public void setChallengeMode(boolean x){
+		challengeMode = x;
+	}
 
 	@Override
 	public void dispose() {
@@ -199,6 +219,9 @@ public class TiltAndTumble extends Game {
 		}
 		if (gameScreen != null) {
 			gameScreen.dispose();
+		}
+		if (challengeScreen != null) {
+			challengeScreen.dispose();
 		}
 		stage.dispose();
 		batch.dispose();

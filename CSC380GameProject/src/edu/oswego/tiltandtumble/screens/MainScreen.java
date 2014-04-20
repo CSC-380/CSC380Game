@@ -32,12 +32,22 @@ public class MainScreen extends AbstractScreen {
         table.bottom();
         window.addActor(table);
 
-        Button play = new TextButton("Play", skin);
-        table.add(play).width(100).pad(10).padBottom(20).colspan(4);
+        Button play = new TextButton("Single Player", skin);
+        table.add(play).width(150).pad(10).padBottom(20).colspan(4);
         play.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 game.showLevelScreen();
+            }
+        });
+        
+        table.row();
+        Button play2 = new TextButton("Multi-Player", skin);
+        table.add(play2).width(150).pad(10).padBottom(20).colspan(4);
+        play2.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.showChallengeScreen();
             }
         });
 
