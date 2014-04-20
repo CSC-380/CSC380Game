@@ -5,15 +5,18 @@ import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.utils.Disposable;
 
 import edu.oswego.tiltandtumble.collisionListener.BallCollisionListener;
+import edu.oswego.tiltandtumble.worldObjects.graphics.GraphicComponent;
 
 public class ToggleSwitch extends AbstractWorldObject
-		implements BallCollisionListener, Switch, Audible, Disposable {
+		implements BallCollisionListener, Switch, Audible, Disposable,
+		MapRenderable {
 	public static final BodyType BODY_TYPE = BodyType.StaticBody;
 	public static final boolean IS_SENSOR = true;
 
@@ -24,10 +27,21 @@ public class ToggleSwitch extends AbstractWorldObject
 	private final Sound offsound;
 	private final Sound onsound;
 
-	public ToggleSwitch(Body body) {
+	private final GraphicComponent graphicOn;
+	private final GraphicComponent graphicOff;
+
+	public ToggleSwitch(Body body, boolean startOn, GraphicComponent graphicOn,
+			GraphicComponent graphicOff) {
 		super(body);
 		activatables = new LinkedList<Activatable>();
-		currentState = State.OFF;
+		if (startOn) {
+			currentState = State.ON;
+		} else {
+			currentState = State.OFF;
+		}
+
+		this.graphicOn = graphicOn;
+		this.graphicOff = graphicOff;
 
 		playSound = true;
 		offsound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/switch-off.ogg"));
@@ -36,6 +50,11 @@ public class ToggleSwitch extends AbstractWorldObject
 
 	@Override
 	public void addActivatable(Activatable a) {
+		if (currentState == State.ON) {
+			a.activate();
+		} else {
+			a.deactivate();
+		}
 		activatables.add(a);
 	}
 
@@ -61,9 +80,26 @@ public class ToggleSwitch extends AbstractWorldObject
 	}
 
 	@Override
+	public void endSound() {
+		offsound.stop();
+		onsound.stop();
+	}
+
+	@Override
+	public void drawBeforeBall(float delta, SpriteBatch batch) {
+		currentState.draw(this, delta, batch);
+	}
+
+	@Override
+	public void drawAfterBall(float delta, SpriteBatch batch) {
+	}
+
+	@Override
 	public void dispose() {
 		offsound.dispose();
 		onsound.dispose();
+		graphicOff.dispose();
+		graphicOn.dispose();
 	}
 
 	private void changeState(State state) {
@@ -85,6 +121,11 @@ public class ToggleSwitch extends AbstractWorldObject
 			public void playSound(ToggleSwitch s) {
 				s.offsound.play();
 			}
+
+			@Override
+			public void draw(ToggleSwitch s, float delta, SpriteBatch batch) {
+				s.graphicOn.draw(delta, batch);
+			}
 		},
 		OFF {
 			@Override
@@ -100,9 +141,15 @@ public class ToggleSwitch extends AbstractWorldObject
 			public void playSound(ToggleSwitch s) {
 				s.onsound.play();
 			}
+
+			@Override
+			public void draw(ToggleSwitch s, float delta, SpriteBatch batch) {
+				s.graphicOff.draw(delta, batch);
+			}
 		};
 
 		public void toggle(ToggleSwitch s) {}
 		public void playSound(ToggleSwitch s) {}
+		public void draw(ToggleSwitch s, float delta, SpriteBatch batch) {}
 	}
 }

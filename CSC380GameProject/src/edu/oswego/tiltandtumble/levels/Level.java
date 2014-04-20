@@ -200,6 +200,11 @@ public class Level implements Disposable, Audible {
 		}
 	}
 
+	@Override
+	public void endSound() {
+		failSound.stop();
+	}
+
 	public void draw(float delta, SpriteBatch batch) {
 		for (MapRenderable m : renderableObjects) {
 			m.drawBeforeBall(delta, batch);
@@ -262,6 +267,9 @@ public class Level implements Disposable, Audible {
     			l.failed = fail;
     			l.updateScore();
     			l.changeState(FINISHED);
+    			for (Audible a : l.audibleObjects) {
+    				a.endSound();
+    			}
     			l.playSound();
     		}
 

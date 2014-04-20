@@ -79,6 +79,11 @@ public class TeleporterTarget extends AbstractWorldObject
 	}
 
 	@Override
+	public void endSound() {
+		sound.stop();
+	}
+
+	@Override
 	public void dispose() {
 		sound.dispose();
 		graphic.dispose();

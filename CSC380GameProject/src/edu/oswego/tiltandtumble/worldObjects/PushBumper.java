@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Disposable;
 import edu.oswego.tiltandtumble.collisionListener.BallCollisionListener;
 
 public class PushBumper extends AbstractWorldObject
-		implements BallCollisionListener, Audible, Disposable {
+		implements BallCollisionListener, Audible, Disposable, Activatable {
     public static final float FRICTION = 0.0f;
     public static final float DENSITY = 2.0f;
     public static final float RESTITUTION = 0.0f;
@@ -23,6 +23,8 @@ public class PushBumper extends AbstractWorldObject
 	private boolean playSound;
 	private final Sound sound;
 
+	private boolean active = true;
+
     public PushBumper(Body body, float speed) {
         super(body);
         this.speed = speed;
@@ -33,7 +35,7 @@ public class PushBumper extends AbstractWorldObject
 
     @Override
 	public void handleBeginCollision(Contact contact, Ball ball) {
-
+    	if (!active) return;
     	// What this does is instantly accelerate the ball to the defined
     	// "speed" value, if the ball is already moving faster, it will not
     	// accelerate.
@@ -77,7 +79,22 @@ public class PushBumper extends AbstractWorldObject
 	}
 
 	@Override
+	public void endSound() {
+		sound.stop();
+	}
+
+	@Override
 	public void dispose() {
 		sound.dispose();
+	}
+
+	@Override
+	public void activate() {
+		active = true;
+	}
+
+	@Override
+	public void deactivate() {
+		active = false;
 	}
 }

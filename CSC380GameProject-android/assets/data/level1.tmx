@@ -23,7 +23,7 @@
  </layer>
  <layer name="map" width="100" height="20">
   <data encoding="base64" compression="zlib">
-   eJzVWTtuwzAMFaKxvUGyFe2aZuoYr0l6iqJDb9DPGZI7N0REgCX4kyUn7gMIyPpR5hNJWd6klDZXEsRc5pmL8Pe5W6T0fpb7sxxzMrGxm8X2U/bH0fG7fBFc32D0xfaTsG5adziX34q8Cn0PRhvVZa37w7GdB9QBXHwWTiJjaua3xml7hJYHZe61086h8bEn5Z1hz2vysSxcrDrwYflidE1SeS20DcE5EdwH8Hkv2FGLJd5zj3ilxaiIDaGP5uO1c/F+lv3hmcYjL14BND4kTmr50PCTLxK1peeDkTlq+YDyc7CfBO4r2NfaewApR2hxjI9Hu2rtHubOh8aJxwdyUWMLANr9QcjZEk8R29TGIm2spdPaXy2Q1iZxAnX7Ej+4fuoXY/mQOLH40Ozg2eeYbT60ck+bW9D2xyD00+ywNdoioD5COZmCj5R8u4/NST3A9YI9pPPhgXx3SHHwq9iyhQ/uIxYfPG/gGjRbankxglvywd+R97XWFT2vcGi5uzZ/WHy02POWfHh9a2JBFD340GLNMcv1VjyaIl6NPV+1ohcfGkdSnEJI/oFr+g988PurOfIR2VMIygfNF3jvtmN+Rsu35sPbMy16axHlA8/bknD9PePqFHz0iP0Qi617Zun7PIIoHzxHSHuKnr21MxXmFO/OnOttwRR8WKi910WMyeUWH4CtUG+NlQT+dTyWfx1T8mGd/6BOulP1EOHCeice2wFj8kdUXwTAxUvhpHWup0X8fEUBY6R7JIQUr7R7q+/8V7APrdPg/aPyQNfk6dKwLFysFr4v9RbEXOaZi9D3+QUQ3LUZ
+   eJzVmUtuAjEMhiOybG8Au6rdUlZdMlugp6i66A36OAPcuVjEkmv5lUwGpr9kKTN5jr/ECWGTUtpcyVBzaWcuxr/nbpHS+9nuz3bMydTGzhbzT9mvR+vv8sVwfINRFvNPwrjpu8M5/VbsVSh7MPJoX9a4PxzfecI+gMVnYRKpU9O+VU+bIzQ9KG2vnXwujceepHeGP6/JY1lYrDrwsNZidExSei3kDcE2UXwN4PNe8KMWS7znHvFKi1ERH0IZbY3XtsXLWf6HZxqPvHgF0nhITGp5aPrJF4v60luDkTZqeUD6OVhOEl8rWNaaeyBpj9DiGK+PftXyPfXgMQTbaOGhMfF4IIsaX4DQ7w/Cni1xiszV2lik1bX69M40rZLGJjGBd/sSP/jY6Lpo5SExsXhoXDxex2zz0NK139UqbX4MQjnND1sjLyK6RiiTKXik5Pu9dU/qId4v+EM6Hx7I7w4pDn4VX47hwdeIxYPvGzgGzZfavhjRLXnwb+RlrXFFzytc2t5du39YPMb485Y8vLI1sSCqHjy0WHPM8nsrHk0Rr1rPV2PVi4fGSIpTKGl94Jj+Aw9+fzVHHpE5haI86H6B9247ts5o+tY8vDkzpt9aRXngeVsy3n/PuDoFjx6xH2Kxdc8s/T6PKMqD7xHSnKJnb+1MhXuKd2fO+x2jKXhYqr3XRbXs5RYP0FZ4b9WVDP7reCz/dUzJwzr/wTvpTtVThIX1TTy2g1r2j2h/EQGLl8JkbFtPi/j5igrqSPdIKCleafdW3/mvYRn6TpP3H5UnOiavL03LwmK18NdSb0PNpZ25GP2eX6iOtQY=
   </data>
  </layer>
  <objectgroup name="collision" width="100" height="20">
@@ -80,7 +80,7 @@
     <property name="path" value="p1"/>
    </properties>
   </object>
-  <object name="TeleporterTarget" x="3103" y="543" width="31" height="31">
+  <object name="TeleporterTarget" x="3104" y="544" width="32" height="32">
    <properties>
     <property name="id" value="start"/>
    </properties>
@@ -219,8 +219,8 @@
   <object name="StaticWall" x="1185" y="257" width="62" height="125"/>
   <object name="StaticWall" x="513" y="129" width="30" height="93"/>
   <object name="StaticWall" x="513" y="384" width="29" height="227"/>
-  <object name="StaticWall" x="225" y="128" width="30" height="102"/>
-  <object name="StaticWall" x="129" y="225" width="126" height="29"/>
+  <object name="StaticWall" x="225" y="128" width="30" height="64"/>
+  <object name="StaticWall" x="129" y="225" width="63" height="29"/>
   <object name="StaticWall" x="929" y="1" width="510" height="30"/>
   <object name="StaticWall" x="930" y="608" width="509" height="32"/>
   <object name="StaticWall" x="863" y="2">
@@ -258,7 +258,7 @@
   <object name="MovingWall" x="864" y="314" width="64" height="64">
    <properties>
     <property name="path" value="pmid2"/>
-    <property name="speed" value="1"/>
+    <property name="speed" value="-1"/>
    </properties>
   </object>
   <object name="StaticWall" x="994" y="64" width="93" height="31"/>
@@ -422,27 +422,37 @@
    </properties>
   </object>
   <object name="StaticWall" x="384" y="27" width="32" height="99"/>
-  <object name="TimedSwitch" x="488" y="584" width="14" height="15">
+  <object name="TimedSwitch" x="488" y="584" width="16" height="16">
    <properties>
     <property name="id" value="switchExit"/>
     <property name="interval" value="10"/>
+    <property name="sprite-on" value="switch-on"/>
    </properties>
   </object>
-  <object name="MovingWall" x="46" y="226" width="64" height="64">
+  <object name="MovingWall" x="31" y="228" width="96" height="32">
    <properties>
     <property name="movement" value="NodeStop"/>
     <property name="path" value="switchExit1"/>
-    <property name="speed" value="1"/>
+    <property name="speed" value="-1"/>
+    <property name="sprite" value="WallBlue1x3"/>
     <property name="switch" value="switchExit"/>
    </properties>
   </object>
-  <object name="MovingWall" x="223" y="47" width="64" height="64">
+  <object name="MovingWall" x="231" y="31" width="32" height="96">
    <properties>
     <property name="movement" value="NodeStop"/>
     <property name="path" value="switchExit2"/>
-    <property name="speed" value="1"/>
+    <property name="rotate" value="90"/>
+    <property name="speed" value="-1"/>
+    <property name="sprite" value="WallBlue1x3"/>
     <property name="switch" value="switchExit"/>
    </properties>
+  </object>
+  <object name="StaticWall" x="225" y="193">
+   <polygon points="0,0 0,32 29,0"/>
+  </object>
+  <object name="StaticWall" x="193" y="225">
+   <polygon points="0,0 0,29 32,0"/>
   </object>
  </objectgroup>
  <objectgroup name="paths" width="100" height="20">
@@ -456,11 +466,11 @@
   <object name="pmid1" x="895" y="287">
    <polyline points="0,8 0,-256 0,-224 64,-224 64,-159 160,-160"/>
   </object>
-  <object name="switchExit2" x="256" y="80">
+  <object name="switchExit2" x="242" y="80">
    <polyline points="0,0 95,0"/>
   </object>
   <object name="switchExit1" x="80" y="256">
-   <polyline points="0,0 0,96"/>
+   <polyline points="1,-14 1,79"/>
   </object>
  </objectgroup>
 </map>

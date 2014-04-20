@@ -3,7 +3,7 @@ package edu.oswego.tiltandtumble.worldObjects.paths;
 import com.badlogic.gdx.math.Vector2;
 
 public class NodeStopMovement implements MovementStrategy {
-	private boolean isMoving = false;
+	private boolean isMoving = true;
 	private final float speed;
 	private final PathPointTraverser nodes;
 

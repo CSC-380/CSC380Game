@@ -74,4 +74,9 @@ public class Ball extends AbstractWorldObject implements Disposable, Audible {
 			sound.play();
 		}
 	}
+
+	@Override
+	public void endSound() {
+		sound.stop();
+	}
 }
