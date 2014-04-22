@@ -63,7 +63,7 @@
   <object name="StaticWall" x="3039" y="351">
    <polygon points="0,0 0,97 64,97 65,0"/>
   </object>
-  <object name="Hole" x="2656" y="417">
+  <object name="Spike" x="2656" y="417">
    <polyline points="3,0 8,16 89,16 93,-1"/>
   </object>
   <object name="Hole" x="331" y="235" width="392" height="137"/>
@@ -212,7 +212,7 @@
   <object name="PushBumper" x="1539" y="602" width="126" height="7"/>
   <object name="PushBumper" x="2490" y="385" width="6" height="59"/>
   <object name="PushBumper" x="2489" y="291" width="6" height="59"/>
-  <object name="Hole" x="2270" y="449">
+  <object name="Spike" x="2270" y="449">
    <polyline points="-59,29 -54,16 151,16 158,30"/>
   </object>
   <object name="PushBumper" x="2626" y="602" width="58" height="5"/>
@@ -277,8 +277,8 @@
   </object>
   <object name="StaticWall" x="1153" y="27" width="29" height="259"/>
   <object name="StaticWall" x="1249" y="28" width="29" height="259"/>
-  <object name="Hole" x="1182" y="30" width="67" height="16"/>
-  <object name="Hole" x="1181" y="241" width="67" height="16"/>
+  <object name="Spike" x="1182" y="30" width="67" height="16"/>
+  <object name="Spike" x="1181" y="241" width="67" height="16"/>
   <object name="Teleporter" x="1191" y="135" width="48" height="16">
    <properties>
     <property name="id" value="midtrap"/>
@@ -303,7 +303,7 @@
     <property name="id" value="midtrapExit"/>
    </properties>
   </object>
-  <object name="Hole" x="957" y="559">
+  <object name="Spike" x="957" y="559">
    <polyline points="0,0 28,0 50,20 50,48"/>
   </object>
   <object name="PushBumper" x="999" y="287">
@@ -312,10 +312,10 @@
   <object name="PushBumper" x="1430" y="287">
    <polyline points="0,0 0,22 18,39 43,39"/>
   </object>
-  <object name="Hole" x="1167" y="285">
+  <object name="Spike" x="1167" y="285">
    <polyline points="0,0 0,27 17,35"/>
   </object>
-  <object name="Hole" x="1263" y="286">
+  <object name="Spike" x="1263" y="286">
    <polyline points="0,0 0,27 -15,35"/>
   </object>
   <object name="StaticWall" x="2625" y="287">
@@ -332,10 +332,10 @@
   </object>
   <object name="StaticWall" x="770" y="449" width="65" height="31"/>
   <object name="StaticWall" x="641" y="480" width="64" height="96"/>
-  <object name="Hole" x="567" y="551">
+  <object name="Spike" x="567" y="551">
    <polyline points="-24,-165 -9,-160 -9,49 -25,57"/>
   </object>
-  <object name="Hole" x="570" y="164">
+  <object name="Spike" x="570" y="164">
    <polyline points="-25,-34 -10,-29 -10,51 -25,57"/>
   </object>
   <object name="TeleporterTarget" x="881" y="303" width="31" height="31">
@@ -400,13 +400,13 @@
   <object name="StaticWall" x="1407" y="96">
    <polygon points="0,0 -31,0 -63,33 -63,64 -32,64 1,31"/>
   </object>
-  <object name="Hole" x="2129" y="28">
+  <object name="Spike" x="2129" y="28">
    <polyline points="0,0 0,31 18,50 41,50 61,31 61,2"/>
   </object>
-  <object name="Hole" x="1873" y="30">
+  <object name="Spike" x="1873" y="30">
    <polyline points="0,0 0,59 32,70 32,155 -1,165 -1,219 30,230 31,475 -1,486 -1,507 19,527 72,529 93,508 93,487 125,475 125,294 157,283 157,229 125,218 125,197 94,187 95,-3"/>
   </object>
-  <object name="Hole" x="2033" y="610">
+  <object name="Spike" x="2033" y="610">
    <polyline points="0,0 0,-31 31,-41 32,-223 64,-233 64,-413 31,-424 31,-447 0,-457 0,-512 19,-529 41,-529 51,-497 73,-497 83,-465 105,-465 125,-447 127,-201 93,-189 94,-1"/>
   </object>
   <object name="Teleporter" x="1224" y="488" width="16" height="16">

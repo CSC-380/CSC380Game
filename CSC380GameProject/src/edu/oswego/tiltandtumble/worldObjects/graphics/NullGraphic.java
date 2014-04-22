@@ -25,4 +25,7 @@ public class NullGraphic implements GraphicComponent {
 
 	@Override
 	public void setSize(float width, float height) { }
+
+	@Override
+	public boolean isFinished() { return true; }
 }

@@ -147,12 +147,16 @@ public class Level implements Disposable, Audible {
 		return currentState == State.STARTED;
 	}
 
-	public void finish() {
-		finish(false);
+	public void win() {
+		currentState.end(this, false);
 	}
 
-	public void finish(boolean fail) {
-		currentState.finish(this, fail);
+	public void fail() {
+		currentState.end(this, true);
+	}
+
+	public void exit() {
+		currentState.finish(this);
 	}
 
 	public boolean isFailed() {
@@ -263,20 +267,21 @@ public class Level implements Disposable, Audible {
     		}
 
     		@Override
-    		public void finish(Level l, boolean fail) {
+    		public void end(Level l, boolean fail) {
     			l.failed = fail;
     			l.updateScore();
-    			l.changeState(FINISHED);
+    			l.changeState(ENDING);
     			for (Audible a : l.audibleObjects) {
     				a.endSound();
     			}
-    			l.playSound();
     		}
 
     		@Override
     		public void update(Level l, float delta) {
     			if (l.isBallOutsideLevel()) {
-    				finish(l, true);
+    				l.fail();
+    				l.exit();
+    				return;
     			}
     			l.ballController.update(delta);
     			for (WorldUpdateable w : l.updateableObjects) {
@@ -296,12 +301,20 @@ public class Level implements Disposable, Audible {
     			l.changeState(STARTED);
     		}
         },
+        ENDING {
+    		@Override
+			public void finish(Level l) {
+    			l.changeState(FINISHED);
+    			l.playSound();
+    		}
+        },
         FINISHED;
 
         public void start(Level l) {}
 		public void pause(Level l) {}
 		public void resume(Level l) {}
-		public void finish(Level l, boolean fail) {}
+		public void end(Level l, boolean fail) {}
+		public void finish(Level l) {}
 		public void update(Level l, float delta) {}
     };
 }

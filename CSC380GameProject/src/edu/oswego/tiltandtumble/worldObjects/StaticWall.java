@@ -42,7 +42,8 @@ public class StaticWall extends AbstractWorldObject implements WorldUpdateable,
 		if (collidingWithBall) {
 			if (body.getFixtureList().get(0).testPoint(ball.getBody().getPosition())) {
 				Gdx.app.log("StaticWall", "Wall SMASH Ball!");
-				level.finish(true);
+				level.fail();
+				level.exit();
 			}
 		}
 	}

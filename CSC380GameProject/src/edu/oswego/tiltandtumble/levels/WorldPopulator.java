@@ -42,6 +42,7 @@ import edu.oswego.tiltandtumble.worldObjects.Hole;
 import edu.oswego.tiltandtumble.worldObjects.MomentarySwitch;
 import edu.oswego.tiltandtumble.worldObjects.MovingWall;
 import edu.oswego.tiltandtumble.worldObjects.PushBumper;
+import edu.oswego.tiltandtumble.worldObjects.Spike;
 import edu.oswego.tiltandtumble.worldObjects.StaticWall;
 import edu.oswego.tiltandtumble.worldObjects.Switch;
 import edu.oswego.tiltandtumble.worldObjects.Teleporter;
@@ -93,6 +94,8 @@ public final class WorldPopulator implements Disposable {
 					level.addWorldObject(createPushBumper(obj, world, scale));
 				} else if (obj.getName().equals("FinishLine")) {
 					level.addWorldObject(createFinishLine(obj, level, world, scale));
+				} else if (obj.getName().equals("Spike")) {
+					level.addWorldObject(createSpike(obj, level, world, scale));
 				} else if (obj.getName().equals("Hole")) {
 					level.addWorldObject(createHole(obj, level, world, scale));
 				} else if (obj.getName().equals("Teleporter")) {
@@ -501,7 +504,27 @@ public final class WorldPopulator implements Disposable {
 		// dispose after creating fixture
 		shape.dispose();
 
-		return new Hole(body, level);
+		TextureRegion sheet = atlas.findRegion("ballfall");
+		GraphicComponent graphic = new AnimationGraphic.Builder(sheet, 1, 8, 1)
+				.position(scale.metersToPixels(body.getPosition().x),
+						scale.metersToPixels(body.getPosition().y))
+				.origin(16, 16)
+				.build();
+
+		return new Hole(body, level, graphic);
+	}
+
+	public Spike createSpike(MapObject obj, Level level, World world,
+			UnitScale scale) {
+		Body body = world.createBody(bodyDef.reset().type(Spike.BODY_TYPE)
+				.build());
+		Shape shape = createShape(obj, scale, body);
+		body.createFixture(fixtureDef.reset().shape(shape).build());
+
+		// dispose after creating fixture
+		shape.dispose();
+
+		return new Spike(body, level, new NullGraphic());
 	}
 
 	public AttractorForce createAttractorForce(MapObject obj, Level level,

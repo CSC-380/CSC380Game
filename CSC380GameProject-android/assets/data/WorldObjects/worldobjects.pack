@@ -10,9 +10,16 @@ attractor-ani
   orig: 256, 128
   offset: 0, 0
   index: -1
-teleporter-glow
+ballfall
   rotate: false
   xy: 1, 69
+  size: 256, 32
+  orig: 256, 32
+  offset: 0, 0
+  index: -1
+teleporter-glow
+  rotate: false
+  xy: 1, 35
   size: 256, 32
   orig: 256, 32
   offset: 0, 0
@@ -26,7 +33,7 @@ GreenOrb
   index: -1
 WallBlue1x3
   rotate: false
-  xy: 1, 35
+  xy: 1, 1
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
@@ -47,14 +54,14 @@ WallBlue1x2
   index: -1
 switch-off
   rotate: false
-  xy: 1, 1
+  xy: 99, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 switch-on
   rotate: false
-  xy: 99, 35
+  xy: 259, 67
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
