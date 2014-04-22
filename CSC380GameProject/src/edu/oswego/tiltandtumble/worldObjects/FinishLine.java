@@ -11,13 +11,13 @@ import edu.oswego.tiltandtumble.collisionListener.BallCollisionListener;
 import edu.oswego.tiltandtumble.levels.Level;
 
 public class FinishLine extends AbstractWorldObject
-		implements BallCollisionListener, Disposable  {
+		implements BallCollisionListener, Disposable, Audible  {
     public static final BodyType BODY_TYPE = BodyType.StaticBody;
     public static final boolean IS_SENSOR = true;
 
     private final Level level;
 
-	private final boolean playSound;
+	private boolean playSound;
 	private final Sound sound;
 
 	public FinishLine(Body body, Level level) {
@@ -37,13 +37,30 @@ public class FinishLine extends AbstractWorldObject
 	@Override
 	public void handleBeginCollision(Contact contact, Ball ball) {
 		Gdx.app.log("FinishLine", "Ball enter");
-		sound.play();
+		playSound();
 		level.win();
 		level.exit();
 	}
 
 	@Override
 	public void handleEndCollision(Contact contact, Ball ball) {
+	}
+
+	@Override
+	public void setPlaySound(boolean value) {
+		playSound = value;
+	}
+
+	@Override
+	public void playSound() {
+		if (playSound) {
+			sound.play();
+		}
+	}
+
+	@Override
+	public void endSound() {
+		sound.stop();
 	}
 
 	@Override
