@@ -35,9 +35,13 @@ public class FinishLine extends AbstractWorldObject implements BallCollisionList
 	@Override
 	public void handleBeginCollision(Contact contact, Ball ball) {
         Gdx.app.log("FinishLine", "Ball enter");
-        sound.play();
+<<<<<<< HEAD
         level.win();
         level.exit();
+=======
+        sound.play();
+        level.finish();
+>>>>>>> master
 	}
 
 	@Override
