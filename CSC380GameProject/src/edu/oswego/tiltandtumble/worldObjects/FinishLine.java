@@ -37,8 +37,8 @@ public class FinishLine extends AbstractWorldObject
 	@Override
 	public void handleBeginCollision(Contact contact, Ball ball) {
 		Gdx.app.log("FinishLine", "Ball enter");
-		playSound();
 		level.win();
+		playSound();
 		level.exit();
 	}
 
