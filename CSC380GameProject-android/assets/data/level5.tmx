@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="10" height="15" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="sci-fi-platformer-tiles-0" tilewidth="32" tileheight="32">
-  <image source="../../../../../Documents/GitHub/CSC380Game/CSC380GameProject-android/assets/data/tiles/sci-fi-platformer-tiles-0.png" width="512" height="512"/>
+  <image source="tiles/sci-fi-platformer-tiles-0.png" width="512" height="512"/>
  </tileset>
  <tileset firstgid="257" name="sci-fi-platformer-tiles-9" tilewidth="32" tileheight="32">
-  <image source="../../../../../Documents/GitHub/CSC380Game/CSC380GameProject-android/assets/data/tiles/sci-fi-platformer-tiles-9.png" width="512" height="512"/>
+  <image source="tiles/sci-fi-platformer-tiles-9.png" width="512" height="512"/>
  </tileset>
  <tileset firstgid="513" name="sci-fi-platformer-tiles-8" tilewidth="32" tileheight="32">
-  <image source="../../../../../Documents/GitHub/CSC380Game/CSC380GameProject-android/assets/data/tiles/sci-fi-platformer-tiles-8.png" width="512" height="512"/>
+  <image source="tiles/sci-fi-platformer-tiles-8.png" width="512" height="512"/>
  </tileset>
  <tileset firstgid="769" name="sci-fi-platformer-tiles-6" tilewidth="32" tileheight="32">
-  <image source="../../../../../Documents/GitHub/CSC380Game/CSC380GameProject-android/assets/data/tiles/sci-fi-platformer-tiles-6.png" width="512" height="512"/>
+  <image source="tiles/sci-fi-platformer-tiles-6.png" width="512" height="512"/>
  </tileset>
  <layer name="background" width="10" height="15">
   <data encoding="base64" compression="zlib">

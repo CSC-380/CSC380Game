@@ -49,7 +49,7 @@ public final class ScoreDialog extends Dialog {
 			total.setTime(total.getTime() + s.getTime());
 			table.row().uniformX();
 		}
-		table.add("Total:").right();
+		table.add("Total:", "header").right();
 		boolean isHighScore = false;
 		if (screen.getCurrentLevel().isFailed()) {
 			table.add(total.getFormattedTime()).center();
