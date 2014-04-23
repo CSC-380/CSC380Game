@@ -55,6 +55,10 @@
             font: small-orange,
             fontColor: white
         },
+        highlight: {
+            font: small-orange,
+            fontColor: white
+        },
         countdown: {
             font: jumbo-orange,
             fontColor: white,
