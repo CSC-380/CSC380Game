@@ -1,6 +1,7 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -15,7 +16,7 @@ import edu.oswego.tiltandtumble.worldObjects.paths.MovementStrategy;
 
 public class MovingWall extends AbstractWorldObject
 		implements MapRenderable, WorldUpdateable, Disposable,
-		BallCollisionListener, Activatable {
+		BallCollisionListener, Activatable, Audible {
 	public static final float FRICTION = 0.5f;
 	public static final float DENSITY = 5.0f;
 	public static final float RESTITUTION = 0.0f;
@@ -29,19 +30,29 @@ public class MovingWall extends AbstractWorldObject
 	private final MovementStrategy movement;
 	private final GraphicComponent graphic;
 
+	private final GraphicComponent deathGraphic;
+	private boolean death = false;
+	private boolean playSound;
+	private final Sound deathSound;
+
 	private boolean collidingWithBall = false;
 	private Ball ball;
     private final Level level;
 
 	public MovingWall(Body body, MovementStrategy movement,
-			GraphicComponent graphic, UnitScale scale, Level level) {
+			GraphicComponent graphic, GraphicComponent deathGraphic,
+			UnitScale scale, Level level) {
 		super(body);
 
 		this.scale = scale;
 		this.level = level;
 		this.graphic = graphic;
+		this.deathGraphic = deathGraphic;
 
 		this.movement = movement;
+
+		playSound = true;
+		deathSound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/popping.ogg"));
 	}
 
 	@Override
@@ -53,6 +64,12 @@ public class MovingWall extends AbstractWorldObject
 		graphic.setPosition(scale.metersToPixels(body.getPosition().x),
 				scale.metersToPixels(body.getPosition().y));
 		graphic.draw(delta, batch);
+		if (death) {
+			if (deathGraphic.isFinished()) {
+				level.exit();
+			}
+			deathGraphic.draw(delta, batch);
+		}
 	}
 
 	@Override
@@ -63,7 +80,11 @@ public class MovingWall extends AbstractWorldObject
 			if (body.getFixtureList().get(0).testPoint(ball.getBody().getPosition())) {
 				Gdx.app.log("MovingWall", "Wall SMASH Ball!");
 				level.fail();
-				level.exit();
+				ball.hide();
+				deathGraphic.setPosition(ball.getMapX(), ball.getMapY());
+				playSound();
+				deathGraphic.start();
+				death = true;
 			}
 		}
 	}
@@ -75,6 +96,8 @@ public class MovingWall extends AbstractWorldObject
 	@Override
 	public void dispose() {
 		graphic.dispose();
+		deathGraphic.dispose();
+		deathSound.dispose();
 	}
 
 	@Override
@@ -98,5 +121,22 @@ public class MovingWall extends AbstractWorldObject
 	@Override
 	public void deactivate() {
 		movement.deactivate();
+	}
+
+	@Override
+	public void setPlaySound(boolean value) {
+		playSound = value;
+	}
+
+	@Override
+	public void playSound() {
+		if (playSound) {
+			deathSound.play();
+		}
+	}
+
+	@Override
+	public void endSound() {
+		deathSound.stop();
 	}
 }

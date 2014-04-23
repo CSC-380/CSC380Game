@@ -405,9 +405,16 @@ public final class WorldPopulator implements Disposable {
 					Math.abs(speed));
 		}
 
+		TextureRegion sheet = atlas.findRegion("popped");
+		GraphicComponent deathGraphic = new AnimationGraphic.Builder(sheet, 1, 8, 1)
+				.origin(12, 12)
+				.scale(1.5f, 1.5f)
+				.build();
+
 		MovingWall wall = new MovingWall(body,
 				movement,
 				graphic,
+				deathGraphic,
 				scale,
 				level);
 		if (props.containsKey("switch")) {
@@ -429,7 +436,13 @@ public final class WorldPopulator implements Disposable {
 		// dispose after creating fixture
 		shape.dispose();
 
-		return new StaticWall(body, level);
+		TextureRegion sheet = atlas.findRegion("popped");
+		GraphicComponent deathGraphic = new AnimationGraphic.Builder(sheet, 1, 8, 1)
+				.origin(12, 12)
+				.scale(1.5f, 1.5f)
+				.build();
+
+		return new StaticWall(body, level, deathGraphic);
 	}
 
 	public PushBumper createPushBumper(MapObject obj, World world,
@@ -524,7 +537,11 @@ public final class WorldPopulator implements Disposable {
 		// dispose after creating fixture
 		shape.dispose();
 
-		return new Spike(body, level, new NullGraphic());
+		TextureRegion sheet = atlas.findRegion("deflate");
+		GraphicComponent graphic = new AnimationGraphic.Builder(sheet, 1, 8, 1)
+				.origin(12, 12)
+				.build();
+		return new Spike(body, level, graphic);
 	}
 
 	public AttractorForce createAttractorForce(MapObject obj, Level level,
