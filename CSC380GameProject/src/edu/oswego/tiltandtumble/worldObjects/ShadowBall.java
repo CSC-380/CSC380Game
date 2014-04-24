@@ -9,14 +9,13 @@ import com.badlogic.gdx.utils.Disposable;
 import edu.oswego.tiltandtumble.levels.UnitScale;
 import edu.oswego.tiltandtumble.worldObjects.graphics.GraphicComponent;
 
-public class ShadowBall extends AbstractWorldObject implements Disposable {
+public class ShadowBall implements Disposable {
 
 	private final GraphicComponent graphic;
 	private final TextureAtlas atlas;
 	private final UnitScale scale;
 	
 	public ShadowBall(GraphicComponent graphic, UnitScale scale) {
-		super(body);
 		atlas = new TextureAtlas(Gdx.files.internal("data/WorldObjects/worldobjects.pack"));
 		this.scale = scale;
 		

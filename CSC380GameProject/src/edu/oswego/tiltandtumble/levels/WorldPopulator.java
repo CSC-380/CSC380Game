@@ -42,11 +42,8 @@ import edu.oswego.tiltandtumble.worldObjects.Hole;
 import edu.oswego.tiltandtumble.worldObjects.MomentarySwitch;
 import edu.oswego.tiltandtumble.worldObjects.MovingWall;
 import edu.oswego.tiltandtumble.worldObjects.PushBumper;
-<<<<<<< HEAD
 import edu.oswego.tiltandtumble.worldObjects.ShadowBall;
-=======
 import edu.oswego.tiltandtumble.worldObjects.Spike;
->>>>>>> master
 import edu.oswego.tiltandtumble.worldObjects.StaticWall;
 import edu.oswego.tiltandtumble.worldObjects.Switch;
 import edu.oswego.tiltandtumble.worldObjects.Teleporter;
@@ -497,13 +494,13 @@ public final class WorldPopulator implements Disposable {
 		return new Ball(body, graphic, scale);
 	}
 	
-	public ShadowBall createShadow(World world, UnitScale scale){
-		Sprite sprite = atlas.createSprite("GreenOrb");
-		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-		GraphicComponent graphic = new SpriteGraphic(sprite);
-		ShadowBall balll = new ShadowBall(graphic, scale);
-		level.addWorldObject(balll);
-	}
+//	public ShadowBall createShadow(World world, UnitScale scale){
+//		Sprite sprite = atlas.createSprite("GreenOrb");
+//		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+//		GraphicComponent graphic = new SpriteGraphic(sprite);
+//		ShadowBall balll = new ShadowBall(graphic, scale);
+//		//level.addWorldObject(balll);
+//	}
 
 	public FinishLine createFinishLine(MapObject obj, Level level,
 			World world, UnitScale scale) {
