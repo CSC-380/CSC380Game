@@ -42,7 +42,14 @@ public class ChallengeScreen extends AbstractScreen  {
 		challenge.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //game.showLevelScreen();
+
+            	
+            	
+            	
+            	
+            	
+            	
+            	
             	System.out.println(" ");
             	//Cluster cluster = Cluster.builder().addContactPoint("localhost").build();
             	Cluster cluster = Cluster.builder().addContactPoint("129.3.20.26").withPort(2715).build();
