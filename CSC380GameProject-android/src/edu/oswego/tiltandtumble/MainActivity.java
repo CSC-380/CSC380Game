@@ -15,7 +15,7 @@ public class MainActivity extends AndroidApplication {
 //        config.useGL20 = false;
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
+        //comit check
         initialize(new TiltAndTumble(), config);
     }
 }
