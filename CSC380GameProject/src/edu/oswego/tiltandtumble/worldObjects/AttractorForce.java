@@ -15,7 +15,7 @@ import edu.oswego.tiltandtumble.worldObjects.graphics.GraphicComponent;
 
 public class AttractorForce extends AbstractWorldObject
 		implements WorldUpdateable, BallCollisionListener, MapRenderable,
-		Disposable, Audible {
+		Disposable, Audible, Activatable {
 	public static final BodyType BODY_TYPE = BodyType.StaticBody;
 	public static final boolean IS_SENSOR = true;
 
@@ -27,6 +27,7 @@ public class AttractorForce extends AbstractWorldObject
 	private final GraphicComponent graphic;
 	private final UnitScale scale;
 
+	private boolean active = true;
 	private boolean collidingWithBall = false;
 	private Ball ball;
 
@@ -84,6 +85,7 @@ public class AttractorForce extends AbstractWorldObject
 
 	@Override
 	public void handleBeginCollision(Contact contact, Ball ball) {
+		if (!active) return;
 		collidingWithBall = true;
 		this.ball = ball;
 		graphic.start();
@@ -123,8 +125,24 @@ public class AttractorForce extends AbstractWorldObject
 	}
 
 	@Override
+	public void endSound() {
+		sound.stop();
+	}
+
+	@Override
 	public void dispose() {
 		sound.dispose();
 		graphic.dispose();
+	}
+
+	@Override
+	public void activate() {
+		active = true;
+	}
+
+	@Override
+	public void deactivate() {
+		collidingWithBall = false;
+		active = false;
 	}
 }

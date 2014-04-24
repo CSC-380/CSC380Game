@@ -5,20 +5,24 @@ import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.utils.Disposable;
 
 import edu.oswego.tiltandtumble.collisionListener.BallCollisionListener;
+import edu.oswego.tiltandtumble.worldObjects.graphics.GraphicComponent;
 
 public class TimedSwitch extends AbstractWorldObject implements
-		BallCollisionListener, WorldUpdateable, Switch, Audible, Disposable {
+		BallCollisionListener, WorldUpdateable, Switch, Audible, Disposable,
+		MapRenderable {
 	public static final BodyType BODY_TYPE = BodyType.StaticBody;
 	public static final boolean IS_SENSOR = true;
 	public static final float DEFAULT_INTERVAL = 3;
 
 	private State currentState;
+	private final State startState;
 	private final Collection<Activatable> activatables;
 	private final float interval;
 	private float elapsed;
@@ -26,11 +30,24 @@ public class TimedSwitch extends AbstractWorldObject implements
 	private boolean playSound;
 	private final Sound sound;
 
-	public TimedSwitch(Body body, float interval) {
+	private final GraphicComponent graphicOn;
+	private final GraphicComponent graphicOff;
+
+	public TimedSwitch(Body body, float interval, boolean startOn,
+			GraphicComponent graphicOn, GraphicComponent graphicOff) {
 		super(body);
 		this.interval = interval;
 		activatables = new LinkedList<Activatable>();
-		currentState = State.OFF;
+		if (startOn) {
+			currentState = State.ON;
+		} else {
+			currentState = State.OFF;
+		}
+
+		this.graphicOn = graphicOn;
+		this.graphicOff = graphicOff;
+
+		startState = currentState;
 
 		playSound = true;
 		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/switch.ogg"));
@@ -38,12 +55,17 @@ public class TimedSwitch extends AbstractWorldObject implements
 
 	@Override
 	public void addActivatable(Activatable a) {
+		if (startState == State.ON) {
+			a.activate();
+		} else {
+			a.deactivate();
+		}
 		activatables.add(a);
 	}
 
 	@Override
 	public void handleBeginCollision(Contact contact, Ball ball) {
-		currentState.on(this);
+		currentState.start(this);
 	}
 
 	@Override
@@ -51,9 +73,17 @@ public class TimedSwitch extends AbstractWorldObject implements
 	}
 
 	@Override
+	public void drawBeforeBall(float delta, SpriteBatch batch) {
+		currentState.draw(this, delta, batch);
+	}
+
+	@Override
+	public void drawAfterBall(float delta, SpriteBatch batch) {
+	}
+
+	@Override
 	public void update(float delta) {
-		elapsed += delta;
-		currentState.off(this);
+		currentState.update(this, delta);
 	}
 
 	@Override
@@ -69,8 +99,15 @@ public class TimedSwitch extends AbstractWorldObject implements
 	}
 
 	@Override
+	public void endSound() {
+		sound.stop();
+	}
+
+	@Override
 	public void dispose() {
 		sound.dispose();
+		graphicOff.dispose();
+		graphicOn.dispose();
 	}
 
 	private void changeState(State state) {
@@ -78,30 +115,70 @@ public class TimedSwitch extends AbstractWorldObject implements
 	}
 
 	private static enum State {
+		TIMER {
+			@Override
+			public void update(TimedSwitch s, float delta) {
+				s.elapsed += delta;
+				if (s.elapsed >= s.interval) {
+					s.changeState(s.startState);
+					s.elapsed = 0;
+					s.startState.toggle(s);
+				}
+			}
+
+			@Override
+			public void draw(TimedSwitch s, float delta, SpriteBatch batch) {
+				if (s.startState == ON) {
+					s.graphicOff.draw(delta, batch);
+				} else {
+					s.graphicOn.draw(delta, batch);
+				}
+			}
+		},
 		ON {
 			@Override
-			public void off(TimedSwitch s) {
-				if (s.elapsed >= s.interval) {
-					s.changeState(OFF);
-					for (Activatable a : s.activatables) {
-						a.deactivate();
-					}
+			public void start(TimedSwitch s) {
+				s.playSound();
+				s.changeState(TIMER);
+				toggle(s);
+			}
+
+			@Override
+			public void toggle(TimedSwitch s) {
+				for (Activatable a : s.activatables) {
+					a.deactivate();
 				}
+			}
+
+			@Override
+			public void draw(TimedSwitch s, float delta, SpriteBatch batch) {
+				s.graphicOn.draw(delta, batch);
 			}
 		},
 		OFF {
 			@Override
-			public void on(TimedSwitch s) {
-				s.elapsed = 0;
+			public void start(TimedSwitch s) {
 				s.playSound();
-				s.changeState(ON);
+				s.changeState(TIMER);
+				toggle(s);
+			}
+
+			@Override
+			public void toggle(TimedSwitch s) {
 				for (Activatable a : s.activatables) {
 					a.activate();
 				}
 			}
+
+			@Override
+			public void draw(TimedSwitch s, float delta, SpriteBatch batch) {
+				s.graphicOff.draw(delta, batch);
+			}
 		};
 
-		public void on(TimedSwitch s) {}
-		public void off(TimedSwitch s) {}
+		public void start(TimedSwitch s) {}
+		public void update(TimedSwitch s, float delta) {}
+		protected void toggle(TimedSwitch s) {}
+		public void draw(TimedSwitch s, float delta, SpriteBatch batch) {}
 	}
 }

@@ -44,7 +44,7 @@ public class LevelScreen extends AbstractScreen {
 				game.showGameScreen(2);
 			}
 		});
-		
+
 		window.row().padTop(10).fillX();
 		Button play3 = new TextButton("Click to Play Level Three!", skin);
 		window.add(play3);
@@ -54,6 +54,7 @@ public class LevelScreen extends AbstractScreen {
 				game.showGameScreen(3);
 			}
 		});
+
 		window.row().padTop(50).bottom().fillX();
 		Button back = new TextButton("Go Back", skin);
 		window.add(back);

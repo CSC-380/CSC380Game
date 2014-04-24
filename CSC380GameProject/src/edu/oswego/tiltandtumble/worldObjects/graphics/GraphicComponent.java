@@ -9,4 +9,5 @@ public interface GraphicComponent extends Disposable {
 	public void setRotation(float degrees);
 	public void setSize(float width, float height);
 	public void draw(float delta, SpriteBatch batch);
+	public boolean isFinished();
 }

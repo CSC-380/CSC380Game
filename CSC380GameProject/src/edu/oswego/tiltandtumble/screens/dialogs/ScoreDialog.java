@@ -35,9 +35,9 @@ public final class ScoreDialog extends Dialog {
 			.colspan(3).center();
 		table.row().padTop(10).uniformX();
 
-		table.add("Level").left();
-		table.add("Time").center();
-		table.add("Score").right();
+		table.add("Level", "header").left();
+		table.add("Time", "header").center();
+		table.add("Score", "header").right();
 		table.row().padBottom(5).uniformX();
 		Score total = new Score(0, 0);
 		for (int i = 0; i < scores.size(); ++i) {
@@ -49,23 +49,23 @@ public final class ScoreDialog extends Dialog {
 			total.setTime(total.getTime() + s.getTime());
 			table.row().uniformX();
 		}
-		table.add("Total:").right();
+		table.add("Total:", "header").right();
 		boolean isHighScore = false;
 		if (screen.getCurrentLevel().isFailed()) {
 			table.add(total.getFormattedTime()).center();
 			table.add("0").right();
 			table.row().padTop(10).uniformX();
-			table.add("You Failed!").colspan(3).center();
+			table.add("You Failed!", "highlight").colspan(3).center();
 		} else {
 			table.add(total.getFormattedTime()).center();
 			table.add(String.valueOf(total.getPoints())).right();
 			if (!screen.hasMoreLevels()) {
 				table.row().padTop(10);
-				table.add("Game Over!").colspan(3).center();
+				table.add("Game Over!", "highlight").colspan(3).center();
 				if (game.getHighScores().isHighScore(total)) {
 					isHighScore = true;
 					table.row();
-					table.add("New High Score!").colspan(3).center();
+					table.add("New High Score!", "highlight").colspan(3).center();
 					table.row();
 					table.add("Initials:");
 					initials = new TextField("", skin);

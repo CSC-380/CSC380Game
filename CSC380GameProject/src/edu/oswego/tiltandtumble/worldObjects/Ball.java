@@ -19,6 +19,7 @@ public class Ball extends AbstractWorldObject implements Disposable, Audible {
 	public static final float LINEAR_DAMPENING = 0.1f;
 
 	private final GraphicComponent graphic;
+	private boolean visible = true;
 
 	private final UnitScale scale;
 	private boolean playSound;
@@ -40,8 +41,10 @@ public class Ball extends AbstractWorldObject implements Disposable, Audible {
 	}
 
 	public void draw(float delta, SpriteBatch batch) {
-		graphic.setPosition(getMapX(), getMapY());
-		graphic.draw(delta, batch);
+		if (visible) {
+			graphic.setPosition(getMapX(), getMapY());
+			graphic.draw(delta, batch);
+		}
 	}
 
 	public float getRadius() {
@@ -55,6 +58,14 @@ public class Ball extends AbstractWorldObject implements Disposable, Audible {
 
 	public float getMapY() {
 		return scale.metersToPixels(body.getPosition().y);
+	}
+
+	public void hide() {
+		visible = false;
+	}
+
+	public void show() {
+		visible = true;
 	}
 
 	@Override
@@ -73,5 +84,10 @@ public class Ball extends AbstractWorldObject implements Disposable, Audible {
 		if (playSound) {
 			sound.play();
 		}
+	}
+
+	@Override
+	public void endSound() {
+		sound.stop();
 	}
 }

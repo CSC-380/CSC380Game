@@ -42,7 +42,11 @@ import edu.oswego.tiltandtumble.worldObjects.Hole;
 import edu.oswego.tiltandtumble.worldObjects.MomentarySwitch;
 import edu.oswego.tiltandtumble.worldObjects.MovingWall;
 import edu.oswego.tiltandtumble.worldObjects.PushBumper;
+<<<<<<< HEAD
 import edu.oswego.tiltandtumble.worldObjects.ShadowBall;
+=======
+import edu.oswego.tiltandtumble.worldObjects.Spike;
+>>>>>>> master
 import edu.oswego.tiltandtumble.worldObjects.StaticWall;
 import edu.oswego.tiltandtumble.worldObjects.Switch;
 import edu.oswego.tiltandtumble.worldObjects.Teleporter;
@@ -94,6 +98,8 @@ public final class WorldPopulator implements Disposable {
 					level.addWorldObject(createPushBumper(obj, world, scale));
 				} else if (obj.getName().equals("FinishLine")) {
 					level.addWorldObject(createFinishLine(obj, level, world, scale));
+				} else if (obj.getName().equals("Spike")) {
+					level.addWorldObject(createSpike(obj, level, world, scale));
 				} else if (obj.getName().equals("Hole")) {
 					level.addWorldObject(createHole(obj, level, world, scale));
 				} else if (obj.getName().equals("Teleporter")) {
@@ -377,7 +383,13 @@ public final class WorldPopulator implements Disposable {
 		float speed = getFloatProperty(obj, "speed", MovingWall.DEFAULT_SPEED);
 
 		Sprite sprite = atlas.createSprite(props.get("sprite", MovingWall.DEFAULT_SPRITE, String.class));
-		sprite.setSize(dimensions.x, dimensions.y);
+		float degrees = getFloatProperty(obj, "rotate", 0f);
+		sprite.setRotation(degrees);
+		// TODO: i would like to scale the graphic to the shape but i can't
+		//       get it to work correctly. the size seems to get set based on
+		//       the unrotated image.
+		//dimensions.rotate(degrees);
+		//sprite.setSize(dimensions.x, dimensions.y);
 		GraphicComponent graphic = new SpriteGraphic(sprite);
 
 		MovementStrategy movement;
@@ -397,9 +409,16 @@ public final class WorldPopulator implements Disposable {
 					Math.abs(speed));
 		}
 
+		TextureRegion sheet = atlas.findRegion("popped");
+		GraphicComponent deathGraphic = new AnimationGraphic.Builder(sheet, 1, 8, 1)
+				.origin(12, 12)
+				.scale(1.5f, 1.5f)
+				.build();
+
 		MovingWall wall = new MovingWall(body,
 				movement,
 				graphic,
+				deathGraphic,
 				scale,
 				level);
 		if (props.containsKey("switch")) {
@@ -421,7 +440,13 @@ public final class WorldPopulator implements Disposable {
 		// dispose after creating fixture
 		shape.dispose();
 
-		return new StaticWall(body, level);
+		TextureRegion sheet = atlas.findRegion("popped");
+		GraphicComponent deathGraphic = new AnimationGraphic.Builder(sheet, 1, 8, 1)
+				.origin(12, 12)
+				.scale(1.5f, 1.5f)
+				.build();
+
+		return new StaticWall(body, level, deathGraphic);
 	}
 
 	public PushBumper createPushBumper(MapObject obj, World world,
@@ -504,7 +529,31 @@ public final class WorldPopulator implements Disposable {
 		// dispose after creating fixture
 		shape.dispose();
 
-		return new Hole(body, level);
+		TextureRegion sheet = atlas.findRegion("ballfall");
+		GraphicComponent graphic = new AnimationGraphic.Builder(sheet, 1, 8, 1)
+				.position(scale.metersToPixels(body.getPosition().x),
+						scale.metersToPixels(body.getPosition().y))
+				.origin(16, 16)
+				.build();
+
+		return new Hole(body, level, graphic);
+	}
+
+	public Spike createSpike(MapObject obj, Level level, World world,
+			UnitScale scale) {
+		Body body = world.createBody(bodyDef.reset().type(Spike.BODY_TYPE)
+				.build());
+		Shape shape = createShape(obj, scale, body);
+		body.createFixture(fixtureDef.reset().shape(shape).build());
+
+		// dispose after creating fixture
+		shape.dispose();
+
+		TextureRegion sheet = atlas.findRegion("deflate");
+		GraphicComponent graphic = new AnimationGraphic.Builder(sheet, 1, 8, 1)
+				.origin(12, 12)
+				.build();
+		return new Spike(body, level, graphic);
 	}
 
 	public AttractorForce createAttractorForce(MapObject obj, Level level,
@@ -549,7 +598,28 @@ public final class WorldPopulator implements Disposable {
 
 		MapProperties props = obj.getProperties();
 
-		ToggleSwitch swtch = new ToggleSwitch(body);
+		GraphicComponent graphicOn;
+		if (props.containsKey("sprite-on")) {
+			Sprite sprite = atlas.createSprite(props.get("sprite-on", String.class));
+			graphicOn = new SpriteGraphic(sprite);
+		} else {
+			graphicOn = new NullGraphic();
+		}
+		GraphicComponent graphicOff;
+		if (props.containsKey("sprite-off")) {
+			Sprite sprite = atlas.createSprite(props.get("sprite-off", String.class));
+			graphicOff = new SpriteGraphic(sprite);
+		} else {
+			graphicOff = new NullGraphic();
+		}
+		graphicOn.setPosition(scale.metersToPixels(body.getPosition().x),
+				scale.metersToPixels(body.getPosition().y));
+		graphicOff.setPosition(scale.metersToPixels(body.getPosition().x),
+				scale.metersToPixels(body.getPosition().y));
+
+		ToggleSwitch swtch = new ToggleSwitch(body,
+				props.get("startOn", false, Boolean.class),
+				graphicOn, graphicOff);
 		switchHelper.add(props.get("id", String.class), swtch);
 		return swtch;
 	}
@@ -567,8 +637,29 @@ public final class WorldPopulator implements Disposable {
 
 		MapProperties props = obj.getProperties();
 
+		GraphicComponent graphicOn;
+		if (props.containsKey("sprite-on")) {
+			Sprite sprite = atlas.createSprite(props.get("sprite-on", String.class));
+			graphicOn = new SpriteGraphic(sprite);
+		} else {
+			graphicOn = new NullGraphic();
+		}
+		GraphicComponent graphicOff;
+		if (props.containsKey("sprite-off")) {
+			Sprite sprite = atlas.createSprite(props.get("sprite-off", String.class));
+			graphicOff = new SpriteGraphic(sprite);
+		} else {
+			graphicOff = new NullGraphic();
+		}
+		graphicOn.setPosition(scale.metersToPixels(body.getPosition().x),
+				scale.metersToPixels(body.getPosition().y));
+		graphicOff.setPosition(scale.metersToPixels(body.getPosition().x),
+				scale.metersToPixels(body.getPosition().y));
+
 		TimedSwitch swtch = new TimedSwitch(body,
-				getFloatProperty(obj, "density", TimedSwitch.DEFAULT_INTERVAL));
+				getFloatProperty(obj, "interval", TimedSwitch.DEFAULT_INTERVAL),
+				props.get("startOn", false, Boolean.class),
+				graphicOn, graphicOff);
 		switchHelper.add(props.get("id", String.class), swtch);
 		return swtch;
 	}
@@ -586,7 +677,28 @@ public final class WorldPopulator implements Disposable {
 
 		MapProperties props = obj.getProperties();
 
-		MomentarySwitch swtch = new MomentarySwitch(body);
+		GraphicComponent graphicOn;
+		if (props.containsKey("sprite-on")) {
+			Sprite sprite = atlas.createSprite(props.get("sprite-on", String.class));
+			graphicOn = new SpriteGraphic(sprite);
+		} else {
+			graphicOn = new NullGraphic();
+		}
+		GraphicComponent graphicOff;
+		if (props.containsKey("sprite-off")) {
+			Sprite sprite = atlas.createSprite(props.get("sprite-off", String.class));
+			graphicOff = new SpriteGraphic(sprite);
+		} else {
+			graphicOff = new NullGraphic();
+		}
+		graphicOn.setPosition(scale.metersToPixels(body.getPosition().x),
+				scale.metersToPixels(body.getPosition().y));
+		graphicOff.setPosition(scale.metersToPixels(body.getPosition().x),
+				scale.metersToPixels(body.getPosition().y));
+
+		MomentarySwitch swtch = new MomentarySwitch(body,
+				props.get("startOn", false, Boolean.class),
+				graphicOn, graphicOff);
 		switchHelper.add(props.get("id", String.class), swtch);
 		return swtch;
 	}

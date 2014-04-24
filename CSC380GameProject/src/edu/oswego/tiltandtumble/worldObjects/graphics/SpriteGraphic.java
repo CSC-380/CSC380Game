@@ -35,4 +35,9 @@ public class SpriteGraphic implements GraphicComponent {
 
 	@Override
 	public void dispose() { }
+
+	@Override
+	public boolean isFinished() {
+		return true;
+	}
 }

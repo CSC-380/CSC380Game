@@ -43,4 +43,9 @@ public class ParticleEffectGraphic implements GraphicComponent {
 	public void dispose() {
 		effect.dispose();
 	}
+
+	@Override
+	public boolean isFinished() {
+		return effect.isComplete();
+	}
 }

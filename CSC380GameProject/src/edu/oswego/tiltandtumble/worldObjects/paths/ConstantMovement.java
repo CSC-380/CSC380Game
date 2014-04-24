@@ -13,7 +13,6 @@ public class ConstantMovement implements MovementStrategy {
 	public ConstantMovement(PathPointTraverser nodes, float speed) {
 		this.nodes = nodes;
 		this.speed = speed;
-		nodes.next();
 	}
 
 	@Override

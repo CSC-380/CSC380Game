@@ -145,4 +145,9 @@ public class AnimationGraphic implements GraphicComponent {
 
 	@Override
 	public void dispose() { }
+
+	@Override
+	public boolean isFinished() {
+		return ani.isAnimationFinished(aniTime);
+	}
 }
