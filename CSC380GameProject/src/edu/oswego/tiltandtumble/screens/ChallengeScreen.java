@@ -43,6 +43,18 @@ public class ChallengeScreen extends AbstractScreen  {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
 
+            	
+            	
+            	
+            	
+            	
+            	
+            	
+            	
+            	
+            	
+            	
+            	
 
             	System.out.println(" ");
             	//Cluster cluster = Cluster.builder().addContactPoint("localhost").build();
