@@ -16,6 +16,7 @@ public class MainActivity extends AndroidApplication {
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         //comit check
+        ///asd;fjaslf
         initialize(new TiltAndTumble(), config);
     }
 }
