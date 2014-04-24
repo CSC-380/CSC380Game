@@ -28,10 +28,10 @@ public class ShadowBall implements Disposable {
 		graphic.draw(delta, batch);
 	}
 
-	public float getRadius() {
-		return scale.metersToPixels(
-				body.getFixtureList().get(0).getShape().getRadius());
-	}
+//	public float getRadius() {
+//		return scale.metersToPixels(
+//	//			body.getFixtureList().get(0).getShape().getRadius());
+//	}
 	@Override
 	public void dispose() {
 		graphic.dispose();

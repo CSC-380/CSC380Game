@@ -45,7 +45,7 @@ public class ShadowBallController {
 			}
 			@Override
 			public void update(ShadowBallController b, float delta) {
-				b.ball.draw(delta, 1, 2, batch);
+			//	b.ball.draw(delta, 1, 2, batch);
 			}
 		};
 
