@@ -205,6 +205,7 @@ public class Level implements Disposable, Audible {
 			m.drawBeforeBall(delta, batch);
 		}
 		ball.draw(delta, batch);
+		shadowball.draw(delta, batch);
 		for (MapRenderable m : renderableObjects) {
 			m.drawAfterBall(delta, batch);
 		}

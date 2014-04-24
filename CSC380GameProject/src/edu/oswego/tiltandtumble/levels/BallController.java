@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
@@ -23,15 +24,16 @@ public class BallController extends ClickListener {
 	private final Map<MyKeys, Boolean> keys = new EnumMap<MyKeys, Boolean>(MyKeys.class);
 	private final boolean useAccelerometer;
 	private Ball ball;
-
+	private boolean challengeMode;
 	private float tiltX = 0;
 	private float tiltY = 0;
 	private State currentState;
 	private float keyX = 0;
 	private float keyY = 0;
 
-	public BallController(boolean useAccelerometer) {
+	public BallController(boolean useAccelerometer, boolean challenge) {
 		this.useAccelerometer = useAccelerometer;
+		challengeMode = challenge;
 		keys.put(MyKeys.LEFT, false);
 		keys.put(MyKeys.RIGHT, false);
 		keys.put(MyKeys.UP, false);
@@ -250,6 +252,10 @@ public class BallController extends ClickListener {
 				}
 				if (b.ball != null) {
 					b.ball.applyLinearImpulse(forceX, forceY);
+					if(b.challengeMode){
+					//TODO this is where position needs to be gotten and sent to server
+						Vector3 pos = new Vector3(b.ball.getMapX(), b.ball.getMapY(), 0);
+					}
 				}
 			}
 		};
