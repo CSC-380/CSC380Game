@@ -1,6 +1,7 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -41,7 +42,7 @@ public class MovingWall extends AbstractWorldObject
 
 	public MovingWall(Body body, MovementStrategy movement,
 			GraphicComponent graphic, GraphicComponent deathGraphic,
-			UnitScale scale, Level level) {
+			UnitScale scale, Level level, AssetManager assetManager) {
 		super(body);
 
 		this.scale = scale;
@@ -52,7 +53,12 @@ public class MovingWall extends AbstractWorldObject
 		this.movement = movement;
 
 		playSound = true;
-		deathSound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/popping.ogg"));
+		String soundFile = "data/soundfx/popping.ogg";
+		if (!assetManager.isLoaded(soundFile)) {
+			assetManager.load(soundFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		deathSound = assetManager.get(soundFile, Sound.class);
 	}
 
 	@Override
@@ -97,7 +103,6 @@ public class MovingWall extends AbstractWorldObject
 	public void dispose() {
 		graphic.dispose();
 		deathGraphic.dispose();
-		deathSound.dispose();
 	}
 
 	@Override

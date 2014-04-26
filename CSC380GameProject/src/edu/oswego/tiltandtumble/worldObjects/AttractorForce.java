@@ -1,6 +1,6 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -35,7 +35,7 @@ public class AttractorForce extends AbstractWorldObject
 	private final Sound sound;
 
 	public AttractorForce(Body body, float speed, float radius,
-			GraphicComponent graphic, UnitScale scale) {
+			GraphicComponent graphic, UnitScale scale, AssetManager assetManager) {
 		super(body);
 		this.speed = speed;
 		this.radius = radius;
@@ -43,7 +43,12 @@ public class AttractorForce extends AbstractWorldObject
 		this.scale = scale;
 
 		playSound = true;
-		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/attractor.ogg"));
+		String soundFile = "data/soundfx/attractor.ogg";
+		if (!assetManager.isLoaded(soundFile)) {
+			assetManager.load(soundFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		sound = assetManager.get(soundFile, Sound.class);
 	}
 
 	@Override
@@ -131,7 +136,6 @@ public class AttractorForce extends AbstractWorldObject
 
 	@Override
 	public void dispose() {
-		sound.dispose();
 		graphic.dispose();
 	}
 

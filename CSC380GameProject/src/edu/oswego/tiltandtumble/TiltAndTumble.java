@@ -3,12 +3,12 @@ package edu.oswego.tiltandtumble;
 import java.util.Stack;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.SkinLoader;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
@@ -36,6 +36,7 @@ public class TiltAndTumble extends Game {
 	private LevelScreen levelScreen;
 	private GameScreen gameScreen;
 
+	private AssetManager assetManager;
 	private Skin skin;
 	private Stage stage;
 	private BitmapFont font;
@@ -50,6 +51,8 @@ public class TiltAndTumble extends Game {
 	@Override
 	public void create() {
 		Texture.setEnforcePotImages(true);
+
+		assetManager = new AssetManager();
 
 		settings = new Settings();
 
@@ -71,15 +74,17 @@ public class TiltAndTumble extends Game {
 		stage = new Stage(width, height, true, batch);
 
 		font = new BitmapFont();
-		skin = new Skin();
 		loadSkin();
 		scores = HighScores.load();
 		showMainScreen();
 	}
 
 	private void loadSkin() {
-		skin.addRegions(new TextureAtlas(Gdx.files.internal("data/ui/tiltandtumble.pack")));
-		skin.load(Gdx.files.internal("data/ui/skin.json"));
+		assetManager.load("data/ui/skin.json", Skin.class,
+				new SkinLoader.SkinParameter("data/ui/tiltandtumble.pack"));
+		assetManager.finishLoading();
+
+		skin = assetManager.get("data/ui/skin.json", Skin.class);
 	}
 
 	public void showMainScreen() {
@@ -145,6 +150,10 @@ public class TiltAndTumble extends Game {
 		setScreen(screenStack.pop());
 	}
 
+	public AssetManager getAssetManager() {
+		return assetManager;
+	}
+
 	public Skin getSkin() {
 		return skin;
 	}
@@ -191,7 +200,6 @@ public class TiltAndTumble extends Game {
 			highScoresScreen.dispose();
 		}
 		if (settingsScreen != null) {
-
 			settingsScreen.dispose();
 		}
 		if (levelScreen != null) {
@@ -203,6 +211,6 @@ public class TiltAndTumble extends Game {
 		stage.dispose();
 		batch.dispose();
 		font.dispose();
-		skin.dispose();
+		assetManager.dispose();
 	}
 }

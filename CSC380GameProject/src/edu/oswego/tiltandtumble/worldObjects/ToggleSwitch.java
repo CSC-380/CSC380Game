@@ -3,7 +3,7 @@ package edu.oswego.tiltandtumble.worldObjects;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -31,7 +31,7 @@ public class ToggleSwitch extends AbstractWorldObject
 	private final GraphicComponent graphicOff;
 
 	public ToggleSwitch(Body body, boolean startOn, GraphicComponent graphicOn,
-			GraphicComponent graphicOff) {
+			GraphicComponent graphicOff, AssetManager assetManager) {
 		super(body);
 		activatables = new LinkedList<Activatable>();
 		if (startOn) {
@@ -44,8 +44,18 @@ public class ToggleSwitch extends AbstractWorldObject
 		this.graphicOff = graphicOff;
 
 		playSound = true;
-		offsound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/switch-off.ogg"));
-		onsound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/switch-on.ogg"));
+		String offsoundFile = "data/soundfx/switch-off.ogg";
+		if (!assetManager.isLoaded(offsoundFile)) {
+			assetManager.load(offsoundFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		offsound = assetManager.get(offsoundFile, Sound.class);
+		String onsoundFile = "data/soundfx/switch-on.ogg";
+		if (!assetManager.isLoaded(onsoundFile)) {
+			assetManager.load(onsoundFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		onsound = assetManager.get(onsoundFile, Sound.class);
 	}
 
 	@Override
@@ -96,8 +106,6 @@ public class ToggleSwitch extends AbstractWorldObject
 
 	@Override
 	public void dispose() {
-		offsound.dispose();
-		onsound.dispose();
 		graphicOff.dispose();
 		graphicOn.dispose();
 	}

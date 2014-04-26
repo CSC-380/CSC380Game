@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -67,14 +68,18 @@ public final class WorldPopulator implements Disposable {
 	private final BodyDefBuilder bodyDef = new BodyDefBuilder();
 	private final FixtureDefBuilder fixtureDef = new FixtureDefBuilder();
 	private final TextureAtlas atlas;
+	private final AssetManager assetManager;
 
-	public WorldPopulator() {
-		atlas = new TextureAtlas(Gdx.files.internal("data/WorldObjects/worldobjects.pack"));
+	public WorldPopulator(AssetManager assetManager) {
+		this.assetManager = assetManager;
+		assetManager.load("data/WorldObjects/worldobjects.pack", TextureAtlas.class);
+		assetManager.finishLoading();
+		atlas = assetManager.get("data/WorldObjects/worldobjects.pack", TextureAtlas.class);
 	}
 
 	@Override
 	public void dispose() {
-		atlas.dispose();
+		assetManager.unload("data/WorldObjects/worldobjects.pack");
 	}
 
 	public Ball populateWorldFromMap(Level level, TiledMap map, World world,
@@ -153,7 +158,8 @@ public final class WorldPopulator implements Disposable {
 				body,
 				Boolean.valueOf(props.get("reset velocity", "true", String.class)),
 				level.getBallController(),
-				effect);
+				effect,
+				assetManager);
 		meshHelper.add(
 				props.get("id", String.class),
 				target);
@@ -224,7 +230,8 @@ public final class WorldPopulator implements Disposable {
 				level.getBallController(),
 				effect,
 				getFloatProperty(obj, "wait time", Teleporter.WAIT_TIME),
-				animation);
+				animation,
+				assetManager);
 		meshHelper.add(
 				props.get("id", String.class),
 				teleporter, selector,
@@ -370,7 +377,7 @@ public final class WorldPopulator implements Disposable {
 				.density(getFloatProperty(obj, "density", MovingWall.DENSITY))
 				.restitution(getFloatProperty(obj, "restitution", MovingWall.RESTITUTION))
 				.build());
-		Vector2 dimensions = getDimensions(obj);
+		//Vector2 dimensions = getDimensions(obj);
 		// dispose after creating fixture
 		shape.dispose();
 
@@ -416,7 +423,8 @@ public final class WorldPopulator implements Disposable {
 				graphic,
 				deathGraphic,
 				scale,
-				level);
+				level,
+				assetManager);
 		if (props.containsKey("switch")) {
 			switchHelper.add(wall, props.get("switch", String.class));
 		}
@@ -442,7 +450,7 @@ public final class WorldPopulator implements Disposable {
 				.scale(1.5f, 1.5f)
 				.build();
 
-		return new StaticWall(body, level, deathGraphic);
+		return new StaticWall(body, level, deathGraphic, assetManager);
 	}
 
 	public PushBumper createPushBumper(MapObject obj, World world,
@@ -459,7 +467,8 @@ public final class WorldPopulator implements Disposable {
 		shape.dispose();
 
 		return new PushBumper(body,
-				getFloatProperty(obj, "speed", PushBumper.DEFAULT_SPEED));
+				getFloatProperty(obj, "speed", PushBumper.DEFAULT_SPEED),
+				assetManager);
 	}
 
 	public Ball createBall(MapObject obj, World world, UnitScale scale) {
@@ -490,7 +499,7 @@ public final class WorldPopulator implements Disposable {
 		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
 		GraphicComponent graphic = new SpriteGraphic(sprite);
 
-		return new Ball(body, graphic, scale);
+		return new Ball(body, graphic, scale, assetManager);
 	}
 
 	public FinishLine createFinishLine(MapObject obj, Level level,
@@ -503,7 +512,7 @@ public final class WorldPopulator implements Disposable {
 		// dispose after creating fixture
 		shape.dispose();
 
-		return new FinishLine(body, level);
+		return new FinishLine(body, level, assetManager);
 	}
 
 	public Hole createHole(MapObject obj, Level level, World world,
@@ -524,7 +533,7 @@ public final class WorldPopulator implements Disposable {
 				.origin(16, 16)
 				.build();
 
-		return new Hole(body, level, graphic);
+		return new Hole(body, level, graphic, assetManager);
 	}
 
 	public Spike createSpike(MapObject obj, Level level, World world,
@@ -541,7 +550,7 @@ public final class WorldPopulator implements Disposable {
 		GraphicComponent graphic = new AnimationGraphic.Builder(sheet, 1, 8, 1)
 				.origin(12, 12)
 				.build();
-		return new Spike(body, level, graphic);
+		return new Spike(body, level, graphic, assetManager);
 	}
 
 	public AttractorForce createAttractorForce(MapObject obj, Level level,
@@ -570,7 +579,8 @@ public final class WorldPopulator implements Disposable {
 				getFloatProperty(obj, "speed", AttractorForce.DEFAULT_SPEED),
 				radius,
 				graphic,
-				scale);
+				scale,
+				assetManager);
 	}
 
 	public ToggleSwitch createToggleSwitch(MapObject obj, World world,
@@ -607,7 +617,8 @@ public final class WorldPopulator implements Disposable {
 
 		ToggleSwitch swtch = new ToggleSwitch(body,
 				props.get("startOn", false, Boolean.class),
-				graphicOn, graphicOff);
+				graphicOn, graphicOff,
+				assetManager);
 		switchHelper.add(props.get("id", String.class), swtch);
 		return swtch;
 	}
@@ -647,7 +658,8 @@ public final class WorldPopulator implements Disposable {
 		TimedSwitch swtch = new TimedSwitch(body,
 				getFloatProperty(obj, "interval", TimedSwitch.DEFAULT_INTERVAL),
 				props.get("startOn", false, Boolean.class),
-				graphicOn, graphicOff);
+				graphicOn, graphicOff,
+				assetManager);
 		switchHelper.add(props.get("id", String.class), swtch);
 		return swtch;
 	}
@@ -686,7 +698,8 @@ public final class WorldPopulator implements Disposable {
 
 		MomentarySwitch swtch = new MomentarySwitch(body,
 				props.get("startOn", false, Boolean.class),
-				graphicOn, graphicOff);
+				graphicOn, graphicOff,
+				assetManager);
 		switchHelper.add(props.get("id", String.class), swtch);
 		return swtch;
 	}

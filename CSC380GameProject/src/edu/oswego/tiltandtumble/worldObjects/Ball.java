@@ -1,6 +1,6 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -25,14 +25,19 @@ public class Ball extends AbstractWorldObject implements Disposable, Audible {
 	private boolean playSound;
 	private final Sound sound;
 
-	public Ball(Body body, GraphicComponent graphic, UnitScale scale) {
+	public Ball(Body body, GraphicComponent graphic, UnitScale scale, AssetManager assetManager) {
 		super(body);
 		this.scale = scale;
 
 		this.graphic = graphic;
 
 		playSound = true;
-		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/boing1.ogg"));
+		String soundFile = "data/soundfx/boing1.ogg";
+		if (!assetManager.isLoaded(soundFile)) {
+			assetManager.load(soundFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		sound = assetManager.get(soundFile, Sound.class);
 	}
 
 	public void applyLinearImpulse(float x, float y) {
@@ -71,7 +76,6 @@ public class Ball extends AbstractWorldObject implements Disposable, Audible {
 	@Override
 	public void dispose() {
 		graphic.dispose();
-		sound.dispose();
 	}
 
 	@Override
