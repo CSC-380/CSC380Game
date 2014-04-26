@@ -7,7 +7,9 @@ import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.ParticleEffectLoader;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -67,14 +69,15 @@ import edu.oswego.tiltandtumble.worldObjects.paths.PathPointTraverser;
 public final class WorldPopulator implements Disposable {
 	private final BodyDefBuilder bodyDef = new BodyDefBuilder();
 	private final FixtureDefBuilder fixtureDef = new FixtureDefBuilder();
+	private final String atlasFile = "data/WorldObjects/worldobjects.pack";
 	private final TextureAtlas atlas;
 	private final AssetManager assetManager;
 
 	public WorldPopulator(AssetManager assetManager) {
 		this.assetManager = assetManager;
-		assetManager.load("data/WorldObjects/worldobjects.pack", TextureAtlas.class);
+		assetManager.load(atlasFile, TextureAtlas.class);
 		assetManager.finishLoading();
-		atlas = assetManager.get("data/WorldObjects/worldobjects.pack", TextureAtlas.class);
+		atlas = assetManager.get(atlasFile, TextureAtlas.class);
 	}
 
 	@Override
@@ -146,9 +149,16 @@ public final class WorldPopulator implements Disposable {
 		if (name.equals("none")) {
 			effect = new NullGraphic();
 		} else {
-			effect = new ParticleEffectGraphic(
-					"data/WorldObjects/" + name,
-					atlas);
+			String filename = "data/WorldObjects/" + name;
+			if (!assetManager.isLoaded(filename)) {
+				ParticleEffectLoader.ParticleEffectParameter param = new ParticleEffectLoader.ParticleEffectParameter();
+				param.atlasFile = atlasFile;
+				assetManager.load(filename, ParticleEffect.class, param);
+				assetManager.finishLoading();
+			}
+			// NOTE: particle effects need to be copied if you have more than one.
+			ParticleEffect particle = new ParticleEffect(assetManager.get(filename, ParticleEffect.class));
+			effect = new ParticleEffectGraphic(particle);
 			effect.setPosition(
 					scale.metersToPixels(body.getPosition().x),
 					scale.metersToPixels(body.getPosition().y));
@@ -195,9 +205,16 @@ public final class WorldPopulator implements Disposable {
 		if (name.equals("none")) {
 			effect = new NullGraphic();
 		} else {
-			effect = new ParticleEffectGraphic(
-					"data/WorldObjects/" + name,
-					atlas);
+			String filename = "data/WorldObjects/" + name;
+			if (!assetManager.isLoaded(filename)) {
+				ParticleEffectLoader.ParticleEffectParameter param = new ParticleEffectLoader.ParticleEffectParameter();
+				param.atlasFile = atlasFile;
+				assetManager.load(filename, ParticleEffect.class, param);
+				assetManager.finishLoading();
+			}
+			// NOTE: particle effects need to be copied if you have more than one.
+			ParticleEffect particle = new ParticleEffect(assetManager.get(filename, ParticleEffect.class));
+			effect = new ParticleEffectGraphic(particle);
 			effect.setPosition(
 					scale.metersToPixels(body.getPosition().x),
 					scale.metersToPixels(body.getPosition().y));

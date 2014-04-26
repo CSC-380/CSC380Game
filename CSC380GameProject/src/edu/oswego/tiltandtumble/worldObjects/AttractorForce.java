@@ -33,6 +33,7 @@ public class AttractorForce extends AbstractWorldObject
 
 	private boolean playSound;
 	private final Sound sound;
+	private long soundId;
 
 	public AttractorForce(Body body, float speed, float radius,
 			GraphicComponent graphic, UnitScale scale, AssetManager assetManager) {
@@ -95,7 +96,8 @@ public class AttractorForce extends AbstractWorldObject
 		this.ball = ball;
 		graphic.start();
 		if (playSound) {
-			sound.loop();
+			
+			soundId = sound.loop();
 		}
 	}
 
@@ -103,7 +105,7 @@ public class AttractorForce extends AbstractWorldObject
 	public void handleEndCollision(Contact contact, Ball ball) {
 		collidingWithBall = false;
 		this.ball = null;
-		sound.stop();
+		sound.stop(soundId);
 	}
 
 	@Override
@@ -125,13 +127,13 @@ public class AttractorForce extends AbstractWorldObject
 	@Override
 	public void playSound() {
 		if (playSound) {
-			sound.play();
+			soundId = sound.play();
 		}
 	}
 
 	@Override
 	public void endSound() {
-		sound.stop();
+		sound.stop(soundId);
 	}
 
 	@Override

@@ -76,7 +76,8 @@ public class GameScreen extends AbstractScreen {
 		audio = new AudioManager(
 				level,
 				game.getSettings().isMusicOn(),
-				game.getSettings().isSoundEffectOn());
+				game.getSettings().isSoundEffectOn(),
+				game.getAssetManager());
 		game.getSettings().addObserver(audio);
 		Gdx.app.log("GameScreen", "Audio manager created");
 		hud.setLevel(num);
