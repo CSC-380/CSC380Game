@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -57,7 +58,8 @@ public class Level implements Disposable, Audible {
 	private final Collection<WorldUpdateable> updateableObjects;
 	private final Collection<Audible> audibleObjects;
 
-	public Level(int level, BallController ballController, WorldPopulator populator) {
+	public Level(int level, BallController ballController,
+			WorldPopulator populator, AssetManager assetManager) {
 		this.level = level;
 		this.ballController = ballController;
 
@@ -85,7 +87,12 @@ public class Level implements Disposable, Audible {
 		this.ballController.setBall(ball);
 
 		playSound = true;
-		failSound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/failure-2.ogg"));
+		String soundFile = "data/soundfx/failure-2.ogg";
+		if (!assetManager.isLoaded(soundFile)) {
+			assetManager.load(soundFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		failSound = assetManager.get(soundFile, Sound.class);
 
 		contactListener = new OurCollisionListener();
 		world.setContactListener(contactListener);

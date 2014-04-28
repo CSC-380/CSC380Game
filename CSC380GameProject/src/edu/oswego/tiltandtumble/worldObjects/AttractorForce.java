@@ -96,7 +96,6 @@ public class AttractorForce extends AbstractWorldObject
 		this.ball = ball;
 		graphic.start();
 		if (playSound) {
-			
 			soundId = sound.loop();
 		}
 	}

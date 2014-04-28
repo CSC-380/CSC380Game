@@ -66,9 +66,12 @@ public class GameScreen extends AbstractScreen {
 			audio = null;
 		}
 		Gdx.app.log("GameScreen", "Cleaned up previous level");
-		level = new Level(num, ballController, worldPopulator);
+		level = new Level(num, ballController, worldPopulator, game.getAssetManager());
 		Gdx.app.log("GameScreen", "Level loaded");
-		renderer = new DefaultLevelRenderer(level,game.getWidth(), game.getHeight(), game.getSpriteBatch());
+		renderer = new DefaultLevelRenderer(level,
+				game.getWidth(), game.getHeight(),
+				game.getSpriteBatch(),
+				game.getAssetManager());
 		if (game.getSettings().isDebugRender()) {
 			renderer = new DebugLevelRenderer(renderer, ballController);
 		}
