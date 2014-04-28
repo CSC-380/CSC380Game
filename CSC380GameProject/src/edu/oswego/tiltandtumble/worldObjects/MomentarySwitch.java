@@ -12,13 +12,9 @@ public class MomentarySwitch extends ToggleSwitch {
 	public static final boolean IS_SENSOR = true;
 
 	public MomentarySwitch(Body body, boolean startOn, GraphicComponent graphicOn,
-<<<<<<< HEAD
-			GraphicComponent graphicOff) {
-		super(body, startOn, graphicOn, graphicOff);
-=======
-			GraphicComponent graphicOff, AssetManager assetManager) {
+
+		GraphicComponent graphicOff, AssetManager assetManager) {
 		super(body, startOn, graphicOn, graphicOff, assetManager);
->>>>>>> master
 	}
 
 	@Override

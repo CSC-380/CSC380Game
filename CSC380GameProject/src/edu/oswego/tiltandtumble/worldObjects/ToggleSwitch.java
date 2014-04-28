@@ -31,11 +31,7 @@ public class ToggleSwitch extends AbstractWorldObject
 	private final GraphicComponent graphicOff;
 
 	public ToggleSwitch(Body body, boolean startOn, GraphicComponent graphicOn,
-<<<<<<< HEAD
-			GraphicComponent graphicOff) {
-=======
 			GraphicComponent graphicOff, AssetManager assetManager) {
->>>>>>> master
 		super(body);
 		activatables = new LinkedList<Activatable>();
 		if (startOn) {
@@ -110,11 +106,6 @@ public class ToggleSwitch extends AbstractWorldObject
 
 	@Override
 	public void dispose() {
-<<<<<<< HEAD
-		offsound.dispose();
-		onsound.dispose();
-=======
->>>>>>> master
 		graphicOff.dispose();
 		graphicOn.dispose();
 	}

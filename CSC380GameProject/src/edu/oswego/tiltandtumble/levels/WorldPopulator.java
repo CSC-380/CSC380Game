@@ -45,10 +45,7 @@ import edu.oswego.tiltandtumble.worldObjects.Hole;
 import edu.oswego.tiltandtumble.worldObjects.MomentarySwitch;
 import edu.oswego.tiltandtumble.worldObjects.MovingWall;
 import edu.oswego.tiltandtumble.worldObjects.PushBumper;
-<<<<<<< HEAD
 import edu.oswego.tiltandtumble.worldObjects.ShadowBall;
-=======
->>>>>>> master
 import edu.oswego.tiltandtumble.worldObjects.Spike;
 import edu.oswego.tiltandtumble.worldObjects.StaticWall;
 import edu.oswego.tiltandtumble.worldObjects.Switch;
@@ -471,11 +468,7 @@ public final class WorldPopulator implements Disposable {
 				.scale(1.5f, 1.5f)
 				.build();
 
-<<<<<<< HEAD
-		return new StaticWall(body, level, deathGraphic);
-=======
 		return new StaticWall(body, level, deathGraphic, assetManager);
->>>>>>> master
 	}
 
 	public PushBumper createPushBumper(MapObject obj, World world,
@@ -566,11 +559,8 @@ public final class WorldPopulator implements Disposable {
 				.origin(16, 16)
 				.build();
 
-<<<<<<< HEAD
-		return new Hole(body, level, graphic);
-=======
+
 		return new Hole(body, level, graphic, assetManager);
->>>>>>> master
 	}
 
 	public Spike createSpike(MapObject obj, Level level, World world,
@@ -587,11 +577,7 @@ public final class WorldPopulator implements Disposable {
 		GraphicComponent graphic = new AnimationGraphic.Builder(sheet, 1, 8, 1)
 				.origin(12, 12)
 				.build();
-<<<<<<< HEAD
-		return new Spike(body, level, graphic);
-=======
 		return new Spike(body, level, graphic, assetManager);
->>>>>>> master
 	}
 
 	public AttractorForce createAttractorForce(MapObject obj, Level level,
@@ -658,12 +644,8 @@ public final class WorldPopulator implements Disposable {
 
 		ToggleSwitch swtch = new ToggleSwitch(body,
 				props.get("startOn", false, Boolean.class),
-<<<<<<< HEAD
-				graphicOn, graphicOff);
-=======
 				graphicOn, graphicOff,
 				assetManager);
->>>>>>> master
 		switchHelper.add(props.get("id", String.class), swtch);
 		return swtch;
 	}
@@ -703,12 +685,8 @@ public final class WorldPopulator implements Disposable {
 		TimedSwitch swtch = new TimedSwitch(body,
 				getFloatProperty(obj, "interval", TimedSwitch.DEFAULT_INTERVAL),
 				props.get("startOn", false, Boolean.class),
-<<<<<<< HEAD
-				graphicOn, graphicOff);
-=======
 				graphicOn, graphicOff,
 				assetManager);
->>>>>>> master
 		switchHelper.add(props.get("id", String.class), swtch);
 		return swtch;
 	}
@@ -747,12 +725,8 @@ public final class WorldPopulator implements Disposable {
 
 		MomentarySwitch swtch = new MomentarySwitch(body,
 				props.get("startOn", false, Boolean.class),
-<<<<<<< HEAD
-				graphicOn, graphicOff);
-=======
 				graphicOn, graphicOff,
 				assetManager);
->>>>>>> master
 		switchHelper.add(props.get("id", String.class), swtch);
 		return swtch;
 	}

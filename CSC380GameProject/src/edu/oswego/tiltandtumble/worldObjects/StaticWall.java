@@ -1,10 +1,8 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
 import com.badlogic.gdx.Gdx;
-<<<<<<< HEAD
-=======
+
 import com.badlogic.gdx.assets.AssetManager;
->>>>>>> master
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -32,26 +30,20 @@ public class StaticWall extends AbstractWorldObject implements WorldUpdateable,
 	private boolean playSound;
 	private final Sound deathSound;
 
-<<<<<<< HEAD
-	public StaticWall(Body body, Level level, GraphicComponent deathGraphic) {
-=======
 	public StaticWall(Body body, Level level, GraphicComponent deathGraphic,
 			AssetManager assetManager) {
->>>>>>> master
         super(body);
 		this.level = level;
 		this.deathGraphic = deathGraphic;
 		playSound = true;
-<<<<<<< HEAD
-		deathSound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/popping.ogg"));
-=======
+
 		String soundFile = "data/soundfx/popping.ogg";
 		if (!assetManager.isLoaded(soundFile)) {
 			assetManager.load(soundFile, Sound.class);
 			assetManager.finishLoading();
 		}
 		deathSound = assetManager.get(soundFile, Sound.class);
->>>>>>> master
+
     }
 
 	@Override
@@ -99,10 +91,6 @@ public class StaticWall extends AbstractWorldObject implements WorldUpdateable,
 	@Override
 	public void dispose() {
 		deathGraphic.dispose();
-<<<<<<< HEAD
-		deathSound.dispose();
-=======
->>>>>>> master
 	}
 
 	@Override

@@ -156,21 +156,14 @@ public class Level implements Disposable, Audible {
 
 	public void win() {
 		currentState.end(this, false);
-<<<<<<< HEAD
+
 	}
 
 	public void fail() {
 		currentState.end(this, true);
 	}
 
-=======
-	}
 
-	public void fail() {
-		currentState.end(this, true);
-	}
-
->>>>>>> master
 	public void exit() {
 		currentState.finish(this);
 	}

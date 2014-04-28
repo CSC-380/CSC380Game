@@ -132,11 +132,7 @@ public class AttractorForce extends AbstractWorldObject
 
 	@Override
 	public void endSound() {
-<<<<<<< HEAD
-		sound.stop();
-=======
 		sound.stop(soundId);
->>>>>>> master
 	}
 
 	@Override

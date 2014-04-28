@@ -1,10 +1,7 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
 import com.badlogic.gdx.Gdx;
-<<<<<<< HEAD
-=======
 import com.badlogic.gdx.assets.AssetManager;
->>>>>>> master
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -24,25 +21,18 @@ public class FinishLine extends AbstractWorldObject
 	private boolean playSound;
 	private final Sound sound;
 
-<<<<<<< HEAD
-	public FinishLine(Body body, Level level) {
-=======
+
 	public FinishLine(Body body, Level level, AssetManager assetManager) {
->>>>>>> master
 		super(body);
 		this.level = level;
-
 		playSound = true;
-<<<<<<< HEAD
-		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/finishLine.ogg"));
-=======
 		String soundFile = "data/soundfx/finishLine.ogg";
 		if (!assetManager.isLoaded(soundFile)) {
 			assetManager.load(soundFile, Sound.class);
 			assetManager.finishLoading();
 		}
 		sound = assetManager.get(soundFile, Sound.class);
->>>>>>> master
+
 	}
 
 	/**
@@ -82,9 +72,7 @@ public class FinishLine extends AbstractWorldObject
 
 	@Override
 	public void dispose() {
-<<<<<<< HEAD
 		sound.dispose();
-=======
->>>>>>> master
+
 	}
 }

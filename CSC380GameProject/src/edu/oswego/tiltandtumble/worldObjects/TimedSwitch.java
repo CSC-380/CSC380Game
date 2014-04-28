@@ -34,12 +34,8 @@ public class TimedSwitch extends AbstractWorldObject implements
 	private final GraphicComponent graphicOff;
 
 	public TimedSwitch(Body body, float interval, boolean startOn,
-<<<<<<< HEAD
-			GraphicComponent graphicOn, GraphicComponent graphicOff) {
-=======
 			GraphicComponent graphicOn, GraphicComponent graphicOff,
 			AssetManager assetManager) {
->>>>>>> master
 		super(body);
 		this.interval = interval;
 		activatables = new LinkedList<Activatable>();
@@ -115,10 +111,6 @@ public class TimedSwitch extends AbstractWorldObject implements
 
 	@Override
 	public void dispose() {
-<<<<<<< HEAD
-		sound.dispose();
-=======
->>>>>>> master
 		graphicOff.dispose();
 		graphicOn.dispose();
 	}

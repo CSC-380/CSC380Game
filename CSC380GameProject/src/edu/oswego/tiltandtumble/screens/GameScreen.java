@@ -41,13 +41,8 @@ public class GameScreen extends AbstractScreen {
 
 	public GameScreen(TiltAndTumble game, int currentLevel) {
 		super(game);
-<<<<<<< HEAD
 		ballController = new BallController(!game.getSettings().isUseDpad(), isChallengeMode());
-		worldPopulator = new WorldPopulator();
-=======
-		ballController = new BallController(!game.getSettings().isUseDpad());
 		worldPopulator = new WorldPopulator(game.getAssetManager());
->>>>>>> master
 
 		hud = new Hud(this, skin);
 		loadLevel(currentLevel);

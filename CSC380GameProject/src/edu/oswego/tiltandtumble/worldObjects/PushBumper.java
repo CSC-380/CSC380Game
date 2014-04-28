@@ -26,11 +26,8 @@ public class PushBumper extends AbstractWorldObject
 
 	private boolean active = true;
 
-<<<<<<< HEAD
-    public PushBumper(Body body, float speed) {
-=======
     public PushBumper(Body body, float speed, AssetManager assetManager) {
->>>>>>> master
+
         super(body);
         this.speed = speed;
 
@@ -95,16 +92,6 @@ public class PushBumper extends AbstractWorldObject
 
 	@Override
 	public void dispose() {
-	}
-
-	@Override
-	public void activate() {
-		active = true;
-	}
-
-	@Override
-	public void deactivate() {
-		active = false;
 	}
 
 	@Override
