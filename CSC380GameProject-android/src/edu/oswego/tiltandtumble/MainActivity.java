@@ -12,11 +12,7 @@ public class MainActivity extends AndroidApplication {
         super.onCreate(savedInstanceState);
 
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-//        config.useGL20 = false;
-////////////////////////
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        //comit check
-        ///asd;fjaslf
         initialize(new TiltAndTumble(), config);
     }
 }

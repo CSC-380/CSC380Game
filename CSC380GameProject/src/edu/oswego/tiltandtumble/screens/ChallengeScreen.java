@@ -9,15 +9,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.ResultSet;
-import com.datastax.driver.core.Row;
-import com.datastax.driver.core.Session;
+//import com.datastax.driver.core.Cluster;
+//import com.datastax.driver.core.ResultSet;
+//import com.datastax.driver.core.Row;
+//import com.datastax.driver.core.Session;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
 
 public class ChallengeScreen extends AbstractScreen  {
 
+	private Window topTable;
+	private Window table;
 	public ChallengeScreen(final TiltAndTumble game) {
 		super(game);
 	}
@@ -26,52 +28,31 @@ public class ChallengeScreen extends AbstractScreen  {
 	public void show() {
         Gdx.input.setInputProcessor(stage);
         game.setChallengeMode(true);
-		Window table = new Window("\nChallenge", skin);
-		table.setFillParent(true);
-		table.setModal(true);
-		table.setMovable(false);
-        stage.addActor(table);
-
-        table.row().center().uniform().padTop(50);
-		table.add("Friends", "header");
-		table.add("Challenge", "header");
-		table.add("Challenges", "header");
-		
-		//TODO figure out how to obtain friends
-		Button challenge = new TextButton("C", skin);
+        this.showLevelTable();
+	}
+	
+	private void showTopChallenges(int levelNum){
+		Button challenge = new TextButton("A", skin);
 		challenge.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
 
-            	
-            	
-            	
-            	
-            	
-            	
-            	
-            	
-            	
-            	
-            	
-            	
-
             	System.out.println(" ");
             	//Cluster cluster = Cluster.builder().addContactPoint("localhost").build();
-            	Cluster cluster = Cluster.builder().addContactPoint("129.3.20.26").withPort(2715).build();
-            	Session session = cluster.connect();
-            	session.execute("DROP KEYSPACE challengeMap");
-            	session.execute("CREATE KEYSPACE challengeMap "
-            	   		+ "WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };");
-          
-            	session.execute("USE challengeMap;");
-            	session.execute("CREATE TABLE users ("
-            	   		+ "username text PRIMARY KEY, "
-            	   		+ "highscore int, "
-            	   		+ "pathx map<int, int>, "
-            	   		+ "pathy map<int, int>);");
-            	session.execute("INSERT INTO users (username, highscore, pathx, pathy) "
-            	   		+ "VALUES ('schrecen', 0, {0 : 1}, {0 : 1});");
+//            	Cluster cluster = Cluster.builder().addContactPoint("129.3.20.26").withPort(2715).build();
+//            	Session session = cluster.connect();
+//            	session.execute("DROP KEYSPACE challengeMap");
+//            	session.execute("CREATE KEYSPACE challengeMap "
+//            	   		+ "WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };");
+//          
+//            	session.execute("USE challengeMap;");
+//            	session.execute("CREATE TABLE users ("
+//            	   		+ "username text PRIMARY KEY, "
+//            	   		+ "highscore int, "
+//            	   		+ "pathx map<int, int>, "
+//            	   		+ "pathy map<int, int>);");
+//            	session.execute("INSERT INTO users (username, highscore, pathx, pathy) "
+//            	   		+ "VALUES ('schrecen', 0, {0 : 1}, {0 : 1});");
             	/*
             	
             	ResultSet results = session.execute("SELECT * FROM users;");
@@ -94,10 +75,22 @@ public class ChallengeScreen extends AbstractScreen  {
             }
            
         });
+		table = new Window("\nLevel " + levelNum, skin);
+		table.setFillParent(true);
+		table.setModal(true);
+		table.setMovable(false);
+        stage.addActor(table);
+
+        table.row().center().uniform().padTop(50);
+        table.add("Rank", "header");
+		table.add("Time", "header");
+		table.add("Name", "header");
+		table.add("Challenge", "header");
 		table.row().center();
-		table.add("KellyMaestri");
+		table.add("1");
+		table.add("5.092");
+		table.add("KMAE");
 		table.add(challenge);
-		table.add("0 challenges");
 
 		
 		table.row().expand().padBottom(10);
@@ -107,10 +100,91 @@ public class ChallengeScreen extends AbstractScreen  {
         back.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+            	//table.clear();
+            	showLevelTable();
+            }
+        });
+		
+	}
+	
+	private void showLevelTable(){
+		topTable = new Window("\nChallenge", skin);
+        topTable.setFillParent(true);
+        topTable.setModal(true);
+        topTable.setMovable(false);
+        stage.addActor(topTable);
+        
+        topTable.row().center().uniform().padTop(50).padRight(15);
+       
+      
+		
+		//TODO figure out how to obtain friends
+		
+		Button lvl1 = new TextButton("1", skin);
+		topTable.add(lvl1);
+		lvl1.addListener(new ChangeListener(){
+			@Override
+            public void changed(ChangeEvent event, Actor actor) {
+				topTable.setVisible(false);
+				showTopChallenges(1);
+			}
+			
+		});
+		Button lvl2 = new TextButton("2", skin);
+		topTable.add(lvl2);
+		lvl2.addListener(new ChangeListener(){
+			@Override
+            public void changed(ChangeEvent event, Actor actor) {
+				topTable.setVisible(false);
+				showTopChallenges(2);
+			}
+			
+		});
+		Button lvl3 = new TextButton("3", skin);
+		topTable.add(lvl3);
+		lvl3.addListener(new ChangeListener(){
+			@Override
+            public void changed(ChangeEvent event, Actor actor) {
+				topTable.setVisible(false);
+				showTopChallenges(3);
+			}
+			
+		});
+		Button lvl4 = new TextButton("4", skin);
+		topTable.add(lvl4);
+		lvl4.addListener(new ChangeListener(){
+			@Override
+            public void changed(ChangeEvent event, Actor actor) {
+				topTable.setVisible(false);
+				showTopChallenges(4);
+			}
+			
+		});
+		Button lvl5 = new TextButton("5", skin);
+		topTable.add(lvl5);
+		lvl5.addListener(new ChangeListener(){
+			@Override
+            public void changed(ChangeEvent event, Actor actor) {
+				topTable.setVisible(false);
+				showTopChallenges(5);
+			}
+			
+		});
+		
+		Button back = new TextButton("Go Back", skin);
+		topTable.row().spaceTop(35);
+		topTable.add(back).colspan(5).bottom();
+
+        back.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
             	game.setChallengeMode(false);
                 game.showPreviousScreen();
             }
         });
+		
+		
+		
 	}
 
 }

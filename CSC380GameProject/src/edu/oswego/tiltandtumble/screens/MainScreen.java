@@ -4,16 +4,20 @@ package edu.oswego.tiltandtumble.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
+import edu.oswego.tiltandtumble.screens.dialogs.PauseDialog;
+import edu.oswego.tiltandtumble.screens.dialogs.SelectDialog;
 
 
 public class MainScreen extends AbstractScreen {
 
+	private Dialog selectDialog;
     public MainScreen(final TiltAndTumble game) {
         super(game);
     }
@@ -21,7 +25,7 @@ public class MainScreen extends AbstractScreen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-
+        
         Window window = new Window("\nTilt and Tumble", skin);
         window.setFillParent(true);
         window.setModal(true);
@@ -47,7 +51,7 @@ public class MainScreen extends AbstractScreen {
         play2.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                game.showChallengeScreen();
+                showMulti();
             }
         });
 
@@ -87,5 +91,9 @@ public class MainScreen extends AbstractScreen {
                 game.showCreditScreen();
             }
         });
+    }
+    
+    public void showMulti(){
+    	selectDialog = new SelectDialog("MultiPlayer", skin, game, this).show(stage);
     }
 }

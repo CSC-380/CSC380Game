@@ -30,6 +30,7 @@ public class TiltAndTumble extends Game {
 	Stack<Screen> screenStack = new Stack<Screen>();
 
 	private boolean challengeMode = false;
+	private boolean challengeAcceptMode = false;
 	
 	private MainScreen mainScreen;
 	private CreditScreen creditScreen;
@@ -204,6 +205,10 @@ public class TiltAndTumble extends Game {
 	
 	public void setChallengeMode(boolean x){
 		challengeMode = x;
+	}
+	
+	public void setChallengeAcceptMode(boolean x){
+		challengeAcceptMode = x;
 	}
 
 	@Override
