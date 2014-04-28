@@ -25,7 +25,7 @@ public class LevelScreen extends AbstractScreen {
         window.setMovable(false);
         stage.addActor(window);
 
-		window.row().padTop(100).fillX();
+		window.row().padTop(65).fillX();
 		Button play = new TextButton("Click to Play Level One!", skin);
 		window.add(play);
 		play.addListener(new ChangeListener() {
@@ -52,6 +52,16 @@ public class LevelScreen extends AbstractScreen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				game.showGameScreen(3);
+			}
+		});
+		
+		window.row().padTop(10).fillX();
+		Button play4 = new TextButton("Click to Play Level Four!", skin);
+		window.add(play4);
+		play4.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				game.showGameScreen(4);
 			}
 		});
 
