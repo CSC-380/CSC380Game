@@ -1,5 +1,6 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -26,8 +27,9 @@ public class Teleporter extends TeleporterTarget
 
 	public Teleporter(Body body, TeleporterSelectorStrategy selector,
 			boolean resetVelocity, BallController ballController,
-			GraphicComponent effect, float waitTime, GraphicComponent teleporter) {
-		super(body, resetVelocity, ballController, effect);
+			GraphicComponent effect, float waitTime, GraphicComponent teleporter,
+			AssetManager assetManager) {
+		super(body, resetVelocity, ballController, effect, assetManager);
 		this.selector = selector;
 		this.waitTime = waitTime;
 		this.graphic = teleporter;

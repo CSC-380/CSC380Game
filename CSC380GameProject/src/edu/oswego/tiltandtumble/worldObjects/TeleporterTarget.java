@@ -1,6 +1,6 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -26,13 +26,18 @@ public class TeleporterTarget extends AbstractWorldObject
 	private final GraphicComponent graphic;
 
 	public TeleporterTarget(Body body, boolean resetVelocity,
-			BallController ballController, GraphicComponent graphic) {
+			BallController ballController, GraphicComponent graphic, AssetManager assetManager) {
 		super(body);
 		this.resetVelocity = resetVelocity;
 		this.ballController = ballController;
 
 		playSound = true;
-		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/laser4.ogg"));
+		String soundFile = "data/soundfx/laser4.ogg";
+		if (!assetManager.isLoaded(soundFile)) {
+			assetManager.load(soundFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		sound = assetManager.get(soundFile, Sound.class);
 
 		this.graphic = graphic;
 	}
@@ -85,7 +90,6 @@ public class TeleporterTarget extends AbstractWorldObject
 
 	@Override
 	public void dispose() {
-		sound.dispose();
 		graphic.dispose();
 	}
 

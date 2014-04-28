@@ -1,6 +1,10 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
+<<<<<<< HEAD
 import com.badlogic.gdx.Gdx;
+=======
+import com.badlogic.gdx.assets.AssetManager;
+>>>>>>> master
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -24,13 +28,26 @@ public class Spike extends AbstractWorldObject implements
 	private boolean playSound;
 	private final Sound sound;
 
+<<<<<<< HEAD
 	public Spike(Body body, Level level, GraphicComponent graphic) {
+=======
+	public Spike(Body body, Level level, GraphicComponent graphic, AssetManager assetManager) {
+>>>>>>> master
 		super(body);
 		this.level = level;
 		this.graphic = graphic;
 
 		playSound = true;
+<<<<<<< HEAD
 		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/deflate.ogg"));
+=======
+		String soundFile = "data/soundfx/deflate.ogg";
+		if (!assetManager.isLoaded(soundFile)) {
+			assetManager.load(soundFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		sound = assetManager.get(soundFile, Sound.class);
+>>>>>>> master
 	}
 
 	@Override
@@ -69,7 +86,10 @@ public class Spike extends AbstractWorldObject implements
 	@Override
 	public void dispose() {
 		graphic.dispose();
+<<<<<<< HEAD
 		sound.dispose();
+=======
+>>>>>>> master
 	}
 
 	@Override

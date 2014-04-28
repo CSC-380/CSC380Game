@@ -41,8 +41,13 @@ public class GameScreen extends AbstractScreen {
 
 	public GameScreen(TiltAndTumble game, int currentLevel) {
 		super(game);
+<<<<<<< HEAD
 		ballController = new BallController(!game.getSettings().isUseDpad(), isChallengeMode());
 		worldPopulator = new WorldPopulator();
+=======
+		ballController = new BallController(!game.getSettings().isUseDpad());
+		worldPopulator = new WorldPopulator(game.getAssetManager());
+>>>>>>> master
 
 		hud = new Hud(this, skin);
 		loadLevel(currentLevel);
@@ -51,6 +56,7 @@ public class GameScreen extends AbstractScreen {
 
 	public void loadLevel(int num) {
 		changeState(State.WAITING);
+		Gdx.app.log("GameScreen", "Loading level #" + num);
 		if (level != null) {
 			level.dispose();
 			level = null;
@@ -64,18 +70,27 @@ public class GameScreen extends AbstractScreen {
 			audio.dispose();
 			audio = null;
 		}
-		level = new Level(num, ballController, worldPopulator);
-		renderer = new DefaultLevelRenderer(level,game.getWidth(), game.getHeight(), game.getSpriteBatch());
+		Gdx.app.log("GameScreen", "Cleaned up previous level");
+		level = new Level(num, ballController, worldPopulator, game.getAssetManager());
+		Gdx.app.log("GameScreen", "Level loaded");
+		renderer = new DefaultLevelRenderer(level,
+				game.getWidth(), game.getHeight(),
+				game.getSpriteBatch(),
+				game.getAssetManager());
 		if (game.getSettings().isDebugRender()) {
 			renderer = new DebugLevelRenderer(renderer, ballController);
 		}
+		Gdx.app.log("GameScreen", "Renderer created");
 		audio = new AudioManager(
 				level,
 				game.getSettings().isMusicOn(),
-				game.getSettings().isSoundEffectOn());
+				game.getSettings().isSoundEffectOn(),
+				game.getAssetManager());
 		game.getSettings().addObserver(audio);
+		Gdx.app.log("GameScreen", "Audio manager created");
 		hud.setLevel(num);
 		new Starter(this, skin).show(stage);
+		Gdx.app.log("GameScreen", "Level starting...");
 	}
 
 	public boolean hasMoreLevels() {

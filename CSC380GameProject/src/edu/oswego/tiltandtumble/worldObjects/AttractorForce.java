@@ -1,6 +1,6 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -33,9 +33,10 @@ public class AttractorForce extends AbstractWorldObject
 
 	private boolean playSound;
 	private final Sound sound;
+	private long soundId;
 
 	public AttractorForce(Body body, float speed, float radius,
-			GraphicComponent graphic, UnitScale scale) {
+			GraphicComponent graphic, UnitScale scale, AssetManager assetManager) {
 		super(body);
 		this.speed = speed;
 		this.radius = radius;
@@ -43,7 +44,12 @@ public class AttractorForce extends AbstractWorldObject
 		this.scale = scale;
 
 		playSound = true;
-		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/attractor.ogg"));
+		String soundFile = "data/soundfx/attractor.ogg";
+		if (!assetManager.isLoaded(soundFile)) {
+			assetManager.load(soundFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		sound = assetManager.get(soundFile, Sound.class);
 	}
 
 	@Override
@@ -90,7 +96,7 @@ public class AttractorForce extends AbstractWorldObject
 		this.ball = ball;
 		graphic.start();
 		if (playSound) {
-			sound.loop();
+			soundId = sound.loop();
 		}
 	}
 
@@ -98,7 +104,7 @@ public class AttractorForce extends AbstractWorldObject
 	public void handleEndCollision(Contact contact, Ball ball) {
 		collidingWithBall = false;
 		this.ball = null;
-		sound.stop();
+		sound.stop(soundId);
 	}
 
 	@Override
@@ -120,18 +126,21 @@ public class AttractorForce extends AbstractWorldObject
 	@Override
 	public void playSound() {
 		if (playSound) {
-			sound.play();
+			soundId = sound.play();
 		}
 	}
 
 	@Override
 	public void endSound() {
+<<<<<<< HEAD
 		sound.stop();
+=======
+		sound.stop(soundId);
+>>>>>>> master
 	}
 
 	@Override
 	public void dispose() {
-		sound.dispose();
 		graphic.dispose();
 	}
 

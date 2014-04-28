@@ -1,6 +1,10 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
+<<<<<<< HEAD
 import com.badlogic.gdx.Gdx;
+=======
+import com.badlogic.gdx.assets.AssetManager;
+>>>>>>> master
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -25,13 +29,26 @@ public class Hole extends AbstractWorldObject implements BallCollisionListener,
 	private boolean playSound;
 	private final Sound sound;
 
+<<<<<<< HEAD
 	public Hole(Body body, Level level, GraphicComponent graphic) {
+=======
+	public Hole(Body body, Level level, GraphicComponent graphic, AssetManager assetManager) {
+>>>>>>> master
 		super(body);
 		this.level = level;
 		this.graphic = graphic;
 
 		playSound = true;
+<<<<<<< HEAD
 		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/cartoon-falling-whistle.ogg"));
+=======
+		String soundFile = "data/soundfx/cartoon-falling-whistle.ogg";
+		if (!assetManager.isLoaded(soundFile)) {
+			assetManager.load(soundFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		sound = assetManager.get(soundFile, Sound.class);
+>>>>>>> master
 	}
 
 	@Override
@@ -76,7 +93,10 @@ public class Hole extends AbstractWorldObject implements BallCollisionListener,
 	@Override
 	public void dispose() {
 		graphic.dispose();
+<<<<<<< HEAD
 		sound.dispose();
+=======
+>>>>>>> master
 	}
 
 	@Override

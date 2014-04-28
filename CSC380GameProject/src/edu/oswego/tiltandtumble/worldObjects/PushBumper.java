@@ -2,6 +2,7 @@ package edu.oswego.tiltandtumble.worldObjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Peripheral;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -25,12 +26,21 @@ public class PushBumper extends AbstractWorldObject
 
 	private boolean active = true;
 
+<<<<<<< HEAD
     public PushBumper(Body body, float speed) {
+=======
+    public PushBumper(Body body, float speed, AssetManager assetManager) {
+>>>>>>> master
         super(body);
         this.speed = speed;
 
         playSound = true;
-		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/bonus-fast.ogg"));
+		String soundFile = "data/soundfx/bonus-fast.ogg";
+		if (!assetManager.isLoaded(soundFile)) {
+			assetManager.load(soundFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		sound = assetManager.get(soundFile, Sound.class);
     }
 
     @Override
@@ -85,7 +95,16 @@ public class PushBumper extends AbstractWorldObject
 
 	@Override
 	public void dispose() {
-		sound.dispose();
+	}
+
+	@Override
+	public void activate() {
+		active = true;
+	}
+
+	@Override
+	public void deactivate() {
+		active = false;
 	}
 
 	@Override

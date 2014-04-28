@@ -3,7 +3,7 @@ package edu.oswego.tiltandtumble.worldObjects;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -34,7 +34,12 @@ public class TimedSwitch extends AbstractWorldObject implements
 	private final GraphicComponent graphicOff;
 
 	public TimedSwitch(Body body, float interval, boolean startOn,
+<<<<<<< HEAD
 			GraphicComponent graphicOn, GraphicComponent graphicOff) {
+=======
+			GraphicComponent graphicOn, GraphicComponent graphicOff,
+			AssetManager assetManager) {
+>>>>>>> master
 		super(body);
 		this.interval = interval;
 		activatables = new LinkedList<Activatable>();
@@ -50,7 +55,12 @@ public class TimedSwitch extends AbstractWorldObject implements
 		startState = currentState;
 
 		playSound = true;
-		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/switch.ogg"));
+		String soundFile = "data/soundfx/switch.ogg";
+		if (!assetManager.isLoaded(soundFile)) {
+			assetManager.load(soundFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		sound = assetManager.get(soundFile, Sound.class);
 	}
 
 	@Override
@@ -105,7 +115,10 @@ public class TimedSwitch extends AbstractWorldObject implements
 
 	@Override
 	public void dispose() {
+<<<<<<< HEAD
 		sound.dispose();
+=======
+>>>>>>> master
 		graphicOff.dispose();
 		graphicOn.dispose();
 	}
