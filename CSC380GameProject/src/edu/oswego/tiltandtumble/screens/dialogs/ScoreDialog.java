@@ -64,7 +64,8 @@ public final class ScoreDialog extends Dialog {
 			if (!screen.hasMoreLevels()) {
 				table.row().padTop(10);
 				table.add("Game Over!", "highlight").colspan(3).center();
-				if (game.getHighScores().isHighScore(total)) {
+				if (screen.getMode() == GameScreen.Mode.ARCADE
+						&& game.getHighScores().isHighScore(total)) {
 					isHighScore = true;
 					table.row();
 					table.add("New High Score!", "highlight").colspan(3).center();
