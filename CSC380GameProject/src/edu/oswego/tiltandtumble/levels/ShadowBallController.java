@@ -8,6 +8,7 @@ public class ShadowBallController {
 	private ShadowBall ball;
 	
 	public ShadowBallController(){
+		//get info from server here store in something so update can use it
 		currentState = State.ACTIVE;
 	}
 	
@@ -45,7 +46,7 @@ public class ShadowBallController {
 			}
 			@Override
 			public void update(ShadowBallController b, float delta) {
-			//	b.ball.draw(delta, 1, 2, batch);
+			//	get new cords off map thing call .draw
 			}
 		};
 
