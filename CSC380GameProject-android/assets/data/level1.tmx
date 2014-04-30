@@ -3,6 +3,7 @@
  <properties>
   <property name="background image" value="NASA_HiddenUniverse_08.jpg"/>
   <property name="music" value="space_0.mp3"/>
+  <property name="name" value="Kessel Run"/>
  </properties>
  <tileset firstgid="1" name="sci-fi-platformer-tiles-9" tilewidth="32" tileheight="32">
   <image source="tiles/sci-fi-platformer-tiles-9.png" width="512" height="512"/>

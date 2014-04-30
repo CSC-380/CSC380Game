@@ -1,5 +1,7 @@
 package edu.oswego.tiltandtumble;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import com.badlogic.gdx.Game;
@@ -27,6 +29,15 @@ public class TiltAndTumble extends Game {
 
 	// NOTE: older phones do not have Deque interface
 	Stack<Screen> screenStack = new Stack<Screen>();
+
+	private final List<String> levels = new ArrayList<String>();
+	{
+		levels.add("level4.tmx");
+		levels.add("level5.tmx");
+		levels.add("level3.tmx");
+		levels.add("level2.tmx");
+		levels.add("level1.tmx");
+	}
 
 	private MainScreen mainScreen;
 	private CreditScreen creditScreen;
@@ -137,12 +148,12 @@ public class TiltAndTumble extends Game {
 		setScreen(levelScreen);
 	}
 
-	public void showGameScreen(int level) {
+	public void showGameScreen(int level, GameScreen.Mode mode) {
 		if (gameScreen != null) {
 			gameScreen.dispose();
 		}
 		screenStack.push(getScreen());
-		gameScreen = new GameScreen(this, level);
+		gameScreen = new GameScreen(this, level, mode);
 		setScreen(gameScreen);
 	}
 
@@ -184,6 +195,10 @@ public class TiltAndTumble extends Game {
 
 	public float getHeight() {
 		return height;
+	}
+
+	public List<String> getLevels() {
+		return levels;
 	}
 
 	@Override

@@ -31,7 +31,8 @@ public final class ScoreDialog extends Dialog {
 
 		Table table = new Table(skin);
 		table.setFillParent(true);
-		table.add("Level #" + scores.size() + " Completed")
+		int lastLevel = screen.getCurrentLevel().getLevelNumber() + 1;
+		table.add("Level #" + lastLevel + " Completed")
 			.colspan(3).center();
 		table.row().padTop(10).uniformX();
 
@@ -40,9 +41,10 @@ public final class ScoreDialog extends Dialog {
 		table.add("Score", "header").right();
 		table.row().padBottom(5).uniformX();
 		Score total = new Score(0, 0);
+		int firstLevel = lastLevel - scores.size();
 		for (int i = 0; i < scores.size(); ++i) {
 			Score s = scores.get(i);
-			table.add(String.valueOf(i + 1)).left();
+			table.add(String.valueOf(firstLevel + i + 1)).left();
 			table.add(s.getFormattedTime()).center();
 			table.add(String.valueOf(s.getPoints())).right();
 			total.setPoints(total.getPoints() + s.getPoints());
