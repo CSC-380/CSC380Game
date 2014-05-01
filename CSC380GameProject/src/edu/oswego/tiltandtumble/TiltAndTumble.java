@@ -3,6 +3,10 @@ package edu.oswego.tiltandtumble;
 import java.util.Stack;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SkinLoader;
@@ -22,7 +26,6 @@ import edu.oswego.tiltandtumble.screens.MainScreen;
 import edu.oswego.tiltandtumble.screens.SettingsScreen;
 import edu.oswego.tiltandtumble.settings.Settings;
 
-
 public class TiltAndTumble extends Game {
 
 	// NOTE: older phones do not have Deque interface
@@ -35,7 +38,7 @@ public class TiltAndTumble extends Game {
 	private SettingsScreen settingsScreen;
 	private LevelScreen levelScreen;
 	private GameScreen gameScreen;
-
+	
 	private AssetManager assetManager;
 	private Skin skin;
 	private Stage stage;
@@ -44,7 +47,7 @@ public class TiltAndTumble extends Game {
 
 	private int width;
 	private int height;
-
+	
 	private Settings settings;
 	private HighScores scores;
 
@@ -57,7 +60,8 @@ public class TiltAndTumble extends Game {
 		settings = new Settings();
 
 		batch = new SpriteBatch();
-
+		
+		
 		// this will set the view port to the screen size, which will cause
 		// things to look big on a low resolution screen and look small on a
 		// high resolution screen. we then probably have to scale the ui
@@ -72,7 +76,12 @@ public class TiltAndTumble extends Game {
 		height = 320;
 
 		stage = new Stage(width, height, true, batch);
-
+		
+		Gdx.input.setInputProcessor(mProcessor);
+		Gdx.input.setCatchBackKey(true);
+		//InputMultiplexer multiplexer = new InputMultiplexer(stage, mProcessor);
+       // Gdx.input.setInputProcessor(multiplexer);
+        
 		font = new BitmapFont();
 		loadSkin();
 		scores = HighScores.load();
@@ -185,7 +194,9 @@ public class TiltAndTumble extends Game {
 	public float getHeight() {
 		return height;
 	}
-
+	public InputProcessor getProcessor(){
+		return mProcessor;
+	}
 	@Override
 	public void dispose() {
 		HighScores.save(scores);
@@ -213,4 +224,50 @@ public class TiltAndTumble extends Game {
 		font.dispose();
 		assetManager.dispose();
 	}
+	private InputProcessor mProcessor = new InputProcessor(){
+		 @Override
+		  public boolean keyDown(int keycode) {
+				if(keycode == Keys.BACK){
+					if(settingsScreen != null){
+						showPreviousScreen();
+						
+						}
+					}
+				return false;
+				}
+		  @Override
+		   public boolean keyUp (int keycode) {
+		      return false;
+		   }
+
+		   @Override
+		   public boolean keyTyped (char character) {
+		      return false;
+		   }
+
+		   @Override
+		   public boolean touchDown (int x, int y, int pointer, int button) {
+		      return false;
+		   }
+
+		   @Override
+		   public boolean touchUp (int x, int y, int pointer, int button) {
+		      return false;
+		   }
+
+		   @Override
+		   public boolean touchDragged (int x, int y, int pointer) {
+		      return false;
+		   }
+
+		   @Override
+		   public boolean scrolled (int amount) {
+		      return false;
+		   }
+
+		  @Override
+		  public boolean mouseMoved(int screenX, int screenY) {
+			return false;
+		  }
+	};
 }
