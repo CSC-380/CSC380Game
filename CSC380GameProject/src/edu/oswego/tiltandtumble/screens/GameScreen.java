@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
@@ -111,8 +112,10 @@ public class GameScreen extends AbstractScreen {
 
 	@Override
 	public void show() {
+		InputProcessor mProcessor = game.getProcessor();
 		Gdx.input.setInputProcessor(inputMux);
 		inputMux.addProcessor(stage);
+		inputMux.addProcessor(mProcessor);
 		if (game.getSettings().isUseDpad()){
 			DPad dpad = new DPad(skin, ballController);
 			dpad.setPosition(0, 0);
@@ -240,6 +243,7 @@ public class GameScreen extends AbstractScreen {
 			public void togglePause(GameScreen s) {
 				pause(s);
 			}
+			
 		},
 		SCORED;
 

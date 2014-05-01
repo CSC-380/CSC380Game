@@ -23,6 +23,7 @@ import edu.oswego.tiltandtumble.screens.HelpScreen;
 import edu.oswego.tiltandtumble.screens.HighScoresScreen;
 import edu.oswego.tiltandtumble.screens.LevelScreen;
 import edu.oswego.tiltandtumble.screens.MainScreen;
+import edu.oswego.tiltandtumble.screens.PauseScreen;
 import edu.oswego.tiltandtumble.screens.SettingsScreen;
 import edu.oswego.tiltandtumble.settings.Settings;
 
@@ -38,7 +39,7 @@ public class TiltAndTumble extends Game {
 	private SettingsScreen settingsScreen;
 	private LevelScreen levelScreen;
 	private GameScreen gameScreen;
-	
+	private PauseScreen pauseScreen;
 	private AssetManager assetManager;
 	private Skin skin;
 	private Stage stage;
@@ -79,8 +80,7 @@ public class TiltAndTumble extends Game {
 		
 		Gdx.input.setInputProcessor(mProcessor);
 		Gdx.input.setCatchBackKey(true);
-		//InputMultiplexer multiplexer = new InputMultiplexer(stage, mProcessor);
-       // Gdx.input.setInputProcessor(multiplexer);
+	
         
 		font = new BitmapFont();
 		loadSkin();
@@ -158,7 +158,13 @@ public class TiltAndTumble extends Game {
 	public void showPreviousScreen() {
 		setScreen(screenStack.pop());
 	}
-
+	public void showPauseScreen(){
+		if (pauseScreen == null) {
+			pauseScreen = new PauseScreen(this);
+		}
+		//crashes game
+		gameScreen.pause();
+	}
 	public AssetManager getAssetManager() {
 		return assetManager;
 	}
@@ -230,6 +236,34 @@ public class TiltAndTumble extends Game {
 				if(keycode == Keys.BACK){
 					if(settingsScreen != null){
 						showPreviousScreen();
+						}
+					if(gameScreen != null){
+						showPauseScreen();
+						
+						}
+					if(levelScreen != null){
+						showMainScreen();
+						
+						}
+					if(highScoresScreen != null){
+						showPreviousScreen();
+						
+						}
+					if(helpScreen != null){
+						showPreviousScreen();
+						
+						}
+					if(creditScreen != null){
+						showPreviousScreen();
+						
+						}
+					if(pauseScreen != null){
+						// when i get gamescreen right this should be exactly the same
+						
+						}
+					if(mainScreen != null){
+						//doesnt work right
+						dispose();
 						
 						}
 					}

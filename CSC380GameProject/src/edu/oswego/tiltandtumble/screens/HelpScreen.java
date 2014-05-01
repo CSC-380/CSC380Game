@@ -1,6 +1,8 @@
 package edu.oswego.tiltandtumble.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -17,7 +19,9 @@ public class HelpScreen extends AbstractScreen {
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage);
+    	InputProcessor mProcessor = game.getProcessor();
+        InputMultiplexer multiplexer = new InputMultiplexer(stage, mProcessor);
+        Gdx.input.setInputProcessor(multiplexer);
 
 		Window table = new Window("\nHelp", skin);
 		table.setFillParent(true);

@@ -1,7 +1,7 @@
 package edu.oswego.tiltandtumble.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -21,8 +21,9 @@ public class SettingsScreen extends AbstractScreen {
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage);
-        
+    	InputProcessor mProcessor = game.getProcessor();
+        InputMultiplexer multiplexer = new InputMultiplexer(stage, mProcessor);
+        Gdx.input.setInputProcessor(multiplexer);
 		Window table = new Window("\nSettings", skin);
 		table.setFillParent(true);
 		table.setModal(true);
@@ -92,9 +93,6 @@ public class SettingsScreen extends AbstractScreen {
             }
             
         });
-     InputProcessor mp = game.getProcessor();
-     if(Gdx.input.isKeyPressed(Keys.BACK)){
-    	 mp.keyDown(Keys.BACK);
-    	 }
+     
     }
 }
