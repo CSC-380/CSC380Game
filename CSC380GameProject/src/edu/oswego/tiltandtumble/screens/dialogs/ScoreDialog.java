@@ -2,6 +2,8 @@ package edu.oswego.tiltandtumble.screens.dialogs;
 
 import java.util.List;
 
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -17,11 +19,20 @@ public final class ScoreDialog extends Dialog {
 	private final TiltAndTumble game;
 	private final GameScreen screen;
 	TextField initials = null;
+	private Sound button;
 
 	public ScoreDialog(String title, Skin skin, TiltAndTumble game, GameScreen screen) {
 		super(title, skin, "dialog");
 		this.game = game;
 		this.screen = screen;
+		
+		AssetManager assetManager = new AssetManager();
+        String musicFile = "data/soundfx/button-8.wav";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		button = assetManager.get(musicFile, Sound.class);
 
 		padTop(50);
         setModal(true);
@@ -96,8 +107,10 @@ public final class ScoreDialog extends Dialog {
 			if (text != "") {
 				game.getHighScores().add(new HighScore(text, (Score)object));
 			}
+			button.play();
 			game.showPreviousScreen();
 		} else {
+			button.play();
 			screen.loadNextLevel();
 		}
 	}

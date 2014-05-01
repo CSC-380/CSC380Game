@@ -8,6 +8,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SkinLoader;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -25,7 +27,7 @@ import edu.oswego.tiltandtumble.screens.SettingsScreen;
 import edu.oswego.tiltandtumble.settings.Settings;
 
 
-public class TiltAndTumble extends Game {
+public class TiltAndTumble extends Game{
 
 	// NOTE: older phones do not have Deque interface
 	Stack<Screen> screenStack = new Stack<Screen>();
@@ -58,6 +60,9 @@ public class TiltAndTumble extends Game {
 
 	private Settings settings;
 	private HighScores scores;
+	
+	private boolean playMusic;
+	private Music music;
 
 	@Override
 	public void create() {
@@ -87,6 +92,14 @@ public class TiltAndTumble extends Game {
 		font = new BitmapFont();
 		loadSkin();
 		scores = HighScores.load();
+		playMusic = true;
+		String musicFile = "data/music/GameMenuMusic.mp3";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Music.class);
+			assetManager.finishLoading();
+		}
+		music = assetManager.get(musicFile, Music.class);
+		this.playMusic();
 		showMainScreen();
 	}
 
@@ -145,6 +158,7 @@ public class TiltAndTumble extends Game {
 			levelScreen = new LevelScreen(this);
 		}
 		screenStack.push(getScreen());
+		//this.playMusic();
 		setScreen(levelScreen);
 	}
 
@@ -154,10 +168,14 @@ public class TiltAndTumble extends Game {
 		}
 		screenStack.push(getScreen());
 		gameScreen = new GameScreen(this, level, mode);
+		//this.endMusic();
 		setScreen(gameScreen);
 	}
 
 	public void showPreviousScreen() {
+		if(screenStack.peek() != gameScreen){
+		this.playMusic();
+		}
 		setScreen(screenStack.pop());
 	}
 
@@ -200,11 +218,36 @@ public class TiltAndTumble extends Game {
 	public List<String> getLevels() {
 		return levels;
 	}
+	
+	public void playMusic() {
+		if (playMusic && music != null) {
+			music.setVolume(1f);
+			music.play();
+			music.setLooping(true);
+		}
+	}
+
+	public void endMusic() {
+		if (music != null) {
+			float vol = music.getVolume();
+			while(vol > 0f){
+				vol = (float) (vol - (0.02));
+				if(vol < 0f){
+					vol = 0f;
+				}
+				music.setVolume(vol);
+			}
+			music.stop();
+		}
+	}
+
+
 
 	@Override
 	public void dispose() {
 		HighScores.save(scores);
 		mainScreen.dispose();
+		music.dispose();
 		if (creditScreen != null) {
 			creditScreen.dispose();
 		}

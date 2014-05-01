@@ -1,6 +1,8 @@
 package edu.oswego.tiltandtumble.screens.dialogs;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
@@ -11,7 +13,7 @@ import edu.oswego.tiltandtumble.screens.GameScreen;
 public class PauseDialog extends Dialog {
 	private final GameScreen screen;
 	private final TiltAndTumble game;
-
+	private Sound button;
 	private static enum Buttons {
 		QUIT,
 		SETTINGS,
@@ -26,6 +28,14 @@ public class PauseDialog extends Dialog {
 		padTop(50);
         setModal(true);
         setMovable(false);
+        
+        AssetManager assetManager = new AssetManager();
+        String musicFile = "data/soundfx/button-8.wav";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		button = assetManager.get(musicFile, Sound.class);
 
         getButtonTable().row().uniform().fill();
         button("Quit", Buttons.QUIT);
@@ -43,8 +53,10 @@ public class PauseDialog extends Dialog {
 		super.result(object);
 		Gdx.app.log("dialog result", "" + object);
 		if (object != null && object instanceof Buttons) {
+			button.play();
 			Buttons b = (Buttons)object;
 			if (b == Buttons.QUIT) {
+				game.playMusic();
 				game.showPreviousScreen();
 			} else if (b == Buttons.SETTINGS) {
 				game.showSettingsScreen();

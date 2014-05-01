@@ -1,5 +1,8 @@
 package edu.oswego.tiltandtumble.screens.widgets;
 
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
@@ -8,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import edu.oswego.tiltandtumble.TiltAndTumble;
 import edu.oswego.tiltandtumble.screens.GameScreen;
 
 public class Starter extends Dialog {
@@ -18,14 +22,53 @@ public class Starter extends Dialog {
 	private State currentState;
 	private float countdownTime;
 	private int lastCount;
+	private Music zero;
+	private Music one;
+	private Music two;
+	private Music three;
+	private Sound buttonSound;
+	private AssetManager assetManager;
+	private TiltAndTumble game;
 
-	public Starter(GameScreen screen, Skin skin) {
+	public Starter(GameScreen screen, Skin skin, TiltAndTumble game) {
 		super("", skin, "countdown");
 		this.screen = screen;
+		this.game = game;
 		this.skin = skin;
+		assetManager = new AssetManager();
 		setFillParent(true);
         setModal(true);
         setMovable(false);
+		String musicFile = "data/soundfx/button-8.wav";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		buttonSound = assetManager.get(musicFile, Sound.class);
+        musicFile = "data/soundfx/number-zero.wav";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Music.class);
+			assetManager.finishLoading();
+		}
+		zero = assetManager.get(musicFile, Music.class);
+        musicFile = "data/soundfx/number-one.wav";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Music.class);
+			assetManager.finishLoading();
+		}
+		one = assetManager.get(musicFile, Music.class);
+		musicFile = "data/soundfx/number-two.wav";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Music.class);
+			assetManager.finishLoading();
+		}
+		two = assetManager.get(musicFile, Music.class);
+		musicFile = "data/soundfx/number-three.wav";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Music.class);
+			assetManager.finishLoading();
+		}
+		three = assetManager.get(musicFile, Music.class);
 	}
 
 	@Override
@@ -44,6 +87,8 @@ public class Starter extends Dialog {
 		button.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+				game.endMusic();
+				buttonSound.play();
 				button.remove();
 				currentState = State.COUNTING;
 			}
@@ -68,6 +113,15 @@ public class Starter extends Dialog {
 				if (s.lastCount != count) {
 					s.clear();
 					Label text = new Label(String.valueOf(count), s.skin, "countdown");
+					if(count == 0){
+						s.zero.play();
+					}else if(count == 1){
+						s.one.play();
+					}else if(count == 2){
+						s.two.play();
+					}else if(count == 3){
+						s.three.play();
+					}
 					s.add(text);
 					s.pack();
 				}
