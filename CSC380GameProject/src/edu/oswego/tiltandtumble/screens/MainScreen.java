@@ -9,9 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-
 import edu.oswego.tiltandtumble.TiltAndTumble;
-import edu.oswego.tiltandtumble.screens.dialogs.PauseDialog;
 import edu.oswego.tiltandtumble.screens.dialogs.SelectDialog;
 
 
@@ -94,6 +92,7 @@ public class MainScreen extends AbstractScreen {
     }
     
     public void showMulti(){
-    	selectDialog = new SelectDialog("MultiPlayer", skin, game, this).show(stage);
+    	selectDialog = new SelectDialog("MultiPlayer", skin, game, this);
+    	selectDialog.show(stage);
     }
 }

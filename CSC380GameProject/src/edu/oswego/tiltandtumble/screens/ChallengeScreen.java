@@ -9,10 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-//import com.datastax.driver.core.Cluster;
-//import com.datastax.driver.core.ResultSet;
-//import com.datastax.driver.core.Row;
-//import com.datastax.driver.core.Session;
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Row;
+import com.datastax.driver.core.Session;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
 
@@ -39,20 +39,20 @@ public class ChallengeScreen extends AbstractScreen  {
 
             	System.out.println(" ");
             	//Cluster cluster = Cluster.builder().addContactPoint("localhost").build();
-//            	Cluster cluster = Cluster.builder().addContactPoint("129.3.20.26").withPort(2715).build();
-//            	Session session = cluster.connect();
-//            	session.execute("DROP KEYSPACE challengeMap");
-//            	session.execute("CREATE KEYSPACE challengeMap "
-//            	   		+ "WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };");
-//          
-//            	session.execute("USE challengeMap;");
-//            	session.execute("CREATE TABLE users ("
-//            	   		+ "username text PRIMARY KEY, "
-//            	   		+ "highscore int, "
-//            	   		+ "pathx map<int, int>, "
-//            	   		+ "pathy map<int, int>);");
-//            	session.execute("INSERT INTO users (username, highscore, pathx, pathy) "
-//            	   		+ "VALUES ('schrecen', 0, {0 : 1}, {0 : 1});");
+            	Cluster cluster = Cluster.builder().addContactPoint("129.3.20.26").withPort(2715).build();
+            	Session session = cluster.connect();
+            	session.execute("DROP KEYSPACE challengeMap");
+            	session.execute("CREATE KEYSPACE challengeMap "
+            	   		+ "WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };");
+          
+            	session.execute("USE challengeMap;");
+            	session.execute("CREATE TABLE users ("
+            	   		+ "username text PRIMARY KEY, "
+            	   		+ "highscore int, "
+            	   		+ "pathx map<int, int>, "
+            	   		+ "pathy map<int, int>);");
+            	session.execute("INSERT INTO users (username, highscore, pathx, pathy) "
+            	   		+ "VALUES ('schrecen', 0, {0 : 1}, {0 : 1});");
             	/*
             	
             	ResultSet results = session.execute("SELECT * FROM users;");
