@@ -1,8 +1,9 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -12,10 +13,11 @@ import edu.oswego.tiltandtumble.collisionListener.BallCollisionListener;
 import edu.oswego.tiltandtumble.levels.Level;
 import edu.oswego.tiltandtumble.levels.UnitScale;
 import edu.oswego.tiltandtumble.worldObjects.graphics.GraphicComponent;
+import edu.oswego.tiltandtumble.worldObjects.paths.MovementStrategy;
 
 public class MovingWall extends AbstractWorldObject
 		implements MapRenderable, WorldUpdateable, Disposable,
-		BallCollisionListener {
+		BallCollisionListener, Activatable, Audible {
 	public static final float FRICTION = 0.5f;
 	public static final float DENSITY = 5.0f;
 	public static final float RESTITUTION = 0.0f;
@@ -23,32 +25,40 @@ public class MovingWall extends AbstractWorldObject
 
 	// in meters per second
 	public static final float DEFAULT_SPEED = 1f;
-	public static final String DEFAULT_SPRITE = "WallGrey2x2.png";
+	public static final String DEFAULT_SPRITE = "WallGrey2x2";
 
-	private final float speed;
-	private final PathPointTraverser nodes;
 	private final UnitScale scale;
-
+	private final MovementStrategy movement;
 	private final GraphicComponent graphic;
 
-	private final Vector2 startNode = new Vector2();
-	private final Vector2 endNode = new Vector2();
+	private final GraphicComponent deathGraphic;
+	private boolean death = false;
+	private boolean playSound;
+	private final Sound deathSound;
 
 	private boolean collidingWithBall = false;
 	private Ball ball;
     private final Level level;
 
-	public MovingWall(Body body, float speed, PathPointTraverser nodes,
-			GraphicComponent graphic, UnitScale scale, Level level) {
+	public MovingWall(Body body, MovementStrategy movement,
+			GraphicComponent graphic, GraphicComponent deathGraphic,
+			UnitScale scale, Level level, AssetManager assetManager) {
 		super(body);
 
-		this.speed = speed;
 		this.scale = scale;
 		this.level = level;
 		this.graphic = graphic;
+		this.deathGraphic = deathGraphic;
 
-		this.nodes = nodes;
-		nodes.next();
+		this.movement = movement;
+
+		playSound = true;
+		String soundFile = "data/soundfx/popping.ogg";
+		if (!assetManager.isLoaded(soundFile)) {
+			assetManager.load(soundFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		deathSound = assetManager.get(soundFile, Sound.class);
 	}
 
 	@Override
@@ -60,6 +70,12 @@ public class MovingWall extends AbstractWorldObject
 		graphic.setPosition(scale.metersToPixels(body.getPosition().x),
 				scale.metersToPixels(body.getPosition().y));
 		graphic.draw(delta, batch);
+		if (death) {
+			if (deathGraphic.isFinished()) {
+				level.exit();
+			}
+			deathGraphic.draw(delta, batch);
+		}
 	}
 
 	@Override
@@ -69,37 +85,24 @@ public class MovingWall extends AbstractWorldObject
 		if (collidingWithBall) {
 			if (body.getFixtureList().get(0).testPoint(ball.getBody().getPosition())) {
 				Gdx.app.log("MovingWall", "Wall SMASH Ball!");
-				level.finish(true);
+				level.fail();
+				ball.hide();
+				deathGraphic.setPosition(ball.getMapX(), ball.getMapY());
+				playSound();
+				deathGraphic.start();
+				death = true;
 			}
 		}
 	}
 
 	private void move(float timeDelta) {
-		startNode.set(body.getPosition());
-		float distanceToTravel = speed * timeDelta;
-		float distanceToPoint = body.getPosition()
-				.dst(nodes.current().x, nodes.current().y);
-		// move along the path until we find the segment we need to stop on
-		while (distanceToTravel > distanceToPoint) {
-			distanceToTravel = distanceToTravel - distanceToPoint;
-			startNode.set(nodes.current().x, nodes.current().y);
-
-			nodes.next();
-			distanceToPoint = body.getPosition()
-					.dst(nodes.current().x, nodes.current().y);
-		}
-		endNode.set(nodes.current().x, nodes.current().y);
-
-		// now we have a valid distance on the next line segment.
-		// C = A + k(B - A)
-		final float distance = distanceToTravel / distanceToPoint;
-		body.setTransform(
-				endNode.sub(startNode).scl(distance).add(startNode), 0);
+		body.setTransform(movement.move(body.getPosition(), timeDelta), 0);
 	}
 
 	@Override
 	public void dispose() {
 		graphic.dispose();
+		deathGraphic.dispose();
 	}
 
 	@Override
@@ -113,5 +116,32 @@ public class MovingWall extends AbstractWorldObject
 	public void handleEndCollision(Contact contact, Ball ball) {
 		collidingWithBall = false;
 		this.ball = null;
+	}
+
+	@Override
+	public void activate() {
+		movement.activate();
+	}
+
+	@Override
+	public void deactivate() {
+		movement.deactivate();
+	}
+
+	@Override
+	public void setPlaySound(boolean value) {
+		playSound = value;
+	}
+
+	@Override
+	public void playSound() {
+		if (playSound) {
+			deathSound.play();
+		}
+	}
+
+	@Override
+	public void endSound() {
+		deathSound.stop();
 	}
 }

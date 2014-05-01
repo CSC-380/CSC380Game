@@ -23,9 +23,14 @@ import edu.oswego.tiltandtumble.screens.widgets.Hud;
 import edu.oswego.tiltandtumble.screens.widgets.Starter;
 
 public class GameScreen extends AbstractScreen {
+	public static enum Mode {
+		ARCADE, PRACTICE
+	}
+
 	private final BallController ballController;
 	private final WorldPopulator worldPopulator;
 
+	private final Mode currentMode;
 	private Level level;
 	private LevelRenderer renderer;
 	private AudioManager audio;
@@ -39,18 +44,20 @@ public class GameScreen extends AbstractScreen {
 
 	private Dialog pauseDialog;
 
-	public GameScreen(TiltAndTumble game, int currentLevel) {
+	public GameScreen(TiltAndTumble game, int currentLevel, Mode mode) {
 		super(game);
 		ballController = new BallController(!game.getSettings().isUseDpad());
-		worldPopulator = new WorldPopulator();
+		worldPopulator = new WorldPopulator(game.getAssetManager());
 
 		hud = new Hud(this, skin);
 		loadLevel(currentLevel);
 		hud.setScore(level.getScore());
+		currentMode = mode;
 	}
 
 	public void loadLevel(int num) {
 		changeState(State.WAITING);
+		Gdx.app.log("GameScreen", "Loading level #" + num);
 		if (level != null) {
 			level.dispose();
 			level = null;
@@ -64,22 +71,36 @@ public class GameScreen extends AbstractScreen {
 			audio.dispose();
 			audio = null;
 		}
-		level = new Level(num, ballController, worldPopulator);
-		renderer = new DefaultLevelRenderer(level,game.getWidth(), game.getHeight(), game.getSpriteBatch());
+		Gdx.app.log("GameScreen", "Cleaned up previous level");
+		level = new Level(num,
+				game.getLevels().get(num),
+				ballController, worldPopulator, game.getAssetManager());
+		Gdx.app.log("GameScreen", "Level loaded");
+		renderer = new DefaultLevelRenderer(level,
+				game.getWidth(), game.getHeight(),
+				game.getSpriteBatch(),
+				game.getAssetManager());
 		if (game.getSettings().isDebugRender()) {
 			renderer = new DebugLevelRenderer(renderer, ballController);
 		}
+		Gdx.app.log("GameScreen", "Renderer created");
 		audio = new AudioManager(
 				level,
 				game.getSettings().isMusicOn(),
-				game.getSettings().isSoundEffectOn());
+				game.getSettings().isSoundEffectOn(),
+				game.getAssetManager());
 		game.getSettings().addObserver(audio);
-		hud.setLevel(num);
+		Gdx.app.log("GameScreen", "Audio manager created");
+		hud.setLevel(num + 1);
 		new Starter(this, skin).show(stage);
+		Gdx.app.log("GameScreen", "Level starting...");
 	}
 
 	public boolean hasMoreLevels() {
-		return Gdx.files.internal("data/level" + (level.getLevelNumber() + 1) + ".tmx").exists();
+		if (currentMode == Mode.ARCADE){
+			return level.getLevelNumber() < game.getLevels().size();
+		}
+		return false;
 	}
 
 	public void loadNextLevel() {
@@ -97,6 +118,10 @@ public class GameScreen extends AbstractScreen {
 
 	public List<Score> getScores() {
 		return scores;
+	}
+
+	public Mode getMode() {
+		return currentMode;
 	}
 
 	@Override

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="10" height="15" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="sci-fi-platformer-tiles-0" tilewidth="32" tileheight="32">
+  <image source="tiles/sci-fi-platformer-tiles-0.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="257" name="sci-fi-platformer-tiles-9" tilewidth="32" tileheight="32">
+  <image source="tiles/sci-fi-platformer-tiles-9.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="513" name="sci-fi-platformer-tiles-8" tilewidth="32" tileheight="32">
+  <image source="tiles/sci-fi-platformer-tiles-8.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="769" name="sci-fi-platformer-tiles-6" tilewidth="32" tileheight="32">
+  <image source="tiles/sci-fi-platformer-tiles-6.png" width="512" height="512"/>
+ </tileset>
+ <layer name="background" width="10" height="15">
+  <data encoding="base64" compression="zlib">
+   eJwzYWBgMBnFo5jKGAD19R55
+  </data>
+ </layer>
+ <layer name="map" width="10" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxTZGRgUCQSczIxMKgCMRcQo4NIZoQ6kBoLqFp86iShaqQIqEPH6AAmnsmMKTeY1OESJ+Q/UuzlBIqpAjEXM351IDUWULX41ElC1UjhiQ9sGAAP+w2G
+  </data>
+ </layer>
+ <objectgroup name="collision" width="10" height="15">
+  <object name="StaticWall" x="0" y="0" width="32" height="480"/>
+  <object name="StaticWall" x="160" y="288" width="128" height="32"/>
+  <object name="StaticWall" x="288" y="0" width="32" height="448"/>
+  <object name="StaticWall" x="32" y="0" width="256" height="32"/>
+  <object name="StaticWall" x="32" y="128" width="128" height="32"/>
+  <object name="PushBumper" x="32" y="160" width="8" height="128"/>
+  <object name="PushBumper" x="280" y="32" width="8" height="96"/>
+  <object name="Ball" x="67" y="67" width="24" height="24">
+   <ellipse/>
+  </object>
+  <object name="FinishLine" x="215" y="374" width="48" height="48">
+   <ellipse/>
+  </object>
+  <object name="StaticWall" x="32" y="448" width="288" height="32"/>
+  <object name="PushBumper" x="32" y="352" width="8" height="96"/>
+ </objectgroup>
+</map>

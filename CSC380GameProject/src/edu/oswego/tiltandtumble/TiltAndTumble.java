@@ -1,14 +1,16 @@
 package edu.oswego.tiltandtumble;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.SkinLoader;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
@@ -28,6 +30,15 @@ public class TiltAndTumble extends Game {
 	// NOTE: older phones do not have Deque interface
 	Stack<Screen> screenStack = new Stack<Screen>();
 
+	private final List<String> levels = new ArrayList<String>();
+	{
+		levels.add("level4.tmx");
+		levels.add("level5.tmx");
+		levels.add("level3.tmx");
+		levels.add("level2.tmx");
+		levels.add("level1.tmx");
+	}
+
 	private MainScreen mainScreen;
 	private CreditScreen creditScreen;
 	private HelpScreen helpScreen;
@@ -36,6 +47,7 @@ public class TiltAndTumble extends Game {
 	private LevelScreen levelScreen;
 	private GameScreen gameScreen;
 
+	private AssetManager assetManager;
 	private Skin skin;
 	private Stage stage;
 	private BitmapFont font;
@@ -50,6 +62,8 @@ public class TiltAndTumble extends Game {
 	@Override
 	public void create() {
 		Texture.setEnforcePotImages(true);
+
+		assetManager = new AssetManager();
 
 		settings = new Settings();
 
@@ -71,15 +85,17 @@ public class TiltAndTumble extends Game {
 		stage = new Stage(width, height, true, batch);
 
 		font = new BitmapFont();
-		skin = new Skin();
 		loadSkin();
 		scores = HighScores.load();
 		showMainScreen();
 	}
 
 	private void loadSkin() {
-		skin.addRegions(new TextureAtlas(Gdx.files.internal("data/ui/tiltandtumble.pack")));
-		skin.load(Gdx.files.internal("data/ui/skin.json"));
+		assetManager.load("data/ui/skin.json", Skin.class,
+				new SkinLoader.SkinParameter("data/ui/tiltandtumble.pack"));
+		assetManager.finishLoading();
+
+		skin = assetManager.get("data/ui/skin.json", Skin.class);
 	}
 
 	public void showMainScreen() {
@@ -132,17 +148,21 @@ public class TiltAndTumble extends Game {
 		setScreen(levelScreen);
 	}
 
-	public void showGameScreen(int level) {
+	public void showGameScreen(int level, GameScreen.Mode mode) {
 		if (gameScreen != null) {
 			gameScreen.dispose();
 		}
 		screenStack.push(getScreen());
-		gameScreen = new GameScreen(this, level);
+		gameScreen = new GameScreen(this, level, mode);
 		setScreen(gameScreen);
 	}
 
 	public void showPreviousScreen() {
 		setScreen(screenStack.pop());
+	}
+
+	public AssetManager getAssetManager() {
+		return assetManager;
 	}
 
 	public Skin getSkin() {
@@ -177,6 +197,10 @@ public class TiltAndTumble extends Game {
 		return height;
 	}
 
+	public List<String> getLevels() {
+		return levels;
+	}
+
 	@Override
 	public void dispose() {
 		HighScores.save(scores);
@@ -191,7 +215,6 @@ public class TiltAndTumble extends Game {
 			highScoresScreen.dispose();
 		}
 		if (settingsScreen != null) {
-
 			settingsScreen.dispose();
 		}
 		if (levelScreen != null) {
@@ -203,6 +226,6 @@ public class TiltAndTumble extends Game {
 		stage.dispose();
 		batch.dispose();
 		font.dispose();
-		skin.dispose();
+		assetManager.dispose();
 	}
 }

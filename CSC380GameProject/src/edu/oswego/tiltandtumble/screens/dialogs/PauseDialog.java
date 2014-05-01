@@ -49,7 +49,11 @@ public class PauseDialog extends Dialog {
 			} else if (b == Buttons.SETTINGS) {
 				game.showSettingsScreen();
 			} else if (b == Buttons.RETRY) {
-				screen.loadLevel(1);
+				if (screen.getMode() == GameScreen.Mode.ARCADE) {
+					screen.loadLevel(1);
+				} else {
+					screen.loadLevel(screen.getCurrentLevel().getLevelNumber());
+				}
 			} else if (b == Buttons.CONTINUE) {
 				screen.resume();
 			}

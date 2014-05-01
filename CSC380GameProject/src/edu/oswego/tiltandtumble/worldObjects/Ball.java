@@ -1,6 +1,6 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.Disposable;
 
 import edu.oswego.tiltandtumble.levels.UnitScale;
 import edu.oswego.tiltandtumble.worldObjects.graphics.GraphicComponent;
-import edu.oswego.tiltandtumble.worldObjects.graphics.SpriteGraphic;
 
 public class Ball extends AbstractWorldObject implements Disposable, Audible {
 	public static final float FRICTION = 0.1f;
@@ -20,19 +19,25 @@ public class Ball extends AbstractWorldObject implements Disposable, Audible {
 	public static final float LINEAR_DAMPENING = 0.1f;
 
 	private final GraphicComponent graphic;
+	private boolean visible = true;
 
 	private final UnitScale scale;
 	private boolean playSound;
 	private final Sound sound;
 
-	public Ball(Body body, float diameter, UnitScale scale) {
+	public Ball(Body body, GraphicComponent graphic, UnitScale scale, AssetManager assetManager) {
 		super(body);
 		this.scale = scale;
 
-		graphic = new SpriteGraphic("data/WorldObjects/GreenOrb.png", diameter, diameter);
+		this.graphic = graphic;
 
 		playSound = true;
-		sound = Gdx.audio.newSound(Gdx.files.internal("data/soundfx/boing1.wav"));
+		String soundFile = "data/soundfx/boing1.ogg";
+		if (!assetManager.isLoaded(soundFile)) {
+			assetManager.load(soundFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		sound = assetManager.get(soundFile, Sound.class);
 	}
 
 	public void applyLinearImpulse(float x, float y) {
@@ -41,8 +46,15 @@ public class Ball extends AbstractWorldObject implements Disposable, Audible {
 	}
 
 	public void draw(float delta, SpriteBatch batch) {
-		graphic.setPosition(getMapX(), getMapY());
-		graphic.draw(delta, batch);
+		if (visible) {
+			graphic.setPosition(getMapX(), getMapY());
+			graphic.draw(delta, batch);
+		}
+	}
+
+	public float getRadius() {
+		return scale.metersToPixels(
+				body.getFixtureList().get(0).getShape().getRadius());
 	}
 
 	public float getMapX() {
@@ -53,10 +65,17 @@ public class Ball extends AbstractWorldObject implements Disposable, Audible {
 		return scale.metersToPixels(body.getPosition().y);
 	}
 
+	public void hide() {
+		visible = false;
+	}
+
+	public void show() {
+		visible = true;
+	}
+
 	@Override
 	public void dispose() {
 		graphic.dispose();
-		sound.dispose();
 	}
 
 	@Override
@@ -67,7 +86,12 @@ public class Ball extends AbstractWorldObject implements Disposable, Audible {
 	@Override
 	public void playSound() {
 		if (playSound) {
-			sound.play(0.2f);
+			sound.play();
 		}
+	}
+
+	@Override
+	public void endSound() {
+		sound.stop();
 	}
 }

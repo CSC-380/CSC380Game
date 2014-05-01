@@ -33,8 +33,7 @@ public class MainScreen extends AbstractScreen {
         window.addActor(table);
 
         Button play = new TextButton("Play", skin);
-        table.add();
-        table.add(play).fillX().pad(25);
+        table.add(play).width(100).pad(10).padBottom(20).colspan(4);
         play.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -42,7 +41,7 @@ public class MainScreen extends AbstractScreen {
             }
         });
 
-        table.row().pad(25).uniform().fill().bottom();
+        table.row().pad(10).padBottom(20).uniform().fill().bottom();
         Button settings = new TextButton("Settings", skin);
         table.add(settings);
         settings.addListener(new ChangeListener() {
@@ -58,6 +57,15 @@ public class MainScreen extends AbstractScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 game.showHighScoresScreen();
+            }
+        });
+
+        Button help = new TextButton("Help", skin);
+        table.add(help);
+        help.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.showHelpScreen();
             }
         });
 

@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -21,7 +23,7 @@ import edu.oswego.tiltandtumble.worldObjects.MapRenderable;
 import edu.oswego.tiltandtumble.worldObjects.WorldObject;
 import edu.oswego.tiltandtumble.worldObjects.WorldUpdateable;
 
-public class Level implements Disposable {
+public class Level implements Disposable, Audible {
 
 	// TODO: Setting default score to 1000, figure out a good value for this...
 	private static final int DEFAULT_SCORE = 1000;
@@ -48,18 +50,22 @@ public class Level implements Disposable {
 	private final int mapWidth;
 	private final int mapHeight;
 
+	private boolean playSound;
+	private final Sound failSound;
+
 	private final Collection<Disposable> disposableObjects;
 	private final Collection<MapRenderable> renderableObjects;
 	private final Collection<WorldUpdateable> updateableObjects;
 	private final Collection<Audible> audibleObjects;
 
-	public Level(int level, BallController ballController, WorldPopulator populator) {
+	public Level(int level, String filename, BallController ballController,
+			WorldPopulator populator, AssetManager assetManager) {
 		this.level = level;
 		this.ballController = ballController;
 
 		currentState = State.NOT_STARTED;
 
-		map = loadMap(level);
+		map = loadMap(filename);
 
 		mapWidth = map.getProperties().get("width", Integer.class)
 				* map.getProperties().get("tilewidth", Integer.class);
@@ -75,8 +81,18 @@ public class Level implements Disposable {
 		updateableObjects = new LinkedList<WorldUpdateable>();
 		audibleObjects = new LinkedList<Audible>();
 
+		audibleObjects.add(this);
+
 		ball = populator.populateWorldFromMap(this, map, world, scale);
 		this.ballController.setBall(ball);
+
+		playSound = true;
+		String soundFile = "data/soundfx/failure-2.ogg";
+		if (!assetManager.isLoaded(soundFile)) {
+			assetManager.load(soundFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		failSound = assetManager.get(soundFile, Sound.class);
 
 		contactListener = new OurCollisionListener();
 		world.setContactListener(contactListener);
@@ -138,12 +154,16 @@ public class Level implements Disposable {
 		return currentState == State.STARTED;
 	}
 
-	public void finish() {
-		finish(false);
+	public void win() {
+		currentState.end(this, false);
 	}
 
-	public void finish(boolean fail) {
-		currentState.finish(this, fail);
+	public void fail() {
+		currentState.end(this, true);
+	}
+
+	public void exit() {
+		currentState.finish(this);
 	}
 
 	public boolean isFailed() {
@@ -166,15 +186,34 @@ public class Level implements Disposable {
 		score.setTime((int)difference);
 	}
 
-	private TiledMap loadMap(int level) {
-		if (Gdx.files.internal("data/level" + level + ".tmx").exists()) {
-			return new TmxMapLoader().load("data/level" + level + ".tmx");
+	private TiledMap loadMap(String file) {
+		if (Gdx.files.internal("data/" + file).exists()) {
+			return new TmxMapLoader().load("data/" + file);
 		}
-		throw new RuntimeException("data/level" + level + ".tmx does not exist");
+		throw new RuntimeException("data/" + file + " does not exist");
 	}
 
 	public int getLevelNumber() {
 		return level;
+	}
+
+	@Override
+	public void setPlaySound(boolean value) {
+		playSound = value;
+	}
+
+	@Override
+	public void playSound() {
+		if (playSound) {
+			if (isFailed()) {
+				failSound.play();
+			}
+		}
+	}
+
+	@Override
+	public void endSound() {
+		failSound.stop();
 	}
 
 	public void draw(float delta, SpriteBatch batch) {
@@ -204,6 +243,7 @@ public class Level implements Disposable {
 		for (Disposable d : disposableObjects) {
 			d.dispose();
 		}
+		failSound.dispose();
 	}
 
 	public void pause() {
@@ -234,16 +274,21 @@ public class Level implements Disposable {
     		}
 
     		@Override
-    		public void finish(Level l, boolean fail) {
+    		public void end(Level l, boolean fail) {
     			l.failed = fail;
     			l.updateScore();
-    			l.changeState(FINISHED);
+    			l.changeState(ENDING);
+    			for (Audible a : l.audibleObjects) {
+    				a.endSound();
+    			}
     		}
 
     		@Override
     		public void update(Level l, float delta) {
     			if (l.isBallOutsideLevel()) {
-    				finish(l, true);
+    				l.fail();
+    				l.exit();
+    				return;
     			}
     			l.ballController.update(delta);
     			for (WorldUpdateable w : l.updateableObjects) {
@@ -263,12 +308,20 @@ public class Level implements Disposable {
     			l.changeState(STARTED);
     		}
         },
+        ENDING {
+    		@Override
+			public void finish(Level l) {
+    			l.changeState(FINISHED);
+    			l.playSound();
+    		}
+        },
         FINISHED;
 
         public void start(Level l) {}
 		public void pause(Level l) {}
 		public void resume(Level l) {}
-		public void finish(Level l, boolean fail) {}
+		public void end(Level l, boolean fail) {}
+		public void finish(Level l) {}
 		public void update(Level l, float delta) {}
     };
 }

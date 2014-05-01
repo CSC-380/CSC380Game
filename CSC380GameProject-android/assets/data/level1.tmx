@@ -3,6 +3,7 @@
  <properties>
   <property name="background image" value="NASA_HiddenUniverse_08.jpg"/>
   <property name="music" value="space_0.mp3"/>
+  <property name="name" value="Kessel Run"/>
  </properties>
  <tileset firstgid="1" name="sci-fi-platformer-tiles-9" tilewidth="32" tileheight="32">
   <image source="tiles/sci-fi-platformer-tiles-9.png" width="512" height="512"/>
@@ -23,7 +24,7 @@
  </layer>
  <layer name="map" width="100" height="20">
   <data encoding="base64" compression="zlib">
-   eJzVmUtuAjEMhiNm2d6A7qquKasuYQv0FFUXvUEfZ4A7F4tYcq3fjjOTgfSXLGXymGT8JU4I65TS+krG6uU9vZj+nrtFSu9nuz/bcUiTtAZ5pwHnW+13w8V4fFunLpefwLhl3uGcfsv2CuoenDLZlzfujwa+IyMWn5lJS2n2Vv9WPY/FqlCuZfHYi/TO8ec1eSwzi4cGPLy1GG2P0itQtq0cm14D/LwHfrRiSem5RbyyYlTEh1THWuO17+J6NJ7j4PufnmU8KsUrksUDManlYelnuFjUl6U1GHlHLQ9KPwfrIem1wnW9uUdCe4QVx3R79qtVXlLvPCwmJR7MosYXJPb7I9izEaeIb2pjkdXW69ObX1OExoaYUN4+xw/dv1wXY3kgJh4Pyw8l/6B4G0m39Lkna35sQT3LDxunLCK5RiSTOXikVPb72D2phXS/5A90PjyI3x0oDn5lX07hodeIx0PvGzwGy5fWvhjRLXnob9R1vXFFzyta1t5du394PKb485Y8SnVrYkFULXhYseY44HwvHs0Rr8aer6aqFQ+LEYpTLLQ+eEz/gYe+v+qRR2ROsSQPuV/wvdtOrTOZvjWP0pyZ0m+tojz4vI1M998yrs7Bo0Xs5/sSS+j3eURRHnqPQHNKnr2tMxXvKdE78155eKq912WN2cs9HqQNyPfaIqP/Op7yfx1z8vDOf5SH7lRLirDwvknHdtKY/SPaX0TE4iUzueb5SrdB90gsFK+se6vv4a9xHZlnqfQfVUlyTKW+LC0zi4dFeS21NlYv7+nF5Pf8AtlqtXw=
+   eJzNmTtuwzAMhoV4bG+QbkWzppk6JmuSnqLo0Bv0cYbkzg0REWCJnxQly6l/QIAs68lPomR5k1La3Ciw5lLPXIIez90ipfdLuL+E05BMrRbX/K9Ong1IOw843Sq/H66B+7dz8vL7M+iTTDte4m85oP4fnXeyLa/fH45dIuI2iMVnZhIp4/HQeVFct2/l81isC++1LB4HEd8X5tmteCwzi4cOPLy1GO0Tiq/Bu12wTpZeA/x8AOOxfEnpuYe/snxUxIbR9TKWh7Y/PUt/VPJXJIsHYlLLw9LPcA1RW5bWYKSOWh4Ufw7mQ9JrhfN6c4+E9gjLj+nybFfrfUljedCYd8E6WnhYTEo8mEWNLUhs90ewZyNOkbla64ussl6b1twaK9Q3xITSDtl/6D7IddHKAzHxeFi2KNnoNPg8rHhvu1uy5scO5LPssHXeRSTXiGQyBY+UynZv3ZN6SLdL9kDnw6P47kB+8CvbcgwPvUY8Hnrf4D5YtrT2xYj+k4ceo87r9St6XtGy9u7a/cPjMcaeXH4FvjtusX94eWt8QVQ9eFi+5jTgdM8feUxb2baer8aqFw+LEfJTLLQ+uE89eCBFxxvhoe+v5sgjegdEkjzkfsH3bnu1zmR8DA/vblHmi96foD62akoefN5GQbff069G1lbJp2kePXw/zQNvLqDv84iiPCJjl2dv60zFe0pkXst25XOtpuDhqfZel9Wyl5fm4hake2VRoH8dT/lfx5Q8vDMCpaE71ZIiLLz5oH07qWX/iLYXEbF4yUy4Lj7vTnm+0mXQPRIL+Svr3up7+Bs4j0yzVPpHVZLsU6ktS8vM4mFhr6GpAmsu9cwlyPH8AnhVujM=
   </data>
  </layer>
  <objectgroup name="collision" width="100" height="20">
@@ -55,7 +56,6 @@
   <object name="MovingWall" x="2975" y="445" width="64" height="64">
    <properties>
     <property name="path" value="p1"/>
-    <property name="sprite" value="WallGrey2x2.png"/>
    </properties>
   </object>
   <object name="StaticWall" x="2911" y="351">
@@ -64,7 +64,7 @@
   <object name="StaticWall" x="3039" y="351">
    <polygon points="0,0 0,97 64,97 65,0"/>
   </object>
-  <object name="Hole" x="2656" y="417">
+  <object name="Spike" x="2656" y="417">
    <polyline points="3,0 8,16 89,16 93,-1"/>
   </object>
   <object name="Hole" x="331" y="235" width="392" height="137"/>
@@ -74,16 +74,14 @@
    <properties>
     <property name="path" value="p1"/>
     <property name="speed" value="-1.5"/>
-    <property name="sprite" value="WallGrey2x2.png"/>
    </properties>
   </object>
   <object name="MovingWall" x="2724" y="287" width="64" height="64">
    <properties>
     <property name="path" value="p1"/>
-    <property name="sprite" value="WallGrey2x2.png"/>
    </properties>
   </object>
-  <object name="TeleporterTarget" x="3103" y="543" width="31" height="31">
+  <object name="TeleporterTarget" x="3104" y="544" width="32" height="32">
    <properties>
     <property name="id" value="start"/>
    </properties>
@@ -215,15 +213,15 @@
   <object name="PushBumper" x="1539" y="602" width="126" height="7"/>
   <object name="PushBumper" x="2490" y="385" width="6" height="59"/>
   <object name="PushBumper" x="2489" y="291" width="6" height="59"/>
-  <object name="Hole" x="2270" y="449">
+  <object name="Spike" x="2270" y="449">
    <polyline points="-59,29 -54,16 151,16 158,30"/>
   </object>
   <object name="PushBumper" x="2626" y="602" width="58" height="5"/>
   <object name="StaticWall" x="1185" y="257" width="62" height="125"/>
   <object name="StaticWall" x="513" y="129" width="30" height="93"/>
   <object name="StaticWall" x="513" y="384" width="29" height="227"/>
-  <object name="StaticWall" x="225" y="128" width="30" height="102"/>
-  <object name="StaticWall" x="129" y="225" width="126" height="29"/>
+  <object name="StaticWall" x="225" y="128" width="30" height="64"/>
+  <object name="StaticWall" x="129" y="225" width="95" height="30"/>
   <object name="StaticWall" x="929" y="1" width="510" height="30"/>
   <object name="StaticWall" x="930" y="608" width="509" height="32"/>
   <object name="StaticWall" x="863" y="2">
@@ -252,16 +250,16 @@
   </object>
   <object name="StaticWall" x="929" y="160" width="30" height="448"/>
   <object name="StaticWall" x="834" y="32" width="28" height="447"/>
-  <object name="MovingWall" x="864" y="161" width="64" height="64">
+  <object name="MovingWall" x="864" y="280" width="64" height="64">
    <properties>
     <property name="path" value="pmid1"/>
-    <property name="sprite" value="WallGrey2x2.png"/>
+    <property name="speed" value="1"/>
    </properties>
   </object>
-  <object name="MovingWall" x="866" y="414" width="64" height="64">
+  <object name="MovingWall" x="864" y="299" width="64" height="64">
    <properties>
     <property name="path" value="pmid2"/>
-    <property name="sprite" value="WallGrey2x2.png"/>
+    <property name="speed" value="1"/>
    </properties>
   </object>
   <object name="StaticWall" x="994" y="64" width="93" height="31"/>
@@ -280,8 +278,8 @@
   </object>
   <object name="StaticWall" x="1153" y="27" width="29" height="259"/>
   <object name="StaticWall" x="1249" y="28" width="29" height="259"/>
-  <object name="Hole" x="1182" y="30" width="67" height="16"/>
-  <object name="Hole" x="1181" y="241" width="67" height="16"/>
+  <object name="Spike" x="1182" y="30" width="67" height="16"/>
+  <object name="Spike" x="1181" y="241" width="67" height="16"/>
   <object name="Teleporter" x="1191" y="135" width="48" height="16">
    <properties>
     <property name="id" value="midtrap"/>
@@ -289,15 +287,15 @@
     <property name="wait time" value="5"/>
    </properties>
   </object>
-  <object name="Teleporter" x="1191" y="488" width="48" height="16">
+  <object name="Teleporter" x="1192" y="488" width="16" height="16">
    <properties>
-    <property name="id" value="midtrap1"/>
+    <property name="id" value="midtrap1a"/>
     <property name="target" value="midtrap"/>
    </properties>
   </object>
-  <object name="Teleporter" x="1191" y="584" width="48" height="16">
+  <object name="Teleporter" x="1192" y="584" width="16" height="16">
    <properties>
-    <property name="id" value="midtrap2"/>
+    <property name="id" value="midtrap2a"/>
     <property name="target" value="midtrap"/>
    </properties>
   </object>
@@ -306,7 +304,7 @@
     <property name="id" value="midtrapExit"/>
    </properties>
   </object>
-  <object name="Hole" x="957" y="559">
+  <object name="Spike" x="957" y="559">
    <polyline points="0,0 28,0 50,20 50,48"/>
   </object>
   <object name="PushBumper" x="999" y="287">
@@ -315,10 +313,10 @@
   <object name="PushBumper" x="1430" y="287">
    <polyline points="0,0 0,22 18,39 43,39"/>
   </object>
-  <object name="Hole" x="1167" y="285">
+  <object name="Spike" x="1167" y="285">
    <polyline points="0,0 0,27 17,35"/>
   </object>
-  <object name="Hole" x="1263" y="286">
+  <object name="Spike" x="1263" y="286">
    <polyline points="0,0 0,27 -15,35"/>
   </object>
   <object name="StaticWall" x="2625" y="287">
@@ -335,10 +333,10 @@
   </object>
   <object name="StaticWall" x="770" y="449" width="65" height="31"/>
   <object name="StaticWall" x="641" y="480" width="64" height="96"/>
-  <object name="Hole" x="567" y="551">
+  <object name="Spike" x="567" y="551">
    <polyline points="-24,-165 -9,-160 -9,49 -25,57"/>
   </object>
-  <object name="Hole" x="570" y="164">
+  <object name="Spike" x="570" y="164">
    <polyline points="-25,-34 -10,-29 -10,51 -25,57"/>
   </object>
   <object name="TeleporterTarget" x="881" y="303" width="31" height="31">
@@ -403,14 +401,112 @@
   <object name="StaticWall" x="1407" y="96">
    <polygon points="0,0 -31,0 -63,33 -63,64 -32,64 1,31"/>
   </object>
-  <object name="Hole" x="2129" y="28">
+  <object name="Spike" x="2129" y="28">
    <polyline points="0,0 0,31 18,50 41,50 61,31 61,2"/>
   </object>
-  <object name="Hole" x="1873" y="30">
+  <object name="Spike" x="1873" y="30">
    <polyline points="0,0 0,59 32,70 32,155 -1,165 -1,219 30,230 31,475 -1,486 -1,507 19,527 72,529 93,508 93,487 125,475 125,294 157,283 157,229 125,218 125,197 94,187 95,-3"/>
   </object>
-  <object name="Hole" x="2033" y="610">
+  <object name="Spike" x="2033" y="610">
    <polyline points="0,0 0,-31 31,-41 32,-223 64,-233 64,-413 31,-424 31,-447 0,-457 0,-512 19,-529 41,-529 51,-497 73,-497 83,-465 105,-465 125,-447 127,-201 93,-189 94,-1"/>
+  </object>
+  <object name="Teleporter" x="1224" y="488" width="16" height="16">
+   <properties>
+    <property name="id" value="midtrap1b"/>
+    <property name="target" value="midtrap"/>
+   </properties>
+  </object>
+  <object name="Teleporter" x="1224" y="584" width="16" height="16">
+   <properties>
+    <property name="id" value="midtrap2b"/>
+    <property name="target" value="midtrap"/>
+   </properties>
+  </object>
+  <object name="StaticWall" x="384" y="27" width="32" height="99"/>
+  <object name="TimedSwitch" x="40" y="584" width="16" height="16">
+   <properties>
+    <property name="id" value="switchExit"/>
+    <property name="interval" value="10"/>
+    <property name="sprite-on" value="switch-on"/>
+   </properties>
+  </object>
+  <object name="MovingWall" x="31" y="228" width="96" height="32">
+   <properties>
+    <property name="movement" value="NodeStop"/>
+    <property name="path" value="switchExit1"/>
+    <property name="speed" value="-1"/>
+    <property name="sprite" value="WallBlue1x3"/>
+    <property name="switch" value="switchExit"/>
+   </properties>
+  </object>
+  <object name="MovingWall" x="231" y="31" width="32" height="96">
+   <properties>
+    <property name="movement" value="NodeStop"/>
+    <property name="path" value="switchExit2"/>
+    <property name="rotate" value="90"/>
+    <property name="speed" value="-1"/>
+    <property name="sprite" value="WallBlue1x3"/>
+    <property name="switch" value="switchExit"/>
+   </properties>
+  </object>
+  <object name="StaticWall" x="225" y="193">
+   <polygon points="-1,0 -33,32 -1,31 30,-1"/>
+  </object>
+  <object name="Spike" x="442" y="66">
+   <polyline points="-25,-34 -10,-29 -10,51 -25,57"/>
+  </object>
+  <object name="StaticWall" x="192" y="414" width="32" height="97"/>
+  <object name="StaticWall" x="96" y="480" width="32" height="130"/>
+  <object name="StaticWall" x="32" y="384" width="96" height="30"/>
+  <object name="StaticWall" x="224" y="481" width="191" height="30"/>
+  <object name="MovingWall" x="128" y="383" width="96" height="32">
+   <properties>
+    <property name="movement" value="NodeStop"/>
+    <property name="path" value="switchExit3"/>
+    <property name="speed" value="-1"/>
+    <property name="sprite" value="WallBlue1x3"/>
+    <property name="switch" value="switchExit"/>
+   </properties>
+  </object>
+  <object name="Teleporter" x="232" y="456" width="16" height="16">
+   <properties>
+    <property name="id" value="end1"/>
+    <property name="target" value="start"/>
+   </properties>
+  </object>
+  <object name="MovingWall" x="192" y="256" width="32" height="96">
+   <properties>
+    <property name="movement" value="NodeStop"/>
+    <property name="path" value="switchPreExit1"/>
+    <property name="rotate" value="90"/>
+    <property name="speed" value="-1"/>
+    <property name="sprite" value="WallBlue1x3"/>
+    <property name="switch" value="switchPreExit1"/>
+   </properties>
+  </object>
+  <object name="MovingWall" x="416" y="480" width="96" height="32">
+   <properties>
+    <property name="movement" value="NodeStop"/>
+    <property name="path" value="switchPreExit2"/>
+    <property name="speed" value="1"/>
+    <property name="sprite" value="WallBlue1x3"/>
+    <property name="switch" value="switchPreExit2"/>
+   </properties>
+  </object>
+  <object name="StaticWall" x="192" y="352" width="32" height="32"/>
+  <object name="ToggleSwitch" x="40" y="360" width="16" height="16">
+   <properties>
+    <property name="id" value="switchPreExit2"/>
+    <property name="interval" value="10"/>
+    <property name="sprite-on" value="switch-on"/>
+   </properties>
+  </object>
+  <object name="ToggleSwitch" x="360" y="40" width="16" height="16">
+   <properties>
+    <property name="id" value="switchPreExit1"/>
+    <property name="interval" value="10"/>
+    <property name="sprite-on" value="switch-on"/>
+   </properties>
   </object>
  </objectgroup>
  <objectgroup name="paths" width="100" height="20">
@@ -419,10 +515,26 @@
   </object>
   <object name="pexit" x="-33" y="-35" width="226" height="226"/>
   <object name="pmid2" x="895" y="351">
-   <polyline points="0,-7 1,258 0,223 -64,223 -64,161 -157,160"/>
+   <polyline points="1,-14 1,288 1,225 -63,225 -63,161 -159,161"/>
   </object>
   <object name="pmid1" x="895" y="287">
-   <polyline points="0,9 0,-256 0,-224 64,-224 64,-159 160,-160"/>
+   <polyline points="1,16 1,-286 1,-223 65,-223 65,-159 161,-159"/>
+  </object>
+  <object name="switchExit2" x="242" y="80">
+   <polyline points="0,0 125,0"/>
+  </object>
+  <object name="switchExit1" x="80" y="256">
+   <polyline points="1,-14 1,112"/>
+  </object>
+  <object name="switchExit3" x="177" y="400">
+   <polyline points="0,0 62,0"/>
+  </object>
+  <object name="pexit" x="-33" y="-35" width="226" height="226"/>
+  <object name="switchPreExit2" x="368" y="496">
+   <polyline points="0,0 95,0"/>
+  </object>
+  <object name="switchPreExit1" x="208" y="321">
+   <polyline points="1,-14 1,112"/>
   </object>
  </objectgroup>
 </map>

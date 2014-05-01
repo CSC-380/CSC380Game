@@ -1,4 +1,5 @@
-package edu.oswego.tiltandtumble.worldObjects;
+package edu.oswego.tiltandtumble.worldObjects.paths;
+
 
 public class PathPointTraverser {
 	private boolean forward = true;
@@ -7,6 +8,9 @@ public class PathPointTraverser {
 	public PathPointTraverser(PathPoint node, boolean forward) {
 		current = node;
 		this.forward = forward;
+		if (forward) {
+			next();
+		}
 	}
 
 	public PathPointTraverser(PathPoint node) {

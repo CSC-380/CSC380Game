@@ -31,54 +31,61 @@ public final class ScoreDialog extends Dialog {
 
 		Table table = new Table(skin);
 		table.setFillParent(true);
-		table.add("Level #" + scores.size() + " Completed")
+		int lastLevel = screen.getCurrentLevel().getLevelNumber() + 1;
+		table.add("Level #" + lastLevel + " Completed")
 			.colspan(3).center();
 		table.row().padTop(10).uniformX();
 
-		table.add("Level").left();
-		table.add("Time").center();
-		table.add("Score").right();
+		table.add("Level", "header").left();
+		table.add("Time", "header").center();
+		table.add("Score", "header").right();
 		table.row().padBottom(5).uniformX();
 		Score total = new Score(0, 0);
+		int firstLevel = lastLevel - scores.size();
 		for (int i = 0; i < scores.size(); ++i) {
 			Score s = scores.get(i);
-			table.add(String.valueOf(i + 1)).left();
+			table.add(String.valueOf(firstLevel + i + 1)).left();
 			table.add(s.getFormattedTime()).center();
 			table.add(String.valueOf(s.getPoints())).right();
 			total.setPoints(total.getPoints() + s.getPoints());
 			total.setTime(total.getTime() + s.getTime());
 			table.row().uniformX();
 		}
-		table.add("Total:").right();
+		table.add("Total:", "header").right();
+		boolean isHighScore = false;
 		if (screen.getCurrentLevel().isFailed()) {
 			table.add(total.getFormattedTime()).center();
 			table.add("0").right();
 			table.row().padTop(10).uniformX();
-			table.add("You Failed!").colspan(3).center();
-		}
-		else {
+			table.add("You Failed!", "highlight").colspan(3).center();
+		} else {
 			table.add(total.getFormattedTime()).center();
 			table.add(String.valueOf(total.getPoints())).right();
 			if (!screen.hasMoreLevels()) {
 				table.row().padTop(10);
-				table.add("Game Over!").colspan(3).center();
-				if (game.getHighScores().isHighScore(total)) {
+				table.add("Game Over!", "highlight").colspan(3).center();
+				if (screen.getMode() == GameScreen.Mode.ARCADE
+						&& game.getHighScores().isHighScore(total)) {
+					isHighScore = true;
 					table.row();
-					table.add("New High Score!").colspan(3).center();
+					table.add("New High Score!", "highlight").colspan(3).center();
 					table.row();
 					table.add("Initials:");
-					initials = new TextField("AAA", skin);
+					initials = new TextField("", skin);
 					initials.setMaxLength(3);
 					initials.setMessageText("AAA");
 					table.add(initials).width(50);
-					button("Save", total);
 				}
 			}
 		}
 
 		getContentTable().add(table).pad(5,5,5,5);
 
-		button("Continue");
+		if (isHighScore) {
+			button("Continue", total);
+		} else {
+			button("Continue");
+		}
 	}
 
 	@Override
@@ -90,8 +97,7 @@ public final class ScoreDialog extends Dialog {
 				game.getHighScores().add(new HighScore(text, (Score)object));
 			}
 			game.showPreviousScreen();
-		}
-		else {
+		} else {
 			screen.loadNextLevel();
 		}
 	}

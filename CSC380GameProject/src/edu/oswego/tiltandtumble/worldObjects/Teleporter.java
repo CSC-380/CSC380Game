@@ -1,5 +1,6 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -10,7 +11,7 @@ import edu.oswego.tiltandtumble.levels.BallController;
 import edu.oswego.tiltandtumble.worldObjects.graphics.GraphicComponent;
 
 public class Teleporter extends TeleporterTarget
-		implements BallCollisionListener {
+		implements BallCollisionListener, Activatable {
 	public static final BodyType BODY_TYPE = BodyType.StaticBody;
 	public static final boolean IS_SENSOR = true;
 
@@ -26,8 +27,9 @@ public class Teleporter extends TeleporterTarget
 
 	public Teleporter(Body body, TeleporterSelectorStrategy selector,
 			boolean resetVelocity, BallController ballController,
-			GraphicComponent effect, float waitTime, GraphicComponent teleporter) {
-		super(body, resetVelocity, ballController, effect);
+			GraphicComponent effect, float waitTime, GraphicComponent teleporter,
+			AssetManager assetManager) {
+		super(body, resetVelocity, ballController, effect, assetManager);
 		this.selector = selector;
 		this.waitTime = waitTime;
 		this.graphic = teleporter;
@@ -68,11 +70,27 @@ public class Teleporter extends TeleporterTarget
 		graphic.dispose();
 	}
 
+	@Override
+	public void activate() {
+		currentState.activate(this);
+	}
+
+	@Override
+	public void deactivate() {
+		currentState.deactivate(this);
+	}
+
 	private void changeState(State state) {
 		currentState = state;
 	}
 
 	private static enum State {
+		DEACTIVATED {
+			@Override
+			public void activate(Teleporter t) {
+				t.changeState(ACTIVE);
+			}
+		},
 		DISABLED {
 			@Override
 			public void handleEndCollision(Teleporter t, Ball b) {
@@ -106,6 +124,10 @@ public class Teleporter extends TeleporterTarget
 			}
 		};
 
+		public void activate(Teleporter t) {}
+		public void deactivate(Teleporter t) {
+			t.changeState(DEACTIVATED);
+		}
 		public void warp(Teleporter t) {}
 		public void handleBeginCollision(Teleporter t, Ball b) {}
 		public void handleEndCollision(Teleporter t, Ball b) {}

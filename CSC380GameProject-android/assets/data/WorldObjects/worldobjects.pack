@@ -1,0 +1,89 @@
+
+worldobjects.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+attractor-ani
+  rotate: false
+  xy: 1, 205
+  size: 256, 128
+  orig: 256, 128
+  offset: 0, 0
+  index: -1
+ballfall
+  rotate: false
+  xy: 1, 171
+  size: 256, 32
+  orig: 256, 32
+  offset: 0, 0
+  index: -1
+deflate
+  rotate: false
+  xy: 1, 137
+  size: 256, 32
+  orig: 256, 32
+  offset: 0, 0
+  index: -1
+popped
+  rotate: false
+  xy: 1, 103
+  size: 256, 32
+  orig: 256, 32
+  offset: 0, 0
+  index: -1
+teleporter-glow
+  rotate: false
+  xy: 1, 69
+  size: 256, 32
+  orig: 256, 32
+  offset: 0, 0
+  index: -1
+GreenOrb
+  rotate: false
+  xy: 259, 269
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+WallBlue1x3
+  rotate: false
+  xy: 1, 35
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: -1
+WallGrey2x2
+  rotate: false
+  xy: 259, 203
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+WallBlue1x2
+  rotate: false
+  xy: 325, 301
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+switch-off
+  rotate: false
+  xy: 1, 1
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+switch-on
+  rotate: false
+  xy: 99, 35
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+WallBlue1x1
+  rotate: false
+  xy: 259, 169
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1

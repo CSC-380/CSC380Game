@@ -1,6 +1,6 @@
 package edu.oswego.tiltandtumble.levels;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -20,13 +20,17 @@ public class DefaultLevelRenderer implements LevelRenderer {
 	private final int mapHeight;
 
 	private final Texture texture;
+	private final String textureName;
 	private final TextureRegion background;
 
+	private final AssetManager assetManager;
+
 	public DefaultLevelRenderer(Level level, float viewportWidth,
-			float viewportHeight, SpriteBatch batch) {
+			float viewportHeight, SpriteBatch batch, AssetManager assetManager) {
 		this.level = level;
 		width = viewportWidth;
 		height = viewportHeight;
+		this.assetManager = assetManager;
 
 		MapProperties prop = level.getMap().getProperties();
 
@@ -53,10 +57,16 @@ public class DefaultLevelRenderer implements LevelRenderer {
 		// TODO: parallax scrolling would be kind of cool to add...
 		String bgFile = prop.get("background image", String.class);
 		if (bgFile != null) {
-			texture = new Texture(Gdx.files.internal("data/" + bgFile));
+			textureName = "data/" + bgFile;
+			if (!assetManager.isLoaded(textureName)) {
+				assetManager.load(textureName, Texture.class);
+				assetManager.finishLoading();
+			}
+			texture = assetManager.get(textureName, Texture.class);
 			background = new TextureRegion(texture);
 		}
 		else {
+			textureName = null;
 			texture = null;
 			background = null;
 		}
@@ -121,8 +131,8 @@ public class DefaultLevelRenderer implements LevelRenderer {
 	@Override
 	public void dispose() {
 		mapRenderer.dispose();
-		if (texture != null) {
-			texture.dispose();
+		if (textureName != null) {
+			assetManager.unload(textureName);
 		}
 	}
 }

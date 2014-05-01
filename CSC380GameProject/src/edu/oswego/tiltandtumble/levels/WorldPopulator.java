@@ -1,9 +1,18 @@
 package edu.oswego.tiltandtumble.levels;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.ParticleEffectLoader;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
@@ -26,30 +35,55 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Disposable;
 
+import edu.oswego.tiltandtumble.worldObjects.Activatable;
 import edu.oswego.tiltandtumble.worldObjects.AttractorForce;
 import edu.oswego.tiltandtumble.worldObjects.Ball;
 import edu.oswego.tiltandtumble.worldObjects.FinishLine;
 import edu.oswego.tiltandtumble.worldObjects.Hole;
+import edu.oswego.tiltandtumble.worldObjects.MomentarySwitch;
 import edu.oswego.tiltandtumble.worldObjects.MovingWall;
-import edu.oswego.tiltandtumble.worldObjects.PathPoint;
-import edu.oswego.tiltandtumble.worldObjects.PathPointTraverser;
 import edu.oswego.tiltandtumble.worldObjects.PushBumper;
+import edu.oswego.tiltandtumble.worldObjects.Spike;
 import edu.oswego.tiltandtumble.worldObjects.StaticWall;
+import edu.oswego.tiltandtumble.worldObjects.Switch;
 import edu.oswego.tiltandtumble.worldObjects.Teleporter;
 import edu.oswego.tiltandtumble.worldObjects.TeleporterRandomSelector;
 import edu.oswego.tiltandtumble.worldObjects.TeleporterRoundRobinSelector;
 import edu.oswego.tiltandtumble.worldObjects.TeleporterSelectorStrategy;
 import edu.oswego.tiltandtumble.worldObjects.TeleporterTarget;
+import edu.oswego.tiltandtumble.worldObjects.TimedSwitch;
+import edu.oswego.tiltandtumble.worldObjects.ToggleSwitch;
 import edu.oswego.tiltandtumble.worldObjects.graphics.AnimationGraphic;
 import edu.oswego.tiltandtumble.worldObjects.graphics.GraphicComponent;
 import edu.oswego.tiltandtumble.worldObjects.graphics.NullGraphic;
 import edu.oswego.tiltandtumble.worldObjects.graphics.ParticleEffectGraphic;
 import edu.oswego.tiltandtumble.worldObjects.graphics.SpriteGraphic;
+import edu.oswego.tiltandtumble.worldObjects.paths.ConstantMovement;
+import edu.oswego.tiltandtumble.worldObjects.paths.MovementStrategy;
+import edu.oswego.tiltandtumble.worldObjects.paths.NodeStopMovement;
+import edu.oswego.tiltandtumble.worldObjects.paths.PathPoint;
+import edu.oswego.tiltandtumble.worldObjects.paths.PathPointTraverser;
 
-public final class WorldPopulator {
+public final class WorldPopulator implements Disposable {
 	private final BodyDefBuilder bodyDef = new BodyDefBuilder();
 	private final FixtureDefBuilder fixtureDef = new FixtureDefBuilder();
+	private final String atlasFile = "data/WorldObjects/worldobjects.pack";
+	private final TextureAtlas atlas;
+	private final AssetManager assetManager;
+
+	public WorldPopulator(AssetManager assetManager) {
+		this.assetManager = assetManager;
+		assetManager.load(atlasFile, TextureAtlas.class);
+		assetManager.finishLoading();
+		atlas = assetManager.get(atlasFile, TextureAtlas.class);
+	}
+
+	@Override
+	public void dispose() {
+		assetManager.unload("data/WorldObjects/worldobjects.pack");
+	}
 
 	public Ball populateWorldFromMap(Level level, TiledMap map, World world,
 			UnitScale scale) {
@@ -57,16 +91,19 @@ public final class WorldPopulator {
 		MapLayer layer = map.getLayers().get("collision");
 		Map<String, PathPoint> paths = getPaths(map, world, scale);
 		TeleportationMeshHelper meshHelper = new TeleportationMeshHelper();
+		SwitchConnectionHelper switchHelper = new SwitchConnectionHelper();
 		for (MapObject obj : layer.getObjects()) {
 			if (obj.getName() != null) {
 				if (obj.getName().equals("StaticWall")) {
 					level.addWorldObject(createStaticWall(obj, level, world, scale));
 				} else if (obj.getName().equals("MovingWall")) {
-					level.addWorldObject(createMovingWall(obj, level, world, scale, paths));
+					level.addWorldObject(createMovingWall(obj, level, world, scale, paths, switchHelper));
 				} else if (obj.getName().equals("PushBumper")) {
 					level.addWorldObject(createPushBumper(obj, world, scale));
 				} else if (obj.getName().equals("FinishLine")) {
 					level.addWorldObject(createFinishLine(obj, level, world, scale));
+				} else if (obj.getName().equals("Spike")) {
+					level.addWorldObject(createSpike(obj, level, world, scale));
 				} else if (obj.getName().equals("Hole")) {
 					level.addWorldObject(createHole(obj, level, world, scale));
 				} else if (obj.getName().equals("Teleporter")) {
@@ -78,10 +115,17 @@ public final class WorldPopulator {
 					level.addWorldObject(ball);
 				} else if (obj.getName().equals("AttractorForce")) {
 					level.addWorldObject(createAttractorForce(obj, level, world, scale));
+				} else if (obj.getName().equals("ToggleSwitch")) {
+					level.addWorldObject(createToggleSwitch(obj, world, scale, switchHelper));
+				} else if (obj.getName().equals("TimedSwitch")) {
+					level.addWorldObject(createTimedSwitch(obj, world, scale, switchHelper));
+				} else if (obj.getName().equals("MomentarySwitch")) {
+					level.addWorldObject(createMomentarySwitch(obj, world, scale, switchHelper));
 				}
 			}
 		}
 		meshHelper.buildMesh();
+		switchHelper.wireSwitches();
 		return ball;
 	}
 
@@ -105,9 +149,16 @@ public final class WorldPopulator {
 		if (name.equals("none")) {
 			effect = new NullGraphic();
 		} else {
-			effect = new ParticleEffectGraphic(
-					"data/WorldObjects/" + name,
-					"data/WorldObjects");
+			String filename = "data/WorldObjects/" + name;
+			if (!assetManager.isLoaded(filename)) {
+				ParticleEffectLoader.ParticleEffectParameter param = new ParticleEffectLoader.ParticleEffectParameter();
+				param.atlasFile = atlasFile;
+				assetManager.load(filename, ParticleEffect.class, param);
+				assetManager.finishLoading();
+			}
+			// NOTE: particle effects need to be copied if you have more than one.
+			ParticleEffect particle = new ParticleEffect(assetManager.get(filename, ParticleEffect.class));
+			effect = new ParticleEffectGraphic(particle);
 			effect.setPosition(
 					scale.metersToPixels(body.getPosition().x),
 					scale.metersToPixels(body.getPosition().y));
@@ -117,7 +168,8 @@ public final class WorldPopulator {
 				body,
 				Boolean.valueOf(props.get("reset velocity", "true", String.class)),
 				level.getBallController(),
-				effect);
+				effect,
+				assetManager);
 		meshHelper.add(
 				props.get("id", String.class),
 				target);
@@ -153,9 +205,16 @@ public final class WorldPopulator {
 		if (name.equals("none")) {
 			effect = new NullGraphic();
 		} else {
-			effect = new ParticleEffectGraphic(
-					"data/WorldObjects/" + name,
-					"data/WorldObjects");
+			String filename = "data/WorldObjects/" + name;
+			if (!assetManager.isLoaded(filename)) {
+				ParticleEffectLoader.ParticleEffectParameter param = new ParticleEffectLoader.ParticleEffectParameter();
+				param.atlasFile = atlasFile;
+				assetManager.load(filename, ParticleEffect.class, param);
+				assetManager.finishLoading();
+			}
+			// NOTE: particle effects need to be copied if you have more than one.
+			ParticleEffect particle = new ParticleEffect(assetManager.get(filename, ParticleEffect.class));
+			effect = new ParticleEffectGraphic(particle);
 			effect.setPosition(
 					scale.metersToPixels(body.getPosition().x),
 					scale.metersToPixels(body.getPosition().y));
@@ -164,18 +223,21 @@ public final class WorldPopulator {
 		GraphicComponent animation;
 		name = props.get("animation", String.class);
 		if (name == null) {
-			name = "teleporter-glow.png";
+			name = "teleporter-glow";
 		}
 		if (name.equals("none")) {
 			animation = new NullGraphic();
 		} else {
-			animation = new AnimationGraphic("data/WorldObjects/" + name,
+			TextureRegion sheet = atlas.findRegion(name);
+			animation = new AnimationGraphic.Builder(sheet,
 					props.get("animation rows", 1, Integer.class),
 					props.get("animation columns", 8, Integer.class),
-					props.get("animation duration", 1, Integer.class));
-			animation.setPosition(
-					scale.metersToPixels(body.getPosition().x),
-					scale.metersToPixels(body.getPosition().y));
+					props.get("animation duration", 1, Integer.class))
+					.position(scale.metersToPixels(body.getPosition().x),
+							scale.metersToPixels(body.getPosition().y))
+					.center()
+					.looping(Animation.LOOP_PINGPONG)
+					.build();
 		}
 
 		Teleporter teleporter = new Teleporter(
@@ -185,7 +247,8 @@ public final class WorldPopulator {
 				level.getBallController(),
 				effect,
 				getFloatProperty(obj, "wait time", Teleporter.WAIT_TIME),
-				animation);
+				animation,
+				assetManager);
 		meshHelper.add(
 				props.get("id", String.class),
 				teleporter, selector,
@@ -315,7 +378,8 @@ public final class WorldPopulator {
 	}
 
 	public MovingWall createMovingWall(MapObject obj, Level level, World world,
-			UnitScale scale, Map<String, PathPoint> paths) {
+			UnitScale scale, Map<String, PathPoint> paths,
+			SwitchConnectionHelper switchHelper) {
 		PathPoint head = paths.get(obj.getProperties().get("path", String.class));
 		Body body = world.createBody(bodyDef.reset().type(MovingWall.BODY_TYPE)
 				.build());
@@ -330,22 +394,58 @@ public final class WorldPopulator {
 				.density(getFloatProperty(obj, "density", MovingWall.DENSITY))
 				.restitution(getFloatProperty(obj, "restitution", MovingWall.RESTITUTION))
 				.build());
-		Vector2 dimensions = getDimensions(obj);
+		//Vector2 dimensions = getDimensions(obj);
 		// dispose after creating fixture
 		shape.dispose();
 
+		MapProperties props = obj.getProperties();
+
 		float speed = getFloatProperty(obj, "speed", MovingWall.DEFAULT_SPEED);
 
-		GraphicComponent graphic = new SpriteGraphic("data/WorldObjects/"
-				+ obj.getProperties().get("sprite", MovingWall.DEFAULT_SPRITE, String.class),
-				dimensions.x, dimensions.y);
+		Sprite sprite = atlas.createSprite(props.get("sprite", MovingWall.DEFAULT_SPRITE, String.class));
+		float degrees = getFloatProperty(obj, "rotate", 0f);
+		sprite.setRotation(degrees);
+		// TODO: i would like to scale the graphic to the shape but i can't
+		//       get it to work correctly. the size seems to get set based on
+		//       the unrotated image.
+		//dimensions.rotate(degrees);
+		//sprite.setSize(dimensions.x, dimensions.y);
+		GraphicComponent graphic = new SpriteGraphic(sprite);
 
-		return new MovingWall(body,
-				Math.abs(speed),
-				new PathPointTraverser(result.head, speed >= 0),
+		MovementStrategy movement;
+		if (props.containsKey("movement")
+				&& !props.get("movement", String.class).equals("Constant")) {
+			if (props.get("movement", String.class).equals("NodeStop")) {
+				movement = new NodeStopMovement(
+						new PathPointTraverser(result.head, speed >= 0),
+						Math.abs(speed));
+			} else {
+				throw new IllegalArgumentException("Invalid movement type: "
+						+ props.get("movement", String.class));
+			}
+		} else {
+			movement = new ConstantMovement(
+					new PathPointTraverser(result.head, speed >= 0),
+					Math.abs(speed));
+		}
+
+		TextureRegion sheet = atlas.findRegion("popped");
+		GraphicComponent deathGraphic = new AnimationGraphic.Builder(sheet, 1, 8, 1)
+				.origin(12, 12)
+				.scale(1.5f, 1.5f)
+				.build();
+
+		MovingWall wall = new MovingWall(body,
+				movement,
 				graphic,
+				deathGraphic,
 				scale,
-				level);
+				level,
+				assetManager);
+		if (props.containsKey("switch")) {
+			switchHelper.add(wall, props.get("switch", String.class));
+		}
+		return wall;
 	}
 
 	public StaticWall createStaticWall(MapObject obj, Level level, World world,
@@ -361,7 +461,13 @@ public final class WorldPopulator {
 		// dispose after creating fixture
 		shape.dispose();
 
-		return new StaticWall(body, level);
+		TextureRegion sheet = atlas.findRegion("popped");
+		GraphicComponent deathGraphic = new AnimationGraphic.Builder(sheet, 1, 8, 1)
+				.origin(12, 12)
+				.scale(1.5f, 1.5f)
+				.build();
+
+		return new StaticWall(body, level, deathGraphic, assetManager);
 	}
 
 	public PushBumper createPushBumper(MapObject obj, World world,
@@ -378,7 +484,8 @@ public final class WorldPopulator {
 		shape.dispose();
 
 		return new PushBumper(body,
-				getFloatProperty(obj, "speed", PushBumper.DEFAULT_SPEED));
+				getFloatProperty(obj, "speed", PushBumper.DEFAULT_SPEED),
+				assetManager);
 	}
 
 	public Ball createBall(MapObject obj, World world, UnitScale scale) {
@@ -404,7 +511,12 @@ public final class WorldPopulator {
 		// dispose after creating fixture
 		shape.dispose();
 
-		return new Ball(body, diameter, scale);
+		Sprite sprite = atlas.createSprite("GreenOrb");
+		sprite.setSize(diameter, diameter);
+		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+		GraphicComponent graphic = new SpriteGraphic(sprite);
+
+		return new Ball(body, graphic, scale, assetManager);
 	}
 
 	public FinishLine createFinishLine(MapObject obj, Level level,
@@ -417,7 +529,7 @@ public final class WorldPopulator {
 		// dispose after creating fixture
 		shape.dispose();
 
-		return new FinishLine(body, level);
+		return new FinishLine(body, level, assetManager);
 	}
 
 	public Hole createHole(MapObject obj, Level level, World world,
@@ -431,20 +543,182 @@ public final class WorldPopulator {
 		// dispose after creating fixture
 		shape.dispose();
 
-		return new Hole(body, level);
+		TextureRegion sheet = atlas.findRegion("ballfall");
+		GraphicComponent graphic = new AnimationGraphic.Builder(sheet, 1, 8, 1)
+				.position(scale.metersToPixels(body.getPosition().x),
+						scale.metersToPixels(body.getPosition().y))
+				.origin(16, 16)
+				.build();
+
+		return new Hole(body, level, graphic, assetManager);
 	}
 
-	public AttractorForce createAttractorForce(MapObject obj, Level level, World world, UnitScale scale)
-	{
-		Body body = world.createBody(bodyDef.reset().type(AttractorForce.BODY_TYPE).build());
+	public Spike createSpike(MapObject obj, Level level, World world,
+			UnitScale scale) {
+		Body body = world.createBody(bodyDef.reset().type(Spike.BODY_TYPE)
+				.build());
 		Shape shape = createShape(obj, scale, body);
-		body.createFixture(fixtureDef.reset().shape(shape).isSensor(AttractorForce.IS_SENSOR).build());
+		body.createFixture(fixtureDef.reset().shape(shape).build());
 
-		//dispose after creating fixture
+		// dispose after creating fixture
 		shape.dispose();
 
-		return new AttractorForce(body, getFloatProperty(obj, "speed", AttractorForce.DEFAULT_SPEED), scale);
+		TextureRegion sheet = atlas.findRegion("deflate");
+		GraphicComponent graphic = new AnimationGraphic.Builder(sheet, 1, 8, 1)
+				.origin(12, 12)
+				.build();
+		return new Spike(body, level, graphic, assetManager);
+	}
 
+	public AttractorForce createAttractorForce(MapObject obj, Level level,
+			World world, UnitScale scale)
+	{
+		Body body = world.createBody(bodyDef.reset()
+				.type(AttractorForce.BODY_TYPE).build());
+		Shape shape = createShape(obj, scale, body);
+		body.createFixture(fixtureDef.reset().shape(shape)
+				.isSensor(AttractorForce.IS_SENSOR).build());
+
+		float radius = shape.getRadius();
+		// dispose after creating fixture
+		shape.dispose();
+
+		TextureRegion sheet = atlas.findRegion("attractor-ani");
+		GraphicComponent graphic = new AnimationGraphic.Builder(sheet, 1, 8, 1)
+				.position(scale.metersToPixels(body.getPosition().x),
+						scale.metersToPixels(body.getPosition().y))
+				// No idea why i need to do -4 on this to get it to line up correctly
+				.origin(16 - 4, 0)
+				.looping(Animation.LOOP)
+				.build();
+
+		return new AttractorForce(body,
+				getFloatProperty(obj, "speed", AttractorForce.DEFAULT_SPEED),
+				radius,
+				graphic,
+				scale,
+				assetManager);
+	}
+
+	public ToggleSwitch createToggleSwitch(MapObject obj, World world,
+			UnitScale scale, SwitchConnectionHelper switchHelper) {
+		Body body = world.createBody(bodyDef.reset().type(ToggleSwitch.BODY_TYPE)
+				.build());
+		Shape shape = createShape(obj, scale, body);
+		body.createFixture(fixtureDef.reset().shape(shape)
+				.isSensor(ToggleSwitch.IS_SENSOR).build());
+
+		// dispose after creating fixture
+		shape.dispose();
+
+		MapProperties props = obj.getProperties();
+
+		GraphicComponent graphicOn;
+		if (props.containsKey("sprite-on")) {
+			Sprite sprite = atlas.createSprite(props.get("sprite-on", String.class));
+			graphicOn = new SpriteGraphic(sprite);
+		} else {
+			graphicOn = new NullGraphic();
+		}
+		GraphicComponent graphicOff;
+		if (props.containsKey("sprite-off")) {
+			Sprite sprite = atlas.createSprite(props.get("sprite-off", String.class));
+			graphicOff = new SpriteGraphic(sprite);
+		} else {
+			graphicOff = new NullGraphic();
+		}
+		graphicOn.setPosition(scale.metersToPixels(body.getPosition().x),
+				scale.metersToPixels(body.getPosition().y));
+		graphicOff.setPosition(scale.metersToPixels(body.getPosition().x),
+				scale.metersToPixels(body.getPosition().y));
+
+		ToggleSwitch swtch = new ToggleSwitch(body,
+				props.get("startOn", false, Boolean.class),
+				graphicOn, graphicOff,
+				assetManager);
+		switchHelper.add(props.get("id", String.class), swtch);
+		return swtch;
+	}
+
+	public TimedSwitch createTimedSwitch(MapObject obj, World world,
+			UnitScale scale, SwitchConnectionHelper switchHelper) {
+		Body body = world.createBody(bodyDef.reset().type(TimedSwitch.BODY_TYPE)
+				.build());
+		Shape shape = createShape(obj, scale, body);
+		body.createFixture(fixtureDef.reset().shape(shape)
+				.isSensor(TimedSwitch.IS_SENSOR).build());
+
+		// dispose after creating fixture
+		shape.dispose();
+
+		MapProperties props = obj.getProperties();
+
+		GraphicComponent graphicOn;
+		if (props.containsKey("sprite-on")) {
+			Sprite sprite = atlas.createSprite(props.get("sprite-on", String.class));
+			graphicOn = new SpriteGraphic(sprite);
+		} else {
+			graphicOn = new NullGraphic();
+		}
+		GraphicComponent graphicOff;
+		if (props.containsKey("sprite-off")) {
+			Sprite sprite = atlas.createSprite(props.get("sprite-off", String.class));
+			graphicOff = new SpriteGraphic(sprite);
+		} else {
+			graphicOff = new NullGraphic();
+		}
+		graphicOn.setPosition(scale.metersToPixels(body.getPosition().x),
+				scale.metersToPixels(body.getPosition().y));
+		graphicOff.setPosition(scale.metersToPixels(body.getPosition().x),
+				scale.metersToPixels(body.getPosition().y));
+
+		TimedSwitch swtch = new TimedSwitch(body,
+				getFloatProperty(obj, "interval", TimedSwitch.DEFAULT_INTERVAL),
+				props.get("startOn", false, Boolean.class),
+				graphicOn, graphicOff,
+				assetManager);
+		switchHelper.add(props.get("id", String.class), swtch);
+		return swtch;
+	}
+
+	public MomentarySwitch createMomentarySwitch(MapObject obj, World world,
+			UnitScale scale, SwitchConnectionHelper switchHelper) {
+		Body body = world.createBody(bodyDef.reset().type(MomentarySwitch.BODY_TYPE)
+				.build());
+		Shape shape = createShape(obj, scale, body);
+		body.createFixture(fixtureDef.reset().shape(shape)
+				.isSensor(MomentarySwitch.IS_SENSOR).build());
+
+		// dispose after creating fixture
+		shape.dispose();
+
+		MapProperties props = obj.getProperties();
+
+		GraphicComponent graphicOn;
+		if (props.containsKey("sprite-on")) {
+			Sprite sprite = atlas.createSprite(props.get("sprite-on", String.class));
+			graphicOn = new SpriteGraphic(sprite);
+		} else {
+			graphicOn = new NullGraphic();
+		}
+		GraphicComponent graphicOff;
+		if (props.containsKey("sprite-off")) {
+			Sprite sprite = atlas.createSprite(props.get("sprite-off", String.class));
+			graphicOff = new SpriteGraphic(sprite);
+		} else {
+			graphicOff = new NullGraphic();
+		}
+		graphicOn.setPosition(scale.metersToPixels(body.getPosition().x),
+				scale.metersToPixels(body.getPosition().y));
+		graphicOff.setPosition(scale.metersToPixels(body.getPosition().x),
+				scale.metersToPixels(body.getPosition().y));
+
+		MomentarySwitch swtch = new MomentarySwitch(body,
+				props.get("startOn", false, Boolean.class),
+				graphicOn, graphicOff,
+				assetManager);
+		switchHelper.add(props.get("id", String.class), swtch);
+		return swtch;
 	}
 
 	private Shape createShape(MapObject object, UnitScale scale, Body body) {
@@ -779,11 +1053,34 @@ public final class WorldPopulator {
 		}
 	}
 
+	private static class SwitchConnectionHelper {
+		Map<String, Switch> switches = new HashMap<String, Switch>();
+		Map<String, List<Activatable>> activatables = new HashMap<String, List<Activatable>>();
+
+		public void add(String id, Switch swtch) {
+			switches.put(id, swtch);
+		}
+
+		public void add(Activatable item, String switchId) {
+			if (!activatables.containsKey(switchId)) {
+				activatables.put(switchId, new ArrayList<Activatable>());
+			}
+			activatables.get(switchId).add(item);
+		}
+
+		public void wireSwitches() {
+			for (String id : switches.keySet()) {
+				if (activatables.containsKey(id)) {
+					for (Activatable a : activatables.get(id)) {
+						switches.get(id).addActivatable(a);
+						Gdx.app.log("SwitchWire", "Linking: " + id + " -> " + a.getClass().getSimpleName());
+					}
+				}
+			}
+		}
+	}
+
 	private static class TeleportationMeshHelper {
-		// i need 3 hashes...
-		// map of id to selector
-		// map of id to list of TeleporterTargets
-		// map of id to list of target ids
 		Map<String, TeleporterSelectorStrategy> strategies = new HashMap<String, TeleporterSelectorStrategy>();
 		Map<String, TeleporterTarget> targets = new HashMap<String, TeleporterTarget>();
 		Map<String, String[]> associations = new HashMap<String, String[]>();

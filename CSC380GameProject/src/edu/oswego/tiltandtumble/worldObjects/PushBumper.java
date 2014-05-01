@@ -1,13 +1,18 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Peripheral;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.utils.Disposable;
 
 import edu.oswego.tiltandtumble.collisionListener.BallCollisionListener;
 
-public class PushBumper extends AbstractWorldObject implements BallCollisionListener {
+public class PushBumper extends AbstractWorldObject
+		implements BallCollisionListener, Audible, Disposable, Activatable {
     public static final float FRICTION = 0.0f;
     public static final float DENSITY = 2.0f;
     public static final float RESTITUTION = 0.0f;
@@ -16,15 +21,27 @@ public class PushBumper extends AbstractWorldObject implements BallCollisionList
     public static final float DEFAULT_SPEED = 8;
 	private final float speed;
 
+	private boolean playSound;
+	private final Sound sound;
 
-    public PushBumper(Body body, float speed) {
+	private boolean active = true;
+
+    public PushBumper(Body body, float speed, AssetManager assetManager) {
         super(body);
         this.speed = speed;
+
+        playSound = true;
+		String soundFile = "data/soundfx/bonus-fast.ogg";
+		if (!assetManager.isLoaded(soundFile)) {
+			assetManager.load(soundFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		sound = assetManager.get(soundFile, Sound.class);
     }
 
     @Override
 	public void handleBeginCollision(Contact contact, Ball ball) {
-
+    	if (!active) return;
     	// What this does is instantly accelerate the ball to the defined
     	// "speed" value, if the ball is already moving faster, it will not
     	// accelerate.
@@ -45,10 +62,44 @@ public class PushBumper extends AbstractWorldObject implements BallCollisionList
 		target.setLinearVelocity(
 				forceX * Math.signum(target.getLinearVelocity().x),
 				forceY * Math.signum(target.getLinearVelocity().y));
-		Gdx.input.vibrate(100);
+		if (Gdx.input.isPeripheralAvailable(Peripheral.Vibrator)) {
+			Gdx.input.vibrate(100);
+		}
+		playSound();
 	}
 
 	@Override
 	public void handleEndCollision(Contact contact, Ball ball) {
+	}
+
+	@Override
+	public void setPlaySound(boolean value) {
+		playSound = value;
+	}
+
+	@Override
+	public void playSound() {
+		if (playSound) {
+			sound.play();
+		}
+	}
+
+	@Override
+	public void endSound() {
+		sound.stop();
+	}
+
+	@Override
+	public void dispose() {
+	}
+
+	@Override
+	public void activate() {
+		active = true;
+	}
+
+	@Override
+	public void deactivate() {
+		active = false;
 	}
 }
