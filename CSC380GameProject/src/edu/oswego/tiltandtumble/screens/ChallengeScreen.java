@@ -1,5 +1,8 @@
 package edu.oswego.tiltandtumble.screens;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -32,11 +35,23 @@ public class ChallengeScreen extends AbstractScreen  {
 	}
 	
 	private void showTopChallenges(int levelNum){
-		Button challenge = new TextButton("A", skin);
-		challenge.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
+//		Cluster cluster =Cluster.builder().addContactPoint("192.168.0.1").build();
+//    	   Session session = cluster.connect();
 
+    	  // for (Row row : session.execute("SELECT * FROM users;")){
+//	    		   Button accept = new TextButton("A", skin);
+//	    		   accept.addListener(new ChangeListener(){
+//						@Override
+//			            public void changed(ChangeEvent event, Actor actor) {
+//							topTable.setVisible(false);
+//							showTopChallenges(2);
+//						}					
+//	    		   });
+    	  // }
+		
+
+
+<<<<<<< HEAD
             	System.out.println(" ");
             	//Cluster cluster = Cluster.builder().addContactPoint("localhost").build();
             	Cluster cluster = Cluster.builder().addContactPoint("129.3.20.26").withPort(2715).build();
@@ -53,6 +68,24 @@ public class ChallengeScreen extends AbstractScreen  {
             	   		+ "pathy map<int, int>);");
             	session.execute("INSERT INTO users (username, highscore, pathx, pathy) "
             	   		+ "VALUES ('schrecen', 0, {0 : 1}, {0 : 1});");
+=======
+//            	System.out.println(" ");
+//            	//Cluster cluster = Cluster.builder().addContactPoint("localhost").build();
+//            	Cluster cluster = Cluster.builder().addContactPoint("129.3.20.26").withPort(2715).build();
+//            	Session session = cluster.connect();
+//            	session.execute("DROP KEYSPACE challengeMap");
+//            	session.execute("CREATE KEYSPACE challengeMap "
+//            	   		+ "WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };");
+//          
+//            	session.execute("USE challengeMap;");
+//            	session.execute("CREATE TABLE users ("
+//            	   		+ "username text PRIMARY KEY, "
+//            	   		+ "highscore int, "
+//            	   		+ "pathx map<int, int>, "
+//            	   		+ "pathy map<int, int>);");
+//            	session.execute("INSERT INTO users (username, highscore, pathx, pathy) "
+//            	   		+ "VALUES ('schrecen', 0, {0 : 1}, {0 : 1});");
+>>>>>>> FETCH_HEAD
             	/*
             	
             	ResultSet results = session.execute("SELECT * FROM users;");
@@ -72,9 +105,6 @@ public class ChallengeScreen extends AbstractScreen  {
          	   	}
          	   	*/
      
-            }
-           
-        });
 		table = new Window("\nLevel " + levelNum, skin);
 		table.setFillParent(true);
 		table.setModal(true);
@@ -86,12 +116,38 @@ public class ChallengeScreen extends AbstractScreen  {
 		table.add("Time", "header");
 		table.add("Name", "header");
 		table.add("Challenge", "header");
-		table.row().center();
-		table.add("1");
-		table.add("5.092");
-		table.add("KMAE");
-		table.add(challenge);
-
+		
+		Map<String, String> m = new HashMap<String,String>();
+		m.put("DAM", "5.049");
+		m.put("KMAE", "6.023");
+		m.put("ZACK", "7.833");
+//		
+//		List<String> names = new ArrayList<String>();
+//		names.add("DAM");
+//		names.add("KMAE");	
+//		names.add("ZACK");
+//		Iterator it = m.entrySet().iterator();
+//	    while (it.hasNext()) {
+//	        Map.Entry pairs = (Map.Entry)it.next( );
+//	        System.out.println(pairs.getKey() + " = " + pairs.getValue());
+//	        it.remove(); // avoids a ConcurrentModificationException
+//	    }
+		
+		 for(int i = 1; i <= 5; i++){
+	  		   Button accept = new TextButton("A", skin);
+	  		   accept.addListener(new ChangeListener(){
+						@Override
+			            public void changed(ChangeEvent event, Actor actor) {
+							topTable.setVisible(false);
+							game.showGameScreen(1);
+						}	
+	  		   });
+	  		table.row().center();
+	 		table.add("" + i);	 		
+	 		table.add("" + m.get("KMAE"));
+	 		table.add("KMAE");
+	 		table.add(accept);
+		 }
 		
 		table.row().expand().padBottom(10);
         Button back = new TextButton("Go Back", skin);
@@ -119,6 +175,7 @@ public class ChallengeScreen extends AbstractScreen  {
       
 		
 		//TODO figure out how to obtain friends
+        //story of her life!!!
 		
 		Button lvl1 = new TextButton("1", skin);
 		topTable.add(lvl1);

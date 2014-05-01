@@ -172,13 +172,17 @@ public class GameScreen extends AbstractScreen {
 		WAITING {
 			@Override
 			public void show(GameScreen s) {
+				//create shadow if true
 				new Starter(s, s.skin).show(s.stage);
 			}
 
 			@Override
 			public void start(GameScreen s) {
+				
 				s.ballController.resetBall();
+				
 				s.ballController.resume();
+				//shadowball.start
 				s.level.start();
 				s.audio.start();
 				s.changeState(State.PLAYING);

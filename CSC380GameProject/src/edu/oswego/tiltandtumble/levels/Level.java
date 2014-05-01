@@ -294,6 +294,7 @@ public class Level implements Disposable, Audible {
     				return;
     			}
     			l.ballController.update(delta);
+    			//pass shadow ball to this method and update shadwp ball here
     			for (WorldUpdateable w : l.updateableObjects) {
     				w.update(delta);
     			}

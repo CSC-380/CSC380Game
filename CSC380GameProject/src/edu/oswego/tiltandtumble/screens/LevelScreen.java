@@ -61,6 +61,7 @@ public class LevelScreen extends AbstractScreen {
 		back.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				game.setChallengeMode(false);
 				game.showPreviousScreen();
 			}
 		});
