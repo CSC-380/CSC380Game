@@ -2,6 +2,9 @@ package edu.oswego.tiltandtumble.screens;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -14,6 +17,7 @@ import edu.oswego.tiltandtumble.TiltAndTumble;
 
 public class MainScreen extends AbstractScreen {
 
+	Sound button;
     public MainScreen(final TiltAndTumble game) {
         super(game);
     }
@@ -21,6 +25,13 @@ public class MainScreen extends AbstractScreen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
+        AssetManager assetManager = new AssetManager();
+        String musicFile = "data/soundfx/button-8.wav";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		button = assetManager.get(musicFile, Sound.class);
 
         Window window = new Window("\nTilt and Tumble", skin);
         window.setFillParent(true);
@@ -37,6 +48,7 @@ public class MainScreen extends AbstractScreen {
         play.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+            	button.play();
                 game.showLevelScreen();
             }
         });
@@ -47,6 +59,7 @@ public class MainScreen extends AbstractScreen {
         settings.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+            	button.play();
                 game.showSettingsScreen();
             }
         });
@@ -56,6 +69,7 @@ public class MainScreen extends AbstractScreen {
         scores.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+            	button.play();
                 game.showHighScoresScreen();
             }
         });
@@ -65,6 +79,7 @@ public class MainScreen extends AbstractScreen {
         help.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+            	button.play();
                 game.showHelpScreen();
             }
         });
@@ -74,6 +89,7 @@ public class MainScreen extends AbstractScreen {
         credits.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+            	button.play();
                 game.showCreditScreen();
             }
         });

@@ -46,6 +46,7 @@ public class GameScreen extends AbstractScreen {
 
 	public GameScreen(TiltAndTumble game, int currentLevel, Mode mode) {
 		super(game);
+		//game.endMusic();
 		ballController = new BallController(!game.getSettings().isUseDpad());
 		worldPopulator = new WorldPopulator(game.getAssetManager());
 
@@ -92,7 +93,7 @@ public class GameScreen extends AbstractScreen {
 		game.getSettings().addObserver(audio);
 		Gdx.app.log("GameScreen", "Audio manager created");
 		hud.setLevel(num + 1);
-		new Starter(this, skin).show(stage);
+		new Starter(this, skin, game).show(stage);
 		Gdx.app.log("GameScreen", "Level starting...");
 	}
 
@@ -187,11 +188,12 @@ public class GameScreen extends AbstractScreen {
 		WAITING {
 			@Override
 			public void show(GameScreen s) {
-				new Starter(s, s.skin).show(s.stage);
+				new Starter(s, s.skin, s.game).show(s.stage);
 			}
 
 			@Override
 			public void start(GameScreen s) {
+				//s.game.endMusic();
 				s.ballController.resetBall();
 				s.ballController.resume();
 				s.level.start();
