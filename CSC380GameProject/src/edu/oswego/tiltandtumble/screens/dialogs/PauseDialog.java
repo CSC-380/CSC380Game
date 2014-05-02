@@ -13,7 +13,7 @@ import edu.oswego.tiltandtumble.screens.GameScreen;
 public class PauseDialog extends Dialog {
 	private final GameScreen screen;
 	private final TiltAndTumble game;
-	private Sound button;
+	private final Sound button;
 	private static enum Buttons {
 		QUIT,
 		SETTINGS,
@@ -28,7 +28,7 @@ public class PauseDialog extends Dialog {
 		padTop(50);
         setModal(true);
         setMovable(false);
-        
+
         AssetManager assetManager = new AssetManager();
         String musicFile = "data/soundfx/button-8.wav";
 		if (!assetManager.isLoaded(musicFile)) {
@@ -62,7 +62,7 @@ public class PauseDialog extends Dialog {
 				game.showSettingsScreen();
 			} else if (b == Buttons.RETRY) {
 				if (screen.getMode() == GameScreen.Mode.ARCADE) {
-					screen.loadLevel(1);
+					screen.loadLevel(0);
 				} else {
 					screen.loadLevel(screen.getCurrentLevel().getLevelNumber());
 				}
