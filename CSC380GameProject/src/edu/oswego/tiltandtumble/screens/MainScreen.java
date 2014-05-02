@@ -2,6 +2,9 @@ package edu.oswego.tiltandtumble.screens;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -24,7 +27,10 @@ public class MainScreen extends AbstractScreen {
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage);
+    	InputAdapter mProcessor = new InputAdapter();
+        InputMultiplexer multiplexer = new InputMultiplexer(stage, mProcessor);
+        Gdx.input.setInputProcessor(multiplexer);
+        Gdx.input.setCatchBackKey(true);
         AssetManager assetManager = new AssetManager();
         String musicFile = "data/soundfx/button-8.wav";
 		if (!assetManager.isLoaded(musicFile)) {
@@ -93,5 +99,36 @@ public class MainScreen extends AbstractScreen {
                 game.showCreditScreen();
             }
         });
+    }
+    public class InputAdapter implements InputProcessor{
+
+	   	 public boolean keyDown(int keycode){
+	   	 if(keycode == Keys.BACK){
+	   	 Gdx.app.exit();
+	   	 return true;
+	   	 }
+	   	 return false;
+	   	 }
+	   	 public boolean keyUp(int keycode) {
+	   		 return false;
+	   	 }
+	   	 public boolean keyTyped(char character) {
+	   		 return false;
+	   	 }
+	   	 public boolean touchDown(int screenX, int screenY, int pointer,int button) {
+	   		 return false;
+	   	 }
+	   	 public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+	   		 return false;
+		}
+	   	 public boolean touchDragged(int screenX, int screenY, int pointer) {
+	   		 return false;
+	   	 }
+	   	 public boolean mouseMoved(int screenX, int screenY) {
+	   		 return false;
+	   	 }
+	   	 public boolean scrolled(int amount) {
+	   		 return false;
+		}
     }
 }

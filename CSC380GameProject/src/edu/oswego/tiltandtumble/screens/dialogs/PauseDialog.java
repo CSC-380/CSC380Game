@@ -1,8 +1,11 @@
 package edu.oswego.tiltandtumble.screens.dialogs;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
@@ -21,7 +24,7 @@ public class PauseDialog extends Dialog {
 		CONTINUE
 	}
 
-	public PauseDialog(String title, Skin skin, GameScreen screen, TiltAndTumble game) {
+	public PauseDialog(String title, Skin skin, GameScreen screen, final TiltAndTumble game) {
 		super(title, skin, "dialog");
 		this.screen = screen;
 		this.game = game;
@@ -45,11 +48,21 @@ public class PauseDialog extends Dialog {
         button("Retry", Buttons.RETRY);
         getButtonTable().row().uniform().fill();
 		button("Continue", Buttons.CONTINUE);
-
+		//this.addListener(new InputListener(){
+		//	public boolean keyDown(InputEvent event, int keycode){
+		//		 if(keycode == Keys.BACK){
+		//		   	 game.showPreviousScreen();
+		//		   	 return true;
+		//		 }
+		//		return false;
+		//	}
+		//});
+		
 	}
 
 	@Override
 	protected void result(Object object) {
+		
 		super.result(object);
 		Gdx.app.log("dialog result", "" + object);
 		if (object != null && object instanceof Buttons) {
@@ -72,5 +85,14 @@ public class PauseDialog extends Dialog {
 		} else {
 			screen.resume();
 		}
+		this.addListener(new InputListener(){
+			public boolean keyDown(InputEvent event, int keycode){
+				 if(keycode == Keys.BACK){
+				   	 game.showPreviousScreen();
+				   	 return true;
+				 }
+				return false;
+			}
+		});
 	}
 }
