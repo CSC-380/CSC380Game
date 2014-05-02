@@ -48,15 +48,15 @@ public class PauseDialog extends Dialog {
         button("Retry", Buttons.RETRY);
         getButtonTable().row().uniform().fill();
 		button("Continue", Buttons.CONTINUE);
-		//this.addListener(new InputListener(){
-		//	public boolean keyDown(InputEvent event, int keycode){
-		//		 if(keycode == Keys.BACK){
-		//		   	 game.showPreviousScreen();
-		//		   	 return true;
-		//		 }
-		//		return false;
-		//	}
-		//});
+		this.addListener(new InputListener(){
+			public boolean keyDown(InputEvent event, int keycode){
+				 if(keycode == Keys.BACK){
+				   	 game.showPreviousScreen();
+				   	 return true;
+				 }
+				return false;
+			}
+		});
 		
 	}
 
@@ -85,14 +85,6 @@ public class PauseDialog extends Dialog {
 		} else {
 			screen.resume();
 		}
-		this.addListener(new InputListener(){
-			public boolean keyDown(InputEvent event, int keycode){
-				 if(keycode == Keys.BACK){
-				   	 game.showPreviousScreen();
-				   	 return true;
-				 }
-				return false;
-			}
-		});
+		
 	}
 }
