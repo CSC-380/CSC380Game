@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Stack;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SkinLoader;
@@ -28,8 +31,12 @@ import edu.oswego.tiltandtumble.settings.Settings.Setting;
 import edu.oswego.tiltandtumble.settings.SettingsObserver;
 import edu.oswego.tiltandtumble.settings.SettingsUpdate;
 
+<<<<<<< HEAD
 
 public class TiltAndTumble extends Game implements SettingsObserver {
+=======
+public class TiltAndTumble extends Game {
+>>>>>>> Dylan
 
 	// NOTE: older phones do not have Deque interface
 	Stack<Screen> screenStack = new Stack<Screen>();
@@ -50,7 +57,7 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 	private SettingsScreen settingsScreen;
 	private LevelScreen levelScreen;
 	private GameScreen gameScreen;
-
+	;
 	private AssetManager assetManager;
 	private Skin skin;
 	private Stage stage;
@@ -59,7 +66,7 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 
 	private int width;
 	private int height;
-
+	
 	private Settings settings;
 	private HighScores scores;
 
@@ -76,7 +83,8 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		settings.addObserver(this);
 
 		batch = new SpriteBatch();
-
+		
+		
 		// this will set the view port to the screen size, which will cause
 		// things to look big on a low resolution screen and look small on a
 		// high resolution screen. we then probably have to scale the ui
@@ -91,7 +99,10 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		height = 320;
 
 		stage = new Stage(width, height, true, batch);
-
+		
+		Gdx.input.setCatchBackKey(true);
+	
+        
 		font = new BitmapFont();
 		loadSkin();
 		scores = HighScores.load();
@@ -181,7 +192,7 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		}
 		setScreen(screenStack.pop());
 	}
-
+	
 	public AssetManager getAssetManager() {
 		return assetManager;
 	}
@@ -217,6 +228,7 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 	public float getHeight() {
 		return height;
 	}
+<<<<<<< HEAD
 
 	public List<String> getLevels() {
 		return levels;
@@ -247,6 +259,9 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 
 
 	@Override
+=======
+		@Override
+>>>>>>> Dylan
 	public void dispose() {
 		HighScores.save(scores);
 		mainScreen.dispose();
@@ -274,6 +289,7 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		font.dispose();
 		assetManager.dispose();
 	}
+<<<<<<< HEAD
 
 	@Override
 	public void handleSettingsChangeUpdate(SettingsUpdate update) {
@@ -286,4 +302,7 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 			}
 		}
 	}
+=======
+	
+>>>>>>> Dylan
 }

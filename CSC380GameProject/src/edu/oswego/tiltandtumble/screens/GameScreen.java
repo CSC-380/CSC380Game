@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
@@ -16,6 +18,7 @@ import edu.oswego.tiltandtumble.levels.DefaultLevelRenderer;
 import edu.oswego.tiltandtumble.levels.Level;
 import edu.oswego.tiltandtumble.levels.LevelRenderer;
 import edu.oswego.tiltandtumble.levels.WorldPopulator;
+import edu.oswego.tiltandtumble.screens.SettingsScreen.InputAdapter;
 import edu.oswego.tiltandtumble.screens.dialogs.PauseDialog;
 import edu.oswego.tiltandtumble.screens.dialogs.ScoreDialog;
 import edu.oswego.tiltandtumble.screens.widgets.DPad;
@@ -127,8 +130,10 @@ public class GameScreen extends AbstractScreen {
 
 	@Override
 	public void show() {
+		InputAdapter mProcessor = new InputAdapter();
 		Gdx.input.setInputProcessor(inputMux);
 		inputMux.addProcessor(stage);
+		inputMux.addProcessor(mProcessor);
 		if (game.getSettings().isUseDpad()){
 			DPad dpad = new DPad(skin, ballController);
 			dpad.setPosition(0, 0);
@@ -257,6 +262,7 @@ public class GameScreen extends AbstractScreen {
 			public void togglePause(GameScreen s) {
 				pause(s);
 			}
+			
 		},
 		SCORED;
 
@@ -267,4 +273,53 @@ public class GameScreen extends AbstractScreen {
 		public void show(GameScreen s) {}
 		public void render(GameScreen s, float delta) {}
 	}
+	public class InputAdapter implements InputProcessor{
+
+   	 public boolean keyDown(int keycode){
+   		 String backbuttonhit = " true";
+   		 if(keycode == Keys.BACK){
+   			 if(currentState == State.PAUSED){
+   				 System.out.println(backbuttonhit);
+   				 game.showPreviousScreen();
+   			 }
+   			 else{
+					pause();
+   			 }
+   			 return true;
+   		 }
+   		 return false;
+   	 }
+
+		public boolean keyUp(int keycode) {
+			return false;
+		}
+
+		public boolean keyTyped(char character) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		public boolean touchDown(int screenX, int screenY, int pointer,int button) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		public boolean touchDragged(int screenX, int screenY, int pointer) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		public boolean mouseMoved(int screenX, int screenY) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		public boolean scrolled(int amount) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+   	}
 }
