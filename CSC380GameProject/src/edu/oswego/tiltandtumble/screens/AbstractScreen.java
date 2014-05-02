@@ -15,7 +15,7 @@ abstract class AbstractScreen implements Screen {
 	protected final TiltAndTumble game;
 	protected final Stage stage;
 	protected final Skin skin;
-	
+
 	public AbstractScreen(final TiltAndTumble game) {
 		this.game = game;
 		this.stage = game.getStage();

@@ -1,14 +1,8 @@
 package edu.oswego.tiltandtumble.screens;
 
 import com.badlogic.gdx.Gdx;
-<<<<<<< HEAD
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
-=======
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Input.Keys;
->>>>>>> Dylan
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -25,7 +19,6 @@ Music button;
 
     @Override
     public void show() {
-<<<<<<< HEAD
         Gdx.input.setInputProcessor(stage);
         
         AssetManager assetManager = new AssetManager();
@@ -35,11 +28,6 @@ Music button;
 			assetManager.finishLoading();
 		}
 		button = assetManager.get(musicFile, Music.class);
-=======
-    	InputAdapter mProcessor = new InputAdapter();
-        InputMultiplexer multiplexer = new InputMultiplexer(stage, mProcessor);
-        Gdx.input.setInputProcessor(multiplexer);
->>>>>>> Dylan
 
 		Window table = new Window("\nHelp", skin);
 		table.setFillParent(true);
@@ -80,46 +68,4 @@ Music button;
             }
         });
     }
-    public class InputAdapter implements InputProcessor{
-
-   	 public boolean keyDown(int keycode){
-   		 if(keycode == Keys.BACK){
-					game.showPreviousScreen();
-					return true;
-   		 }
-   		 return false;
-   	 }
-
-		public boolean keyUp(int keycode) {
-			return false;
-		}
-
-		public boolean keyTyped(char character) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		public boolean touchDown(int screenX, int screenY, int pointer,int button) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-		public boolean touchDragged(int screenX, int screenY, int pointer) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		public boolean mouseMoved(int screenX, int screenY) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-		public boolean scrolled(int amount) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-   	}
 }

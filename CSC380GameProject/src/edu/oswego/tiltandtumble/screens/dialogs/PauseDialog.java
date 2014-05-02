@@ -45,7 +45,6 @@ public class PauseDialog extends Dialog {
         button("Retry", Buttons.RETRY);
         getButtonTable().row().uniform().fill();
 		button("Continue", Buttons.CONTINUE);
-		
 
 	}
 
