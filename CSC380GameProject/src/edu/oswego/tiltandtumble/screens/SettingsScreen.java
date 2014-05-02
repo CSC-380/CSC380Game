@@ -1,6 +1,7 @@
 package edu.oswego.tiltandtumble.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -21,7 +22,8 @@ public class SettingsScreen extends AbstractScreen {
 
     @Override
     public void show() {
-    	InputProcessor mProcessor = game.getProcessor();
+    	Gdx.input.setCatchBackKey(true);
+    	InputAdapter mProcessor = new InputAdapter();
         InputMultiplexer multiplexer = new InputMultiplexer(stage, mProcessor);
         Gdx.input.setInputProcessor(multiplexer);
 		Window table = new Window("\nSettings", skin);
@@ -93,6 +95,47 @@ public class SettingsScreen extends AbstractScreen {
             }
             
         });
-     
     }
-}
+     public class InputAdapter implements InputProcessor{
+
+    	 public boolean keyDown(int keycode){
+    		 if(keycode == Keys.BACK){
+					game.showPreviousScreen();
+					return true;
+    		 }
+    		 return false;
+    	 }
+
+		public boolean keyUp(int keycode) {
+			return false;
+		}
+
+		public boolean keyTyped(char character) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+ 
+		public boolean touchDown(int screenX, int screenY, int pointer,int button) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		public boolean touchDragged(int screenX, int screenY, int pointer) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		public boolean mouseMoved(int screenX, int screenY) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		public boolean scrolled(int amount) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+    	}
+    }

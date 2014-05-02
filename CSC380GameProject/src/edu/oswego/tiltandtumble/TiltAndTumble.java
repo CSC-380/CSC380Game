@@ -5,7 +5,6 @@ import java.util.Stack;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -23,7 +22,6 @@ import edu.oswego.tiltandtumble.screens.HelpScreen;
 import edu.oswego.tiltandtumble.screens.HighScoresScreen;
 import edu.oswego.tiltandtumble.screens.LevelScreen;
 import edu.oswego.tiltandtumble.screens.MainScreen;
-import edu.oswego.tiltandtumble.screens.PauseScreen;
 import edu.oswego.tiltandtumble.screens.SettingsScreen;
 import edu.oswego.tiltandtumble.settings.Settings;
 
@@ -39,7 +37,7 @@ public class TiltAndTumble extends Game {
 	private SettingsScreen settingsScreen;
 	private LevelScreen levelScreen;
 	private GameScreen gameScreen;
-	private PauseScreen pauseScreen;
+	;
 	private AssetManager assetManager;
 	private Skin skin;
 	private Stage stage;
@@ -78,7 +76,6 @@ public class TiltAndTumble extends Game {
 
 		stage = new Stage(width, height, true, batch);
 		
-		Gdx.input.setInputProcessor(mProcessor);
 		Gdx.input.setCatchBackKey(true);
 	
         
@@ -158,13 +155,7 @@ public class TiltAndTumble extends Game {
 	public void showPreviousScreen() {
 		setScreen(screenStack.pop());
 	}
-	public void showPauseScreen(){
-		if (pauseScreen == null) {
-			pauseScreen = new PauseScreen(this);
-		}
-		//crashes game
-		gameScreen.pause();
-	}
+	
 	public AssetManager getAssetManager() {
 		return assetManager;
 	}
@@ -200,10 +191,7 @@ public class TiltAndTumble extends Game {
 	public float getHeight() {
 		return height;
 	}
-	public InputProcessor getProcessor(){
-		return mProcessor;
-	}
-	@Override
+		@Override
 	public void dispose() {
 		HighScores.save(scores);
 		mainScreen.dispose();
@@ -230,78 +218,5 @@ public class TiltAndTumble extends Game {
 		font.dispose();
 		assetManager.dispose();
 	}
-	private InputProcessor mProcessor = new InputProcessor(){
-		 @Override
-		  public boolean keyDown(int keycode) {
-				if(keycode == Keys.BACK){
-					if(settingsScreen != null){
-						showPreviousScreen();
-						}
-					if(gameScreen != null){
-						showPauseScreen();
-						
-						}
-					if(levelScreen != null){
-						showMainScreen();
-						
-						}
-					if(highScoresScreen != null){
-						showPreviousScreen();
-						
-						}
-					if(helpScreen != null){
-						showPreviousScreen();
-						
-						}
-					if(creditScreen != null){
-						showPreviousScreen();
-						
-						}
-					if(pauseScreen != null){
-						// when i get gamescreen right this should be exactly the same
-						
-						}
-					if(mainScreen != null){
-						//doesnt work right
-						dispose();
-						
-						}
-					}
-				return false;
-				}
-		  @Override
-		   public boolean keyUp (int keycode) {
-		      return false;
-		   }
-
-		   @Override
-		   public boolean keyTyped (char character) {
-		      return false;
-		   }
-
-		   @Override
-		   public boolean touchDown (int x, int y, int pointer, int button) {
-		      return false;
-		   }
-
-		   @Override
-		   public boolean touchUp (int x, int y, int pointer, int button) {
-		      return false;
-		   }
-
-		   @Override
-		   public boolean touchDragged (int x, int y, int pointer) {
-		      return false;
-		   }
-
-		   @Override
-		   public boolean scrolled (int amount) {
-		      return false;
-		   }
-
-		  @Override
-		  public boolean mouseMoved(int screenX, int screenY) {
-			return false;
-		  }
-	};
+	
 }
