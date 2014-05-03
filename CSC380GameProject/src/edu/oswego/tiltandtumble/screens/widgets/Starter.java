@@ -22,13 +22,13 @@ public class Starter extends Dialog {
 	private State currentState;
 	private float countdownTime;
 	private int lastCount;
-	private Music zero;
-	private Music one;
-	private Music two;
-	private Music three;
-	private Sound buttonSound;
-	private AssetManager assetManager;
-	private TiltAndTumble game;
+	private final Music zero;
+	private final Music one;
+	private final Music two;
+	private final Music three;
+	private final Sound buttonSound;
+	private final AssetManager assetManager;
+	private final TiltAndTumble game;
 
 	public Starter(GameScreen screen, Skin skin, TiltAndTumble game) {
 		super("", skin, "countdown");
@@ -39,31 +39,31 @@ public class Starter extends Dialog {
 		setFillParent(true);
         setModal(true);
         setMovable(false);
-		String musicFile = "data/soundfx/button-8.wav";
+		String musicFile = "data/soundfx/button-8.ogg";
 		if (!assetManager.isLoaded(musicFile)) {
 			assetManager.load(musicFile, Sound.class);
 			assetManager.finishLoading();
 		}
 		buttonSound = assetManager.get(musicFile, Sound.class);
-        musicFile = "data/soundfx/number-zero.wav";
+        musicFile = "data/soundfx/number-zero.ogg";
 		if (!assetManager.isLoaded(musicFile)) {
 			assetManager.load(musicFile, Music.class);
 			assetManager.finishLoading();
 		}
 		zero = assetManager.get(musicFile, Music.class);
-        musicFile = "data/soundfx/number-one.wav";
+        musicFile = "data/soundfx/number-one.ogg";
 		if (!assetManager.isLoaded(musicFile)) {
 			assetManager.load(musicFile, Music.class);
 			assetManager.finishLoading();
 		}
 		one = assetManager.get(musicFile, Music.class);
-		musicFile = "data/soundfx/number-two.wav";
+		musicFile = "data/soundfx/number-two.ogg";
 		if (!assetManager.isLoaded(musicFile)) {
 			assetManager.load(musicFile, Music.class);
 			assetManager.finishLoading();
 		}
 		two = assetManager.get(musicFile, Music.class);
-		musicFile = "data/soundfx/number-three.wav";
+		musicFile = "data/soundfx/number-three.ogg";
 		if (!assetManager.isLoaded(musicFile)) {
 			assetManager.load(musicFile, Music.class);
 			assetManager.finishLoading();
