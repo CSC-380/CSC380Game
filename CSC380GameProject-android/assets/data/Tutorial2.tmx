@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="70" height="70" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="music" value="spaceLevel_2.mp3"/>
+ </properties>
  <tileset firstgid="1" name="sci-fi-platformer-tiles-15" tilewidth="32" tileheight="32">
-  <image source="../untitled folder 2/tiles/sci-fi-platformer-tiles-15.png" width="512" height="512"/>
+  <image source="tiles/sci-fi-platformer-tiles-15.png" width="512" height="512"/>
  </tileset>
  <tileset firstgid="257" name="sci-fi-platformer-tiles-11" tilewidth="32" tileheight="32">
-  <image source="../untitled folder 2/tiles/sci-fi-platformer-tiles-11.png" width="512" height="512"/>
+  <image source="tiles/sci-fi-platformer-tiles-11.png" width="512" height="512"/>
  </tileset>
- <tileset firstgid="513" name="tilea2 (1)" tilewidth="32" tileheight="32">
-  <image source="../untitled folder 2/tilea2 (1).png" width="512" height="512"/>
+ <tileset firstgid="1665" name="tilea2 (1)" tilewidth="32" tileheight="32">
+  <image source="tilea2 (1).png" width="512" height="512"/>
  </tileset>
  <tileset firstgid="769" name="sci-fi-platformer-tiles-12" tilewidth="32" tileheight="32">
-  <image source="../untitled folder 2/tiles/sci-fi-platformer-tiles-12.png" width="512" height="512"/>
+  <image source="tiles/sci-fi-platformer-tiles-12.png" width="512" height="512"/>
+  <terraintypes>
+   <terrain name="New Terrain" tile="-1"/>
+  </terraintypes>
  </tileset>
  <layer name="background" width="70" height="70">
   <data encoding="base64" compression="zlib">

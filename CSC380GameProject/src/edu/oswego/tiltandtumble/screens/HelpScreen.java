@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -15,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import edu.oswego.tiltandtumble.TiltAndTumble;
 
 public class HelpScreen extends AbstractScreen {
-Music button;
+Sound button;
     public HelpScreen(final TiltAndTumble game) {
         super(game);
     }
@@ -38,10 +39,10 @@ Music button;
         AssetManager assetManager = new AssetManager();
         String musicFile = "data/soundfx/button-8.wav";
 		if (!assetManager.isLoaded(musicFile)) {
-			assetManager.load(musicFile, Music.class);
+			assetManager.load(musicFile, Sound.class);
 			assetManager.finishLoading();
 		}
-		button = assetManager.get(musicFile, Music.class);
+		button = assetManager.get(musicFile, Sound.class);
 
 		Window table = new Window("\nHelp", skin);
 		table.setFillParent(true);
