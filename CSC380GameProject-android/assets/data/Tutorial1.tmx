@@ -24,11 +24,11 @@
  </layer>
  <objectgroup name="collision" width="50" height="50">
   <object name="StaticWall" x="2" y="0" width="1594" height="28"/>
-  <object name="StaticWall" x="1" y="3" width="28" height="812"/>
+  <object name="StaticWall" x="4" y="3" width="28" height="812"/>
   <object name="StaticWall" x="129" y="7" width="189" height="310"/>
-  <object name="StaticWall" x="277" y="129" width="333" height="187"/>
-  <object name="StaticWall" x="596" y="159" width="41" height="126"/>
-  <object name="StaticWall" x="706" y="162" width="60" height="122"/>
+  <object name="StaticWall" x="277" y="129" width="331" height="191"/>
+  <object name="StaticWall" x="596" y="159" width="44" height="129"/>
+  <object name="StaticWall" x="704" y="160" width="60" height="128"/>
   <object name="StaticWall" x="768" y="98" width="191" height="87"/>
   <object name="StaticWall" x="737" y="130" width="254" height="604"/>
   <object name="StaticWall" x="981" y="258" width="41" height="283"/>
@@ -53,7 +53,7 @@
   <object name="StaticWallStaticWall" x="852" y="1089" width="344" height="62"/>
   <object x="1377" y="1281" width="215" height="188"/>
   <object x="1345" y="1282" width="59" height="155"/>
-  <object name="StaticWall" x="704" y="1281" width="667" height="123"/>
+  <object name="StaticWall" x="703" y="1280" width="667" height="123"/>
   <object x="1185" y="1537" width="158" height="39"/>
   <object name="StaticWall" x="833" y="1537" width="190" height="41"/>
   <object name="StaticWall" x="246" y="1568" width="1340" height="35"/>
@@ -68,9 +68,8 @@
   <object name="StaticWall" x="1122" y="728" width="94" height="39"/>
   <object name="StaticWall" x="1153" y="750" width="29" height="47"/>
   <object name="StaticWall" x="1375" y="726" width="63" height="39"/>
-  <object name="StaticWall" x="1281" y="768" width="30" height="66"/>
-  <object x="1312" y="807" height="2"/>
-  <object name="StaticWall" x="1249" y="801" width="126" height="54"/>
+  <object name="StaticWall" x="1281" y="768" width="31" height="65"/>
+  <object name="StaticWall" x="1248" y="800" width="128" height="54"/>
   <object x="1080" y="833" width="39" height="60"/>
   <object x="960" y="800" width="82" height="62"/>
   <object name="StaticWall" x="929" y="801" width="91" height="30"/>
@@ -82,7 +81,6 @@
   <object name="StaticWall" x="841" y="865" width="54" height="94"/>
   <object name="StaticWall" x="1153" y="1146" width="56" height="35"/>
   <object name="StaticWall" x="1057" y="1217" width="62" height="33"/>
-  <object x="1074" y="1258" height="1"/>
   <object name="StaticWall" x="1024" y="1248" width="127" height="63"/>
   <object name="StaticWall" x="737" y="1097" width="285" height="85"/>
   <object name="StaticWall" x="736" y="1166" width="256" height="49"/>
@@ -156,7 +154,6 @@
   <object name="PushBumper" x="25" y="678" width="11" height="78"/>
   <object name="PushBumper" x="711" y="667" width="16" height="11"/>
   <object name="PushBumper" x="729" y="325" width="11" height="21"/>
-  <object name="PushBumperT" x="387" y="309" width="5" height="113"/>
   <object name="PushBumper" x="316" y="35" width="9" height="89"/>
   <object name="FinishLine" x="1493" y="1468" width="29" height="103"/>
   <object name="PushBumper" x="551" y="1498" width="13" height="7"/>
