@@ -65,6 +65,7 @@ import edu.oswego.tiltandtumble.worldObjects.paths.MovementStrategy;
 import edu.oswego.tiltandtumble.worldObjects.paths.NodeStopMovement;
 import edu.oswego.tiltandtumble.worldObjects.paths.PathPoint;
 import edu.oswego.tiltandtumble.worldObjects.paths.PathPointTraverser;
+import edu.oswego.tiltandtumble.worldObjects.tutorial.PushBumperT;
 
 public final class WorldPopulator implements Disposable {
 	private final BodyDefBuilder bodyDef = new BodyDefBuilder();
@@ -121,6 +122,8 @@ public final class WorldPopulator implements Disposable {
 					level.addWorldObject(createTimedSwitch(obj, world, scale, switchHelper));
 				} else if (obj.getName().equals("MomentarySwitch")) {
 					level.addWorldObject(createMomentarySwitch(obj, world, scale, switchHelper));
+//				}else if (obj.getName().equals("PushBumperT")) {
+//					level.addWorldObject(new PushBumperT(1));
 				}
 			}
 		}
