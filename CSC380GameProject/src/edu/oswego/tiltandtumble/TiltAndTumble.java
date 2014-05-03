@@ -9,7 +9,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SkinLoader;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -25,9 +24,12 @@ import edu.oswego.tiltandtumble.screens.LevelScreen;
 import edu.oswego.tiltandtumble.screens.MainScreen;
 import edu.oswego.tiltandtumble.screens.SettingsScreen;
 import edu.oswego.tiltandtumble.settings.Settings;
+import edu.oswego.tiltandtumble.settings.Settings.Setting;
+import edu.oswego.tiltandtumble.settings.SettingsObserver;
+import edu.oswego.tiltandtumble.settings.SettingsUpdate;
 
 
-public class TiltAndTumble extends Game{
+public class TiltAndTumble extends Game implements SettingsObserver {
 
 	// NOTE: older phones do not have Deque interface
 	Stack<Screen> screenStack = new Stack<Screen>();
@@ -60,7 +62,7 @@ public class TiltAndTumble extends Game{
 
 	private Settings settings;
 	private HighScores scores;
-	
+
 	private boolean playMusic;
 	private Music music;
 
@@ -71,6 +73,7 @@ public class TiltAndTumble extends Game{
 		assetManager = new AssetManager();
 
 		settings = new Settings();
+		settings.addObserver(this);
 
 		batch = new SpriteBatch();
 
@@ -92,7 +95,7 @@ public class TiltAndTumble extends Game{
 		font = new BitmapFont();
 		loadSkin();
 		scores = HighScores.load();
-		playMusic = true;
+		playMusic = settings.isMusicOn();
 		String musicFile = "data/music/GameMenuMusic.mp3";
 		if (!assetManager.isLoaded(musicFile)) {
 			assetManager.load(musicFile, Music.class);
@@ -218,7 +221,7 @@ public class TiltAndTumble extends Game{
 	public List<String> getLevels() {
 		return levels;
 	}
-	
+
 	public void playMusic() {
 		if (playMusic && music != null) {
 			music.setVolume(1f);
@@ -270,5 +273,17 @@ public class TiltAndTumble extends Game{
 		batch.dispose();
 		font.dispose();
 		assetManager.dispose();
+	}
+
+	@Override
+	public void handleSettingsChangeUpdate(SettingsUpdate update) {
+		if (update.getSetting() == Setting.MUSIC) {
+			playMusic = update.getValue();
+			if (playMusic) {
+				playMusic();
+			} else {
+				endMusic();
+			}
+		}
 	}
 }

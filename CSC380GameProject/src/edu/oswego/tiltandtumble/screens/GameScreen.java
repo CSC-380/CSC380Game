@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 
@@ -129,6 +131,17 @@ public class GameScreen extends AbstractScreen {
 	public void show() {
 		Gdx.input.setInputProcessor(inputMux);
 		inputMux.addProcessor(stage);
+		inputMux.addProcessor(new InputAdapter() {
+			@Override
+			public boolean keyDown(int keycode) {
+				if(keycode == Keys.BACK){
+					pause();
+					return true;
+				}
+				return super.keyDown(keycode);
+			}
+		});
+
 		if (game.getSettings().isUseDpad()){
 			DPad dpad = new DPad(skin, ballController);
 			dpad.setPosition(0, 0);

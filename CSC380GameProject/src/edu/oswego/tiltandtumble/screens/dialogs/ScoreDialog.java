@@ -19,13 +19,13 @@ public final class ScoreDialog extends Dialog {
 	private final TiltAndTumble game;
 	private final GameScreen screen;
 	TextField initials = null;
-	private Sound button;
+	private final Sound button;
 
 	public ScoreDialog(String title, Skin skin, TiltAndTumble game, GameScreen screen) {
 		super(title, skin, "dialog");
 		this.game = game;
 		this.screen = screen;
-		
+
 		AssetManager assetManager = new AssetManager();
         String musicFile = "data/soundfx/button-8.wav";
 		if (!assetManager.isLoaded(musicFile)) {
@@ -63,40 +63,35 @@ public final class ScoreDialog extends Dialog {
 			table.row().uniformX();
 		}
 		table.add("Total:", "header").right();
-		boolean isHighScore = false;
+		table.add(total.getFormattedTime()).center();
+		table.add(String.valueOf(total.getPoints())).right();
 		if (screen.getCurrentLevel().isFailed()) {
-			table.add(total.getFormattedTime()).center();
-			table.add("0").right();
 			table.row().padTop(10).uniformX();
 			table.add("You Failed!", "highlight").colspan(3).center();
 		} else {
-			table.add(total.getFormattedTime()).center();
-			table.add(String.valueOf(total.getPoints())).right();
 			if (!screen.hasMoreLevels()) {
 				table.row().padTop(10);
 				table.add("Game Over!", "highlight").colspan(3).center();
-				if (screen.getMode() == GameScreen.Mode.ARCADE
-						&& game.getHighScores().isHighScore(total)) {
-					isHighScore = true;
-					table.row();
-					table.add("New High Score!", "highlight").colspan(3).center();
-					table.row();
-					table.add("Initials:");
-					initials = new TextField("", skin);
-					initials.setMaxLength(3);
-					initials.setMessageText("AAA");
-					table.add(initials).width(50);
-				}
 			}
 		}
+		if (screen.getMode() == GameScreen.Mode.ARCADE
+				&& (!screen.hasMoreLevels() || screen.getCurrentLevel().isFailed())
+				&& game.getHighScores().isHighScore(total)) {
+			table.row();
+			table.add("New High Score!", "highlight").colspan(3).center();
+			table.row();
+			table.add("Initials:");
+			initials = new TextField("", skin);
+			initials.setMaxLength(3);
+			initials.setMessageText("AAA");
+			table.add(initials).width(50);
 
-		getContentTable().add(table).pad(5,5,5,5);
-
-		if (isHighScore) {
 			button("Continue", total);
 		} else {
 			button("Continue");
 		}
+
+		getContentTable().add(table).pad(5,5,5,5);
 	}
 
 	@Override
