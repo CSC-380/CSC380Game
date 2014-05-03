@@ -33,7 +33,7 @@ public class PauseDialog extends Dialog {
         setMovable(false);
 
         AssetManager assetManager = new AssetManager();
-        String musicFile = "data/soundfx/button-8.wav";
+        String musicFile = "data/soundfx/button-8.ogg";
 		if (!assetManager.isLoaded(musicFile)) {
 			assetManager.load(musicFile, Sound.class);
 			assetManager.finishLoading();
