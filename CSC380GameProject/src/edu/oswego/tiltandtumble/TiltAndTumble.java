@@ -164,6 +164,10 @@ public class TiltAndTumble extends Game {
 	}
 
 	public void showPreviousScreen() {
+		if(screenStack.peek() == mainScreen){
+			this.challengeAcceptMode = false;
+			this.challengeMode = false;
+		}
 		setScreen(screenStack.pop());
 	}
 
@@ -203,9 +207,6 @@ public class TiltAndTumble extends Game {
 		return height;
 	}
 	public boolean isChallengeMode(){
-		//if(challengeAcceptMode == true){
-		//	challengeMode = true;
-	//	}
 		return challengeMode;
 	}
 	//if we are writing player ball to the server  
