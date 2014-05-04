@@ -47,7 +47,7 @@ public class SelectDialog  extends Dialog {
 			} else if (b == Buttons.CREATE) {
 				game.setChallengeMode(true);
 				game.setChallengeAcceptMode(false);
-				game.showLevelScreen();
+				game.showNetworkingLevelScreen();
 			}
 		 else {
 			screen.resume();

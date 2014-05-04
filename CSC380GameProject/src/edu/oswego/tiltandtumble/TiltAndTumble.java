@@ -22,6 +22,7 @@ import edu.oswego.tiltandtumble.screens.HelpScreen;
 import edu.oswego.tiltandtumble.screens.HighScoresScreen;
 import edu.oswego.tiltandtumble.screens.LevelScreen;
 import edu.oswego.tiltandtumble.screens.MainScreen;
+import edu.oswego.tiltandtumble.screens.NetworkingLevelScreen;
 import edu.oswego.tiltandtumble.screens.SettingsScreen;
 import edu.oswego.tiltandtumble.settings.Settings;
 
@@ -42,6 +43,7 @@ public class TiltAndTumble extends Game {
 	private LevelScreen levelScreen;
 	private GameScreen gameScreen;
 	private ChallengeScreen challengeScreen;
+	private NetworkingLevelScreen networkingLevelScreen;
 
 	private AssetManager assetManager;
 	private Skin skin;
@@ -112,6 +114,15 @@ public class TiltAndTumble extends Game {
 		}
 		screenStack.push(getScreen());
 		setScreen(creditScreen);
+	}
+	
+	public void showNetworkingLevelScreen(){
+		if (networkingLevelScreen == null) {
+			networkingLevelScreen = new NetworkingLevelScreen(this);
+		}
+		screenStack.push(getScreen());
+		setScreen(networkingLevelScreen);
+		
 	}
 
 	public void showHelpScreen() {
@@ -265,6 +276,9 @@ public class TiltAndTumble extends Game {
 		}
 		if (challengeScreen != null) {
 			challengeScreen.dispose();
+		}
+		if (networkingLevelScreen != null) {
+			networkingLevelScreen.dispose();
 		}
 		stage.dispose();
 		batch.dispose();
