@@ -74,6 +74,7 @@ public class MainScreen extends AbstractScreen {
         play2.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+            	button.play();
                 showMulti();
             }
         });

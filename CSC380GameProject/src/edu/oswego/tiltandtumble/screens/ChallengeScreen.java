@@ -1,6 +1,7 @@
 package edu.oswego.tiltandtumble.screens;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
@@ -15,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
@@ -59,6 +62,10 @@ public class ChallengeScreen extends AbstractScreen  {
 	
 	private void showTopChallenges(final int levelNum){
 
+		ResultSet results = session.execute("SELECT username, highscore FROM users");
+		Iterator<Row> row  = results.iterator();
+		
+ 	   	//m = row.getMap("highscore",String.class, Integer.class);
      
 		table = new Window("\nLevel " + levelNum, skin);
 		table.setFillParent(true);
@@ -72,15 +79,15 @@ public class ChallengeScreen extends AbstractScreen  {
 		table.add("Name", "header");
 		table.add("Challenge", "header");
 		
-		Map<String, String> m = new HashMap<String,String>();
-		m.put("DAM", "5.049");
-		m.put("KMAE", "6.023");
-		m.put("ZACK", "7.833");
-
-
+//		Map<String, String> m = new HashMap<String,String>();
+//		m.put("DAM", "5.049");
+//		m.put("KMAE", "6.023");
+//		m.put("ZACK", "7.833");
+		int count = 1;
+		results.iterator();
 		
-		 for(int i = 1; i <= 5; i++){
-	  		   Button accept = new TextButton("A", skin);
+		while (row.hasNext()) {
+        	Button accept = new TextButton("A", skin);
 	  		   accept.addListener(new ChangeListener(){
 						@Override
 			            public void changed(ChangeEvent event, Actor actor) {
@@ -88,12 +95,36 @@ public class ChallengeScreen extends AbstractScreen  {
 							game.showGameScreen(levelNum, GameScreen.Mode.NETWORKING);
 						}	
 	  		   });
+	  		 Row rrow = row.next();
+//	  	      Iterator<Cell> cellIterator = rrow.cellIterator();
+//	  	      while (cellIterator.hasNext()) {
+//	  	        Cell cell = cellIterator.next();
+//	  	        System.out.print(cell.getStringCellValue() + "\t\t");
+//	  	      }.center();
 	  		table.row().center();
-	 		table.add("" + i);	 		
-	 		table.add("" + m.get("KMAE"));
-	 		table.add("KMAE");
-	 		table.add(accept);
-		 }
+			table.add("" + rrow);
+			//table.add("" + entry.getValue());			
+//			table.add(value);
+			table.add(accept);
+			count++;
+		    
+		}
+//		 for(int i = 1; i <= 5; i++){
+//	  		   Button accept = new TextButton("A", skin);
+//	  		   accept.addListener(new ChangeListener(){
+//						@Override
+//			            public void changed(ChangeEvent event, Actor actor) {
+//							button.play();
+//							topTable.setVisible(false);
+//							game.showGameScreen(levelNum, GameScreen.Mode.NETWORKING);
+//						}	
+//	  		   });
+//	  		table.row().center();
+//	 		table.add("" + i);	 		
+//	 		table.add("" + m.get("KMAE"));
+//	 		table.add("KMAE");
+//	 		table.add(accept);
+//		 }
 		
 		table.row().expand().padBottom(10);
         Button back = new TextButton("Go Back", skin);
@@ -102,6 +133,7 @@ public class ChallengeScreen extends AbstractScreen  {
         back.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+            	button.play();
             	//table.clear();
             	showLevelTable();
             }
@@ -128,6 +160,7 @@ public class ChallengeScreen extends AbstractScreen  {
 		lvl1.addListener(new ChangeListener(){
 			@Override
             public void changed(ChangeEvent event, Actor actor) {
+				button.play();
 				topTable.setVisible(false);
 				showTopChallenges(1);
 
@@ -138,6 +171,7 @@ public class ChallengeScreen extends AbstractScreen  {
 		lvl2.addListener(new ChangeListener(){
 			@Override
             public void changed(ChangeEvent event, Actor actor) {
+				button.play();
 				topTable.setVisible(false);
 				showTopChallenges(2);
 			}
@@ -148,6 +182,7 @@ public class ChallengeScreen extends AbstractScreen  {
 		lvl3.addListener(new ChangeListener(){
 			@Override
             public void changed(ChangeEvent event, Actor actor) {
+				button.play();
 				topTable.setVisible(false);
 				showTopChallenges(3);
 			}
@@ -158,6 +193,7 @@ public class ChallengeScreen extends AbstractScreen  {
 		lvl4.addListener(new ChangeListener(){
 			@Override
             public void changed(ChangeEvent event, Actor actor) {
+				button.play();
 				topTable.setVisible(false);
 				showTopChallenges(4);
 			}
@@ -168,6 +204,7 @@ public class ChallengeScreen extends AbstractScreen  {
 		lvl5.addListener(new ChangeListener(){
 			@Override
             public void changed(ChangeEvent event, Actor actor) {
+				button.play();
 				topTable.setVisible(false);
 				showTopChallenges(5);
 			}
@@ -181,6 +218,7 @@ public class ChallengeScreen extends AbstractScreen  {
         back.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+            	button.play();
             	game.setChallengeMode(false);
                 game.showPreviousScreen();
             }

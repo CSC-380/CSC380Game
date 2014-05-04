@@ -1,5 +1,7 @@
 package edu.oswego.tiltandtumble.screens.dialogs;
 
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -13,6 +15,7 @@ public class SelectDialog  extends Dialog {
 	private final TiltAndTumble game;
 	private final MainScreen screen;
 	TextField initials = null;
+	private Sound button;
 	
 	private static enum Buttons {
 		ACCEPT,
@@ -23,6 +26,13 @@ public class SelectDialog  extends Dialog {
 		super(title, skin, "dialog");
 		this.game = game;
 		this.screen = screen;
+		AssetManager assetManager = new AssetManager();
+		String musicFile = "data/soundfx/button-8.ogg";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		button = assetManager.get(musicFile, Sound.class);
 		
 		padTop(50);
         setModal(true);
@@ -39,6 +49,7 @@ public class SelectDialog  extends Dialog {
 	protected void result(Object object) {
 		super.result(object);
 		if (object != null && object instanceof Buttons) {
+			button.play();
 			Buttons b = (Buttons)object;
 			if (b == Buttons.ACCEPT) {
 				game.setChallengeAcceptMode(true);

@@ -54,7 +54,6 @@ public class NetworkingLevelScreen extends AbstractScreen {
         stage.addActor(window);
         
         window.row().padTop(25).colspan(5);
-		window.add("Practice Mode", "highlight");
 		window.row().pad(10, 10, 0, 10).width(75);
 		int count = game.getLevels().size();
 		for (int i = 0; i < count; i++) {
@@ -74,19 +73,15 @@ public class NetworkingLevelScreen extends AbstractScreen {
 			});
 		}
 		
-        
-        
-        
-        
 
-		window.row().padTop(50).bottom().fillX();
+		window.row().padBottom(10).padTop(50).bottom().colspan(5).width(100);
 		Button back = new TextButton("Go Back", skin);
 		window.add(back);
 		back.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				button.play();
 				game.setChallengeMode(false);
+				button.play();
 				game.showPreviousScreen();
 			}
 		});
