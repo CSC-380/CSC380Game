@@ -128,9 +128,10 @@ public class ChallengeScreen extends AbstractScreen  {
        
       
 		
-		//TODO figure out how to obtain friends
+		//TODO figure out how to obtain friends............
         //story of her life!!!
-		
+		//Don't feel bad for her though...............
+        
 		Button lvl1 = new TextButton("1", skin);
 		topTable.add(lvl1);
 		lvl1.addListener(new ChangeListener(){
