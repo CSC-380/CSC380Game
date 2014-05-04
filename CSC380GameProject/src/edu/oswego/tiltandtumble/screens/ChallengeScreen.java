@@ -106,15 +106,10 @@ public class ChallengeScreen extends AbstractScreen  {
 		lvl1.addListener(new ChangeListener(){
 			@Override
             public void changed(ChangeEvent event, Actor actor) {
-				//topTable.setVisible(false);
-				//showTopChallenges(1);
-				ResultSet results = session.execute("SELECT pathx FROM users WHERE username = 'schrecen';");
-				Row row = results.one();
-		 	   	Map<Integer, Float> pathX = row.getMap("pathx", Integer.class, Float.class);
-		 	   	for(int i = 0; i < pathX.size(); ++i)
-		 	   		System.out.println(pathX.get(i));
+				topTable.setVisible(false);
+				showTopChallenges(1);
+
 			}
-			
 		});
 		Button lvl2 = new TextButton("2", skin);
 		topTable.add(lvl2);

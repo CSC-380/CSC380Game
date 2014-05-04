@@ -40,13 +40,15 @@ public class GameScreen extends AbstractScreen {
 
 	private Dialog pauseDialog;
 	
-	private final ShadowBallController shadowController;
+	private ShadowBallController shadowController;
 
 	public GameScreen(TiltAndTumble game, int currentLevel) {
 		super(game);
 		ballController = new BallController(!game.getSettings().isUseDpad(), isChallengeMode(), game.getSession());
 		worldPopulator = new WorldPopulator(game.getAssetManager());
+		if(game.isChallengeAcceptMode()){
 		shadowController = new ShadowBallController(game.getSession());
+		}
 		hud = new Hud(this, skin);
 		loadLevel(currentLevel);
 		hud.setScore(level.getScore());
@@ -186,7 +188,9 @@ public class GameScreen extends AbstractScreen {
 				
 				s.ballController.resume();
 				//shadowball.start
+				if(s.shadowController != null){
 				s.shadowController.resume();
+				}
 				s.level.start();
 				s.audio.start();
 				s.changeState(State.PLAYING);
@@ -204,7 +208,9 @@ public class GameScreen extends AbstractScreen {
 					s.pauseDialog = null;
 				}
 				s.ballController.resume();
+				if(s.shadowController != null){
 				s.shadowController.resume();
+				}
 				s.audio.start();
 				s.level.resume();
 				s.changeState(State.PLAYING);
