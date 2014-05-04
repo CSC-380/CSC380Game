@@ -53,11 +53,29 @@ public class ChallengeScreen extends AbstractScreen  {
 		
 
 
+<<<<<<< HEAD
             	//System.out.println(" ");
+=======
+            	System.out.println(" ");
+>>>>>>> FETCH_HEAD
             	//Cluster cluster = Cluster.builder().addContactPoint("localhost").build();
           
+<<<<<<< HEAD
 
 		/*
+=======
+            	session.execute("USE challengeMap;");
+            	session.execute("CREATE TABLE users ("
+            	   		+ "username text PRIMARY KEY, "
+            	   		+ "highscore int, "
+            	   		+ "pathx map<int, int>, "
+            	   		+ "pathy map<int, int>);");
+            	session.execute("INSERT INTO users (username, highscore, pathx, pathy) "
+            	   		+ "VALUES ('schrecen', 0, {0 : 1}, {0 : 1});");
+
+            	/*
+            	
+>>>>>>> FETCH_HEAD
             	ResultSet results = session.execute("SELECT * FROM users;");
          	   	System.out.println(String.format("%-30s\t%-20s\t%-20s\n%s", "username", "highscore", "path", 
          		       "-------------------------------+-----------------------+------------------------"));
