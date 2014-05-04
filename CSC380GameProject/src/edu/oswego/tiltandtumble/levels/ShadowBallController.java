@@ -21,17 +21,6 @@ public class ShadowBallController {
 	private int count = 0;
 	
 	public ShadowBallController(Session session){
-<<<<<<< HEAD
-		//get info from server here store in something so update can use it
-		this.session = session;
-		ResultSet results = session.execute("SELECT pathx FROM users WHERE username = 'schrecen';");
-		Row row = results.one();
- 	   	pathX = row.getMap("pathx", Integer.class, Float.class);
- 	   	//USER name will be passed here
- 	   	results = session.execute("SELECT pathy FROM users WHERE username = 'schrecen';");
- 	   	row = results.one();
-	   	pathY = row.getMap("pathy", Integer.class, Float.class);
-=======
 		//get info from server here store in something so update can use it		
 		this.session = session;
 		
@@ -42,10 +31,6 @@ public class ShadowBallController {
  	   	ResultSet resultsy = session.execute("SELECT pathy FROM users WHERE username = 'schrecen';");
 		Row rowy = resultsy.one();
 	   	pathY = rowy.getMap("pathx", Integer.class, Float.class);
-	   	
- 	   	for(int i = 0; i < pathX.size(); ++i)
- 	   		System.out.println(pathX.get(i));
->>>>>>> FETCH_HEAD
  	   	currentState = State.ACTIVE;
 	}
 	
@@ -83,11 +68,8 @@ public class ShadowBallController {
 			}
 			@Override
 			public void update(ShadowBallController b, float delta) {
-<<<<<<< HEAD
 				b.ball.draw(delta, b.pathX.get(b.count), b.pathY.get(b.count));
-=======
-				b.ball.draw(delta,b.pathX.get(b.count),b.pathY.get(b.count));
->>>>>>> FETCH_HEAD
+
 				b.count++;
 			}
 		};
