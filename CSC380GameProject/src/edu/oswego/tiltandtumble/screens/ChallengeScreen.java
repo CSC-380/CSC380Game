@@ -37,61 +37,7 @@ public class ChallengeScreen extends AbstractScreen  {
 	}
 	
 	private void showTopChallenges(int levelNum){
-//		Cluster cluster =Cluster.builder().addContactPoint("192.168.0.1").build();
-//    	   Session session = cluster.connect();
 
-    	  // for (Row row : session.execute("SELECT * FROM users;")){
-//	    		   Button accept = new TextButton("A", skin);
-//	    		   accept.addListener(new ChangeListener(){
-//						@Override
-//			            public void changed(ChangeEvent event, Actor actor) {
-//							topTable.setVisible(false);
-//							showTopChallenges(2);
-//						}					
-//	    		   });
-    	  // }
-		
-
-
-<<<<<<< HEAD
-            	//System.out.println(" ");
-=======
-            	System.out.println(" ");
->>>>>>> FETCH_HEAD
-            	//Cluster cluster = Cluster.builder().addContactPoint("localhost").build();
-          
-<<<<<<< HEAD
-
-		/*
-=======
-            	session.execute("USE challengeMap;");
-            	session.execute("CREATE TABLE users ("
-            	   		+ "username text PRIMARY KEY, "
-            	   		+ "highscore int, "
-            	   		+ "pathx map<int, int>, "
-            	   		+ "pathy map<int, int>);");
-            	session.execute("INSERT INTO users (username, highscore, pathx, pathy) "
-            	   		+ "VALUES ('schrecen', 0, {0 : 1}, {0 : 1});");
-
-            	/*
-            	
->>>>>>> FETCH_HEAD
-            	ResultSet results = session.execute("SELECT * FROM users;");
-         	   	System.out.println(String.format("%-30s\t%-20s\t%-20s\n%s", "username", "highscore", "path", 
-         		       "-------------------------------+-----------------------+------------------------"));
-         	   	List<Row> rows = results.all();
-         	   	for (int i = 0; i < rows.size(); ++i) {
-         	   		Map<Integer, Integer> mapx = rows.get(i).getMap("pathx", Integer.class, Integer.class);
-         		    Map<Integer, Integer> mapy = rows.get(i).getMap("pathy", Integer.class, Integer.class);
-         		    //List<String> list = rows.get(i).getList("path", String.class);
-         		    String path = "";
-         		    for(int j = 0; j < mapx.size(); ++j) {
-         		    	path = path + "(" + mapx.get(j) + ", " + mapy.get(j) + ") ";
-         		    }
-         		    System.out.println(String.format("%-30s\t%-20s\t%-20s", 
-         		    rows.get(i).getString("username"), rows.get(i).getInt("highscore"),  path));
-         	   	}
-         	   	*/
      
 		table = new Window("\nLevel " + levelNum, skin);
 		table.setFillParent(true);
@@ -109,17 +55,7 @@ public class ChallengeScreen extends AbstractScreen  {
 		m.put("DAM", "5.049");
 		m.put("KMAE", "6.023");
 		m.put("ZACK", "7.833");
-//		
-//		List<String> names = new ArrayList<String>();
-//		names.add("DAM");
-//		names.add("KMAE");	
-//		names.add("ZACK");
-//		Iterator it = m.entrySet().iterator();
-//	    while (it.hasNext()) {
-//	        Map.Entry pairs = (Map.Entry)it.next( );
-//	        System.out.println(pairs.getKey() + " = " + pairs.getValue());
-//	        it.remove(); // avoids a ConcurrentModificationException
-//	    }
+
 		
 		 for(int i = 1; i <= 5; i++){
 	  		   Button accept = new TextButton("A", skin);
