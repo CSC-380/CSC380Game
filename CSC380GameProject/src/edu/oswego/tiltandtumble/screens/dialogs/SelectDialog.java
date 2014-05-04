@@ -42,9 +42,11 @@ public class SelectDialog  extends Dialog {
 			Buttons b = (Buttons)object;
 			if (b == Buttons.ACCEPT) {
 				game.setChallengeAcceptMode(true);
+				game.setChallengeMode(false);
 				game.showChallengeScreen();
 			} else if (b == Buttons.CREATE) {
 				game.setChallengeMode(true);
+				game.setChallengeAcceptMode(false);
 				game.showLevelScreen();
 			}
 		 else {

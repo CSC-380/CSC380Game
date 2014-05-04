@@ -1,9 +1,9 @@
 package edu.oswego.tiltandtumble.worldObjects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -13,29 +13,36 @@ import edu.oswego.tiltandtumble.worldObjects.graphics.SpriteGraphic;
 
 public class ShadowBall implements Disposable {
 
-	private final GraphicComponent graphic;
-	private final TextureAtlas atlas;
 	private Sprite sprite;
-	private SpriteBatch batch;
+	//private SpriteBatch batch;
+	Body body;
+	GraphicComponent graphic;
 	
-	public ShadowBall(SpriteBatch batch) {
-		atlas = new TextureAtlas(Gdx.files.internal("data/WorldObjects/worldobjects.pack"));
-		sprite = atlas.createSprite("ShadowBall");
+	public ShadowBall(UnitScale scale, float x) {
+		Texture shadow = new Texture(Gdx.files.internal("data/WorldObjects/ShadowOrb.png"));
+		
+		sprite = new Sprite(shadow);
+		sprite.setSize(24.0f, 24.0f);
+		sprite.setOrigin(12.0f, 12.0f);
+		
 		graphic = new SpriteGraphic(sprite);
-		this.batch = batch;
 
 	}
 	
 	public void draw(float delta, float x, float y) {
+		//sprite.setPosition(x, y);
 		graphic.setPosition(x, y);
-		graphic.draw(delta, batch);
 		
+	}
+	public void drawFirst(float delta, SpriteBatch batch) {
+		//sprite.draw(batch);
+		graphic.draw(delta, batch);
 	}
 
 
 	@Override
 	public void dispose() {
-		graphic.dispose();
+		//graphic.dispose();
 	}
 
 }

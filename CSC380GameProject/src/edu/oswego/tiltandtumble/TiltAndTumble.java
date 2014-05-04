@@ -209,8 +209,8 @@ public class TiltAndTumble extends Game {
 	public boolean isChallengeMode(){
 		return challengeMode;
 	}
-	//if we are writing player ball to the server  
-	//true if accept challenge or start challenge
+	
+	
 	public void setChallengeMode(boolean x){
 		challengeMode = x;
 	}

@@ -15,7 +15,7 @@ public class OurCollisionListener implements ContactListener {
 		Object a = contact.getFixtureA().getUserData();
 		Object b = contact.getFixtureB().getUserData();
 		if (a != null && b != null) {
-			Gdx.app.log("begin contact", a.getClass().getName() + " > " + b.getClass().getName());
+			//Gdx.app.log("begin contact", a.getClass().getName() + " > " + b.getClass().getName());
 			if (a instanceof BallCollisionListener && b instanceof Ball) {
 				((BallCollisionListener) a).handleBeginCollision(contact, (Ball) b);
 			} else if (b instanceof BallCollisionListener && a instanceof Ball) {
@@ -29,7 +29,7 @@ public class OurCollisionListener implements ContactListener {
 		Object a = contact.getFixtureA().getUserData();
 		Object b = contact.getFixtureB().getUserData();
 		if (a != null && b != null) {
-			Gdx.app.log("end contact", a.getClass().getName() + " > " + b.getClass().getName());
+			//Gdx.app.log("end contact", a.getClass().getName() + " > " + b.getClass().getName());
 			if (a instanceof BallCollisionListener && b instanceof Ball) {
 				((BallCollisionListener) a).handleEndCollision(contact, (Ball) b);
 			} else if (b instanceof BallCollisionListener && a instanceof Ball) {

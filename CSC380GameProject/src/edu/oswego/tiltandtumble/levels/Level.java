@@ -20,6 +20,7 @@ import edu.oswego.tiltandtumble.data.Score;
 import edu.oswego.tiltandtumble.worldObjects.Audible;
 import edu.oswego.tiltandtumble.worldObjects.Ball;
 import edu.oswego.tiltandtumble.worldObjects.MapRenderable;
+import edu.oswego.tiltandtumble.worldObjects.ShadowBall;
 import edu.oswego.tiltandtumble.worldObjects.WorldObject;
 import edu.oswego.tiltandtumble.worldObjects.WorldUpdateable;
 
@@ -32,6 +33,7 @@ public class Level implements Disposable, Audible {
 	private final ContactListener contactListener;
 	private final TiledMap map;
 	private final Ball ball;
+	private ShadowBall shadowBall;
 	private final BallController ballController;
 	private final ShadowBallController shadowController;
 
@@ -86,6 +88,11 @@ public class Level implements Disposable, Audible {
 
 		ball = populator.populateWorldFromMap(this, map, world, scale);
 		this.ballController.setBall(ball);
+		
+		if(shadowController != null){
+			shadowBall = new ShadowBall(scale, ball.getRadius());
+			this.shadowController.setBall(shadowBall);
+		}
 
 		playSound = true;
 		String soundFile = "data/soundfx/failure-2.ogg";
@@ -224,7 +231,9 @@ public class Level implements Disposable, Audible {
 			m.drawBeforeBall(delta, batch);
 		}
 		ball.draw(delta, batch);
-		//shadowball.draw(delta, batch);
+		if(shadowController != null){
+			shadowBall.drawFirst(delta, batch);
+		}
 		for (MapRenderable m : renderableObjects) {
 			m.drawAfterBall(delta, batch);
 		}

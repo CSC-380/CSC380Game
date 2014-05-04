@@ -332,27 +332,27 @@ public final class WorldPopulator implements Disposable {
 			start.y = current.y;
 			end.x = next.x;
 			end.y = next.y;
-			Gdx.app.log("PointOnPath", "Checking leg " + (++idx) + " " + start + " " + end);
+		//	Gdx.app.log("PointOnPath", "Checking leg " + (++idx) + " " + start + " " + end);
 
 			Vector2 point = findClosestPointOnLineToPoint(start, end, objPoint);
 			if (!point.equals(Vector2.Zero)) {
 				float distance = objPoint.dst(point);
-				Gdx.app.log("PointOnPath", "Distance: " + distance);
+			//	Gdx.app.log("PointOnPath", "Distance: " + distance);
 				if (distance < bestDistance) {
 					bestDistance = distance;
 					bestPoint.set(point);
 					bestPath = current;
-					Gdx.app.log("PointOnPath", "New Best Distance!");
-					Gdx.app.log("PointOnPath", "New Best Point: " + bestPoint + " for " + objPoint);
+				//	Gdx.app.log("PointOnPath", "New Best Distance!");
+					//Gdx.app.log("PointOnPath", "New Best Point: " + bestPoint + " for " + objPoint);
 				}
 			}
 			else {
-				Gdx.app.log("PointOnPath", "Invalid leg found");
+				//Gdx.app.log("PointOnPath", "Invalid leg found");
 			}
 			current = next;
 			next = current.getNext();
 		} while (next != null && !next.equals(path));
-		Gdx.app.log("PointOnPath", "Best Point: " + bestPoint + " for " + objPoint);
+		//Gdx.app.log("PointOnPath", "Best Point: " + bestPoint + " for " + objPoint);
 		return new PathResult(bestPath, bestPoint);
 	}
 
@@ -509,12 +509,16 @@ public final class WorldPopulator implements Disposable {
 				.restitution(getFloatProperty(obj, "restitution", Ball.RESTITUTION))
 				.build());
 		float diameter = scale.metersToPixels(shape.getRadius()) * 2;
+		//System.out.println(shape.getRadius());
+		//System.out.println(diameter);
 		// dispose after creating fixture
 		shape.dispose();
 
 		Sprite sprite = atlas.createSprite("GreenOrb");
 		sprite.setSize(diameter, diameter);
 		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+		System.out.println(diameter);
+		System.out.println(sprite.getOriginX() + "" + sprite.getOriginY());
 		GraphicComponent graphic = new SpriteGraphic(sprite);
 
 		return new Ball(body, graphic, scale, assetManager);
@@ -746,9 +750,9 @@ public final class WorldPopulator implements Disposable {
 					+ " Unsupported MapObject: "
 					+ object.getClass().getName());
 		}
-		Gdx.app.log("WorldPopulator", "Creating " + object.getName()
-				+ " - " + object.getClass().getSimpleName()
-				+ " > "+ shape.getClass().getSimpleName());
+//		Gdx.app.log("WorldPopulator", "Creating " + object.getName()
+//				+ " - " + object.getClass().getSimpleName()
+//				+ " > "+ shape.getClass().getSimpleName());
 		return shape;
 	}
 
@@ -809,7 +813,7 @@ public final class WorldPopulator implements Disposable {
 	}
 
 	private Shape createShape(EllipseMapObject object, UnitScale scale, Body body) {
-		Gdx.app.log("warning", "Converting ellipse to a circle");
+		//Gdx.app.log("warning", "Converting ellipse to a circle");
 		// NOTE: there are no ellipse shapes so just convert it to a circle
 		CircleShape shape = new CircleShape();
 
@@ -1083,7 +1087,7 @@ public final class WorldPopulator implements Disposable {
 				if (activatables.containsKey(id)) {
 					for (Activatable a : activatables.get(id)) {
 						switches.get(id).addActivatable(a);
-						Gdx.app.log("SwitchWire", "Linking: " + id + " -> " + a.getClass().getSimpleName());
+						//Gdx.app.log("SwitchWire", "Linking: " + id + " -> " + a.getClass().getSimpleName());
 					}
 				}
 			}
@@ -1110,7 +1114,7 @@ public final class WorldPopulator implements Disposable {
 			for (String source : strategies.keySet()) {
 				for (String target : associations.get(source)) {
 					strategies.get(source).addTarget(targets.get(target));
-					Gdx.app.log("TeleporterMesh", "Linking: " + source + " -> " + target);
+					//Gdx.app.log("TeleporterMesh", "Linking: " + source + " -> " + target);
 				}
 			}
 		}

@@ -43,6 +43,7 @@ public class Ball extends AbstractWorldObject implements Disposable, Audible {
 	public void applyLinearImpulse(float x, float y) {
 		body.applyLinearImpulse(x, y, body.getPosition().x,
 				body.getPosition().y, true);
+	
 	}
 
 	public void draw(float delta, SpriteBatch batch) {
@@ -55,6 +56,12 @@ public class Ball extends AbstractWorldObject implements Disposable, Audible {
 	public float getRadius() {
 		return scale.metersToPixels(
 				body.getFixtureList().get(0).getShape().getRadius());
+		
+	}
+	
+	public float getNormalRadius(){
+		
+		return body.getFixtureList().get(0).getShape().getRadius();
 	}
 
 	public float getMapX() {

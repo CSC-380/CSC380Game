@@ -37,7 +37,10 @@ public class BallController extends ClickListener {
 
 	public BallController(boolean useAccelerometer, boolean challenge, Session session) {
 		this.useAccelerometer = useAccelerometer;
-		challengeMode = challenge;
+		challengeMode = false;
+		if(challengeMode){
+			System.out.println("CHALLENGE MODE");
+		}
 		keys.put(MyKeys.LEFT, false);
 		keys.put(MyKeys.RIGHT, false);
 		keys.put(MyKeys.UP, false);
@@ -48,6 +51,10 @@ public class BallController extends ClickListener {
 
 	public void setBall(Ball ball) {
 		this.ball = ball;
+	}
+	
+	public void setChallengeMode(boolean x){
+		challengeMode = x;
 	}
 
 	public void update(float delta) {

@@ -44,7 +44,7 @@ public class GameScreen extends AbstractScreen {
 
 	public GameScreen(TiltAndTumble game, int currentLevel) {
 		super(game);
-		ballController = new BallController(!game.getSettings().isUseDpad(), game.isChallengeMode(), game.getSession());
+		ballController = new BallController(!game.getSettings().isUseDpad(), false, game.getSession());
 		worldPopulator = new WorldPopulator(game.getAssetManager());
 		if(game.isChallengeAcceptMode()){
 		shadowController = new ShadowBallController(game.getSession());
@@ -71,9 +71,9 @@ public class GameScreen extends AbstractScreen {
 			audio.dispose();
 			audio = null;
 		}
-		Gdx.app.log("GameScreen", "Cleaned up previous level");
+		//Gdx.app.log("GameScreen", "Cleaned up previous level");
 		level = new Level(num, ballController, worldPopulator, game.getAssetManager(),shadowController);
-		Gdx.app.log("GameScreen", "Level loaded");
+		//Gdx.app.log("GameScreen", "Level loaded");
 		renderer = new DefaultLevelRenderer(level,
 				game.getWidth(), game.getHeight(),
 				game.getSpriteBatch(),
@@ -234,6 +234,7 @@ public class GameScreen extends AbstractScreen {
 					s.audio.pause();
 					s.scores.add(s.level.getScore());
 					new ScoreDialog("Score", s.skin, s.game, s).show(s.stage);
+					s.ballController.setChallengeMode(false);
 					s.changeState(State.SCORED);
 				}
 				else {

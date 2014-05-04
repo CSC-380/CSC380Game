@@ -68,9 +68,13 @@ public class ShadowBallController {
 			}
 			@Override
 			public void update(ShadowBallController b, float delta) {
+				try{
 				b.ball.draw(delta, b.pathX.get(b.count), b.pathY.get(b.count));
 
 				b.count++;
+				}catch(NullPointerException e){
+					//do nothing
+				}
 			}
 		};
 

@@ -24,6 +24,7 @@ public class ChallengeScreen extends AbstractScreen  {
 	private Window topTable;
 	private Window table;
 	private Session session;
+
 	public ChallengeScreen(final TiltAndTumble game) {
 		super(game);
 	}
@@ -56,6 +57,7 @@ public class ChallengeScreen extends AbstractScreen  {
 		m.put("KMAE", "6.023");
 		m.put("ZACK", "7.833");
 
+
 		
 		 for(int i = 1; i <= 5; i++){
 	  		   Button accept = new TextButton("A", skin);
@@ -63,7 +65,7 @@ public class ChallengeScreen extends AbstractScreen  {
 						@Override
 			            public void changed(ChangeEvent event, Actor actor) {
 							topTable.setVisible(false);
-							game.showGameScreen(1);
+							game.showGameScreen(2);
 						}	
 	  		   });
 	  		table.row().center();
