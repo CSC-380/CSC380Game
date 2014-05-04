@@ -30,7 +30,7 @@ public class ShadowBallController {
  	   	
  	   	ResultSet resultsy = session.execute("SELECT pathy FROM users WHERE username = 'schrecen';");
 		Row rowy = resultsy.one();
-	   	pathY = rowy.getMap("pathx", Integer.class, Float.class);
+	   	pathY = rowy.getMap("pathy", Integer.class, Float.class);
  	   	currentState = State.ACTIVE;
 	}
 	
