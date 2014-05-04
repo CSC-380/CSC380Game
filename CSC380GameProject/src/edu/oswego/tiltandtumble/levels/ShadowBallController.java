@@ -1,5 +1,10 @@
 package edu.oswego.tiltandtumble.levels;
 
+import java.util.List;
+import java.util.Map;
+
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 
 import edu.oswego.tiltandtumble.worldObjects.ShadowBall;
@@ -8,12 +13,24 @@ import edu.oswego.tiltandtumble.worldObjects.ShadowBall;
 public class ShadowBallController {
 	private State currentState;
 	private ShadowBall ball;
+	
 	private Session session;
+	private Map<Integer, Float> pathX;
+	private Map<Integer, Float> pathY;
 	
 	public ShadowBallController(Session session){
 		//get info from server here store in something so update can use it
+		
+		
+		
+		
 		this.session = session;
-		currentState = State.ACTIVE;
+		ResultSet results = session.execute("SELECT pathx FROM users WHERE username = 'schrecen';");
+		Row row = results.one();
+ 	   	pathX = row.getMap("pathx", Integer.class, Float.class);
+ 	   	for(int i = 0; i < pathX.size(); ++i)
+ 	   		System.out.println(pathX.get(i));
+ 	   	currentState = State.ACTIVE;
 	}
 	
 	public void setBall(ShadowBall ball) {
@@ -50,10 +67,7 @@ public class ShadowBallController {
 			}
 			@Override
 			public void update(ShadowBallController b, float delta) {
-			//	get new cords off map thing call  ball.draw
-				if(b.ball != null){
-					//call b.ball.draw();
-				}
+				//b.ball.draw(delta, x, y);
 			}
 		};
 
