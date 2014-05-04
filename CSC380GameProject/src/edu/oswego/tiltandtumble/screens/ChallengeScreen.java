@@ -2,6 +2,7 @@ package edu.oswego.tiltandtumble.screens;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
@@ -62,10 +63,11 @@ public class ChallengeScreen extends AbstractScreen  {
 	
 	private void showTopChallenges(final int levelNum){
 
-		ResultSet results = session.execute("SELECT username, highscore FROM users");
-		Iterator<Row> row  = results.iterator();
-		
- 	   	//m = row.getMap("highscore",String.class, Integer.class);
+		ResultSet name = session.execute("SELECT username FROM users");
+		//Iterator<Row> row  = results.iterator();
+		List<Row> rowName = name.all();
+		ResultSet scores = session.execute("SELECT highscore FROM users");
+		List<Row> rowScore = scores.all();
      
 		table = new Window("\nLevel " + levelNum, skin);
 		table.setFillParent(true);
@@ -79,14 +81,9 @@ public class ChallengeScreen extends AbstractScreen  {
 		table.add("Name", "header");
 		table.add("Challenge", "header");
 		
-//		Map<String, String> m = new HashMap<String,String>();
-//		m.put("DAM", "5.049");
-//		m.put("KMAE", "6.023");
-//		m.put("ZACK", "7.833");
 		int count = 1;
-		results.iterator();
-		
-		while (row.hasNext()) {
+		for(int i = 0; i < rowName.size();i++)
+		{
         	Button accept = new TextButton("A", skin);
 	  		   accept.addListener(new ChangeListener(){
 						@Override
@@ -95,36 +92,15 @@ public class ChallengeScreen extends AbstractScreen  {
 							game.showGameScreen(levelNum, GameScreen.Mode.NETWORKING);
 						}	
 	  		   });
-	  		 Row rrow = row.next();
-//	  	      Iterator<Cell> cellIterator = rrow.cellIterator();
-//	  	      while (cellIterator.hasNext()) {
-//	  	        Cell cell = cellIterator.next();
-//	  	        System.out.print(cell.getStringCellValue() + "\t\t");
-//	  	      }.center();
+	  		 
 	  		table.row().center();
-			table.add("" + rrow);
-			//table.add("" + entry.getValue());			
-//			table.add(value);
+	  		table.add("" + (i+1));
+	  		table.add("" +rowName.get(i).getString("username"));
+			table.add("" + rowScore.get(i).getInt("highscore"));
 			table.add(accept);
 			count++;
 		    
 		}
-//		 for(int i = 1; i <= 5; i++){
-//	  		   Button accept = new TextButton("A", skin);
-//	  		   accept.addListener(new ChangeListener(){
-//						@Override
-//			            public void changed(ChangeEvent event, Actor actor) {
-//							button.play();
-//							topTable.setVisible(false);
-//							game.showGameScreen(levelNum, GameScreen.Mode.NETWORKING);
-//						}	
-//	  		   });
-//	  		table.row().center();
-//	 		table.add("" + i);	 		
-//	 		table.add("" + m.get("KMAE"));
-//	 		table.add("KMAE");
-//	 		table.add(accept);
-//		 }
 		
 		table.row().expand().padBottom(10);
         Button back = new TextButton("Go Back", skin);
