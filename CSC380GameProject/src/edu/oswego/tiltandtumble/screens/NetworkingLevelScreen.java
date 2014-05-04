@@ -6,17 +6,19 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
 
 public class NetworkingLevelScreen extends AbstractScreen {
 
-	Music button;
+	Sound button;
 	
 	public NetworkingLevelScreen(TiltAndTumble game) {
 		super(game);
@@ -24,62 +26,58 @@ public class NetworkingLevelScreen extends AbstractScreen {
 
 	@Override
 	public void show() {
-		  InputMultiplexer multiplexer = new InputMultiplexer(stage,
-					new InputAdapter() {
-				@Override
-				public boolean keyDown(int keycode) {
-					if(keycode == Keys.BACK){
-						game.showPreviousScreen();
-						return true;
-					}
-					return super.keyDown(keycode);
+		InputMultiplexer multiplexer = new InputMultiplexer(stage,
+				new InputAdapter() {
+			@Override
+			public boolean keyDown(int keycode) {
+				if(keycode == Keys.BACK){
+					game.showPreviousScreen();
+					return true;
 				}
-			});
-		Gdx.input.setInputProcessor(stage);
+				return super.keyDown(keycode);
+			}
+		});
+        Gdx.input.setInputProcessor(multiplexer);
 		
 		AssetManager assetManager = new AssetManager();
         String musicFile = "data/soundfx/button-8.ogg";
 		if (!assetManager.isLoaded(musicFile)) {
-			assetManager.load(musicFile, Music.class);
+			assetManager.load(musicFile, Sound.class);
 			assetManager.finishLoading();
 		}
-		button = assetManager.get(musicFile, Music.class);
+		button = assetManager.get(musicFile, Sound.class);
 
 		Window window = new Window("\nLevels", skin);
         window.setFillParent(true);
         window.setModal(true);
         window.setMovable(false);
         stage.addActor(window);
-
-		window.row().padTop(100).fillX();
-		Button play = new TextButton("Click to Play Level One!", skin);
-		window.add(play);
-		play.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				game.showGameScreen(1, GameScreen.Mode.NETWORKING);
+        
+        window.row().padTop(25).colspan(5);
+		window.add("Practice Mode", "highlight");
+		window.row().pad(10, 10, 0, 10).width(75);
+		int count = game.getLevels().size();
+		for (int i = 0; i < count; i++) {
+			if ((i % 5) == 0) {
+				window.row().pad(10).width(75);
 			}
-		});
-
-		window.row().padTop(10).fillX();
-		Button play2 = new TextButton("Click to Play Level Two!", skin);
-		window.add(play2);
-		play2.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				game.showGameScreen(2, GameScreen.Mode.NETWORKING);
-			}
-		});
-
-		window.row().padTop(10).fillX();
-		Button play3 = new TextButton("Click to Play Level Three!", skin);
-		window.add(play3);
-		play3.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				game.showGameScreen(3,GameScreen.Mode.NETWORKING);
-			}
-		});
+			Button l = new TextButton(Integer.toString(i + 1), skin);
+			window.add(l);
+			l.addListener(new ChangeListener() {
+				@Override
+				public void changed(ChangeEvent event, Actor actor) {
+					button.play();
+					game.showGameScreen(
+							new Integer(((TextButton)actor).getText().toString()) - 1,
+							GameScreen.Mode.PRACTICE);
+				}
+			});
+		}
+		
+        
+        
+        
+        
 
 		window.row().padTop(50).bottom().fillX();
 		Button back = new TextButton("Go Back", skin);
@@ -87,6 +85,7 @@ public class NetworkingLevelScreen extends AbstractScreen {
 		back.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				button.play();
 				game.setChallengeMode(false);
 				game.showPreviousScreen();
 			}

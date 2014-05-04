@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -21,7 +24,7 @@ public class ChallengeScreen extends AbstractScreen  {
 	private Window topTable;
 	private Window table;
 	private Session session;
-	private Music button;
+	private Sound button;
 
 	public ChallengeScreen(final TiltAndTumble game) {
 		super(game);
@@ -29,16 +32,27 @@ public class ChallengeScreen extends AbstractScreen  {
 
 	@Override
 	public void show() {
-        Gdx.input.setInputProcessor(stage);
+		InputMultiplexer multiplexer = new InputMultiplexer(stage,
+				new InputAdapter() {
+			@Override
+			public boolean keyDown(int keycode) {
+				if(keycode == Keys.BACK){
+					game.showPreviousScreen();
+					return true;
+				}
+				return super.keyDown(keycode);
+			}
+		});
+        Gdx.input.setInputProcessor(multiplexer);
         game.setChallengeMode(true);
         session = game.getSession();
         AssetManager assetManager = new AssetManager();
         String musicFile = "data/soundfx/button-8.ogg";
 		if (!assetManager.isLoaded(musicFile)) {
-			assetManager.load(musicFile, Music.class);
+			assetManager.load(musicFile, Sound.class);
 			assetManager.finishLoading();
 		}
-		button = assetManager.get(musicFile, Music.class);
+		button = assetManager.get(musicFile, Sound.class);
         
         this.showLevelTable();
 	}
