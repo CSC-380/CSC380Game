@@ -37,7 +37,7 @@ public class ChallengeScreen extends AbstractScreen  {
         this.showLevelTable();
 	}
 	
-	private void showTopChallenges(int levelNum){
+	private void showTopChallenges(final int levelNum){
 
      
 		table = new Window("\nLevel " + levelNum, skin);
@@ -65,7 +65,7 @@ public class ChallengeScreen extends AbstractScreen  {
 						@Override
 			            public void changed(ChangeEvent event, Actor actor) {
 							topTable.setVisible(false);
-							game.showGameScreen(2);
+							game.showGameScreen(levelNum);
 						}	
 	  		   });
 	  		table.row().center();
