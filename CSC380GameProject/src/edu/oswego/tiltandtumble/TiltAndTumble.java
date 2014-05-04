@@ -202,6 +202,9 @@ public class TiltAndTumble extends Game {
 	public float getHeight() {
 		return height;
 	}
+	public boolean isChallengeAcceptMode(){
+		return challengeAcceptMode;
+	}	
 	
 	public boolean isChallengeMode(){
 		if(challengeAcceptMode == true){

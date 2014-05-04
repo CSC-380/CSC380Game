@@ -40,13 +40,15 @@ public class GameScreen extends AbstractScreen {
 
 	private Dialog pauseDialog;
 	
-	private final ShadowBallController shadowController;
+	private ShadowBallController shadowController;
 
 	public GameScreen(TiltAndTumble game, int currentLevel) {
 		super(game);
 		ballController = new BallController(!game.getSettings().isUseDpad(), isChallengeMode(), game.getSession());
 		worldPopulator = new WorldPopulator(game.getAssetManager());
-		shadowController = new ShadowBallController(game.getSession());
+		if(game.isChallengeAcceptMode()){
+			shadowController = new ShadowBallController(game.getSession());
+		}
 		hud = new Hud(this, skin);
 		loadLevel(currentLevel);
 		hud.setScore(level.getScore());
