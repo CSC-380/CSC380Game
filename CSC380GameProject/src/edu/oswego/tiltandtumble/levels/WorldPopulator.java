@@ -122,6 +122,7 @@ public final class WorldPopulator implements Disposable {
 					level.addWorldObject(createTimedSwitch(obj, world, scale, switchHelper));
 				} else if (obj.getName().equals("MomentarySwitch")) {
 					level.addWorldObject(createMomentarySwitch(obj, world, scale, switchHelper));
+
 				}
 			}
 		}

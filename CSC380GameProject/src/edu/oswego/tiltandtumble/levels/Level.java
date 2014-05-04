@@ -61,14 +61,19 @@ public class Level implements Disposable, Audible {
 	private final Collection<WorldUpdateable> updateableObjects;
 	private final Collection<Audible> audibleObjects;
 
+<<<<<<< HEAD
 	public Level(int level, BallController ballController,
 			WorldPopulator populator, AssetManager assetManager, ShadowBallController shadowController) {
+=======
+	public Level(int level, String filename, BallController ballController,
+			WorldPopulator populator, AssetManager assetManager) {
+>>>>>>> master
 		this.level = level;
 		this.ballController = ballController;
 		this.shadowController = shadowController;
 		currentState = State.NOT_STARTED;
 
-		map = loadMap(level);
+		map = loadMap(filename);
 
 		mapWidth = map.getProperties().get("width", Integer.class)
 				* map.getProperties().get("tilewidth", Integer.class);
@@ -196,11 +201,11 @@ public class Level implements Disposable, Audible {
 		score.setTime((int)difference);
 	}
 
-	private TiledMap loadMap(int level) {
-		if (Gdx.files.internal("data/level" + level + ".tmx").exists()) {
-			return new TmxMapLoader().load("data/level" + level + ".tmx");
+	private TiledMap loadMap(String file) {
+		if (Gdx.files.internal("data/" + file).exists()) {
+			return new TmxMapLoader().load("data/" + file);
 		}
-		throw new RuntimeException("data/level" + level + ".tmx does not exist");
+		throw new RuntimeException("data/" + file + " does not exist");
 	}
 
 	public int getLevelNumber() {

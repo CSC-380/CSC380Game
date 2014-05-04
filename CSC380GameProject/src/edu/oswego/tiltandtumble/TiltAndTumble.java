@@ -1,11 +1,14 @@
 package edu.oswego.tiltandtumble;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SkinLoader;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -25,16 +28,34 @@ import edu.oswego.tiltandtumble.screens.MainScreen;
 import edu.oswego.tiltandtumble.screens.NetworkingLevelScreen;
 import edu.oswego.tiltandtumble.screens.SettingsScreen;
 import edu.oswego.tiltandtumble.settings.Settings;
+import edu.oswego.tiltandtumble.settings.Settings.Setting;
+import edu.oswego.tiltandtumble.settings.SettingsObserver;
+import edu.oswego.tiltandtumble.settings.SettingsUpdate;
 
 
-public class TiltAndTumble extends Game {
+public class TiltAndTumble extends Game implements SettingsObserver {
 
 	// NOTE: older phones do not have Deque interface
 	Stack<Screen> screenStack = new Stack<Screen>();
 
+<<<<<<< HEAD
 	private boolean challengeMode = false;
 	private boolean challengeAcceptMode = false;
 	
+=======
+	private final List<String> levels = new ArrayList<String>();
+	{
+		
+		levels.add("level4.tmx");
+		levels.add("level5.tmx");
+		levels.add("Tutorial1.tmx");
+		levels.add("Tutorial2.tmx");
+		levels.add("level3.tmx");
+		levels.add("level2.tmx");
+		levels.add("level1.tmx");
+	}
+
+>>>>>>> master
 	private MainScreen mainScreen;
 	private CreditScreen creditScreen;
 	private HelpScreen helpScreen;
@@ -59,6 +80,9 @@ public class TiltAndTumble extends Game {
 	
 	private Session session;
 
+	private boolean playMusic;
+	private Music music;
+
 	@Override
 	public void create() {
 		Texture.setEnforcePotImages(true);
@@ -66,6 +90,7 @@ public class TiltAndTumble extends Game {
 		assetManager = new AssetManager();
 
 		settings = new Settings();
+		settings.addObserver(this);
 
 		batch = new SpriteBatch();
 
@@ -87,6 +112,14 @@ public class TiltAndTumble extends Game {
 		font = new BitmapFont();
 		loadSkin();
 		scores = HighScores.load();
+		playMusic = settings.isMusicOn();
+		String musicFile = "data/music/GameMenuMusic.mp3";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Music.class);
+			assetManager.finishLoading();
+		}
+		music = assetManager.get(musicFile, Music.class);
+		this.playMusic();
 		showMainScreen();
 	}
 
@@ -154,6 +187,7 @@ public class TiltAndTumble extends Game {
 			levelScreen = new LevelScreen(this);
 		}
 		screenStack.push(getScreen());
+		//this.playMusic();
 		setScreen(levelScreen);
 	}
 	
@@ -165,19 +199,25 @@ public class TiltAndTumble extends Game {
 		setScreen(challengeScreen);
 	}
 
-	public void showGameScreen(int level) {
+	public void showGameScreen(int level, GameScreen.Mode mode) {
 		if (gameScreen != null) {
 			gameScreen.dispose();
 		}
 		screenStack.push(getScreen());
-		gameScreen = new GameScreen(this, level);
+		gameScreen = new GameScreen(this, level, mode);
+		//this.endMusic();
 		setScreen(gameScreen);
 	}
 
 	public void showPreviousScreen() {
+<<<<<<< HEAD
 		if(screenStack.peek() == mainScreen){
 			this.challengeAcceptMode = false;
 			this.challengeMode = false;
+=======
+		if(screenStack.peek() != gameScreen){
+		this.playMusic();
+>>>>>>> master
 		}
 		setScreen(screenStack.pop());
 	}
@@ -252,10 +292,39 @@ public class TiltAndTumble extends Game {
 	}
 	
 
+	public List<String> getLevels() {
+		return levels;
+	}
+
+	public void playMusic() {
+		if (playMusic && music != null) {
+			music.setVolume(1f);
+			music.play();
+			music.setLooping(true);
+		}
+	}
+
+	public void endMusic() {
+		if (music != null) {
+			float vol = music.getVolume();
+			while(vol > 0f){
+				vol = (float) (vol - (0.02));
+				if(vol < 0f){
+					vol = 0f;
+				}
+				music.setVolume(vol);
+			}
+			music.stop();
+		}
+	}
+
+
+
 	@Override
 	public void dispose() {
 		HighScores.save(scores);
 		mainScreen.dispose();
+		music.dispose();
 		if (creditScreen != null) {
 			creditScreen.dispose();
 		}
@@ -284,5 +353,17 @@ public class TiltAndTumble extends Game {
 		batch.dispose();
 		font.dispose();
 		assetManager.dispose();
+	}
+
+	@Override
+	public void handleSettingsChangeUpdate(SettingsUpdate update) {
+		if (update.getSetting() == Setting.MUSIC) {
+			playMusic = update.getValue();
+			if (playMusic) {
+				playMusic();
+			} else {
+				endMusic();
+			}
+		}
 	}
 }

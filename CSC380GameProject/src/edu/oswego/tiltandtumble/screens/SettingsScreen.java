@@ -1,6 +1,11 @@
 package edu.oswego.tiltandtumble.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
@@ -12,15 +17,32 @@ import edu.oswego.tiltandtumble.TiltAndTumble;
 import edu.oswego.tiltandtumble.settings.Settings;
 
 public class SettingsScreen extends AbstractScreen {
-
+Music button;
     public SettingsScreen(final TiltAndTumble game){
         super(game);
     }
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage);
-
+        InputMultiplexer multiplexer = new InputMultiplexer(stage,
+				new InputAdapter() {
+			@Override
+			public boolean keyDown(int keycode) {
+				if(keycode == Keys.BACK){
+					game.showPreviousScreen();
+					return true;
+				}
+				return super.keyDown(keycode);
+			}
+		});
+        Gdx.input.setInputProcessor(multiplexer);
+        AssetManager assetManager = new AssetManager();
+        String musicFile = "data/soundfx/button-8.ogg";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Music.class);
+			assetManager.finishLoading();
+		}
+		button = assetManager.get(musicFile, Music.class);
 		Window table = new Window("\nSettings", skin);
 		table.setFillParent(true);
 		table.setModal(true);
@@ -37,7 +59,7 @@ public class SettingsScreen extends AbstractScreen {
         useDpad.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+            	button.play();
                 settings.setUseDpad(useDpad.isChecked());
             }
         });
@@ -50,6 +72,7 @@ public class SettingsScreen extends AbstractScreen {
         debugView.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+            	button.play();
                 settings.setDebugRender(debugView.isChecked());
             }
         });
@@ -62,7 +85,7 @@ public class SettingsScreen extends AbstractScreen {
         music.addListener(new ChangeListener(){
         	@Override
         	public void changed(ChangeEvent event, Actor actor){
-
+        		button.play();
         		settings.setMusic(music.isChecked());
         	}
         });
@@ -75,6 +98,7 @@ public class SettingsScreen extends AbstractScreen {
         soundEffect.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+            	button.play();
                 settings.setSoundEffect(soundEffect.isChecked());
             }
         });
@@ -85,6 +109,7 @@ public class SettingsScreen extends AbstractScreen {
         back.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+            	button.play();
             	settings.save();
                 game.showPreviousScreen();
             }

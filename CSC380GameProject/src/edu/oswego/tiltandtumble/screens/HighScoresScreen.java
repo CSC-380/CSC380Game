@@ -4,6 +4,11 @@ import java.text.DateFormat;
 import java.util.Collection;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -15,17 +20,33 @@ import edu.oswego.tiltandtumble.data.HighScore;
 //import java.util.SortedSet;
 
 public class HighScoresScreen extends AbstractScreen {
-
-
-
-
+Music button;
 	public HighScoresScreen(final TiltAndTumble game){
 		super(game);
 	}
 
 	@Override
 	public void show() {
-        Gdx.input.setInputProcessor(stage);
+        InputMultiplexer multiplexer = new InputMultiplexer(stage,
+				new InputAdapter() {
+			@Override
+			public boolean keyDown(int keycode) {
+				if(keycode == Keys.BACK){
+					game.showPreviousScreen();
+					return true;
+				}
+				return super.keyDown(keycode);
+			}
+		});
+        Gdx.input.setInputProcessor(multiplexer);
+
+        AssetManager assetManager = new AssetManager();
+        String musicFile = "data/soundfx/button-8.ogg";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Music.class);
+			assetManager.finishLoading();
+		}
+		button = assetManager.get(musicFile, Music.class);
 
 		Window table = new Window("\nHigh Scores", skin);
 		table.setFillParent(true);
@@ -33,7 +54,7 @@ public class HighScoresScreen extends AbstractScreen {
 		table.setMovable(false);
         stage.addActor(table);
 
-        table.row().center().uniform().padTop(50);
+        table.row().center().uniform().padTop(40);
 		table.add("Score", "header");
 		table.add("Time", "header");
 		table.add("Initials", "header");
@@ -45,12 +66,13 @@ public class HighScoresScreen extends AbstractScreen {
 			table.add("No High Scores!").colspan(4).center();
 		} else {
 			DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
-			for (HighScore s : scores) {
+			HighScore[] s = scores.toArray(new HighScore[scores.size()]);
+			for (int i = s.length - 1; i >= 0; i--) {
 				table.row().center();
-				table.add(String.valueOf(s.getPoints()));
-				table.add(s.getFormattedTime());
-				table.add(s.getInitials());
-				table.add(formatter.format(s.getDate()));
+				table.add(String.valueOf(s[i].getPoints()));
+				table.add(s[i].getFormattedTime());
+				table.add(s[i].getInitials());
+				table.add(formatter.format(s[i].getDate()));
 			}
 		}
 
@@ -61,6 +83,7 @@ public class HighScoresScreen extends AbstractScreen {
         back.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+            	button.play();
                 game.showPreviousScreen();
             }
         });

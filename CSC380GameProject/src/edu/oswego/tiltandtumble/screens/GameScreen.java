@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 
@@ -24,9 +26,14 @@ import edu.oswego.tiltandtumble.screens.widgets.Hud;
 import edu.oswego.tiltandtumble.screens.widgets.Starter;
 
 public class GameScreen extends AbstractScreen {
+	public static enum Mode {
+		ARCADE, PRACTICE
+	}
+
 	private final BallController ballController;
 	private final WorldPopulator worldPopulator;
 
+	private final Mode currentMode;
 	private Level level;
 	private LevelRenderer renderer;
 	private AudioManager audio;
@@ -42,9 +49,14 @@ public class GameScreen extends AbstractScreen {
 	
 	private ShadowBallController shadowController;
 
-	public GameScreen(TiltAndTumble game, int currentLevel) {
+	public GameScreen(TiltAndTumble game, int currentLevel, Mode mode) {
 		super(game);
+<<<<<<< HEAD
 		ballController = new BallController(!game.getSettings().isUseDpad(), false, game.getSession());
+=======
+		//game.endMusic();
+		ballController = new BallController(!game.getSettings().isUseDpad());
+>>>>>>> master
 		worldPopulator = new WorldPopulator(game.getAssetManager());
 		if(game.isChallengeAcceptMode()){
 		shadowController = new ShadowBallController(game.getSession());
@@ -53,6 +65,7 @@ public class GameScreen extends AbstractScreen {
 		hud = new Hud(this, skin);
 		loadLevel(currentLevel);
 		hud.setScore(level.getScore());
+		currentMode = mode;
 	}
 
 	public void loadLevel(int num) {
@@ -71,9 +84,17 @@ public class GameScreen extends AbstractScreen {
 			audio.dispose();
 			audio = null;
 		}
+<<<<<<< HEAD
 		//Gdx.app.log("GameScreen", "Cleaned up previous level");
 		level = new Level(num, ballController, worldPopulator, game.getAssetManager(),shadowController);
 		//Gdx.app.log("GameScreen", "Level loaded");
+=======
+		Gdx.app.log("GameScreen", "Cleaned up previous level");
+		level = new Level(num,
+				game.getLevels().get(num),
+				ballController, worldPopulator, game.getAssetManager());
+		Gdx.app.log("GameScreen", "Level loaded");
+>>>>>>> master
 		renderer = new DefaultLevelRenderer(level,
 				game.getWidth(), game.getHeight(),
 				game.getSpriteBatch(),
@@ -89,13 +110,16 @@ public class GameScreen extends AbstractScreen {
 				game.getAssetManager());
 		game.getSettings().addObserver(audio);
 		Gdx.app.log("GameScreen", "Audio manager created");
-		hud.setLevel(num);
-		new Starter(this, skin).show(stage);
+		hud.setLevel(num + 1);
+		new Starter(this, skin, game).show(stage);
 		Gdx.app.log("GameScreen", "Level starting...");
 	}
 
 	public boolean hasMoreLevels() {
-		return Gdx.files.internal("data/level" + (level.getLevelNumber() + 1) + ".tmx").exists();
+		if (currentMode == Mode.ARCADE){
+			return level.getLevelNumber() < game.getLevels().size();
+		}
+		return false;
 	}
 
 	public void loadNextLevel() {
@@ -115,10 +139,25 @@ public class GameScreen extends AbstractScreen {
 		return scores;
 	}
 
+	public Mode getMode() {
+		return currentMode;
+	}
+
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(inputMux);
 		inputMux.addProcessor(stage);
+		inputMux.addProcessor(new InputAdapter() {
+			@Override
+			public boolean keyDown(int keycode) {
+				if(keycode == Keys.BACK){
+					pause();
+					return true;
+				}
+				return super.keyDown(keycode);
+			}
+		});
+
 		if (game.getSettings().isUseDpad()){
 			DPad dpad = new DPad(skin, ballController);
 			dpad.setPosition(0, 0);
@@ -178,13 +217,21 @@ public class GameScreen extends AbstractScreen {
 		WAITING {
 			@Override
 			public void show(GameScreen s) {
+<<<<<<< HEAD
 				//create shadow if true
 				new Starter(s, s.skin).show(s.stage);
+=======
+				new Starter(s, s.skin, s.game).show(s.stage);
+>>>>>>> master
 			}
 
 			@Override
 			public void start(GameScreen s) {
+<<<<<<< HEAD
 				
+=======
+				//s.game.endMusic();
+>>>>>>> master
 				s.ballController.resetBall();
 				
 				s.ballController.resume();

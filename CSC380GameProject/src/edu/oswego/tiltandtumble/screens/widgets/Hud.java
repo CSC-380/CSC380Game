@@ -1,5 +1,7 @@
 package edu.oswego.tiltandtumble.screens.widgets;
 
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -14,9 +16,18 @@ public class Hud extends Window {
 	private final Label levelDisplay;
 	private final Label scoreDisplay;
 	private final Label timerDisplay;
+	private Sound buttonn;
 
 	public Hud(final GameScreen screen, final Skin skin) {
 		super("", skin, "hud");
+		
+		AssetManager assetManager = new AssetManager();
+        String musicFile = "data/soundfx/button-8.ogg";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		buttonn = assetManager.get(musicFile, Sound.class);
 
 		row().uniform().expandX();
 		add("Level: ").right().padLeft(10);
@@ -35,6 +46,7 @@ public class Hud extends Window {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
+				buttonn.play();
 				screen.togglePause();
 				return true;
 			}

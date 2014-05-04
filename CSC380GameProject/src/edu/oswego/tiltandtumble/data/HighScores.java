@@ -81,6 +81,14 @@ public class HighScores implements Serializable{
 		if (scores == null) {
 			scores = new HighScores();
 		}
+		else {
+			// NOTE: reload high scores because we had a bug that caused them to save incorrectly
+			HighScores tmp = new HighScores();
+			for (HighScore s : scores.scores) {
+				tmp.scores.add(s);
+			}
+			scores = tmp;
+		}
 		return scores;
 	}
 
