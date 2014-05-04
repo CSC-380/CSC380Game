@@ -51,7 +51,6 @@ public class ChallengeScreen extends AbstractScreen  {
 		
 
 
-<<<<<<< HEAD
             	System.out.println(" ");
             	//Cluster cluster = Cluster.builder().addContactPoint("localhost").build();
             	Cluster cluster = Cluster.builder().addContactPoint("129.3.20.26").withPort(2715).build();
@@ -68,24 +67,7 @@ public class ChallengeScreen extends AbstractScreen  {
             	   		+ "pathy map<int, int>);");
             	session.execute("INSERT INTO users (username, highscore, pathx, pathy) "
             	   		+ "VALUES ('schrecen', 0, {0 : 1}, {0 : 1});");
-=======
-//            	System.out.println(" ");
-//            	//Cluster cluster = Cluster.builder().addContactPoint("localhost").build();
-//            	Cluster cluster = Cluster.builder().addContactPoint("129.3.20.26").withPort(2715).build();
-//            	Session session = cluster.connect();
-//            	session.execute("DROP KEYSPACE challengeMap");
-//            	session.execute("CREATE KEYSPACE challengeMap "
-//            	   		+ "WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };");
-//          
-//            	session.execute("USE challengeMap;");
-//            	session.execute("CREATE TABLE users ("
-//            	   		+ "username text PRIMARY KEY, "
-//            	   		+ "highscore int, "
-//            	   		+ "pathx map<int, int>, "
-//            	   		+ "pathy map<int, int>);");
-//            	session.execute("INSERT INTO users (username, highscore, pathx, pathy) "
-//            	   		+ "VALUES ('schrecen', 0, {0 : 1}, {0 : 1});");
->>>>>>> FETCH_HEAD
+
             	/*
             	
             	ResultSet results = session.execute("SELECT * FROM users;");
