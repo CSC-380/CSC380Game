@@ -61,13 +61,8 @@ public class Level implements Disposable, Audible {
 	private final Collection<WorldUpdateable> updateableObjects;
 	private final Collection<Audible> audibleObjects;
 
-<<<<<<< HEAD
-	public Level(int level, BallController ballController,
+	public Level(int level,String filename, BallController ballController,
 			WorldPopulator populator, AssetManager assetManager, ShadowBallController shadowController) {
-=======
-	public Level(int level, String filename, BallController ballController,
-			WorldPopulator populator, AssetManager assetManager) {
->>>>>>> master
 		this.level = level;
 		this.ballController = ballController;
 		this.shadowController = shadowController;

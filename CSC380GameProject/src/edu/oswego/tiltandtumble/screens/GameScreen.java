@@ -27,7 +27,7 @@ import edu.oswego.tiltandtumble.screens.widgets.Starter;
 
 public class GameScreen extends AbstractScreen {
 	public static enum Mode {
-		ARCADE, PRACTICE
+		ARCADE, PRACTICE , NETWORKING
 	}
 
 	private final BallController ballController;
@@ -51,12 +51,7 @@ public class GameScreen extends AbstractScreen {
 
 	public GameScreen(TiltAndTumble game, int currentLevel, Mode mode) {
 		super(game);
-<<<<<<< HEAD
 		ballController = new BallController(!game.getSettings().isUseDpad(), false, game.getSession());
-=======
-		//game.endMusic();
-		ballController = new BallController(!game.getSettings().isUseDpad());
->>>>>>> master
 		worldPopulator = new WorldPopulator(game.getAssetManager());
 		if(game.isChallengeAcceptMode()){
 		shadowController = new ShadowBallController(game.getSession());
@@ -84,17 +79,9 @@ public class GameScreen extends AbstractScreen {
 			audio.dispose();
 			audio = null;
 		}
-<<<<<<< HEAD
 		//Gdx.app.log("GameScreen", "Cleaned up previous level");
-		level = new Level(num, ballController, worldPopulator, game.getAssetManager(),shadowController);
+		level = new Level(num, game.getLevels().get(num), ballController, worldPopulator, game.getAssetManager(),shadowController);
 		//Gdx.app.log("GameScreen", "Level loaded");
-=======
-		Gdx.app.log("GameScreen", "Cleaned up previous level");
-		level = new Level(num,
-				game.getLevels().get(num),
-				ballController, worldPopulator, game.getAssetManager());
-		Gdx.app.log("GameScreen", "Level loaded");
->>>>>>> master
 		renderer = new DefaultLevelRenderer(level,
 				game.getWidth(), game.getHeight(),
 				game.getSpriteBatch(),
@@ -217,21 +204,11 @@ public class GameScreen extends AbstractScreen {
 		WAITING {
 			@Override
 			public void show(GameScreen s) {
-<<<<<<< HEAD
-				//create shadow if true
-				new Starter(s, s.skin).show(s.stage);
-=======
 				new Starter(s, s.skin, s.game).show(s.stage);
->>>>>>> master
 			}
 
 			@Override
 			public void start(GameScreen s) {
-<<<<<<< HEAD
-				
-=======
-				//s.game.endMusic();
->>>>>>> master
 				s.ballController.resetBall();
 				
 				s.ballController.resume();

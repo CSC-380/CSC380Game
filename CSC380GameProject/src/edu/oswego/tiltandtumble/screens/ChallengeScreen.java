@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -18,6 +21,7 @@ public class ChallengeScreen extends AbstractScreen  {
 	private Window topTable;
 	private Window table;
 	private Session session;
+	private Music button;
 
 	public ChallengeScreen(final TiltAndTumble game) {
 		super(game);
@@ -28,6 +32,14 @@ public class ChallengeScreen extends AbstractScreen  {
         Gdx.input.setInputProcessor(stage);
         game.setChallengeMode(true);
         session = game.getSession();
+        AssetManager assetManager = new AssetManager();
+        String musicFile = "data/soundfx/button-8.ogg";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Music.class);
+			assetManager.finishLoading();
+		}
+		button = assetManager.get(musicFile, Music.class);
+        
         this.showLevelTable();
 	}
 	
@@ -59,7 +71,7 @@ public class ChallengeScreen extends AbstractScreen  {
 						@Override
 			            public void changed(ChangeEvent event, Actor actor) {
 							topTable.setVisible(false);
-							game.showGameScreen(levelNum);
+							game.showGameScreen(levelNum, GameScreen.Mode.NETWORKING);
 						}	
 	  		   });
 	  		table.row().center();

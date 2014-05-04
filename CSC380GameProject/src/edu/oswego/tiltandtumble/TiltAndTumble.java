@@ -37,12 +37,9 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 
 	// NOTE: older phones do not have Deque interface
 	Stack<Screen> screenStack = new Stack<Screen>();
-
-<<<<<<< HEAD
 	private boolean challengeMode = false;
 	private boolean challengeAcceptMode = false;
 	
-=======
 	private final List<String> levels = new ArrayList<String>();
 	{
 		
@@ -55,7 +52,6 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		levels.add("level1.tmx");
 	}
 
->>>>>>> master
 	private MainScreen mainScreen;
 	private CreditScreen creditScreen;
 	private HelpScreen helpScreen;
@@ -210,14 +206,12 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 	}
 
 	public void showPreviousScreen() {
-<<<<<<< HEAD
 		if(screenStack.peek() == mainScreen){
 			this.challengeAcceptMode = false;
 			this.challengeMode = false;
-=======
+		}
 		if(screenStack.peek() != gameScreen){
 		this.playMusic();
->>>>>>> master
 		}
 		setScreen(screenStack.pop());
 	}

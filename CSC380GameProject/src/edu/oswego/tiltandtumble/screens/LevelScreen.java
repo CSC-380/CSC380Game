@@ -89,11 +89,8 @@ Music button;
 		back.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-<<<<<<< HEAD
 				game.setChallengeMode(false);
-=======
 				button.play();
->>>>>>> master
 				game.showPreviousScreen();
 			}
 		});

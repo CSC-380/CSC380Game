@@ -19,21 +19,15 @@ import edu.oswego.tiltandtumble.screens.dialogs.SelectDialog;
 
 public class MainScreen extends AbstractScreen {
 
-<<<<<<< HEAD
 	private Dialog selectDialog;
-=======
 	Sound button;
->>>>>>> master
     public MainScreen(final TiltAndTumble game) {
         super(game);
     }
 
     @Override
     public void show() {
-<<<<<<< HEAD
         Gdx.input.setInputProcessor(stage);
-        
-=======
         InputMultiplexer multiplexer = new InputMultiplexer(stage,
 				new com.badlogic.gdx.InputAdapter() {
 			@Override
@@ -54,8 +48,6 @@ public class MainScreen extends AbstractScreen {
 			assetManager.finishLoading();
 		}
 		button = assetManager.get(musicFile, Sound.class);
-
->>>>>>> master
         Window window = new Window("\nTilt and Tumble", skin);
         window.setFillParent(true);
         window.setModal(true);
