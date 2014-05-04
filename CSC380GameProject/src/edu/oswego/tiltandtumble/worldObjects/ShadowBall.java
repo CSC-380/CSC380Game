@@ -20,7 +20,7 @@ public class ShadowBall implements Disposable {
 	
 	public ShadowBall(SpriteBatch batch) {
 		atlas = new TextureAtlas(Gdx.files.internal("data/WorldObjects/worldobjects.pack"));
-		sprite = atlas.createSprite("GreenOrb");
+		sprite = atlas.createSprite("ShadowBall");
 		graphic = new SpriteGraphic(sprite);
 		this.batch = batch;
 
