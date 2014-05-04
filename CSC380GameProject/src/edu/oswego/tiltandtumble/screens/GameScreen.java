@@ -47,7 +47,11 @@ public class GameScreen extends AbstractScreen {
 		ballController = new BallController(!game.getSettings().isUseDpad(), isChallengeMode(), game.getSession());
 		worldPopulator = new WorldPopulator(game.getAssetManager());
 		if(game.isChallengeAcceptMode()){
+<<<<<<< HEAD
 		shadowController = new ShadowBallController(game.getSession());
+=======
+			shadowController = new ShadowBallController(game.getSession());
+>>>>>>> FETCH_HEAD
 		}
 		hud = new Hud(this, skin);
 		loadLevel(currentLevel);
