@@ -33,6 +33,7 @@ public class Level implements Disposable, Audible {
 	private final TiledMap map;
 	private final Ball ball;
 	private final BallController ballController;
+	private final ShadowBallController shadowController;
 
 	// NOTE: 1/64 means 1px end up being about 1.6cm in world physics
 	private final UnitScale scale = new UnitScale(1f/64f);
@@ -59,10 +60,10 @@ public class Level implements Disposable, Audible {
 	private final Collection<Audible> audibleObjects;
 
 	public Level(int level, BallController ballController,
-			WorldPopulator populator, AssetManager assetManager) {
+			WorldPopulator populator, AssetManager assetManager, ShadowBallController shadowController) {
 		this.level = level;
 		this.ballController = ballController;
-
+		this.shadowController = shadowController;
 		currentState = State.NOT_STARTED;
 
 		map = loadMap(level);
@@ -294,7 +295,7 @@ public class Level implements Disposable, Audible {
     				return;
     			}
     			l.ballController.update(delta);
-    			//pass shadow ball to this method and update shadwp ball here
+    			l.shadowController.update(delta);
     			for (WorldUpdateable w : l.updateableObjects) {
     				w.update(delta);
     			}

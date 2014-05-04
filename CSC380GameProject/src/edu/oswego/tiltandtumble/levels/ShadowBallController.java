@@ -1,14 +1,18 @@
 package edu.oswego.tiltandtumble.levels;
 
+import com.datastax.driver.core.Session;
+
 import edu.oswego.tiltandtumble.worldObjects.ShadowBall;
 
 
 public class ShadowBallController {
 	private State currentState;
 	private ShadowBall ball;
+	private Session session;
 	
-	public ShadowBallController(){
+	public ShadowBallController(Session session){
 		//get info from server here store in something so update can use it
+		this.session = session;
 		currentState = State.ACTIVE;
 	}
 	
@@ -46,7 +50,10 @@ public class ShadowBallController {
 			}
 			@Override
 			public void update(ShadowBallController b, float delta) {
-			//	get new cords off map thing call .draw
+			//	get new cords off map thing call  ball.draw
+				if(b.ball != null){
+					//call b.ball.draw();
+				}
 			}
 		};
 

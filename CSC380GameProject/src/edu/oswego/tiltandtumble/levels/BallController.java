@@ -8,6 +8,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.datastax.driver.core.Session;
 
 import edu.oswego.tiltandtumble.worldObjects.Ball;
 
@@ -30,14 +31,18 @@ public class BallController extends ClickListener {
 	private State currentState;
 	private float keyX = 0;
 	private float keyY = 0;
+	
+	private Session session;
+	private int blockNumber = 0;
 
-	public BallController(boolean useAccelerometer, boolean challenge) {
+	public BallController(boolean useAccelerometer, boolean challenge, Session session) {
 		this.useAccelerometer = useAccelerometer;
 		challengeMode = challenge;
 		keys.put(MyKeys.LEFT, false);
 		keys.put(MyKeys.RIGHT, false);
 		keys.put(MyKeys.UP, false);
 		keys.put(MyKeys.DOWN, false);
+		this.session = session;
 		currentState = State.ACTIVE;
 	}
 
@@ -254,7 +259,18 @@ public class BallController extends ClickListener {
 					b.ball.applyLinearImpulse(forceX, forceY);
 					if(b.challengeMode){
 					//TODO this is where position needs to be gotten and sent to server
-						Vector3 pos = new Vector3(b.ball.getMapX(), b.ball.getMapY(), 0);
+						if(b.blockNumber == 0) {
+							b.session.execute("INSERT INTO users (username, highscore, pathx, pathy) "
+								+ "VALUES ('schrecen', 0, {" + b.blockNumber + " : " + b.ball.getMapX() +"}, "
+										+ "{" + b.blockNumber + " : " + b.ball.getMapY() +"});");
+						} else {
+							b.session.execute("UPDATE users "
+							   		+ "SET pathx = pathx + {" + b.blockNumber + " : " + b.ball.getMapX() + "} WHERE username = 'schrecen'");
+							   b.session.execute("UPDATE users "
+							   				+ "SET pathy = pathy + {" + b.blockNumber + " : " + b.ball.getMapY() + "} WHERE username = 'schrecen'");
+						}
+						++b.blockNumber;
+						//System.out.println(b.ball.getMapX());
 					}
 				}
 			}

@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Session;
 
 import edu.oswego.tiltandtumble.data.HighScores;
 import edu.oswego.tiltandtumble.screens.ChallengeScreen;
@@ -52,6 +54,8 @@ public class TiltAndTumble extends Game {
 
 	private Settings settings;
 	private HighScores scores;
+	
+	private Session session;
 
 	@Override
 	public void create() {
@@ -214,6 +218,24 @@ public class TiltAndTumble extends Game {
 	public void setChallengeAcceptMode(boolean x){
 		challengeAcceptMode = x;
 	}
+	
+	public Session getSession() {
+		if(session != null) {
+			return session;
+		}
+		Cluster cluster = Cluster.builder().addContactPoint("129.3.20.26").withPort(2715).build();
+        session = cluster.connect();
+		//session.execute("DROP KEYSPACE challengeMap");
+		//session.execute("CREATE KEYSPACE challengeMap "
+		//		+ "WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };");
+
+		session.execute("USE challengeMap;");
+		//session.execute("CREATE TABLE users (" + "username text PRIMARY KEY, "
+		//		+ "highscore int, " + "pathx map<int, float>, "
+		//		+ "pathy map<int, float>);");
+		return session;
+	}
+	
 
 	@Override
 	public void dispose() {

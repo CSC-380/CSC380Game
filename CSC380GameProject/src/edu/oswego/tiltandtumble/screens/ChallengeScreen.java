@@ -23,6 +23,7 @@ public class ChallengeScreen extends AbstractScreen  {
 
 	private Window topTable;
 	private Window table;
+	private Session session;
 	public ChallengeScreen(final TiltAndTumble game) {
 		super(game);
 	}
@@ -31,6 +32,7 @@ public class ChallengeScreen extends AbstractScreen  {
 	public void show() {
         Gdx.input.setInputProcessor(stage);
         game.setChallengeMode(true);
+        session = game.getSession();
         this.showLevelTable();
 	}
 	
@@ -51,43 +53,11 @@ public class ChallengeScreen extends AbstractScreen  {
 		
 
 
-<<<<<<< HEAD
-            	System.out.println(" ");
+            	//System.out.println(" ");
             	//Cluster cluster = Cluster.builder().addContactPoint("localhost").build();
-            	Cluster cluster = Cluster.builder().addContactPoint("129.3.20.26").withPort(2715).build();
-            	Session session = cluster.connect();
-            	session.execute("DROP KEYSPACE challengeMap");
-            	session.execute("CREATE KEYSPACE challengeMap "
-            	   		+ "WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };");
           
-            	session.execute("USE challengeMap;");
-            	session.execute("CREATE TABLE users ("
-            	   		+ "username text PRIMARY KEY, "
-            	   		+ "highscore int, "
-            	   		+ "pathx map<int, int>, "
-            	   		+ "pathy map<int, int>);");
-            	session.execute("INSERT INTO users (username, highscore, pathx, pathy) "
-            	   		+ "VALUES ('schrecen', 0, {0 : 1}, {0 : 1});");
-=======
-//            	System.out.println(" ");
-//            	//Cluster cluster = Cluster.builder().addContactPoint("localhost").build();
-//            	Cluster cluster = Cluster.builder().addContactPoint("129.3.20.26").withPort(2715).build();
-//            	Session session = cluster.connect();
-//            	session.execute("DROP KEYSPACE challengeMap");
-//            	session.execute("CREATE KEYSPACE challengeMap "
-//            	   		+ "WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };");
-//          
-//            	session.execute("USE challengeMap;");
-//            	session.execute("CREATE TABLE users ("
-//            	   		+ "username text PRIMARY KEY, "
-//            	   		+ "highscore int, "
-//            	   		+ "pathx map<int, int>, "
-//            	   		+ "pathy map<int, int>);");
-//            	session.execute("INSERT INTO users (username, highscore, pathx, pathy) "
-//            	   		+ "VALUES ('schrecen', 0, {0 : 1}, {0 : 1});");
->>>>>>> FETCH_HEAD
-            	/*
-            	
+
+		/*
             	ResultSet results = session.execute("SELECT * FROM users;");
          	   	System.out.println(String.format("%-30s\t%-20s\t%-20s\n%s", "username", "highscore", "path", 
          		       "-------------------------------+-----------------------+------------------------"));
@@ -182,8 +152,13 @@ public class ChallengeScreen extends AbstractScreen  {
 		lvl1.addListener(new ChangeListener(){
 			@Override
             public void changed(ChangeEvent event, Actor actor) {
-				topTable.setVisible(false);
-				showTopChallenges(1);
+				//topTable.setVisible(false);
+				//showTopChallenges(1);
+				ResultSet results = session.execute("SELECT pathx FROM users WHERE username = 'schrecen';");
+				Row row = results.one();
+		 	   	Map<Integer, Float> pathX = row.getMap("pathx", Integer.class, Float.class);
+		 	   	for(int i = 0; i < pathX.size(); ++i)
+		 	   		System.out.println(pathX.get(i));
 			}
 			
 		});

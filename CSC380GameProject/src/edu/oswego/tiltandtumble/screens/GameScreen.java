@@ -15,6 +15,7 @@ import edu.oswego.tiltandtumble.levels.DebugLevelRenderer;
 import edu.oswego.tiltandtumble.levels.DefaultLevelRenderer;
 import edu.oswego.tiltandtumble.levels.Level;
 import edu.oswego.tiltandtumble.levels.LevelRenderer;
+import edu.oswego.tiltandtumble.levels.ShadowBallController;
 import edu.oswego.tiltandtumble.levels.WorldPopulator;
 import edu.oswego.tiltandtumble.screens.dialogs.PauseDialog;
 import edu.oswego.tiltandtumble.screens.dialogs.ScoreDialog;
@@ -38,12 +39,14 @@ public class GameScreen extends AbstractScreen {
 	private final Hud hud;
 
 	private Dialog pauseDialog;
+	
+	private final ShadowBallController shadowController;
 
 	public GameScreen(TiltAndTumble game, int currentLevel) {
 		super(game);
-		ballController = new BallController(!game.getSettings().isUseDpad(), isChallengeMode());
+		ballController = new BallController(!game.getSettings().isUseDpad(), isChallengeMode(), game.getSession());
 		worldPopulator = new WorldPopulator(game.getAssetManager());
-
+		shadowController = new ShadowBallController(game.getSession());
 		hud = new Hud(this, skin);
 		loadLevel(currentLevel);
 		hud.setScore(level.getScore());
@@ -66,7 +69,7 @@ public class GameScreen extends AbstractScreen {
 			audio = null;
 		}
 		Gdx.app.log("GameScreen", "Cleaned up previous level");
-		level = new Level(num, ballController, worldPopulator, game.getAssetManager());
+		level = new Level(num, ballController, worldPopulator, game.getAssetManager(),shadowController);
 		Gdx.app.log("GameScreen", "Level loaded");
 		renderer = new DefaultLevelRenderer(level,
 				game.getWidth(), game.getHeight(),
@@ -183,6 +186,7 @@ public class GameScreen extends AbstractScreen {
 				
 				s.ballController.resume();
 				//shadowball.start
+				s.shadowController.resume();
 				s.level.start();
 				s.audio.start();
 				s.changeState(State.PLAYING);
@@ -200,6 +204,7 @@ public class GameScreen extends AbstractScreen {
 					s.pauseDialog = null;
 				}
 				s.ballController.resume();
+				s.shadowController.resume();
 				s.audio.start();
 				s.level.resume();
 				s.changeState(State.PLAYING);
