@@ -9,6 +9,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SkinLoader;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -36,10 +37,11 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 
 	private final List<String> levels = new ArrayList<String>();
 	{
-		
+		levels.add("Tutorial3.tmx");
 		levels.add("level4.tmx");
 		levels.add("level5.tmx");
 		levels.add("Tutorial1.tmx");
+		
 		levels.add("Tutorial2.tmx");
 		levels.add("level3.tmx");
 		levels.add("level2.tmx");
@@ -106,6 +108,36 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		}
 		music = assetManager.get(musicFile, Music.class);
 		this.playMusic();
+		String buttonFile = "data/soundfx/button-8.ogg";
+		if (!assetManager.isLoaded(buttonFile)) {
+			assetManager.load(buttonFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		musicFile = "data/soundfx/number-zero.ogg";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Music.class);
+			assetManager.finishLoading();
+		}
+		
+        musicFile = "data/soundfx/number-one.ogg";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Music.class);
+			assetManager.finishLoading();
+		}
+		
+		musicFile = "data/soundfx/number-two.ogg";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Music.class);
+			assetManager.finishLoading();
+		}
+		
+		musicFile = "data/soundfx/number-three.ogg";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Music.class);
+			assetManager.finishLoading();
+		}
+		
+		
 		showMainScreen();
 	}
 

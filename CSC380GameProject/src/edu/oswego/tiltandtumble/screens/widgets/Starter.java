@@ -35,39 +35,23 @@ public class Starter extends Dialog {
 		this.screen = screen;
 		this.game = game;
 		this.skin = skin;
-		assetManager = new AssetManager();
+		assetManager = game.getAssetManager();
 		setFillParent(true);
         setModal(true);
         setMovable(false);
 		String musicFile = "data/soundfx/button-8.ogg";
-		if (!assetManager.isLoaded(musicFile)) {
-			assetManager.load(musicFile, Sound.class);
-			assetManager.finishLoading();
-		}
 		buttonSound = assetManager.get(musicFile, Sound.class);
         musicFile = "data/soundfx/number-zero.ogg";
-		if (!assetManager.isLoaded(musicFile)) {
-			assetManager.load(musicFile, Music.class);
-			assetManager.finishLoading();
-		}
+
 		zero = assetManager.get(musicFile, Music.class);
         musicFile = "data/soundfx/number-one.ogg";
-		if (!assetManager.isLoaded(musicFile)) {
-			assetManager.load(musicFile, Music.class);
-			assetManager.finishLoading();
-		}
+
 		one = assetManager.get(musicFile, Music.class);
 		musicFile = "data/soundfx/number-two.ogg";
-		if (!assetManager.isLoaded(musicFile)) {
-			assetManager.load(musicFile, Music.class);
-			assetManager.finishLoading();
-		}
+
 		two = assetManager.get(musicFile, Music.class);
 		musicFile = "data/soundfx/number-three.ogg";
-		if (!assetManager.isLoaded(musicFile)) {
-			assetManager.load(musicFile, Music.class);
-			assetManager.finishLoading();
-		}
+
 		three = assetManager.get(musicFile, Music.class);
 	}
 

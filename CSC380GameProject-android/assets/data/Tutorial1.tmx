@@ -4,13 +4,13 @@
   <property name="music" value="spaceLevel_2.mp3"/>
  </properties>
  <tileset firstgid="1" name="sci-fi-platformer-tiles-13" tilewidth="32" tileheight="32">
-  <image source="../untitled folder 2/tiles/sci-fi-platformer-tiles-13.png" width="512" height="512"/>
+  <image source="tiles/sci-fi-platformer-tiles-13.png" width="512" height="512"/>
  </tileset>
  <tileset firstgid="257" name="sci-fi-platformer-tiles-12" tilewidth="32" tileheight="32">
-  <image source="../untitled folder 2/tiles/sci-fi-platformer-tiles-12.png" width="512" height="512"/>
+  <image source="tiles/sci-fi-platformer-tiles-12.png" width="512" height="512"/>
  </tileset>
  <tileset firstgid="513" name="tilea2 (1)" tilewidth="32" tileheight="32">
-  <image source="../untitled folder 2/tilea2 (1).png" width="512" height="512"/>
+  <image source="tilea2 (1).png" width="512" height="512"/>
  </tileset>
  <layer name="background" width="50" height="50">
   <data encoding="base64" compression="zlib">
@@ -19,7 +19,7 @@
  </layer>
  <layer name="walls" width="50" height="50">
   <data encoding="base64" compression="zlib">
-   eJztmtuxwjAMRAmdpATKcTqADqiKFpl8ePAEydqV5PDcmXxcrh57ZDtDgMPht3SeXu1AVml83Y6PS9Mvc6w9ZuXSpMVreWWH+Z6m/sXGa3mZvla185pJP/U1az3mBJZv4EA8sRyLwsLwb2tEWTwc0rllz3nvnoGyRLhPHW+oovmICrgeXi+RXEYIh+c+MOI+bOnP4eOI9mvrZdb9c8Q4PRzaXqxaNvWkeC3XO0uWAxEa5/WcyWGtjTbjkRxM3Wj/PbQQPrI4RjyzMj7elYP1gfjcmyOyn61Y6X/W8wd7jjz7YPUgPUuhPpZNXc+aojHoPkJmY70u5bL+2PXImIvm1eLo9Wd7sl6968ysSXR+WRy1Zu9vS++8HiwLUyuLYRRHr94IBqSu5Y1lGaFCcHhmI+WNFrunXnEGEG/a7D+Zo+2PsEY5mBkhuVoNiSuLQ3ufHeGw9hHax6NILttH6mvNFa0dqXVt4plcdP4jz7jmIYtjT+/fzMHokznaWCsf7dX7nucyPccytRGO2t/ai8j3XhJLLzYqi1n63KMYDNv67D63fkfC9mHm6Z299BlVhAM91whDvSSPUp8MDkbe+2BUd1wN+4Y=
+   eJztmtuxwjAMRAmdpATKcTqADuiO0ph8ePAEydqV5PDcmXxcrh57ZDtDgMPht3SeXu1AVml83Y6PS9Mvc6w9ZuXSpMVreWWH+Z6m/sXGa3mZvla185pJP/U1az3mBJZv4EA8sRyLwsLwb2tEWTwc0rllz3nvnoGyRLhPHW+oovmICrgeXi+RXEYIh+c+MOI+bOnP4eOI9mvrZdb9c8Q4PRzaXqxaNvWkeC3XO0uWAxEa5/WcyWGtjTbjkRxM3Wj/PbQQPrI4RjyzMj7elYP1gfjcmyOyn61Y6X/W8wd7jjz7YPUgPUuhPpZNXc+aojHoPkJmY70u5bL+2PXImIvm1eLo9Wd7sl6968ysSXR+WRy1Zu9vS++8HiwLUyuLYRRHr94IBqSu5Y1lGaFCcHhmI+WNFrunXnEGEG/a7D+Zo+2PsEY5mBkhuVoNiSuLQ3ufHeGw9hHax6NILttH6mvNFa0dqXVt4plcdP4jz7jmIYtjT+/fzMHokznaWCsf7dX7nucyPccytRGO2t/ai8j3XhJLLzYqi1n63KMYDNv67D63fkfC9mHm6Z299BlVhAM91whDvSSPUp8MDkbe+2BUd8fa/FI=
   </data>
  </layer>
  <objectgroup name="collision" width="50" height="50">
@@ -41,7 +41,7 @@
   <object name="StaticWall" x="1089" y="160" width="383" height="61"/>
   <object name="StaticWall" x="1570" y="15" width="43" height="1585"/>
   <object name="StaticWall" x="1506" y="290" width="72" height="83"/>
-  <object name="StaticWall" x="1346" y="357" width="248" height="154"/>
+  <object name="StaticWall" x="1346" y="353" width="248" height="156"/>
   <object name="StaticWall" x="1057" y="610" width="444" height="91"/>
   <object name="StaticWall" x="1057" y="578" width="61" height="156"/>
   <object name="StaticWall" x="1344" y="669" width="158" height="64"/>
@@ -51,10 +51,10 @@
   <object name="StaticWall" x="1459" y="1154" width="44" height="59"/>
   <object name="StaticWall" x="1187" y="1089" width="284" height="124"/>
   <object name="StaticWallStaticWall" x="852" y="1089" width="344" height="62"/>
-  <object x="1377" y="1281" width="215" height="188"/>
-  <object x="1345" y="1282" width="59" height="155"/>
+  <object name="StaticWall" x="1377" y="1281" width="215" height="188"/>
+  <object name="StaticWall" x="1345" y="1282" width="59" height="155"/>
   <object name="StaticWall" x="703" y="1280" width="667" height="123"/>
-  <object x="1185" y="1537" width="158" height="39"/>
+  <object name="StaticWall" x="1185" y="1537" width="158" height="39"/>
   <object name="StaticWall" x="833" y="1537" width="190" height="41"/>
   <object name="StaticWall" x="246" y="1568" width="1340" height="35"/>
   <object name="StaticWall" x="1537" y="258" width="33" height="76"/>
@@ -85,10 +85,10 @@
   <object name="StaticWall" x="737" y="1097" width="285" height="85"/>
   <object name="StaticWall" x="736" y="1166" width="256" height="49"/>
   <object name="StaticWall" x="0" y="415" width="610" height="253"/>
-  <object x="992" y="1379" width="191" height="57"/>
-  <object x="1024" y="1434" width="126" height="35"/>
-  <object x="1057" y="1461" width="63" height="42"/>
-  <object x="1217" y="1506" width="92" height="59"/>
+  <object name="StaticWall" x="992" y="1379" width="191" height="57"/>
+  <object name="StaticWall" x="1024" y="1434" width="126" height="35"/>
+  <object name="StaticWall" x="1057" y="1461" width="63" height="42"/>
+  <object name="StaticWall" x="1217" y="1506" width="92" height="59"/>
   <object name="StaticWall" x="866" y="1505" width="125" height="47"/>
   <object name="StaticWall" x="641" y="1397" width="190" height="40"/>
   <object name="StaticWall" x="704" y="1433" width="95" height="36"/>

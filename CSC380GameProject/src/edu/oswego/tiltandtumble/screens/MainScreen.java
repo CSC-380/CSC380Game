@@ -19,6 +19,8 @@ import edu.oswego.tiltandtumble.TiltAndTumble;
 public class MainScreen extends AbstractScreen {
 
 	Sound button;
+	AssetManager assetManager;
+
     public MainScreen(final TiltAndTumble game) {
         super(game);
     }
@@ -38,13 +40,8 @@ public class MainScreen extends AbstractScreen {
 		});
         Gdx.input.setInputProcessor(multiplexer);
         Gdx.input.setCatchBackKey(true);
-        AssetManager assetManager = new AssetManager();
-        String musicFile = "data/soundfx/button-8.ogg";
-		if (!assetManager.isLoaded(musicFile)) {
-			assetManager.load(musicFile, Sound.class);
-			assetManager.finishLoading();
-		}
-		button = assetManager.get(musicFile, Sound.class);
+        assetManager = game.getAssetManager();
+		button = assetManager.get("data/soundfx/button-8.ogg", Sound.class);
 
         Window window = new Window("\nTilt and Tumble", skin);
         window.setFillParent(true);
