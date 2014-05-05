@@ -8,6 +8,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -44,31 +45,69 @@ Music button;
 		button = assetManager.get(musicFile, Music.class);
 
 		Window table = new Window("\nHelp", skin);
+		Window table2 = new Window("\n", skin);
+		ScrollPane scroll = new ScrollPane(table2, skin);
+		//scroll.setScrollingDisabled(true, false);
 		table.setFillParent(true);
 		table.setModal(true);
-		table.setMovable(false);
+		table.setMovable(false);		
         stage.addActor(table);
-        table.row();
-        //Help
-        table.add("Play:", "header").expand().bottom();
-        table.row();
-        table.add("The game will begin will a 3-second count down.");
-        table.row();
-        table.add("Tilt the ball to move. There are many obstacles,");
-        table.row();
-        table.add("your main goal is to get to the red finish line.");
-        table.row();
-        table.add("Setting: ","header").expandX();
-        table.row();
-        table.add("Dpad, debug mode, music and sound effect can be");
-        table.row();
-        table.add("enabled or disabled inside settings.");
-        table.row();
-        table.add("HighScore: ", "header").expandX();
-        table.row();
-        table.add("You can check the top ten high scores you achieved");
-        table.row();
-        table.add("in the game.");
+        stage.addActor(scroll);
+       
+        table.add(scroll).expandY().padTop(30);
+        
+        
+        table2.row();
+        table2.add("Play:", "header");
+        table2.row();
+        table2.add("The game will begin will a 3-second count down.");
+        table2.row();
+        table2.add("Tilt the ball to move. There are many obstacles,");
+        table2.row();
+        table2.add("your main goal is to get to the red finish line.");
+        table2.row();
+        table2.add("Setting: ","header").expandX();
+        table2.row();
+        table2.add("Dpad, debug mode, music and sound effect can be");
+        table2.row();
+        table2.add("enabled or disabled inside settings.");
+        table2.row();
+        table2.add("HighScore: ", "header").expandX();
+        table2.row();
+        table2.add("You can check the top ten high scores you achieved");
+        table2.row();
+        table2.add("in the game.");
+        table2.row();
+        table2.add("Obstacles:", "header").expandX();
+        table2.row();
+        
+        
+       
+        
+        table2.add("Moving Wall:");
+        table2.row();
+        table2.add("Wall that moves in a certain direction.");
+        table2.row();
+        table2.add("Spike:");
+        table2.row();
+        table2.add("Spikes are extemely deadly, instant kill.");
+        table2.row();      
+        table2.add("Hole:");
+        table2.row();
+        table2.add( "Don't get near them,");        
+        table2.row();
+        table2.add(" usually paired with atrractor forces.");
+        table2.row();
+        table2.add("Attractor Force:");
+        table2.row();
+        table2.add("Attracts the ball from a far distance."); 
+        table2.row();
+        table2.add("Teleporter:");
+        table2.row();
+        table2.add("Teleports the ball to a different location.");
+        
+        
+        
 
         table.row().expand().padBottom(10);
 
