@@ -37,12 +37,13 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 
 	private final List<String> levels = new ArrayList<String>();
 	{
-		levels.add("Tutorial3.tmx");
-		levels.add("level4.tmx");
-		levels.add("level5.tmx");
-		levels.add("Tutorial1.tmx");
 		
+		levels.add("Tutorial1.tmx");
+		levels.add("Tutorial3.tmx");
 		levels.add("Tutorial2.tmx");
+		levels.add("Tutorial5.tmx");
+		levels.add("Tutorial4.tmx");
+		levels.add("Tutorial6.tmx");
 		levels.add("level3.tmx");
 		levels.add("level2.tmx");
 		levels.add("level1.tmx");
