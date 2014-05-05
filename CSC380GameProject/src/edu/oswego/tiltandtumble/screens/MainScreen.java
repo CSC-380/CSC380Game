@@ -7,12 +7,14 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+
 import edu.oswego.tiltandtumble.TiltAndTumble;
 import edu.oswego.tiltandtumble.screens.dialogs.SelectDialog;
 
@@ -119,6 +121,10 @@ public class MainScreen extends AbstractScreen {
                 game.showCreditScreen();
             }
         });
+    }
+    
+    public Stage getStage(){
+    	return this.stage;
     }
     
     public void showMulti(){

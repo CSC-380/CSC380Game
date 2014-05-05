@@ -14,8 +14,9 @@ public class SelectDialog  extends Dialog {
 	
 	private final TiltAndTumble game;
 	private final MainScreen screen;
-	TextField initials = null;
+	Dialog getName;
 	private Sound button;
+	Skin skin;
 	
 	private static enum Buttons {
 		ACCEPT,
@@ -26,6 +27,7 @@ public class SelectDialog  extends Dialog {
 		super(title, skin, "dialog");
 		this.game = game;
 		this.screen = screen;
+		this.skin = skin;
 		AssetManager assetManager = new AssetManager();
 		String musicFile = "data/soundfx/button-8.ogg";
 		if (!assetManager.isLoaded(musicFile)) {
@@ -55,10 +57,12 @@ public class SelectDialog  extends Dialog {
 				game.setChallengeAcceptMode(true);
 				game.setChallengeMode(false);
 				game.showChallengeScreen();
+				
 			} else if (b == Buttons.CREATE) {
 				game.setChallengeMode(true);
 				game.setChallengeAcceptMode(false);
-				game.showNetworkingLevelScreen();
+				getName = new NetworkingDialog("NAME?", skin, game).show(screen.getStage());
+				
 			}
 		 else {
 			screen.resume();

@@ -19,6 +19,7 @@ import edu.oswego.tiltandtumble.levels.Level;
 import edu.oswego.tiltandtumble.levels.LevelRenderer;
 import edu.oswego.tiltandtumble.levels.ShadowBallController;
 import edu.oswego.tiltandtumble.levels.WorldPopulator;
+import edu.oswego.tiltandtumble.screens.dialogs.NeworkingScoreDialog;
 import edu.oswego.tiltandtumble.screens.dialogs.PauseDialog;
 import edu.oswego.tiltandtumble.screens.dialogs.ScoreDialog;
 import edu.oswego.tiltandtumble.screens.widgets.DPad;
@@ -256,8 +257,14 @@ public class GameScreen extends AbstractScreen {
 			public void render(GameScreen s, float delta) {
 				if (s.level.hasFinished()) {
 					s.audio.pause();
-					s.scores.add(s.level.getScore());
-					new ScoreDialog("Score", s.skin, s.game, s).show(s.stage);
+					if(s.getMode() != GameScreen.Mode.NETWORKING){
+						s.scores.add(s.level.getScore());
+						new ScoreDialog("Score", s.skin, s.game, s).show(s.stage);
+					}else{
+						s.scores.add(s.level.getScore());
+						new NeworkingScoreDialog("", s.skin, s.game, s).show(s.stage);
+					}
+					
 					s.ballController.setChallengeMode(false);
 					s.changeState(State.SCORED);
 				}
