@@ -28,16 +28,19 @@ public class NetworkingDialog extends Dialog {
         
         Table table = new Table(skin);
 		table.setFillParent(true);
-		table.add("Name?", "header").center();
+		//table.add("Multiplayer", "header").center();
 		
 		table.row();
-		//table.add("Initials:");
+		table.row().padTop(10);
+		table.add("Initials:");
+		table.row().padBottom(5);
 		initials = new TextField("", skin);
-		initials.setMaxLength(3);
-		initials.setMessageText("AAA");
-		table.add(initials).width(50);
+		initials.setMaxLength(6);
+		initials.setMessageText("AAAAAA");
+		table.add(initials).width(80);
 
 		button("Continue");
+		getContentTable().add(table).center();
 
 	}
 	

@@ -61,7 +61,7 @@ public class SelectDialog  extends Dialog {
 			} else if (b == Buttons.CREATE) {
 				game.setChallengeMode(true);
 				game.setChallengeAcceptMode(false);
-				getName = new NetworkingDialog("NAME?", skin, game).show(screen.getStage());
+				getName = new NetworkingDialog("Multiplayer", skin, game).show(screen.getStage());
 				
 			}
 		 else {
