@@ -22,7 +22,7 @@ public class Hud extends Window {
 		super("", skin, "hud");
 		
 		AssetManager assetManager = new AssetManager();
-        String musicFile = "data/soundfx/button-8.wav";
+        String musicFile = "data/soundfx/button-8.ogg";
 		if (!assetManager.isLoaded(musicFile)) {
 			assetManager.load(musicFile, Sound.class);
 			assetManager.finishLoading();

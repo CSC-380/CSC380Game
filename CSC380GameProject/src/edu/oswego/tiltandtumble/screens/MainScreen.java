@@ -39,7 +39,7 @@ public class MainScreen extends AbstractScreen {
         Gdx.input.setInputProcessor(multiplexer);
         Gdx.input.setCatchBackKey(true);
         AssetManager assetManager = new AssetManager();
-        String musicFile = "data/soundfx/button-8.wav";
+        String musicFile = "data/soundfx/button-8.ogg";
 		if (!assetManager.isLoaded(musicFile)) {
 			assetManager.load(musicFile, Sound.class);
 			assetManager.finishLoading();

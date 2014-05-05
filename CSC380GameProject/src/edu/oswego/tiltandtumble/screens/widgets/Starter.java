@@ -39,7 +39,7 @@ public class Starter extends Dialog {
 		setFillParent(true);
         setModal(true);
         setMovable(false);
-		String musicFile = "data/soundfx/button-8.wav";
+		String musicFile = "data/soundfx/button-8.ogg";
 		if (!assetManager.isLoaded(musicFile)) {
 			assetManager.load(musicFile, Sound.class);
 			assetManager.finishLoading();
