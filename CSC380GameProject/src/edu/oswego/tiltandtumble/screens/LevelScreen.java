@@ -35,12 +35,8 @@ Sound button;
 		});
         Gdx.input.setInputProcessor(multiplexer);
 
-		AssetManager assetManager = new AssetManager();
+        AssetManager assetManager = game.getAssetManager();
         String musicFile = "data/soundfx/button-8.ogg";
-		if (!assetManager.isLoaded(musicFile)) {
-			assetManager.load(musicFile, Sound.class);
-			assetManager.finishLoading();
-		}
 		button = assetManager.get(musicFile, Sound.class);
 
 		Window window = new Window("\nLevels", skin);
