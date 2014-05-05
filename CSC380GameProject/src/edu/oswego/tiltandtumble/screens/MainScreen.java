@@ -23,6 +23,8 @@ public class MainScreen extends AbstractScreen {
 
 	private Dialog selectDialog;
 	Sound button;
+	AssetManager assetManager;
+
     public MainScreen(final TiltAndTumble game) {
         super(game);
     }
@@ -43,6 +45,7 @@ public class MainScreen extends AbstractScreen {
 		});
         Gdx.input.setInputProcessor(multiplexer);
         Gdx.input.setCatchBackKey(true);
+<<<<<<< HEAD
         AssetManager assetManager = new AssetManager();
         String musicFile = "data/soundfx/button-8.ogg";
 		if (!assetManager.isLoaded(musicFile)) {
@@ -50,6 +53,11 @@ public class MainScreen extends AbstractScreen {
 			assetManager.finishLoading();
 		}
 		button = assetManager.get(musicFile, Sound.class);
+=======
+        assetManager = game.getAssetManager();
+		button = assetManager.get("data/soundfx/button-8.ogg", Sound.class);
+
+>>>>>>> Kmae
         Window window = new Window("\nTilt and Tumble", skin);
         window.setFillParent(true);
         window.setModal(true);

@@ -9,7 +9,7 @@
  <tileset firstgid="257" name="sci-fi-platformer-tiles-11" tilewidth="32" tileheight="32">
   <image source="tiles/sci-fi-platformer-tiles-11.png" width="512" height="512"/>
  </tileset>
- <tileset firstgid="1665" name="tilea2 (1)" tilewidth="32" tileheight="32">
+ <tileset firstgid="513" name="tilea2 (1)" tilewidth="32" tileheight="32">
   <image source="tilea2 (1).png" width="512" height="512"/>
  </tileset>
  <tileset firstgid="769" name="sci-fi-platformer-tiles-12" tilewidth="32" tileheight="32">
@@ -20,17 +20,17 @@
  </tileset>
  <layer name="background" width="70" height="70">
   <data encoding="base64" compression="zlib">
-   eJzt0KERACAMBMEfaCkl0R8toqNQcSt2zl8lKQAAAAAAAAAAAAAAAAAAAAAAxt3Viy+++OLL/Jezffl5ixTpjQ==
+   eJzt1LEJACEQRNFBW7IkC7U0Oe6SiwxEMHjBY9LlB9uSNAAAAAAAAAAAAAAAAAAAAAAAjhvlv7zyNckFt9xEF1102fc06dXfXZm76OaB
   </data>
  </layer>
  <layer name="walls" width="70" height="70">
   <data encoding="base64" compression="zlib">
-   eJztnEtuQzEIRdPOmh20s+wt++sWk0itWj0ZuBgwth9IV0n84XPA09zeLpdbqan/1lqjzBLH27cUR8qh5ef7/U9RXHosmwt3HzkbwUQbQ4qN/ta8IynWbPMSyQWZGY/5jmQyiktU7pHy5iKtnY3LirWP5pJdkycXqrZd6y4upVLpV4hl5zgjk7OxQWs+G5vish+X6LeusWwWaM4j2WSzoHKV1s+i3bggs4jOq2TZtXpxoeo+fkf8Zdep4dC7xnFZVVQf0bUWo13kwWZHLi02FCuJV3YdI9lYz0b1iupPT69XFtcj6Tvqa0WhXLQztrqQOo+fu84H1WOqbo7LzvNi4ZKdP9L7jHk5+pyNiYYLuqfhMsP89DKh7lJ+juvSvZm4ZOYxm4qLzKX4FJti488nOxdNvt5nV+aime/et7DaOzrmyOWsOcvxsDCR/HnFi+QyikkEl5avjLO9OWp/W+fG42wUF2oN4TaLWubRN4TTzFw82aBMVuHizQZl0stFyhPdQ+JGcOF8WmOhfq0xR3Cx9K2Hv7Q/ksloafmfgUkW67OqmBQXK5viU2yKjS+fCNYa/9b7nrV6xUUt+j63//H8vD91VdahZYD4QuJw+z33KXsxef3Py13Rl8j3wp1B8tDc54zigtZhYWN5J9Hv9PPnHX05vh0kV8ucRcwpd99S9+56ABoUCMA=
+   eJztnElugzEIhZPu2hu0u9ytB+3RumirVL8MPAwYDyA9JfHA8Bm2edxvt0epqf/WWqPMEsfbtxRHyqHl5+vlqSguPZbNhbuPnI1goo0hxUZ/a+ZIijVbv0RyQXrGo78jmYziEpV7pLy5SGuncVmx9tFcsmvy5ELVtmvdxaVUKv0JsewcZ2RyGhu05tPYFJf9uETPusayWaA5j2STzYLKVVo/RbtxQXoR7VfJsmv14kLVff2O+MuuU8Ohd43jsqqod0TXWox2kQebHbm02FCsJF7ZdYxkYz0b9VbU+/S89cri3kj6jvpaUSgXbY+tLqTO6+eu/UG9MVU3x2XnfrFwyc4fefuMfrn6nI2Jhgu6p+EyQ//0MqHuUn6u69K9mbhk5jGbiovMpfgUm2Ljzyc7F02+3mdX5qLp795ZWG2OrjlyOWvOcjwsTCR/XvEiuYxiEsGl5SvjbG+O2t/WvvE4G8WFWkO4zaKWebwbwmlmLp5sUCarcPFmgzLp5SLlie4hcSO4cD6tsVC/1pgjuFjerYe/tD+SyWhp+Z/AJIv1qSomxcXKpvgUm2LjyyeCtca/9b5nrV5xUYu+z+2/3n/+z+RNWYeWAeILicPt99yn7PP+/ER9RM4LdwbJQ3OfM4oLWoeFjWVOouf0/XeOPhxnB8nV0mcRfcrdt9S9u74BX1IISw==
   </data>
  </layer>
  <layer name="teleporters" width="70" height="70">
   <data encoding="base64" compression="zlib">
-   eJzt1ssNwjAQBUBDTtAB1Ec71EKLgCA3jAx25N+MFOWWOM+7zobALK672iughNR9tN+MTH0DKZwVAMDq17nAHAFj0Mv/kx2jyKllfQD0yvkF9MjZRe/UcLvsDQAwg9jMM9MslPutM2VVisyoRe3Rslr/o637Qt8BAEBciXn5sIRweVzHJf9ZvUjJ7ZnJbf+611pDi9Y8tsqlV3L5LNZHteu/9vtP73P3rF6+ugPIKRZf
+   eJzt1ksOgjAUAMCarvQGej6u4511oQsTS6ot6W8mIeygvB8vBFZxP7U+ATXk5lG+mZn6BnKYFQDA2697gT0C5qCX/yd2zKKklvUBMCrzCxiR2cXo1HC/5AYAWEFq51lpFyr91pViVYuY0Yrao2et/kdH94W+AwCAtBr78jmGsD2vSyx/1ihy4rbFz3uLM/To6LiMSly+S8Wldf23fv/1NXdv6mXXA2wiFP0=
   </data>
  </layer>
  <objectgroup name="collision" width="70" height="70">

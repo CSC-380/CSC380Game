@@ -35,12 +35,8 @@ Sound button;
 		});
         Gdx.input.setInputProcessor(multiplexer);
 
-		AssetManager assetManager = new AssetManager();
+        AssetManager assetManager = game.getAssetManager();
         String musicFile = "data/soundfx/button-8.ogg";
-		if (!assetManager.isLoaded(musicFile)) {
-			assetManager.load(musicFile, Sound.class);
-			assetManager.finishLoading();
-		}
 		button = assetManager.get(musicFile, Sound.class);
 
 		Window window = new Window("\nLevels", skin);
@@ -49,7 +45,7 @@ Sound button;
         window.setMovable(false);
         stage.addActor(window);
 
-		window.row().padTop(25).colspan(5);
+		window.row().padTop(50).colspan(5);
 		window.add("Arcade Mode", "highlight");
 		window.row().padTop(10).colspan(5).width(100);
 		Button arcade = new TextButton("Play", skin);
@@ -83,7 +79,7 @@ Sound button;
 			});
 		}
 
-		window.row().padBottom(10).padTop(50).bottom().colspan(5).width(100);
+		window.row().padBottom(10).padTop(40).bottom().colspan(5).width(100);
 		Button back = new TextButton("Go Back", skin);
 		window.add(back);
 		back.addListener(new ChangeListener() {
