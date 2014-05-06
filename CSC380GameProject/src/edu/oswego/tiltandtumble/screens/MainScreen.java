@@ -20,9 +20,11 @@ public class MainScreen extends AbstractScreen {
 
 	Sound button;
 	AssetManager assetManager;
+	
 
     public MainScreen(final TiltAndTumble game) {
         super(game);
+
     }
 
     @Override
@@ -103,5 +105,7 @@ public class MainScreen extends AbstractScreen {
                 game.showCreditScreen();
             }
         });
+    
     }
+    
 }
