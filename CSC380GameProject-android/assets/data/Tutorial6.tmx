@@ -49,7 +49,7 @@
    <ellipse/>
   </object>
   <object name="StaticWall" x="192" y="96" width="96" height="32"/>
-  <object name="AttractorForce" x="288" y="224" width="160" height="32"/>
+  <object name="StaticWall" x="288" y="224" width="160" height="32"/>
   <object name="StaticWall" x="288" y="320" width="32" height="64"/>
   <object name="StaticWall" x="160" y="320" width="32" height="64"/>
   <object name="StaticWall" x="32" y="224" width="160" height="32"/>
