@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="32" tileheight="32">
  <properties>
+  <property name="background image" value="NASA_HiddenUniverse_08.jpg"/>
   <property name="music" value="spaceLevel_2.mp3"/>
  </properties>
  <tileset firstgid="1" name="sci-fi-platformer-tiles-13" tilewidth="32" tileheight="32">
@@ -14,12 +15,12 @@
  </tileset>
  <layer name="background" width="50" height="50">
   <data encoding="base64" compression="zlib">
-   eJzt1lEOQDAQhOE6ksT9z+ZJiKjsavEP8zAPEmo/u8U4lDJ+JFNZEzmHFjtYyTiy80l2ZNZRdCzX2WHHFYfSPleMHaw88b+m2I+3eht1RJ870XFlTgiOHjNOcPRaz452h+r79q5+2GHH1hH9xhH3Rms/iI5oPbXzKI59PWdzVVuH5GhZh+D48z4nxQ5W7GCF/j/e20G31GrdHtMNR/Uq9iIzV2/XmemHcuxg5Wv7Q8FxVoeSI1Mv3aHYj8z9/+ZQyAxz+/gq
+   eJztl1EOAyEIRO2RNun9z9YvU2NUGBjQ3ewkfBWFV0Dd61PK1Vmv/vdT7Vv+NuNofU6zl+MsQzjQ/qw20yovdI2WQyMWh6RojlEMNJ8ncTylr5hzzriHvDVBbPU/MmNEslTt5vCwtDqBQ8u2UvR7LYuDrV31YAuJvbt3kdy0fh7z3N1P5hidfXfjqPuxOTS+kectyoFqxMGsMYtD2iuTQ8rL2kezvsqoQ2TNkV73vkWiOZCYHkVyIDG9ss7DbL1GyD2gFZpnRkzmvtHKmvNosWfvrhx9jpHn1eqdyIrxcuRwaNfs5rC8x7V+EpskhKOV9l5EcrLUe7ZWy+GpR4Z5OXblPeLwfK/uzr/nsKxlchTnflYObdxMsTl2yTIfpWB1iPJFOT19z+rTmodHrHn22qpn7sSx4juVQ7q/LBwSC8Kr9a25sTnqnlJfIj2s9dWcqT+Pykey
   </data>
  </layer>
  <layer name="walls" width="50" height="50">
   <data encoding="base64" compression="zlib">
-   eJztmtuxwjAMRAmdpATKcTqADuiO0ph8ePAEydqV5PDcmXxcrh57ZDtDgMPht3SeXu1AVml83Y6PS9Mvc6w9ZuXSpMVreWWH+Z6m/sXGa3mZvla185pJP/U1az3mBJZv4EA8sRyLwsLwb2tEWTwc0rllz3nvnoGyRLhPHW+oovmICrgeXi+RXEYIh+c+MOI+bOnP4eOI9mvrZdb9c8Q4PRzaXqxaNvWkeC3XO0uWAxEa5/WcyWGtjTbjkRxM3Wj/PbQQPrI4RjyzMj7elYP1gfjcmyOyn61Y6X/W8wd7jjz7YPUgPUuhPpZNXc+aojHoPkJmY70u5bL+2PXImIvm1eLo9Wd7sl6968ysSXR+WRy1Zu9vS++8HiwLUyuLYRRHr94IBqSu5Y1lGaFCcHhmI+WNFrunXnEGEG/a7D+Zo+2PsEY5mBkhuVoNiSuLQ3ufHeGw9hHax6NILttH6mvNFa0dqXVt4plcdP4jz7jmIYtjT+/fzMHokznaWCsf7dX7nucyPccytRGO2t/ai8j3XhJLLzYqi1n63KMYDNv67D63fkfC9mHm6Z299BlVhAM91whDvSSPUp8MDkbe+2BUd8fa/FI=
+   eJzlWotNxTAMfI9NOgISy6QbwAZsx2goEhWWseM759P36EmV+kniO8d20qq327Xwfj+bgY0ieH29/B4erqyj2ticw4PX3utXFvj3tWHDelbvRX1az0dB+msDOOlrhGM07ghoHS38Jx07qcV6rscYATauLK1snkf+atlHYyBqE9WuCL39ERQi3jNcVmioQHVUyDn25jt6PhM9tiwdZ+GZdUh7V9Hh5QWaHzPzBNXhcdD392C8R9DBjrcSGR3R3GT3Yhmwc27p8GJ/ZV5o7MD+yjpHYfWZ8c6K7F1bnJD6pTFaB7uv8OII7T9DRytn0b5e28z7BxuzCAeNysF6l0J5MDkoOfYgqk9enygOe2s7i5ZvkDUiU3Nlu7ef6953lqjmzFgf9DiHltHjrljLZuQ5k8OjkJ1btO6u2lv02MnkQs8RcbG4Mf1X5EL0nVra3ZK+WZ3TFph10rt/VizN1OG1z3DMzO2x/iExwuho1TU291CgOYvUBnl4++zRsdXi59nLYOVaYl1HfkXHRubIw6doz/SVvkPin4mP3trF6rDOLR6rMVLHs0Dnhn7WqqVIXRhZnzzu2o7XVueQ1bYY4xzXH/e/bTWPDGT/w34Ui8i/C4Xw+Yj/FiI/WN89SqBBj8/6OvqPhLXD+DPre+sbVUaH5Nu6l8kFiyNSB7M6UJxVe78B6a53GA==
   </data>
  </layer>
  <objectgroup name="collision" width="50" height="50">
