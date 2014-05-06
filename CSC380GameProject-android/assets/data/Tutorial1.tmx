@@ -113,9 +113,9 @@
   <object name="StaticWall" x="211" y="962" width="43" height="60"/>
   <object name="StaticWall" x="321" y="1024" width="158" height="60"/>
   <object name="StaticWall" x="290" y="1057" width="118" height="28"/>
-  <object name="StaticWall" x="257" y="833" width="74" height="62"/>
-  <object name="StaticWall" x="289" y="800" width="40" height="126"/>
-  <object name="StaticWall" x="323" y="769" width="400" height="186"/>
+  <object name="StaticWall" x="257" y="833" width="80" height="31"/>
+  <object name="StaticWall" x="289" y="800" width="43" height="96"/>
+  <object name="StaticWall" x="320" y="768" width="400" height="191"/>
   <object name="StaticWall" x="23" y="768" width="167" height="147"/>
   <object name="StaticWall" x="140" y="770" width="82" height="26"/>
   <object name="StaticWall" x="219" y="1120" width="69" height="158"/>
