@@ -37,7 +37,7 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 
 	private final List<String> levels = new ArrayList<String>();
 	{
-		
+
 		levels.add("Tutorial1.tmx");
 		levels.add("Tutorial3.tmx");
 		levels.add("Tutorial2.tmx");
@@ -108,7 +108,9 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 			assetManager.finishLoading();
 		}
 		music = assetManager.get(musicFile, Music.class);
+
 		this.playMusic();
+
 		String buttonFile = "data/soundfx/button-8.ogg";
 		if (!assetManager.isLoaded(buttonFile)) {
 			assetManager.load(buttonFile, Sound.class);
@@ -116,29 +118,29 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		}
 		musicFile = "data/soundfx/number-zero.ogg";
 		if (!assetManager.isLoaded(musicFile)) {
-			assetManager.load(musicFile, Music.class);
+			assetManager.load(musicFile, Sound.class);
 			assetManager.finishLoading();
 		}
-		
+
         musicFile = "data/soundfx/number-one.ogg";
 		if (!assetManager.isLoaded(musicFile)) {
-			assetManager.load(musicFile, Music.class);
+			assetManager.load(musicFile, Sound.class);
 			assetManager.finishLoading();
 		}
-		
+
 		musicFile = "data/soundfx/number-two.ogg";
 		if (!assetManager.isLoaded(musicFile)) {
-			assetManager.load(musicFile, Music.class);
+			assetManager.load(musicFile, Sound.class);
 			assetManager.finishLoading();
 		}
-		
+
 		musicFile = "data/soundfx/number-three.ogg";
 		if (!assetManager.isLoaded(musicFile)) {
-			assetManager.load(musicFile, Music.class);
+			assetManager.load(musicFile, Sound.class);
 			assetManager.finishLoading();
 		}
-		
-		
+
+
 		showMainScreen();
 	}
 

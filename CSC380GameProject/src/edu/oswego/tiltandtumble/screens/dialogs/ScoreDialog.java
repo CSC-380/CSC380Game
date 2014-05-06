@@ -2,9 +2,13 @@ package edu.oswego.tiltandtumble.screens.dialogs;
 
 import java.util.List;
 
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -21,7 +25,7 @@ public final class ScoreDialog extends Dialog {
 	TextField initials = null;
 	private final Sound button;
 
-	public ScoreDialog(String title, Skin skin, TiltAndTumble game, GameScreen screen) {
+	public ScoreDialog(String title, Skin skin, final TiltAndTumble game, GameScreen screen) {
 		super(title, skin, "dialog");
 		this.game = game;
 		this.screen = screen;
@@ -52,16 +56,20 @@ public final class ScoreDialog extends Dialog {
 		table.add("Score", "header").right();
 		table.row().padBottom(5).uniformX();
 		Score total = new Score(0, 0);
+		Table scoreTable = new Table(skin);
+		ScrollPane scoresScroll = new ScrollPane(scoreTable, skin, "clear");
+		table.add(scoresScroll).colspan(3).fillX().maxHeight(65);
 		int firstLevel = lastLevel - scores.size();
 		for (int i = 0; i < scores.size(); ++i) {
+			scoreTable.row().uniformX().expandX();
 			Score s = scores.get(i);
-			table.add(String.valueOf(firstLevel + i + 1)).left();
-			table.add(s.getFormattedTime()).center();
-			table.add(String.valueOf(s.getPoints())).right();
+			scoreTable.add(String.valueOf(firstLevel + i + 1)).left();
+			scoreTable.add(s.getFormattedTime()).center();
+			scoreTable.add(String.valueOf(s.getPoints())).right();
 			total.setPoints(total.getPoints() + s.getPoints());
 			total.setTime(total.getTime() + s.getTime());
-			table.row().uniformX();
 		}
+		table.row().uniformX();
 		table.add("Total:", "header").right();
 		table.add(total.getFormattedTime()).center();
 		table.add(String.valueOf(total.getPoints())).right();
@@ -92,6 +100,17 @@ public final class ScoreDialog extends Dialog {
 		}
 
 		getContentTable().add(table).pad(5,5,5,5);
+
+		this.addListener(new InputListener(){
+			@Override
+			public boolean keyDown(InputEvent event, int keycode){
+				 if(keycode == Keys.BACK){
+				   	 game.showPreviousScreen();
+				   	 return true;
+				 }
+				return false;
+			}
+		});
 	}
 
 	@Override
