@@ -58,7 +58,7 @@ public final class ScoreDialog extends Dialog {
 		Score total = new Score(0, 0);
 		Table scoreTable = new Table(skin);
 		ScrollPane scoresScroll = new ScrollPane(scoreTable, skin, "clear");
-		table.add(scoresScroll).colspan(3).fillX().maxHeight(65);
+		table.add(scoresScroll).colspan(3).fillX().maxHeight(60);
 		int firstLevel = lastLevel - scores.size();
 		for (int i = 0; i < scores.size(); ++i) {
 			scoreTable.row().uniformX().expandX();
