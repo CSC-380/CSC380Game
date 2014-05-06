@@ -15,15 +15,15 @@
  </tileset>
  <layer name="background" width="60" height="60">
   <data encoding="base64" compression="zlib">
-   eJzt1EESwyAIheH0Trn/2brqJmMVEBDjz8xbdBIjHzG9P9d1F86vrOueNbq3t7b3TOleePFme2f6nN0r2+u1JsJr6Qfved7M4MWL971eyVqt17vw4n2Tt7dXBa/mHYzWzXit5e21ns8TvIRUy8x3Q8goHv/DO50/vHit3pn7tc+LmDneuL3w4l3tjfZbvNJq9Y9X79X0mu3VnueZnit8v5rK8EYHb8wMdglevFXi0dtO3qz3K6nsXlfOZGdv65mneSPPhWZ+1b0kPx7naqfg1XsrzGXVntq5eM3Ky9vq41+Pp3k1z8JbwyvtO9qrue5ZJ3o9z4V0j+f13m/P+gJulAIu
+   eJzt1FESwyAIRdF0T9n/2vqfaUaBRwW9zLyvBvEY0/tzXfcjWfWcMxNvr2UPePGe5PWe0agPb/w3vHj/Gbx48e7rnem1eDMKL96dvG9VwWt9B6O+iNdbaq/3fp7gJaRaIt8NIaMo/oc73T+8eL3eyPPW9TLOHG/eLLx4V3orzFfsOVJ4bc/itc/L/F6zvdnBG/d2Dl68VaLYW1dv1vudrS5elR9vT++Ks3ubW93bIbt5FfeqU/DavRXORTVT6Y2c6Uqvd887eT1r4cX7qzeytrVO9KruimXGqvoCXqnslw==
   </data>
  </layer>
  <layer name="walls" width="60" height="60">
   <data encoding="base64" compression="zlib">
-   eJztW0luxDAMC/qT+f8n+rSeBi2CiU1SlBQ3JuBDYEsibS2nvI7jeN14vaHanXHem30juLJhfZ31RuO/976/ftcT9DLfkXiffI/ysEsvwgupH/ZuR3rRe2I5uGwQO1avwmfrneO/6WXnmzoX76C3Elvv9ffWi/s572UsNMaIJ3q2+31d/Rq13XrxmA645tEshuKnsl+x9Yr2iM5+NULkPV1+ne/7RL2uOZU1/yrrtxuOO18JyIyY2a+E7JrKrj3VdycivVWZB1tvLTr0RuqF9TfjnK03cl7JDcSneldsLIUbC4cP1LYin1mOHXqz/KMcVKyql1kRPnfRq8Z36HXWs4NzxBbVy9pX6mXiufWy+yMOSv2qsUZn0L2//pycmfgoH9RnhKsDjviV+RWFg09lfmWjQm/2Yvk4zoxsM7Vl6b1DrTruyPm+FXodPlzvtoJeJIaq112vlXo7+Kn3F42p+sjox0hMB4dV4Mixp+vtzgOmZ7j0oudc65NfhJsznvNu2fy40hvFiIdbL4MuvUwtzeKwvBQ7xG9k/qpn0bt09oho32X1Mv/8ZM6Crvdlvp2oyAu2F2Tq/QHwwYCw
+   eJztm1tuxTAIRKPuJPvfRJdW9atXVoJnYACn8UiWGtk8ji+Gr57HcZzDytIYB1leWysH61sp1vfIq4jzu/f99bfewIuejeoqllWHq/B672hmx/Ci98TmoLJB7FheTz6bd67/xsvON+9cXIG3Upv3/nvz4n7GvYyFxrDyRM96+6dKqn6N2m7eWqnm0SyGwk+m2PeK9ojOfmUp63fomkdv5FXNqaz5t8rbrpDizp8kZEbM7J+k7DeV/fa8vjsV6a2eebB5a9XBG3kvrL9Zztm8kfOe2kB8eu+KjeXJjZXCB2pbUc9sjh28Wf7RHLx6Ki+z2HieHNGz1b+vR9H+aO2j8SoVnX9v4mX37+J5369Hat7MnFfjzVYWb2V9MVLk011fSlXwZi82H8UZyzaTLYt3hbfq7SOWD2U+aql670qzr9M/q+jcqqxFS135Kd6rIi5jVzlrrnKt6PmdUtTY23m75u9d/HHP+kb9Iz4y+vMd0/nxdzQHhONKkbtl6+OOVyHUZ5SXUQevcv4+gVdph7y7q/MZM76K1/qfH0XfZXLJtmP5snlVtcLE6NIP5710Dg==
   </data>
  </layer>
- <objectgroup name="collision" width="60" height="60" visible="0">
+ <objectgroup name="collision" width="60" height="60">
   <object name="StaticWall" x="282" y="129" width="166" height="160"/>
   <object name="StaticWall" x="128" y="15" width="160" height="273"/>
   <object name="StaticWall" x="8" y="3" width="1719" height="29"/>
