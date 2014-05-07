@@ -24,9 +24,11 @@ public class MainScreen extends AbstractScreen {
 	private Dialog selectDialog;
 	Sound button;
 	AssetManager assetManager;
+	
 
     public MainScreen(final TiltAndTumble game) {
         super(game);
+
     }
 
     @Override
@@ -118,8 +120,10 @@ public class MainScreen extends AbstractScreen {
                 game.showCreditScreen();
             }
         });
+    
     }
     
+<<<<<<< HEAD
     public Stage getStage(){
     	return this.stage;
     
@@ -129,4 +133,6 @@ public class MainScreen extends AbstractScreen {
     	selectDialog = new SelectDialog("MultiPlayer", skin, game, this);
     	selectDialog.show(stage);
     }
+=======
+>>>>>>> master
 }

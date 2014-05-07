@@ -15,12 +15,12 @@
  </tileset>
  <layer name="background" width="60" height="60">
   <data encoding="base64" compression="zlib">
-   eJzt2EEKwCAMAEH7J///tp4LhSISGpMR5qpuDi04rzEmD6vr7/vq1QsAAAAAAJl1e4vXq7eSbL3RZ0f3ru6l96zebLr1AsDpuv2nI3ozz1Bvzj0B2Pf2fa78DqG3du/XDPQSPfPIc240GcP2
+   eJzt1FESwyAIRdF0T9n/2vqfaUaBRwW9zLyvBvEY0/tzXfcjWfWcMxNvr2UPePGe5PWe0agPb/w3vHj/Gbx48e7rnem1eDMKL96dvG9VwWt9B6O+iNdbaq/3fp7gJaRaIt8NIaMo/oc73T+8eL3eyPPW9TLOHG/eLLx4V3orzFfsOVJ4bc/itc/L/F6zvdnBG/d2Dl68VaLYW1dv1vudrS5elR9vT++Ks3ubW93bIbt5FfeqU/DavRXORTVT6Y2c6Uqvd887eT1r4cX7qzeytrVO9KruimXGqvoCXqnslw==
   </data>
  </layer>
  <layer name="walls" width="60" height="60">
   <data encoding="base64" compression="zlib">
-   eJztm10OAyEIhE1vsve/RI/W9KlNY1d+BkGdSXgSBz4D+7ZXa+06LL41OpdIWkvrg6j/jufjEyfwjnK1QtXK4kXdQfJ6+iEvecm7B+9Mkff+3Hp2Om9EWOvvwPtPnlkjby6vZV5P5K3mW7UvjS9K5N2bt7oQb76SyIvdqejds3pnirzkRfN68rV+vTur8kpEXruyeSW9V+DV+HvOezkn8mpCe7eXL9WOvNHfL/LGBpJ3xCLJWZ1X24NGkW+A7hWhDN5M/ghebf1KWmWfUL2RN2fuI3tFeGTxIjxO4pXUyJydX79oVeONnjGPR8Z+oN58FZE3do9mSPNNm8mL2F+J78q8UkXN1J0nmtfSF3l98niid8bjHfn21p40//zswDu6O5O3QszifQHVv/iz
+   eJztm1tuxTAIRKPuJPvfRJdW9atXVoJnYACn8UiWGtk8ji+Gr57HcZzDytIYB1leWysH61sp1vfIq4jzu/f99bfewIuejeoqllWHq/B672hmx/Ci98TmoLJB7FheTz6bd67/xsvON+9cXIG3Upv3/nvz4n7GvYyFxrDyRM96+6dKqn6N2m7eWqnm0SyGwk+m2PeK9ojOfmUp63fomkdv5FXNqaz5t8rbrpDizp8kZEbM7J+k7DeV/fa8vjsV6a2eebB5a9XBG3kvrL9Zztm8kfOe2kB8eu+KjeXJjZXCB2pbUc9sjh28Wf7RHLx6Ki+z2HieHNGz1b+vR9H+aO2j8SoVnX9v4mX37+J5369Hat7MnFfjzVYWb2V9MVLk011fSlXwZi82H8UZyzaTLYt3hbfq7SOWD2U+aql670qzr9M/q+jcqqxFS135Kd6rIi5jVzlrrnKt6PmdUtTY23m75u9d/HHP+kb9Iz4y+vMd0/nxdzQHhONKkbtl6+OOVyHUZ5SXUQevcv4+gVdph7y7q/MZM76K1/qfH0XfZXLJtmP5snlVtcLE6NIP5710Dg==
   </data>
  </layer>
  <objectgroup name="collision" width="60" height="60">
@@ -62,11 +62,10 @@
   <object name="StaticWall" x="1101" y="1505" width="291" height="32"/>
   <object name="StaticWall" x="480" y="1312" width="625" height="64"/>
   <object name="StaticWall" x="1185" y="1632" width="95" height="260"/>
-  <object name="StaticWall" x="928" y="1536" width="160" height="24"/>
   <object name="StaticWall" x="449" y="1472" width="543" height="96"/>
   <object name="StaticWall" x="448" y="1664" width="384" height="229"/>
   <object name="FinishLine" x="814" y="1837" width="134" height="12"/>
-  <object x="8" y="1888" width="1080" height="25"/>
+  <object name="StaticWall" x="8" y="1888" width="1080" height="25"/>
   <object name="StaticWall" x="186" y="1632" width="166" height="160"/>
   <object name="StaticWall" x="128" y="1633" width="65" height="101"/>
   <object name="StaticWall" x="22" y="1376" width="329" height="160"/>

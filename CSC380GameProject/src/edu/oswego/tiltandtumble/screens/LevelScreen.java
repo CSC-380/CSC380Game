@@ -79,7 +79,7 @@ Sound button;
 			});
 		}
 
-		window.row().padBottom(10).padTop(40).bottom().colspan(5).width(100);
+		window.row().padBottom(10).padTop(30).bottom().colspan(5).width(100);
 		Button back = new TextButton("Go Back", skin);
 		window.add(back);
 		back.addListener(new ChangeListener() {

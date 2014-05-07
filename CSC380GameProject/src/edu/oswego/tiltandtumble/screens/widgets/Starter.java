@@ -1,7 +1,6 @@
 package edu.oswego.tiltandtumble.screens.widgets;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -22,10 +21,10 @@ public class Starter extends Dialog {
 	private State currentState;
 	private float countdownTime;
 	private int lastCount;
-	private final Music zero;
-	private final Music one;
-	private final Music two;
-	private final Music three;
+	private final Sound zero;
+	private final Sound one;
+	private final Sound two;
+	private final Sound three;
 	private final Sound buttonSound;
 	private final AssetManager assetManager;
 	private final TiltAndTumble game;
@@ -43,16 +42,16 @@ public class Starter extends Dialog {
 		buttonSound = assetManager.get(musicFile, Sound.class);
         musicFile = "data/soundfx/number-zero.ogg";
 
-		zero = assetManager.get(musicFile, Music.class);
+		zero = assetManager.get(musicFile, Sound.class);
         musicFile = "data/soundfx/number-one.ogg";
 
-		one = assetManager.get(musicFile, Music.class);
+		one = assetManager.get(musicFile, Sound.class);
 		musicFile = "data/soundfx/number-two.ogg";
 
-		two = assetManager.get(musicFile, Music.class);
+		two = assetManager.get(musicFile, Sound.class);
 		musicFile = "data/soundfx/number-three.ogg";
 
-		three = assetManager.get(musicFile, Music.class);
+		three = assetManager.get(musicFile, Sound.class);
 	}
 
 	@Override
