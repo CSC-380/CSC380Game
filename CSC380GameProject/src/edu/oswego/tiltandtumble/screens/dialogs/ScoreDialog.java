@@ -92,7 +92,7 @@ public final class ScoreDialog extends Dialog {
 			initials = new TextField("", skin);
 			initials.setMaxLength(3);
 			initials.setMessageText("AAA");
-			table.add(initials).width(50);
+			table.add(initials).width(60);
 
 			button("Continue", total);
 		} else {
