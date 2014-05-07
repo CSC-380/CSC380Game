@@ -283,29 +283,38 @@ public class GameScreen extends AbstractScreen {
 			public void render(GameScreen s, float delta) {
 				if (s.level.hasFinished()) {
 					s.audio.pause();
+					
 					if(s.getMode() != GameScreen.Mode.NETWORKING){
 						s.scores.add(s.level.getScore());
 						new ScoreDialog("Score", s.skin, s.game, s).show(s.stage);
 						
+					}else{
+						s.scores.add(s.level.getScore());
+						new NeworkingScoreDialog("", s.skin, s.game, s).show(s.stage);
+						System.out.println("highscores");
 						if(!s.game.isChallengeAcceptMode()){
 							//write score when writting path only
 							//see if higher
 							//remove lowest high score
-							
-							com.datastax.driver.core.ResultSet result = s.session.execute("Select * FROM level1");
-							Row r = result.one();
-							if(s.level.getScore().getPoints() > r.getInt("highscore")){
-								System.out.print("kelly was here");
-								s.session.execute("Delete From level1 WHERE (Select Min(highscore) FROM level1)s;");
-							}
-							
-							s.session.execute("UPDATE level"+s.numLevel+" SET highscore =  WHERE username = '"+s.name+"'");
+							System.out.print("kelly was here");
+//							com.datastax.driver.core.ResultSet result = s.session.execute("SELECT username, MIN(highscore) FROM level1");
+//							List<Row> row = result.all();
+//							if(row.size()>5){
+//								System.out.println("about to check if new high score");
+//								
+//								if(s.level.getScore().getPoints() > row.get(0).getInt("highscore")){								
+//									s.session.execute("Delete From level1 WHERE (Select Min(highscore) FROM level1)s;");
+//								}
+//								
+//								s.session.execute("UPDATE level"+s.numLevel+" SET highscore =  WHERE username = '"+s.name+"'");
+//							}
+							System.out.println("name " +s.name +" level "+s.numLevel + " score "+s.level.getScore().getPoints());
+							s.session.execute("UPDATE level"+s.numLevel+" SET highscore = "+ s.level.getScore().getPoints()+" WHERE username = '"+s.name+"'");
 						}
-
-						
-					}else{
-						s.scores.add(s.level.getScore());
-						new NeworkingScoreDialog("", s.skin, s.game, s).show(s.stage);
+//						else{
+//							System.out.println("update for"+s.name +" level " + s.numLevel);
+//							s.session.execute("UPDATE level"+s.numLevel+" SET highscore ="+s.level.getScore() + " WHERE username = '"+s.name+"'");
+//						}
 					}
 					
 					s.ballController.setChallengeMode(false);

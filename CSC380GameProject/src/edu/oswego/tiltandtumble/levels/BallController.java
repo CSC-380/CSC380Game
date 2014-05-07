@@ -54,7 +54,7 @@ public class BallController extends ClickListener {
 		}
 		this.name = namee;
 		//System.out.println("ball created" + namee);
-		this.currentLevel = currentLevel +1;
+		this.currentLevel = currentLevel;
 		keys.put(MyKeys.LEFT, false);
 		keys.put(MyKeys.RIGHT, false);
 		keys.put(MyKeys.UP, false);
@@ -282,7 +282,7 @@ public class BallController extends ClickListener {
 						
 					//TODO this is where position needs to be gotten and sent to server
 						if(b.blockNumber == 0) {
-							System.out.println("Writing path");
+							System.out.println("Writing path useing" + name + " level " + currentLevel);
 						b.session.execute("INSERT INTO level"+currentLevel+" (username, highscore, pathx, pathy)"
 							+ "VALUES ('"+name+"', 0,{" + b.blockNumber + " : " + b.ball.getMapX() +"}, "
 										+ "{" + b.blockNumber + " : " + b.ball.getMapY() +"});");
@@ -292,7 +292,7 @@ public class BallController extends ClickListener {
 //							   b.session.execute("UPDATE level" + (currentLevel+1)
 //							   				+ "SET pathy = pathy + {" + b.blockNumber + " : " + b.ball.getMapY() + "} WHERE username = '"+name+"'");
 							b.session.execute("UPDATE level"+currentLevel+" SET pathx = pathx + {" + b.blockNumber + " :" + b.ball.getMapX() +"} WHERE username = '"+name+"'");
-						b.session.execute("UPDATE level"+currentLevel+" SET pathy = pathy + {" + b.blockNumber + " :" + b.ball.getMapY() +"} WHERE username = '"+name+"'");
+							b.session.execute("UPDATE level"+currentLevel+" SET pathy = pathy + {" + b.blockNumber + " :" + b.ball.getMapY() +"} WHERE username = '"+name+"'");
 						}
 						++b.blockNumber;
 						//System.out.println(b.ball.getMapX());
