@@ -26,7 +26,7 @@
  </tileset>
  <layer name="Background" width="60" height="30">
   <data encoding="base64" compression="zlib">
-   eJztls0NwjAMRhOxEhISJ1bg3iuTdAduHDoAQ7EJQiUisvJnx0kc5MMntUpb5fXZbreDMRsyD/sLXLt+87S8we4xloXwrNG8Z8Se4bUU3lRm8/uy6UjjDblO+S/1u0SY/fN1Qr+p3OyemGeJvL7rzzGlf2O1LZGX0r+lz5LCC53meKnvTgovxm8N69qAM8R7qtyzm0N+qLzO70VoPXNGUj3fzR6fuwW7lP/Jf+KtrWfY/8fMeWpeSODtGeVVXk5e2J+UmQTvwXzf1a/ySqvnmXhzrK35tZ778zqnPWp7ZP9y8WFmggS/PX2Pns9YP7Pxjo7y8vOWzqjQ2huWPXMI
+   eJztls0NgzAMRhN1pUqVukXvXDsJO3DrgQE6VDepEEVEVuLEzp9T+fAkUADl8dmG9WLMSuRlT+Da48fbloW6xxAT41m9fe+EPcNrOb4Yo+X7sTjSfH1ZY/mn5jsFnN3zecB8MZ52J5SzRF836+2Y07+h2pboy+nf1GdJ8YWZxny5706KLyXfHNe5gqfP95a552MOuXB9JeSL1XNJpPhuLGbH9a7hLuV/8p98c+sZ9v81co7NCwm+LVFf9S3pC/uTM5PgPZTvu+arvtLqeSTfmGttf63n9r5Hpi1qu2f/lvKjzAQJ+bbMu/d8puYzmm9v1Le8b+qM8q19AWz9c3U=
   </data>
  </layer>
  <layer name="background2" width="60" height="30">
@@ -36,7 +36,7 @@
  </layer>
  <layer name="map" width="60" height="30">
   <data encoding="base64" compression="zlib">
-   eJzlmF1OwzAMx9O97JkTlJeq0lAFJ+EJeJr6tO0ScAN4hRtwBA60nYREijXXchKnX7jlL1mVvLTNb3Zip8fCmGOmOT3669LU2nmfM+3guU8zMH8yvsq+91ZoNZljH96zf8b+j2Jc2vd+GZmVCd4na8+Mvfj78FgNvFys60LOG2JokZ/mNV7Xc6iM8KR+l/IeUKz3gRyfK945vHck7lJeLBgzNS+3Vznl8NK1THlxHHE8sfCa1hhfGtMYb06etsSvhTc2dkzeYtO1MYX332YAL5e/0jylvDebro2hb9NdgxwPVZX53+TUqNg6H0M/Jp/X+V7t9Q3dV3l2Tn327Kkl7SeM973b64fp1iXaW4I08mIN2Z+duJ4M86Z68Lk1ZH8GX85ZIfWOqbVmXq7HWjMvp1B/zK01CS9dz7ViXjCoP3RuEl7uHu28UH/WzktzkfYUS+ENnQVhPtx+xdVVrp8EHhizU8AbU4g39V1Lc3xjSvFCnOtifby4HkHuYq4+vLTGhc4ZUyjVb6TyFse7EfJqU+p7bEN4cbzAv1Te2FzxuPvt9fzs/A/bq/0H3gsy7bx0j5KMA/sF7Gcxhw==
+   eJzlmEtOxDAMhtPVHKNsqkqgCo7ACVgBq1FXM1wCbgBbuAFH4EAzJyGRYo1rOYnTR3DLL1mVPGmbb+zETo+VMcdMc3rw17Wpt/M+ZdrBc78UYP5kfI1975XQWjLHMbwn/4z9H8W4tu/9MjKrE7yP1p4Ye/b34bEaeLlYt5WcN8TQIz/Na7yuS6iO8KR+l/IeUKz3gRwvFe8c3hsSdykvFoxZmpfbq5xyeOlaprw4jjieWHhNa4wvjWmMNydPe+LXwhsbOyfvfTW0OYX3324CL5e/0jwtEd9vM1yDVBxvk/nf5NSo2DqfQz8mn9f5Xu31Dd3XeHZOY/bspSXtJ4z3vdvrhxnWJdpbgjTyYk3Zn524ngzzpnrw0pqyP4Mv56yQesfS2jIv12NtmZdTqD/m1pqEl67nVjEvGNQfOjcJL3ePdl6oP1vnpblIe4q18IbOgjAfbr/i6irXTwIPjLlWwBtTiDf1XUtzfGNK8UKc22p7vLgeQe5irjG8tMaFzhlLKNVvpPIWx7sT8mpT6ntsR3hxvMC/Vt7YXPG4293l/Oz8d7uL/QfeMzLtvHSPkowD+wXsKjKQ
   </data>
  </layer>
  <layer name="objects" width="60" height="30">
@@ -69,8 +69,8 @@
   <object name="StaticWall" x="495" y="355" width="133" height="33"/>
   <object name="StaticWall" x="481" y="-1" width="168" height="159"/>
   <object name="StaticWall" x="623" y="282" width="109" height="5"/>
-  <object name="StaticWall" x="610" y="352" width="123" height="5"/>
-  <object name="StaticWall" x="610" y="359" width="28" height="601"/>
+  <object name="StaticWall" x="619" y="319" width="113" height="5"/>
+  <object name="StaticWall" x="610" y="319" width="28" height="640"/>
   <object name="StaticWall" x="96" y="707" width="92" height="27"/>
   <object name="StaticWall" x="45" y="954" width="141" height="5"/>
   <object name="StaticWall" x="1346" y="-3" width="123" height="320"/>
@@ -91,14 +91,14 @@
   <object name="StaticWall" x="1858" y="354" width="53" height="57"/>
   <object name="StaticWall" x="1889" y="160" width="37" height="669"/>
   <object name="PushBumper" x="97" y="733" width="61" height="7"/>
-  <object name="Hole" x="363" y="752" width="42" height="37"/>
+  <object name="Hole" x="361" y="750" width="48" height="41"/>
   <object name="PushBumper" x="69" y="479" width="23" height="7"/>
   <object name="PushBumper" x="389" y="479" width="23" height="7"/>
   <object name="PushBumper" x="196" y="255" width="87" height="7"/>
   <object name="PushBumper" x="407" y="37" width="8" height="21"/>
   <object name="PushBumper" x="518" y="345" width="82" height="10"/>
   <object name="Hole" x="777" y="555" width="16" height="15"/>
-  <object name="Hole" x="810" y="270" width="42" height="40"/>
+  <object name="Hole" x="807" y="270" width="47" height="44"/>
   <object name="Hole" x="874" y="397" width="13" height="13"/>
   <object name="Hole" x="1002" y="429" width="15" height="15"/>
   <object name="Hole" x="970" y="494" width="45" height="43"/>
@@ -112,7 +112,7 @@
   <object name="PushBumper" x="1253" y="0" width="87" height="6"/>
   <object name="Hole" x="1129" y="109" width="15" height="15"/>
   <object name="Hole" x="1065" y="205" width="15" height="15"/>
-  <object name="Hole" x="1132" y="304" width="41" height="40"/>
+  <object name="Hole" x="1128" y="302" width="48" height="43"/>
   <object name="Hole" x="1161" y="524" width="15" height="15"/>
   <object name="Hole" x="1161" y="685" width="14" height="15"/>
   <object name="Hole" x="969" y="653" width="15" height="15"/>

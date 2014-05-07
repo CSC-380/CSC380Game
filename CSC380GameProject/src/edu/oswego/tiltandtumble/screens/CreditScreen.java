@@ -5,8 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -19,29 +20,24 @@ import edu.oswego.tiltandtumble.TiltAndTumble;
 
 public class CreditScreen extends AbstractScreen {
 
-	Sound button;
+	Music button;
 	public CreditScreen(final TiltAndTumble game){
 		super(game);
 	}
 
 	@Override
 	public void show() {
-		InputMultiplexer multiplexer = new InputMultiplexer(stage,
-				new InputAdapter() {
-					@Override
-					public boolean keyDown(int keycode) {
-						if(keycode == Keys.BACK){
-							game.showPreviousScreen();
-							return true;
-						}
-						return super.keyDown(keycode);
-					}
-				});
+		InputAdapter mProcessor = new InputAdapter();
+        InputMultiplexer multiplexer = new InputMultiplexer(stage, mProcessor);
         Gdx.input.setInputProcessor(multiplexer);
-
-        AssetManager assetManager = game.getAssetManager();
-        String musicFile = "data/soundfx/button-8.ogg";
-		button = assetManager.get(musicFile, Sound.class);
+        
+        AssetManager assetManager = new AssetManager();
+        String musicFile = "data/soundfx/button-8.wav";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Music.class);
+			assetManager.finishLoading();
+		}
+		button = assetManager.get(musicFile, Music.class);
 
 		Window table = new Window("\nCredits", skin);
 		table.setFillParent(true);
@@ -49,9 +45,9 @@ public class CreditScreen extends AbstractScreen {
 		table.setMovable(false);
         stage.addActor(table);
         table.row();
-
+        
         //More contents can be added to credits once the audio sources are ready
-
+        
         table.add("Tilt and Tumble v1.0", "header").expandX();
         table.row();
         table.add("\nDesign and Develop:", "header");
@@ -71,7 +67,7 @@ public class CreditScreen extends AbstractScreen {
         table.row();
         table.row();
         table.row();
-
+        
         Button back = new TextButton("Go Back", skin);
         table.add(back);
         back.addListener(new ChangeListener() {
@@ -81,5 +77,36 @@ public class CreditScreen extends AbstractScreen {
                 game.showPreviousScreen();
             }
         });
+	}
+	public class InputAdapter implements InputProcessor{
+
+	   	 public boolean keyDown(int keycode){
+	   	 if(keycode == Keys.BACK){
+	   	 game.showPreviousScreen();
+	   	 return true;
+	   	 }
+	   	 return false;
+	   	 }
+	   	 public boolean keyUp(int keycode) {
+	   		 return false;
+	   	 }
+	   	 public boolean keyTyped(char character) {
+	   		 return false;
+	   	 }
+	   	 public boolean touchDown(int screenX, int screenY, int pointer,int button) {
+	   		 return false;
+	   	 }
+	   	 public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+	   		 return false;
+		}
+	   	 public boolean touchDragged(int screenX, int screenY, int pointer) {
+	   		 return false;
+	   	 }
+	   	 public boolean mouseMoved(int screenX, int screenY) {
+	   		 return false;
+	   	 }
+	   	 public boolean scrolled(int amount) {
+	   		 return false;
+		}
 	}
 }

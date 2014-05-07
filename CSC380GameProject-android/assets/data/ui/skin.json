@@ -95,10 +95,7 @@
     },
     com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
         default: {
-            background: dark_grey_panel
-        },
-        clear: {
-            background: clear
+            background: blue_border
         }
     },
     com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {

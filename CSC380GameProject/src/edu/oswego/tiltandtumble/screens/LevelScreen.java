@@ -1,11 +1,12 @@
 package edu.oswego.tiltandtumble.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -15,29 +16,24 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import edu.oswego.tiltandtumble.TiltAndTumble;
 
 public class LevelScreen extends AbstractScreen {
-Sound button;
+Music button;
 	public LevelScreen(TiltAndTumble game) {
 		super(game);
 	}
 
 	@Override
 	public void show() {
-        InputMultiplexer multiplexer = new InputMultiplexer(stage,
-				new InputAdapter() {
-			@Override
-			public boolean keyDown(int keycode) {
-				if(keycode == Keys.BACK){
-					game.showPreviousScreen();
-					return true;
-				}
-				return super.keyDown(keycode);
-			}
-		});
+		InputAdapter mProcessor = new InputAdapter();
+        InputMultiplexer multiplexer = new InputMultiplexer(stage, mProcessor);
         Gdx.input.setInputProcessor(multiplexer);
-
-        AssetManager assetManager = game.getAssetManager();
-        String musicFile = "data/soundfx/button-8.ogg";
-		button = assetManager.get(musicFile, Sound.class);
+		
+		AssetManager assetManager = new AssetManager();
+        String musicFile = "data/soundfx/button-8.wav";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Music.class);
+			assetManager.finishLoading();
+		}
+		button = assetManager.get(musicFile, Music.class);
 
 		Window window = new Window("\nLevels", skin);
         window.setFillParent(true);
@@ -45,7 +41,7 @@ Sound button;
         window.setMovable(false);
         stage.addActor(window);
 
-		window.row().padTop(50).colspan(5);
+		window.row().padTop(25).colspan(5);
 		window.add("Arcade Mode", "highlight");
 		window.row().padTop(10).colspan(5).width(100);
 		Button arcade = new TextButton("Play", skin);
@@ -79,7 +75,7 @@ Sound button;
 			});
 		}
 
-		window.row().padBottom(10).padTop(30).bottom().colspan(5).width(100);
+		window.row().padBottom(10).padTop(50).bottom().colspan(5).width(100);
 		Button back = new TextButton("Go Back", skin);
 		window.add(back);
 		back.addListener(new ChangeListener() {
@@ -90,4 +86,35 @@ Sound button;
 			}
 		});
 	}
+	public class InputAdapter implements InputProcessor{
+
+	   	 public boolean keyDown(int keycode){
+	   	 if(keycode == Keys.BACK){
+	   	 game.showPreviousScreen();
+	   	 return true;
+	   	 }
+	   	 return false;
+	   	 }
+	   	 public boolean keyUp(int keycode) {
+	   		 return false;
+	   	 }
+	   	 public boolean keyTyped(char character) {
+	   		 return false;
+	   	 }
+	   	 public boolean touchDown(int screenX, int screenY, int pointer,int button) {
+	   		 return false;
+	   	 }
+	   	 public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+	   		 return false;
+		}
+	   	 public boolean touchDragged(int screenX, int screenY, int pointer) {
+	   		 return false;
+	   	 }
+	   	 public boolean mouseMoved(int screenX, int screenY) {
+	   		 return false;
+	   	 }
+	   	 public boolean scrolled(int amount) {
+	   		 return false;
+		}
+   }
 }
