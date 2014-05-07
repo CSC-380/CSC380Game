@@ -17,6 +17,8 @@ public class BallController extends ClickListener {
 
 	private static final float KEY_MAX = 10;
 	private static final float KEY_INCREMENT = 0.25f;
+	private static String name;
+	private static int currentLevel;
 
 	private enum MyKeys {
 		LEFT, RIGHT, UP, DOWN
@@ -35,19 +37,31 @@ public class BallController extends ClickListener {
 	private Session session;
 	private int blockNumber = 0;
 
-	public BallController(boolean useAccelerometer, boolean challenge, Session session) {
+	public BallController(boolean useAccelerometer) {
+		this.useAccelerometer = useAccelerometer;		
+		keys.put(MyKeys.LEFT, false);
+		keys.put(MyKeys.RIGHT, false);
+		keys.put(MyKeys.UP, false);
+		keys.put(MyKeys.DOWN, false);
+		currentState = State.ACTIVE;
+	}
+	
+	public BallController(boolean useAccelerometer, boolean challenge, Session session,String namee, int currentLevel) {
 		this.useAccelerometer = useAccelerometer;
-		challengeMode = false;
+		challengeMode = challenge;
 		if(challengeMode){
 			System.out.println("CHALLENGE MODE");
 		}
+		this.name = namee;
+		System.out.println("ball created" + namee);
+		this.currentLevel = currentLevel +1;
 		keys.put(MyKeys.LEFT, false);
 		keys.put(MyKeys.RIGHT, false);
 		keys.put(MyKeys.UP, false);
 		keys.put(MyKeys.DOWN, false);
 		this.session = session;
 		currentState = State.ACTIVE;
-	}
+	}	
 
 	public void setBall(Ball ball) {
 		this.ball = ball;
@@ -267,14 +281,19 @@ public class BallController extends ClickListener {
 					if(b.challengeMode){
 					//TODO this is where position needs to be gotten and sent to server
 						if(b.blockNumber == 0) {
-							b.session.execute("INSERT INTO users (username, highscore, pathx, pathy) "
-								+ "VALUES ('schrecen', 0, {" + b.blockNumber + " : " + b.ball.getMapX() +"}, "
+//							b.session.execute("INSERT INTO level"+(currentLevel+1)+" (username, highscore, pathx, pathy) "
+//								+ "VALUES ('"+name+"', 0, {" + b.blockNumber + " : " + b.ball.getMapX() +"}, "
+//										+ "{" + b.blockNumber + " : " + b.ball.getMapY() +"});");
+						b.session.execute("INSERT INTO level"+currentLevel+" (username, highscore, pathx, pathy)"
+							+ "VALUES ('"+name+"', 0,{" + b.blockNumber + " : " + b.ball.getMapX() +"}, "
 										+ "{" + b.blockNumber + " : " + b.ball.getMapY() +"});");
 						} else {
-							b.session.execute("UPDATE users "
-							   		+ "SET pathx = pathx + {" + b.blockNumber + " : " + b.ball.getMapX() + "} WHERE username = 'schrecen'");
-							   b.session.execute("UPDATE users "
-							   				+ "SET pathy = pathy + {" + b.blockNumber + " : " + b.ball.getMapY() + "} WHERE username = 'schrecen'");
+//							b.session.execute("UPDATE level" + (currentLevel+1)
+//							   		+ "SET pathx = pathx + {" + b.blockNumber + " : " + b.ball.getMapX() + "} WHERE username = '"+name+"'");
+//							   b.session.execute("UPDATE level" + (currentLevel+1)
+//							   				+ "SET pathy = pathy + {" + b.blockNumber + " : " + b.ball.getMapY() + "} WHERE username = '"+name+"'");
+							b.session.execute("UPDATE level"+currentLevel+" SET pathx = pathx + {" + b.blockNumber + " :" + b.ball.getMapX() +"} WHERE username = '"+name+"'");
+						b.session.execute("UPDATE level"+currentLevel+" SET pathy = pathy + {" + b.blockNumber + " :" + b.ball.getMapY() +"} WHERE username = '"+name+"'");
 						}
 						++b.blockNumber;
 						//System.out.println(b.ball.getMapX());

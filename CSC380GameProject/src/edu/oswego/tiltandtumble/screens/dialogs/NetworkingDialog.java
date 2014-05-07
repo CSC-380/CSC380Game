@@ -51,7 +51,7 @@ public class NetworkingDialog extends Dialog {
 			String text = initials.getText();
 			//do whatever here with the name
 			
-			game.showNetworkingLevelScreen();
+			game.showNetworkingLevelScreen(text);
 		
 	}
 

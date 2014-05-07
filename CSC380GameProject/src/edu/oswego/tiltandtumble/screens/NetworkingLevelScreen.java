@@ -68,7 +68,7 @@ public class NetworkingLevelScreen extends AbstractScreen {
 					button.play();
 					game.showGameScreen(
 							new Integer(((TextButton)actor).getText().toString()) - 1,
-							GameScreen.Mode.PRACTICE);
+							GameScreen.Mode.NETWORKING);
 				}
 			});
 		}

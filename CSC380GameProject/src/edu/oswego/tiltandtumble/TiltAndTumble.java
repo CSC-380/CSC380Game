@@ -40,6 +40,7 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 	Stack<Screen> screenStack = new Stack<Screen>();
 	private boolean challengeMode = false;
 	private boolean challengeAcceptMode = false;
+	private String name;
 	
 	private final List<String> levels = new ArrayList<String>();
 	{
@@ -177,13 +178,19 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		setScreen(creditScreen);
 	}
 	
-	public void showNetworkingLevelScreen(){
+	public void showNetworkingLevelScreen(String name){
 		if (networkingLevelScreen == null) {
 			networkingLevelScreen = new NetworkingLevelScreen(this);
 		}
+		this.name = name;
+		
 		screenStack.push(getScreen());
 		setScreen(networkingLevelScreen);
 		
+	}
+	
+	public String getName(){
+		return name;
 	}
 
 	public void showHelpScreen() {
@@ -310,7 +317,7 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		//session.execute("CREATE KEYSPACE challengeMap "
 		//		+ "WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };");
 
-		session.execute("USE challengeMap;");
+		session.execute("USE challenges;");
 		//session.execute("CREATE TABLE users (" + "username text PRIMARY KEY, "
 		//		+ "highscore int, " + "pathx map<int, float>, "
 		//		+ "pathy map<int, float>);");

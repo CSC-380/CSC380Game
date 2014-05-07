@@ -8,6 +8,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.datastax.driver.core.Session;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
 import edu.oswego.tiltandtumble.data.Score;
@@ -49,19 +50,39 @@ public class GameScreen extends AbstractScreen {
 	private Dialog pauseDialog;
 	
 	private ShadowBallController shadowController;
+	private String name;
+	Session session;
 
 	public GameScreen(TiltAndTumble game, int currentLevel, Mode mode) {
-		super(game);
-		ballController = new BallController(!game.getSettings().isUseDpad(), false, game.getSession());
+		super(game);		
 
 		worldPopulator = new WorldPopulator(game.getAssetManager());
-		if(game.isChallengeAcceptMode()){
-		shadowController = new ShadowBallController(game.getSession());
+		
+		if(mode == Mode.NETWORKING){
+			if(game.isChallengeAcceptMode()){
+				shadowController = new ShadowBallController(game.getSession());
+				ballController = new BallController(!game.getSettings().isUseDpad());
+				
+			}
+			else{
+				name = game.getName();
+				System.out.println("game screen passing variable" + game.getName());
+				ballController = new BallController(!game.getSettings().isUseDpad(), true, game.getSession(), name,currentLevel);
+			}
+		}else{
+			ballController = new BallController(!game.getSettings().isUseDpad());
 		}
+		
+		
 		hud = new Hud(this, skin, game.getAssetManager());
 		loadLevel(currentLevel);
 		hud.setScore(level.getScore());
 		currentMode = mode;
+	}
+	
+	
+	public String getName(){
+		return name;
 	}
 
 	public void loadLevel(int num) {
