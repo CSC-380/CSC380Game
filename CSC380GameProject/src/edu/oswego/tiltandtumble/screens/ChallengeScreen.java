@@ -43,6 +43,8 @@ public class ChallengeScreen extends AbstractScreen  {
 				if(keycode == Keys.BACK){
 					game.showPreviousScreen();
 					return true;
+					
+					
 				}
 				return super.keyDown(keycode);
 			}
