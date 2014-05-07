@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="15" height="15" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="music" value="space_0.mp3"/>
+ </properties>
+ <tileset firstgid="1" name="sci-fi-platformer-tiles-0" tilewidth="32" tileheight="32">
+  <image source="tiles/sci-fi-platformer-tiles-0.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="257" name="sci-fi-platformer-tiles-1" tilewidth="32" tileheight="32">
+  <image source="tiles/sci-fi-platformer-tiles-1.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="513" name="sci-fi-platformer-tiles-9" tilewidth="32" tileheight="32">
+  <image source="tiles/sci-fi-platformer-tiles-9.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="769" name="sci-fi-platformer-tiles-8" tilewidth="32" tileheight="32">
+  <image source="tiles/sci-fi-platformer-tiles-8.png" width="512" height="512"/>
+ </tileset>
+ <layer name="background" width="15" height="15">
+  <data encoding="base64" compression="zlib">
+   eJwzYWBgMBnFo3gUDxgGALoELbU=
+  </data>
+ </layer>
+ <layer name="map" width="15" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxTZGJgUKQAazIzMKgCsRYQEwtgekH6LKD6SdVrCdVnxYwqjg2j68VmJrH20lIvLjWE/EWKOmIBLfQS4zZSw0qTEZgOgFiLkXQ3g/RZQPWTqtcSqs+KEX/YE4MBfooOxQ==
+  </data>
+ </layer>
+ <objectgroup name="collision" width="15" height="15">
+  <object name="Ball" x="67" y="67" width="24" height="24">
+   <ellipse/>
+  </object>
+  <object name="FinishLine" x="375" y="378" width="48" height="48">
+   <ellipse/>
+  </object>
+  <object name="StaticWall" x="448" y="0" width="32" height="480"/>
+  <object name="StaticWall" x="0" y="0" width="448" height="32"/>
+  <object name="StaticWall" x="0" y="32" width="32" height="448"/>
+  <object name="StaticWall" x="32" y="448" width="416" height="32"/>
+  <object name="StaticWall" x="160" y="320" width="32" height="64"/>
+  <object name="StaticWall" x="288" y="320" width="32" height="64"/>
+  <object name="StaticWall" x="288" y="224" width="160" height="32"/>
+  <object name="StaticWall" x="32" y="224" width="160" height="32"/>
+  <object name="StaticWall" x="192" y="96" width="192" height="32"/>
+  <object name="StaticWall" x="160" y="96" width="32" height="128"/>
+  <object name="StaticWall" x="288" y="192" width="32" height="32"/>
+  <object name="StaticWall" x="192" y="320" width="96" height="32"/>
+ </objectgroup>
+</map>

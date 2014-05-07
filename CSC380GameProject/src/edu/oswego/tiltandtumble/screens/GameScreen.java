@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
@@ -48,11 +48,10 @@ public class GameScreen extends AbstractScreen {
 
 	public GameScreen(TiltAndTumble game, int currentLevel, Mode mode) {
 		super(game);
-		//game.endMusic();
 		ballController = new BallController(!game.getSettings().isUseDpad());
 		worldPopulator = new WorldPopulator(game.getAssetManager());
 
-		hud = new Hud(this, skin);
+		hud = new Hud(this, skin, game.getAssetManager());
 		loadLevel(currentLevel);
 		hud.setScore(level.getScore());
 		currentMode = mode;
@@ -129,11 +128,19 @@ public class GameScreen extends AbstractScreen {
 
 	@Override
 	public void show() {
-		InputAdapter mProcessor = new InputAdapter();
 		Gdx.input.setInputProcessor(inputMux);
 		inputMux.addProcessor(stage);
-		inputMux.addProcessor(mProcessor);
-		
+		inputMux.addProcessor(new InputAdapter() {
+			@Override
+			public boolean keyDown(int keycode) {
+				if(keycode == Keys.BACK){
+					pause();
+					return true;
+				}
+				return super.keyDown(keycode);
+			}
+		});
+
 		if (game.getSettings().isUseDpad()){
 			DPad dpad = new DPad(skin, ballController);
 			dpad.setPosition(0, 0);
@@ -271,36 +278,5 @@ public class GameScreen extends AbstractScreen {
 		public void resume(GameScreen s) {}
 		public void show(GameScreen s) {}
 		public void render(GameScreen s, float delta) {}
-	}
-	public class InputAdapter implements InputProcessor{
-
-	   	 public boolean keyDown(int keycode){
-	   	 if(keycode == Keys.BACK){
-	   		pause();
-	   	 return true;
-	   	 }
-	   	 return false;
-	   	 }
-	   	 public boolean keyUp(int keycode) {
-	   		 return false;
-	   	 }
-	   	 public boolean keyTyped(char character) {
-	   		 return false;
-	   	 }
-	   	 public boolean touchDown(int screenX, int screenY, int pointer,int button) {
-	   		 return false;
-	   	 }
-	   	 public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-	   		 return false;
-		}
-	   	 public boolean touchDragged(int screenX, int screenY, int pointer) {
-	   		 return false;
-	   	 }
-	   	 public boolean mouseMoved(int screenX, int screenY) {
-	   		 return false;
-	   	 }
-	   	 public boolean scrolled(int amount) {
-	   		 return false;
-		}
 	}
 }

@@ -2,11 +2,9 @@ package edu.oswego.tiltandtumble.screens;
 
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -21,23 +19,31 @@ import edu.oswego.tiltandtumble.TiltAndTumble;
 public class MainScreen extends AbstractScreen {
 
 	Sound button;
+	AssetManager assetManager;
+	
+
     public MainScreen(final TiltAndTumble game) {
         super(game);
+
     }
 
     @Override
     public void show() {
-    	InputAdapter mProcessor = new InputAdapter();
-        InputMultiplexer multiplexer = new InputMultiplexer(stage, mProcessor);
+        InputMultiplexer multiplexer = new InputMultiplexer(stage,
+				new com.badlogic.gdx.InputAdapter() {
+			@Override
+			public boolean keyDown(int keycode) {
+				if(keycode == Keys.BACK){
+					Gdx.app.exit();
+					return true;
+				}
+				return super.keyDown(keycode);
+			}
+		});
         Gdx.input.setInputProcessor(multiplexer);
         Gdx.input.setCatchBackKey(true);
-        AssetManager assetManager = new AssetManager();
-        String musicFile = "data/soundfx/button-8.wav";
-		if (!assetManager.isLoaded(musicFile)) {
-			assetManager.load(musicFile, Sound.class);
-			assetManager.finishLoading();
-		}
-		button = assetManager.get(musicFile, Sound.class);
+        assetManager = game.getAssetManager();
+		button = assetManager.get("data/soundfx/button-8.ogg", Sound.class);
 
         Window window = new Window("\nTilt and Tumble", skin);
         window.setFillParent(true);
@@ -99,36 +105,7 @@ public class MainScreen extends AbstractScreen {
                 game.showCreditScreen();
             }
         });
+    
     }
-    public class InputAdapter implements InputProcessor{
-
-	   	 public boolean keyDown(int keycode){
-	   	 if(keycode == Keys.BACK){
-	   	 Gdx.app.exit();
-	   	 return true;
-	   	 }
-	   	 return false;
-	   	 }
-	   	 public boolean keyUp(int keycode) {
-	   		 return false;
-	   	 }
-	   	 public boolean keyTyped(char character) {
-	   		 return false;
-	   	 }
-	   	 public boolean touchDown(int screenX, int screenY, int pointer,int button) {
-	   		 return false;
-	   	 }
-	   	 public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-	   		 return false;
-		}
-	   	 public boolean touchDragged(int screenX, int screenY, int pointer) {
-	   		 return false;
-	   	 }
-	   	 public boolean mouseMoved(int screenX, int screenY) {
-	   		 return false;
-	   	 }
-	   	 public boolean scrolled(int amount) {
-	   		 return false;
-		}
-    }
+    
 }

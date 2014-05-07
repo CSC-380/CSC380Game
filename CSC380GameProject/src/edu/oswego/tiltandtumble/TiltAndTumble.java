@@ -9,6 +9,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SkinLoader;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -36,11 +37,17 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 
 	private final List<String> levels = new ArrayList<String>();
 	{
-		levels.add("level4.tmx");
-		levels.add("level5.tmx");
-		levels.add("level3.tmx");
-		levels.add("level2.tmx");
-		levels.add("level1.tmx");
+		levels.add("Tutorial5.tmx");//1
+		levels.add("Tutorial4.tmx");//2
+		levels.add("Tutorial6.tmx");//3
+		levels.add("Tutorial1.tmx");//4
+		levels.add("Tutorial3.tmx");//5
+		levels.add("Tutorial2.tmx");//6
+		levels.add("Tutorial7.tmx");//7
+		levels.add("level1.tmx");//8
+		levels.add("level3.tmx");//9
+		levels.add("level2.tmx");//10
+		
 	}
 
 	private MainScreen mainScreen;
@@ -102,7 +109,39 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 			assetManager.finishLoading();
 		}
 		music = assetManager.get(musicFile, Music.class);
+
 		this.playMusic();
+
+		String buttonFile = "data/soundfx/button-8.ogg";
+		if (!assetManager.isLoaded(buttonFile)) {
+			assetManager.load(buttonFile, Sound.class);
+			assetManager.finishLoading();
+		}
+		musicFile = "data/soundfx/number-zero.ogg";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Sound.class);
+			assetManager.finishLoading();
+		}
+
+        musicFile = "data/soundfx/number-one.ogg";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Sound.class);
+			assetManager.finishLoading();
+		}
+
+		musicFile = "data/soundfx/number-two.ogg";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Sound.class);
+			assetManager.finishLoading();
+		}
+
+		musicFile = "data/soundfx/number-three.ogg";
+		if (!assetManager.isLoaded(musicFile)) {
+			assetManager.load(musicFile, Sound.class);
+			assetManager.finishLoading();
+		}
+
+
 		showMainScreen();
 	}
 

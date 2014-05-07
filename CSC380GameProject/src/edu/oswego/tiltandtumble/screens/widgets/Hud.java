@@ -18,15 +18,10 @@ public class Hud extends Window {
 	private final Label timerDisplay;
 	private Sound buttonn;
 
-	public Hud(final GameScreen screen, final Skin skin) {
+	public Hud(final GameScreen screen, final Skin skin, AssetManager assetManager) {
 		super("", skin, "hud");
-		
-		AssetManager assetManager = new AssetManager();
-        String musicFile = "data/soundfx/button-8.wav";
-		if (!assetManager.isLoaded(musicFile)) {
-			assetManager.load(musicFile, Sound.class);
-			assetManager.finishLoading();
-		}
+
+        String musicFile = "data/soundfx/button-8.ogg";
 		buttonn = assetManager.get(musicFile, Sound.class);
 
 		row().uniform().expandX();
