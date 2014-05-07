@@ -53,7 +53,7 @@ public class BallController extends ClickListener {
 			System.out.println("CHALLENGE MODE");
 		}
 		this.name = namee;
-		System.out.println("ball created" + namee);
+		//System.out.println("ball created" + namee);
 		this.currentLevel = currentLevel +1;
 		keys.put(MyKeys.LEFT, false);
 		keys.put(MyKeys.RIGHT, false);

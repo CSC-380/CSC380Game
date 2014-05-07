@@ -60,13 +60,13 @@ public class GameScreen extends AbstractScreen {
 		
 		if(mode == Mode.NETWORKING){
 			if(game.isChallengeAcceptMode()){
-				shadowController = new ShadowBallController(game.getSession());
+				shadowController = new ShadowBallController(game.getSession(),name,currentLevel);
 				ballController = new BallController(!game.getSettings().isUseDpad());
 				
 			}
 			else{
 				name = game.getName();
-				System.out.println("game screen passing variable" + game.getName());
+				//System.out.println("game screen passing variable" + game.getName());
 				ballController = new BallController(!game.getSettings().isUseDpad(), true, game.getSession(), name,currentLevel);
 			}
 		}else{

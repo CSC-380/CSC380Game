@@ -17,18 +17,19 @@ public class ShadowBallController {
 	private Session session;
 	private Map<Integer, Float> pathX;
 	private Map<Integer, Float> pathY;
+	private int level;
 	
 	private int count = 0;
 	
-	public ShadowBallController(Session session){
+	public ShadowBallController(Session session,String name,int level){
 		//get info from server here store in something so update can use it		
 		this.session = session;
-		
-		ResultSet resultsx = session.execute("SELECT pathx FROM users WHERE username = 'schrecen';");
+		this.level = level+1;
+		ResultSet resultsx = session.execute("SELECT pathx FROM level"+level+" WHERE username = '"+name+"';");
 		Row rowx = resultsx.one();
  	   	pathX = rowx.getMap("pathx", Integer.class, Float.class);
  	   	
- 	   	ResultSet resultsy = session.execute("SELECT pathy FROM users WHERE username = 'schrecen';");
+ 	   	ResultSet resultsy = session.execute("SELECT pathy FROM level"+level+" WHERE username = '"+name+"';");
 		Row rowy = resultsy.one();
 	   	pathY = rowy.getMap("pathy", Integer.class, Float.class);
  	   	currentState = State.ACTIVE;

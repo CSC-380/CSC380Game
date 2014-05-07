@@ -62,7 +62,8 @@ public class ChallengeScreen extends AbstractScreen  {
 	}
 	
 	private void showTopChallenges(final int levelNum){
-		ResultSet result = session.execute("SELECT username,highscore FROM users");
+		System.out.println(levelNum);
+		ResultSet result = session.execute("SELECT username,highscore FROM level"+levelNum);
 		Iterator<Row> row  = result.iterator();
      
 		table = new Window("\nLevel " + levelNum, skin);
@@ -93,6 +94,7 @@ public class ChallengeScreen extends AbstractScreen  {
 			Row r = row.next();
 			table.add("" +r.getString("username"));
 			table.add("" +r.getInt("highscore"));
+			table.add(accept);
 			count++;
 		}
 		
