@@ -122,7 +122,8 @@ public class MainScreen extends AbstractScreen {
     
     public Stage getStage(){
     	return this.stage;
-    }
+    
+   }
     
     public void showMulti(){
     	selectDialog = new SelectDialog("MultiPlayer", skin, game, this);
