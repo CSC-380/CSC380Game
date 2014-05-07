@@ -33,7 +33,7 @@ public class PauseDialog extends Dialog {
         setMovable(false);
 
         AssetManager assetManager = new AssetManager();
-        String musicFile = "data/soundfx/button-8.wav";
+        String musicFile = "data/soundfx/button-8.ogg";
 		if (!assetManager.isLoaded(musicFile)) {
 			assetManager.load(musicFile, Sound.class);
 			assetManager.finishLoading();
@@ -49,6 +49,7 @@ public class PauseDialog extends Dialog {
         getButtonTable().row().uniform().fill();
 		button("Continue", Buttons.CONTINUE);
 		this.addListener(new InputListener(){
+			@Override
 			public boolean keyDown(InputEvent event, int keycode){
 				 if(keycode == Keys.BACK){
 				   	 game.showPreviousScreen();
@@ -57,12 +58,11 @@ public class PauseDialog extends Dialog {
 				return false;
 			}
 		});
-		
 	}
 
 	@Override
 	protected void result(Object object) {
-		
+
 		super.result(object);
 		Gdx.app.log("dialog result", "" + object);
 		if (object != null && object instanceof Buttons) {
@@ -85,6 +85,6 @@ public class PauseDialog extends Dialog {
 		} else {
 			screen.resume();
 		}
-		
+
 	}
 }
