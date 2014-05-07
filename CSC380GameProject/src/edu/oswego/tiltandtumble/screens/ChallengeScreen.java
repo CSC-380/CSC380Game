@@ -4,18 +4,16 @@ package edu.oswego.tiltandtumble.screens;
 import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
@@ -64,18 +62,7 @@ public class ChallengeScreen extends AbstractScreen  {
 	}
 	
 	private void showTopChallenges(final int levelNum){
-//		//used to clean table
-//		String[] s = new String[]{"kellyy","dav","da","dam","ndiofs"};
-////		damddd
-////		schrecen
-////		dav
-////		dd
-////		123456
-////		da
-//		for(String ss: s){
-//			session.execute("DELETE FROM level2 where username ='"+ss+"'");
-//			System.out.println("after delete");
-//		}
+
 		System.out.println("top challenges for level" + (levelNum+1));
 		ResultSet result = session.execute("SELECT username,highscore FROM level"+(levelNum+1));
 		row  = result.iterator();
@@ -136,22 +123,25 @@ public class ChallengeScreen extends AbstractScreen  {
 	}
 	
 	private void showLevelTable(){
-		topTable = new Window("\nChallenge", skin);
+		topTable = new Window("\nChallenges", skin);
         topTable.setFillParent(true);
         topTable.setModal(true);
         topTable.setMovable(false);
         stage.addActor(topTable);
         
-        topTable.row().center().uniform().padTop(50).padRight(15);   
+        topTable.row().padTop(25).colspan(5);   
         
-        table.add("Select a Level", "header").center();
-		table.row();
+        topTable.add("Select a Level", "highlight");
+        topTable.row().pad(10, 10, 0, 10).width(75);
 		//TODO figure out how to obtain friends............
         //story of her life!!!
 		//Don't feel bad for her though...............
         
         int count = game.getLevels().size();
         for ( int i = 0; i < count; i++) {
+        	if ((i % 5) == 0) {
+				topTable.row().pad(10).width(75);
+			}
         	final int val = i;
 			Button l = new TextButton(Integer.toString(i + 1), skin);
 			topTable.add(l);
@@ -167,8 +157,8 @@ public class ChallengeScreen extends AbstractScreen  {
 		}
 		
 		Button back = new TextButton("Go Back", skin);
-		topTable.row().spaceTop(35);
-		topTable.add(back).bottom().center();
+		topTable.row().padBottom(10).padTop(55).bottom().colspan(5).width(100);
+		topTable.add(back);
 
         back.addListener(new ChangeListener() {
             @Override

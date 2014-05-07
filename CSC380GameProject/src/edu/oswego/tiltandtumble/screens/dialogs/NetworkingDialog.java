@@ -33,7 +33,7 @@ public class NetworkingDialog extends Dialog {
 		table.row();
 		table.row().padTop(10);
 		table.row().center();
-		table.add("Initials:").center();
+		table.add("Initials:", "highlight").center();
 		table.row().padBottom(5);
 		initials = new TextField("", skin);
 		initials.setMaxLength(6);

@@ -9,6 +9,8 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -47,7 +49,7 @@ public class NetworkingLevelScreen extends AbstractScreen {
 		}
 		button = assetManager.get(musicFile, Sound.class);
 
-		Window window = new Window("\nLevels", skin);
+		Window window = new Window("\nCreate A Challenge", skin);
         window.setFillParent(true);
         window.setModal(true);
         window.setMovable(false);
@@ -55,10 +57,11 @@ public class NetworkingLevelScreen extends AbstractScreen {
         
         
         
-        window.row().padTop(25).colspan(5);
-		window.row().pad(10, 10, 0, 10).width(75);
-		window.add("Select a Level", "header").right();
-		
+        window.row().padTop(70).colspan(5);
+		//window.row().pad(10, 10, 0, 10).width(75).center();
+		window.add("Select a Level", "highlight");
+		//window.row().pad(10, 10, 0, 10).width(75).center();
+		window.row();
 		
 		int count = game.getLevels().size();
 		for (int i = 0; i < count; i++) {
@@ -79,7 +82,7 @@ public class NetworkingLevelScreen extends AbstractScreen {
 		}
 		
 
-		window.row().padBottom(10).padTop(50).bottom().colspan(5).width(100);
+		window.row().padTop(50).bottom().colspan(5).width(100);
 		
 		Button back = new TextButton("Go Back", skin);
 		window.add(back).center();
