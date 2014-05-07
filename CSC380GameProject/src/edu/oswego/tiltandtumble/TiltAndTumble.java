@@ -47,13 +47,13 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		levels.add("Tutorial5.tmx");//1
 		levels.add("Tutorial4.tmx");//2
 		levels.add("Tutorial6.tmx");//3
-		levels.add("Tutorial1.tmx");//4
-		levels.add("Tutorial3.tmx");//5
-		levels.add("Tutorial2.tmx");//6
-		levels.add("Tutorial7.tmx");//7
-		levels.add("level1.tmx");//8
-		levels.add("level3.tmx");//9
-		levels.add("level2.tmx");//10
+		levels.add("Tutorial1.tmx");//4 kellys
+		levels.add("Tutorial3.tmx");//5 kellys
+		levels.add("Tutorial2.tmx");//6 kellys
+		levels.add("Tutorial7.tmx");//7 kellys
+		levels.add("level1.tmx");//8 impossible one
+	//	levels.add("level3.tmx");//9
+	//	levels.add("level2.tmx");//10
 		
 	}
 
@@ -195,6 +195,10 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 	
 	public String getName(){
 		return name;
+	}
+	
+	public void setName(String name){
+		this.name = name;
 	}
 
 	public void showHelpScreen() {

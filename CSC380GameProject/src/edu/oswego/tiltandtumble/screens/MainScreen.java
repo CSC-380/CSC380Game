@@ -123,7 +123,6 @@ public class MainScreen extends AbstractScreen {
     
     }
     
-<<<<<<< HEAD
     public Stage getStage(){
     	return this.stage;
     
@@ -133,6 +132,5 @@ public class MainScreen extends AbstractScreen {
     	selectDialog = new SelectDialog("MultiPlayer", skin, game, this);
     	selectDialog.show(stage);
     }
-=======
->>>>>>> master
+
 }

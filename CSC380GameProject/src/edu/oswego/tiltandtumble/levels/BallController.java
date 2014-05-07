@@ -279,11 +279,10 @@ public class BallController extends ClickListener {
 				if (b.ball != null) {
 					b.ball.applyLinearImpulse(forceX, forceY);
 					if(b.challengeMode){
+						
 					//TODO this is where position needs to be gotten and sent to server
 						if(b.blockNumber == 0) {
-//							b.session.execute("INSERT INTO level"+(currentLevel+1)+" (username, highscore, pathx, pathy) "
-//								+ "VALUES ('"+name+"', 0, {" + b.blockNumber + " : " + b.ball.getMapX() +"}, "
-//										+ "{" + b.blockNumber + " : " + b.ball.getMapY() +"});");
+							System.out.println("Writing path");
 						b.session.execute("INSERT INTO level"+currentLevel+" (username, highscore, pathx, pathy)"
 							+ "VALUES ('"+name+"', 0,{" + b.blockNumber + " : " + b.ball.getMapX() +"}, "
 										+ "{" + b.blockNumber + " : " + b.ball.getMapY() +"});");

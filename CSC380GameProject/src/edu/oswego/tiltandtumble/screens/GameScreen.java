@@ -1,5 +1,6 @@
 package edu.oswego.tiltandtumble.screens;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
@@ -51,26 +53,29 @@ public class GameScreen extends AbstractScreen {
 	
 	private ShadowBallController shadowController;
 	private String name;
-	private String acceptName;
 	Session session;
+	private int numLevel;
 
 	public GameScreen(TiltAndTumble game, int currentLevel, Mode mode) {
-		super(game);		
+		super(game);
+		this.numLevel = currentLevel +1;
 
 		worldPopulator = new WorldPopulator(game.getAssetManager());
 		
 		if(mode == Mode.NETWORKING){
+			session = game.getSession();
 			if(game.isChallengeAcceptMode()){
-				String name1 = game.getName();
-				System.out.println("ghost ball name " +name1);
-				shadowController = new ShadowBallController(game.getSession(),name1,currentLevel);
+				//shadow only
+				name = game.getName();
+				System.out.println("ghost ball name " +name);
+				shadowController = new ShadowBallController(game.getSession(),name,currentLevel+1);
 				ballController = new BallController(!game.getSettings().isUseDpad());
 				
 			}
 			else{
-				String name1 = game.getName();
-				//System.out.println("game screen passing variable" + game.getName());
-				ballController = new BallController(!game.getSettings().isUseDpad(), true, game.getSession(), name1,currentLevel);
+				//writing path only
+				name = game.getName();
+				ballController = new BallController(!game.getSettings().isUseDpad(), true, game.getSession(), name,currentLevel+1);
 			}
 		}else{
 			ballController = new BallController(!game.getSettings().isUseDpad());
@@ -83,10 +88,6 @@ public class GameScreen extends AbstractScreen {
 		currentMode = mode;
 	}
 	
-	
-	public String getName(){
-		return name;
-	}
 
 	public void loadLevel(int num) {
 		changeState(State.WAITING);
@@ -146,14 +147,7 @@ public class GameScreen extends AbstractScreen {
 	public Level getCurrentLevel() {
 		return level;
 	}
-	
-	public void setAcceptName(String a){
-		acceptName = a;
-	}
-	
-	public String getAcceptName(){
-		return acceptName;
-	}
+
 
 	public List<Score> getScores() {
 		return scores;
@@ -292,6 +286,23 @@ public class GameScreen extends AbstractScreen {
 					if(s.getMode() != GameScreen.Mode.NETWORKING){
 						s.scores.add(s.level.getScore());
 						new ScoreDialog("Score", s.skin, s.game, s).show(s.stage);
+						
+						if(!s.game.isChallengeAcceptMode()){
+							//write score when writting path only
+							//see if higher
+							//remove lowest high score
+							
+							com.datastax.driver.core.ResultSet result = s.session.execute("Select * FROM level1");
+							Row r = result.one();
+							if(s.level.getScore().getPoints() > r.getInt("highscore")){
+								System.out.print("kelly was here");
+								s.session.execute("Delete From level1 WHERE (Select Min(highscore) FROM level1)s;");
+							}
+							
+							s.session.execute("UPDATE level"+s.numLevel+" SET highscore =  WHERE username = '"+s.name+"'");
+						}
+
+						
 					}else{
 						s.scores.add(s.level.getScore());
 						new NeworkingScoreDialog("", s.skin, s.game, s).show(s.stage);

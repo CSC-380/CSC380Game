@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
@@ -29,6 +30,7 @@ public class ChallengeScreen extends AbstractScreen  {
 	private Window table;
 	private Session session;
 	private Sound button;
+	private Iterator<Row> row;
 
 	public ChallengeScreen(final TiltAndTumble game) {
 		super(game);
@@ -62,10 +64,11 @@ public class ChallengeScreen extends AbstractScreen  {
 	}
 	
 	private void showTopChallenges(final int levelNum){
-		ResultSet result = session.execute("SELECT username,highscore FROM level"+levelNum);
-		Iterator<Row> row  = result.iterator();
+		
+		ResultSet result = session.execute("SELECT username,highscore FROM level"+(levelNum+1));
+		row  = result.iterator();
      
-		table = new Window("\nLevel " + levelNum, skin);
+		table = new Window("\nLevel " + (levelNum +1), skin);
 		table.setFillParent(true);
 		table.setModal(true);
 		table.setMovable(false);
@@ -80,18 +83,21 @@ public class ChallengeScreen extends AbstractScreen  {
 		int count = 1;
 		while(row.hasNext())
 		{
+			final Row r = row.next();
 			Button accept = new TextButton("A", skin);
+			
 	  		   accept.addListener(new ChangeListener(){
 						@Override
 			            public void changed(ChangeEvent event, Actor actor) {
 							topTable.setVisible(false);
+							game.setName(r.getString("username"));
 							game.showGameScreen(levelNum, GameScreen.Mode.NETWORKING);
-							//game.setAcceptName();
+							
 						}	
 	  		   });
 			table.row().center();
 	  		table.add("" + count);
-			Row r = row.next();
+			//Row r = row.next();
 			table.add("" +r.getString("username"));
 			table.add("" +r.getInt("highscore"));
 			table.add(accept);
@@ -127,62 +133,81 @@ public class ChallengeScreen extends AbstractScreen  {
 		//TODO figure out how to obtain friends............
         //story of her life!!!
 		//Don't feel bad for her though...............
+        int count = game.getLevels().size();
+        for ( int i = 0; i < count; i++) {
+			//if ((i % 5) == 0) {
+			//	window.row().pad(10).width(75);
+			//}
+        	final int val = i;
+			Button l = new TextButton(Integer.toString(i + 1), skin);
+			topTable.add(l);
+			l.addListener(new ChangeListener() {
+				@Override
+				public void changed(ChangeEvent event, Actor actor) {
+					button.play();
+					topTable.setVisible(false);
+					showTopChallenges(val);
+					
+				}
+			});
+		}
         
-		Button lvl1 = new TextButton("1", skin);
-		topTable.add(lvl1);
-		lvl1.addListener(new ChangeListener(){
-			@Override
-            public void changed(ChangeEvent event, Actor actor) {
-				button.play();
-				topTable.setVisible(false);
-				showTopChallenges(1);
-
-			}
-		});
-		Button lvl2 = new TextButton("2", skin);
-		topTable.add(lvl2);
-		lvl2.addListener(new ChangeListener(){
-			@Override
-            public void changed(ChangeEvent event, Actor actor) {
-				button.play();
-				topTable.setVisible(false);
-				showTopChallenges(2);
-			}
-			
-		});
-		Button lvl3 = new TextButton("3", skin);
-		topTable.add(lvl3);
-		lvl3.addListener(new ChangeListener(){
-			@Override
-            public void changed(ChangeEvent event, Actor actor) {
-				button.play();
-				topTable.setVisible(false);
-				showTopChallenges(3);
-			}
-			
-		});
-		Button lvl4 = new TextButton("4", skin);
-		topTable.add(lvl4);
-		lvl4.addListener(new ChangeListener(){
-			@Override
-            public void changed(ChangeEvent event, Actor actor) {
-				button.play();
-				topTable.setVisible(false);
-				showTopChallenges(4);
-			}
-			
-		});
-		Button lvl5 = new TextButton("5", skin);
-		topTable.add(lvl5);
-		lvl5.addListener(new ChangeListener(){
-			@Override
-            public void changed(ChangeEvent event, Actor actor) {
-				button.play();
-				topTable.setVisible(false);
-				showTopChallenges(5);
-			}
-			
-		});
+        
+//		Button lvl1 = new TextButton("1", skin);
+//		topTable.add(lvl1);
+//		lvl1.addListener(new ChangeListener(){
+//			@Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//				button.play();
+//				topTable.setVisible(false);
+//				showTopChallenges(1);
+//
+//			}
+//		});
+//		Button lvl2 = new TextButton("2", skin);
+//		topTable.add(lvl2);
+//		lvl2.addListener(new ChangeListener(){
+//			@Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//				button.play();
+//				topTable.setVisible(false);
+//				showTopChallenges(2);
+//			}
+//			
+//		});
+//		Button lvl3 = new TextButton("3", skin);
+//		topTable.add(lvl3);
+//		lvl3.addListener(new ChangeListener(){
+//			@Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//				button.play();
+//				topTable.setVisible(false);
+//				showTopChallenges(3);
+//			}
+//			
+//		});
+//		Button lvl4 = new TextButton("4", skin);
+//		topTable.add(lvl4);
+//		lvl4.addListener(new ChangeListener(){
+//			@Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//				button.play();
+//				topTable.setVisible(false);
+//				showTopChallenges(4);
+//			}
+//			
+//		});
+//		Button lvl5 = new TextButton("5", skin);
+//		topTable.add(lvl5);
+//		lvl5.addListener(new ChangeListener(){
+//			@Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//				button.play();
+//				topTable.setVisible(false);
+//				showTopChallenges(5);
+//			}
+//			
+//		});
 		
 		Button back = new TextButton("Go Back", skin);
 		topTable.row().spaceTop(35);
