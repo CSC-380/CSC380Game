@@ -62,18 +62,18 @@ public class ChallengeScreen extends AbstractScreen  {
 	}
 	
 	private void showTopChallenges(final int levelNum){
-		//used to clean table
-		String[] s = new String[]{"kellyy","dav","da","dam","ndiofs"};
-//		damddd
-//		schrecen
-//		dav
-//		dd
-//		123456
-//		da
-		for(String ss: s){
-			session.execute("DELETE FROM level2 where username ='"+ss+"'");
-			System.out.println("after delete");
-		}
+//		//used to clean table
+//		String[] s = new String[]{"kellyy","dav","da","dam","ndiofs"};
+////		damddd
+////		schrecen
+////		dav
+////		dd
+////		123456
+////		da
+//		for(String ss: s){
+//			session.execute("DELETE FROM level2 where username ='"+ss+"'");
+//			System.out.println("after delete");
+//		}
 		System.out.println("top challenges for level" + (levelNum+1));
 		ResultSet result = session.execute("SELECT username,highscore FROM level"+(levelNum+1));
 		row  = result.iterator();
@@ -84,11 +84,15 @@ public class ChallengeScreen extends AbstractScreen  {
 		table.setMovable(false);
         stage.addActor(table);
 
+       
+        
         table.row().center().uniform().padTop(50);
         table.add("Rank", "header");
-		table.add("Time", "header");
 		table.add("Name", "header");
+		table.add("Time", "header");
 		table.add("Challenge", "header");
+		
+		
 		
 		int count = 1;
 		while(row.hasNext())
@@ -136,8 +140,10 @@ public class ChallengeScreen extends AbstractScreen  {
         topTable.setMovable(false);
         stage.addActor(topTable);
         
-        topTable.row().center().uniform().padTop(50).padRight(15);     
-		
+        topTable.row().center().uniform().padTop(50).padRight(15);   
+        
+        table.add("Select a Level", "header").center();
+		table.row();
 		//TODO figure out how to obtain friends............
         //story of her life!!!
 		//Don't feel bad for her though...............
@@ -160,7 +166,7 @@ public class ChallengeScreen extends AbstractScreen  {
 		
 		Button back = new TextButton("Go Back", skin);
 		topTable.row().spaceTop(35);
-		topTable.add(back).colspan(5).bottom();
+		topTable.add(back).bottom().center();
 
         back.addListener(new ChangeListener() {
             @Override

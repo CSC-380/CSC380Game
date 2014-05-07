@@ -32,15 +32,18 @@ public class NetworkingDialog extends Dialog {
 		
 		table.row();
 		table.row().padTop(10);
-		table.add("Initials:");
+		table.row().center();
+		table.add("Initials:").center();
 		table.row().padBottom(5);
 		initials = new TextField("", skin);
 		initials.setMaxLength(6);
-		initials.setMessageText("AAAAAA");
+		initials.setMessageText("????");
 		table.add(initials).width(80);
 
 		button("Continue");
-		getContentTable().add(table).center();
+		getContentTable().add("Initials:").center();
+		getContentTable().add(initials).center();
+		//table.add("Initials:").center();
 
 	}
 	

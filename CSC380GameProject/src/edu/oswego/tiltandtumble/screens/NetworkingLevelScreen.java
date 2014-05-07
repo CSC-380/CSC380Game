@@ -53,8 +53,13 @@ public class NetworkingLevelScreen extends AbstractScreen {
         window.setMovable(false);
         stage.addActor(window);
         
+        
+        
         window.row().padTop(25).colspan(5);
 		window.row().pad(10, 10, 0, 10).width(75);
+		window.add("Select a Level", "header").right();
+		
+		
 		int count = game.getLevels().size();
 		for (int i = 0; i < count; i++) {
 			if ((i % 5) == 0) {
@@ -75,8 +80,9 @@ public class NetworkingLevelScreen extends AbstractScreen {
 		
 
 		window.row().padBottom(10).padTop(50).bottom().colspan(5).width(100);
+		
 		Button back = new TextButton("Go Back", skin);
-		window.add(back);
+		window.add(back).center();
 		back.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
