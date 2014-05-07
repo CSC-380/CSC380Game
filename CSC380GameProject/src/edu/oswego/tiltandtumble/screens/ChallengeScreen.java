@@ -62,7 +62,6 @@ public class ChallengeScreen extends AbstractScreen  {
 	}
 	
 	private void showTopChallenges(final int levelNum){
-		System.out.println(levelNum);
 		ResultSet result = session.execute("SELECT username,highscore FROM level"+levelNum);
 		Iterator<Row> row  = result.iterator();
      
@@ -87,6 +86,7 @@ public class ChallengeScreen extends AbstractScreen  {
 			            public void changed(ChangeEvent event, Actor actor) {
 							topTable.setVisible(false);
 							game.showGameScreen(levelNum, GameScreen.Mode.NETWORKING);
+							//game.setAcceptName();
 						}	
 	  		   });
 			table.row().center();

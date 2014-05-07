@@ -51,6 +51,7 @@ public class GameScreen extends AbstractScreen {
 	
 	private ShadowBallController shadowController;
 	private String name;
+	private String acceptName;
 	Session session;
 
 	public GameScreen(TiltAndTumble game, int currentLevel, Mode mode) {
@@ -60,14 +61,16 @@ public class GameScreen extends AbstractScreen {
 		
 		if(mode == Mode.NETWORKING){
 			if(game.isChallengeAcceptMode()){
-				shadowController = new ShadowBallController(game.getSession(),name,currentLevel);
+				String name1 = game.getName();
+				System.out.println("ghost ball name " +name1);
+				shadowController = new ShadowBallController(game.getSession(),name1,currentLevel);
 				ballController = new BallController(!game.getSettings().isUseDpad());
 				
 			}
 			else{
-				name = game.getName();
+				String name1 = game.getName();
 				//System.out.println("game screen passing variable" + game.getName());
-				ballController = new BallController(!game.getSettings().isUseDpad(), true, game.getSession(), name,currentLevel);
+				ballController = new BallController(!game.getSettings().isUseDpad(), true, game.getSession(), name1,currentLevel);
 			}
 		}else{
 			ballController = new BallController(!game.getSettings().isUseDpad());
@@ -142,6 +145,14 @@ public class GameScreen extends AbstractScreen {
 
 	public Level getCurrentLevel() {
 		return level;
+	}
+	
+	public void setAcceptName(String a){
+		acceptName = a;
+	}
+	
+	public String getAcceptName(){
+		return acceptName;
 	}
 
 	public List<Score> getScores() {

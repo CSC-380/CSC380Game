@@ -25,11 +25,16 @@ public class ShadowBallController {
 		//get info from server here store in something so update can use it		
 		this.session = session;
 		this.level = level+1;
-		ResultSet resultsx = session.execute("SELECT pathx FROM level"+level+" WHERE username = '"+name+"';");
+		//have to add 1
+		System.out.println(name);
+//		ResultSet resultsx = session.execute("SELECT pathx FROM level"+level+" WHERE username = '"+name+"';");
+		ResultSet resultsx = session.execute("SELECT pathx FROM level"+level+" WHERE username = 'Doug';");
 		Row rowx = resultsx.one();
+		System.out.println(rowx);
  	   	pathX = rowx.getMap("pathx", Integer.class, Float.class);
  	   	
- 	   	ResultSet resultsy = session.execute("SELECT pathy FROM level"+level+" WHERE username = '"+name+"';");
+// 	   	ResultSet resultsy = session.execute("SELECT pathy FROM level"+level+" WHERE username = '"+name+"';");
+ 	   ResultSet resultsy = session.execute("SELECT pathy FROM level"+level+" WHERE username = 'Doug';");
 		Row rowy = resultsy.one();
 	   	pathY = rowy.getMap("pathy", Integer.class, Float.class);
  	   	currentState = State.ACTIVE;
