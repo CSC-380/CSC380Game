@@ -62,7 +62,6 @@
   <object name="StaticWall" x="1101" y="1505" width="291" height="32"/>
   <object name="StaticWall" x="480" y="1312" width="625" height="64"/>
   <object name="StaticWall" x="1185" y="1632" width="95" height="260"/>
-  <object name="StaticWall" x="928" y="1536" width="160" height="24"/>
   <object name="StaticWall" x="449" y="1472" width="543" height="96"/>
   <object name="StaticWall" x="448" y="1664" width="384" height="229"/>
   <object name="FinishLine" x="814" y="1837" width="134" height="12"/>
