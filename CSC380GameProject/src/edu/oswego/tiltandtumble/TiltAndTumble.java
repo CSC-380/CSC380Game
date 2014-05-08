@@ -318,6 +318,8 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 	public Session getSession() {
 		if(session != null) {
 			return session;
+			
+			
 		}
 		Cluster cluster = Cluster.builder().addContactPoint("129.3.20.26").withPort(2715).build();
         session = cluster.connect();
