@@ -101,46 +101,17 @@ public class ChallengeScreen extends AbstractScreen  {
 		table.add(scroll).expandY().padTop(40).padBottom(10);
 
        
-        
-<<<<<<< HEAD
+       
         table2.row().center().uniform().padTop(50);
         table2.add("Rank", "header");
 		table2.add("Name", "header");
 		table2.add("Time", "header");
 		table2.add("Challenge", "header");
-=======
-        table.row().center().uniform().padTop(50);  
-        table.add("Rank", "header");
-		table.add("Name", "header");
-		table.add("Time", "header");
-		table.add("Challenge", "header");
->>>>>>> FETCH_HEAD
-		
-		
+
 		
 		int count = 1;
 		for(int i = 0; i < sortLRow.size();i++)
 		{
-<<<<<<< HEAD
-			final Row r = row.next();
-			System.out.println(r.getString("username"));
-			Button accept = new TextButton("A", skin);
-			
-	  		   accept.addListener(new ChangeListener(){
-					@Override
-		            public void changed(ChangeEvent event, Actor actor) {
-						game.setName(r.getString("username"));
-						game.showGameScreen(levelNum, GameScreen.Mode.ACCEPT);
-						
-					}	
-	  		   });
-			table2.row().center();
-	  		table2.add("" + count);
-			table2.add("" +r.getString("username"));
-			table2.add("" +r.getInt("highscore"));
-			table2.add(accept);
-			count++;
-=======
 			//final Row r = row.next();			
 			if(sortLRow.get(i).getInt("highscore") > -1){				
 				final String r = sortLRow.get(i).getString("username");
@@ -151,18 +122,17 @@ public class ChallengeScreen extends AbstractScreen  {
 			            public void changed(ChangeEvent event, Actor actor) {
 							topTable.setVisible(false);
 							game.setName(r);
-							game.showGameScreen(levelNum, GameScreen.Mode.NETWORKING);
+							game.showGameScreen(levelNum, GameScreen.Mode.ACCEPT);
 							
 						}	
 		  		   });
-				table.row().center();
-		  		table.add("" + count);
-				table.add("" +r);
-				table.add("" +sortLRow.get(i).getInt("highscore"));
-				table.add(accept);
+				table2.row().center();
+		  		table2.add("" + count);
+				table2.add("" +r);
+				table2.add("" +sortLRow.get(i).getInt("highscore"));
+				table2.add(accept);
 				count++;
 			}
->>>>>>> FETCH_HEAD
 		}
 		
 		table2.row().expand().padBottom(10);
