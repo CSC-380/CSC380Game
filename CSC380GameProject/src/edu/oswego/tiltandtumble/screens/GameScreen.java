@@ -301,10 +301,51 @@ public class GameScreen extends AbstractScreen {
 						s.scores.add(s.level.getScore());
 						new NeworkingScoreDialog("", s.skin, s.game, s).show(s.stage);
 						System.out.println("highscores");
+<<<<<<< HEAD
 						if(s.getMode() == GameScreen.Mode.CREATE){
 							//create game play
 							System.out.println("name " +s.name +" level "+s.numLevel + " score "+s.level.getScore().getPoints());
 							s.session.execute("UPDATE level"+s.numLevel+" SET highscore = "+ s.level.getScore().getPoints()+" WHERE username = '"+s.name+"'");
+=======
+						if(!s.game.isChallengeAcceptMode()){
+							System.out.println("name " +s.name +" level "+s.numLevel + " score "+s.level.getScore().getPoints());
+							s.session.execute("UPDATE level"+s.numLevel+" SET highscore = "+ s.level.getScore().getPoints()+" WHERE username = '"+s.name+"'");
+						
+							
+							System.out.println(s.level.getLevelNumber());
+							com.datastax.driver.core.ResultSet result = s.session.execute("SELECT username,highscore FROM level"+s.numLevel);
+							List<Row> lRow = result.all();
+							ArrayList<Row> sortLRow = new ArrayList<Row>();
+							if(lRow.size()>6){
+								for(Row r:lRow){
+									if(sortLRow.size()>0){
+										for(int i = 0; i < sortLRow.size(); i++){
+											if(r.getInt("highscore")>sortLRow.get(i).getInt("highscore")){
+												sortLRow.add(i,r);
+												break;
+											}else if(i == sortLRow.size()-1){
+												sortLRow.add(r);
+												break;
+											}
+										}
+									}else{
+										sortLRow.add(r);
+									}								
+								}
+								String temp = sortLRow.get(sortLRow.size()-1).getString("username");
+								s.session.execute("Delete From level"+s.numLevel+" WHERE username = '"+temp+"';");
+								
+							}
+//							if(row.size()>5){
+//								System.out.println("about to check if new high score");
+//								
+//								if(s.level.getScore().getPoints() > row.get(0).getInt("highscore")){								
+//									s.session.execute("Delete From level1 WHERE (Select Min(highscore) FROM level1)s;");
+//								}
+//								
+//								s.session.execute("UPDATE level"+s.numLevel+" SET highscore =  WHERE username = '"+s.name+"'");
+//							}
+>>>>>>> FETCH_HEAD
 						}
 
 					}
