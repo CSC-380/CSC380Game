@@ -65,7 +65,7 @@ public class ChallengeScreen extends AbstractScreen  {
 
 		System.out.println("top challenges for level" + (levelNum+1));
 		ResultSet result = session.execute("SELECT username,highscore FROM level"+(levelNum+1)
-				+" WHERE highscore NOT = -1");
+				+" WHERE highscore >-1");
 		row  = result.iterator();
      
 		table = new Window("\nLevel " + (levelNum +1), skin);
