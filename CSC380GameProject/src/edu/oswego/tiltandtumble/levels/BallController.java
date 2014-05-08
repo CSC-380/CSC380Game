@@ -284,7 +284,7 @@ public class BallController extends ClickListener {
 						if(b.blockNumber == 0) {
 							System.out.println("Writing path useing" + name + " level " + currentLevel);
 						b.session.execute("INSERT INTO level"+currentLevel+" (username, highscore, pathx, pathy)"
-							+ "VALUES ('"+name+"', 0,{" + b.blockNumber + " : " + b.ball.getMapX() +"}, "
+							+ "VALUES ('"+name+"', -1,{" + b.blockNumber + " : " + b.ball.getMapX() +"}, "
 										+ "{" + b.blockNumber + " : " + b.ball.getMapY() +"});");
 						} else {
 //							b.session.execute("UPDATE level" + (currentLevel+1)
