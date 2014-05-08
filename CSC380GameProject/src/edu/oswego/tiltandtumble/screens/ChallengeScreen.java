@@ -64,8 +64,7 @@ public class ChallengeScreen extends AbstractScreen  {
 	private void showTopChallenges(final int levelNum){
 
 		System.out.println("top challenges for level" + (levelNum+1));
-		ResultSet result = session.execute("SELECT username,highscore FROM level"+(levelNum+1)
-				+" WHERE highscore >-1");
+		ResultSet result = session.execute("SELECT username,highscore FROM level"+(levelNum+1));
 		row  = result.iterator();
      
 		table = new Window("\nLevel " + (levelNum +1), skin);
@@ -88,24 +87,28 @@ public class ChallengeScreen extends AbstractScreen  {
 		while(row.hasNext())
 		{
 			final Row r = row.next();
-			System.out.println(r.getString("username"));
-			Button accept = new TextButton("A", skin);
-			
-	  		   accept.addListener(new ChangeListener(){
-					@Override
-		            public void changed(ChangeEvent event, Actor actor) {
-						topTable.setVisible(false);
-						game.setName(r.getString("username"));
-						game.showGameScreen(levelNum, GameScreen.Mode.NETWORKING);
-						
-					}	
-	  		   });
-			table.row().center();
-	  		table.add("" + count);
-			table.add("" +r.getString("username"));
-			table.add("" +r.getInt("highscore"));
-			table.add(accept);
-			count++;
+			if(r.getInt("highscore") > -1){
+				
+				
+				System.out.println(r.getString("username"));
+				Button accept = new TextButton("A", skin);
+				
+		  		   accept.addListener(new ChangeListener(){
+						@Override
+			            public void changed(ChangeEvent event, Actor actor) {
+							topTable.setVisible(false);
+							game.setName(r.getString("username"));
+							game.showGameScreen(levelNum, GameScreen.Mode.NETWORKING);
+							
+						}	
+		  		   });
+				table.row().center();
+		  		table.add("" + count);
+				table.add("" +r.getString("username"));
+				table.add("" +r.getInt("highscore"));
+				table.add(accept);
+				count++;
+			}
 		}
 		
 		table.row().expand().padBottom(10);
