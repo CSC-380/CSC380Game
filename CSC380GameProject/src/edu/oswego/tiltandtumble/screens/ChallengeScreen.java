@@ -66,7 +66,6 @@ public class ChallengeScreen extends AbstractScreen  {
 	private void showTopChallenges(final int levelNum){
 		//System.out.println("top challenges for level" + (levelNum+1));
 		ResultSet result = session.execute("SELECT username,highscore FROM level"+(levelNum+1));
-		row  = result.iterator();
 		List<Row> lRow = result.all();
 		ArrayList<Row> sortLRow = new ArrayList<Row>();
 		
