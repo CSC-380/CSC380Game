@@ -30,7 +30,7 @@ public class ChallengeScreen extends AbstractScreen  {
 	private Window table;
 	private Session session;
 	private Sound button;
-	private Iterator<Row> row;
+
 
 	public ChallengeScreen(final TiltAndTumble game) {
 		super(game);
@@ -99,10 +99,8 @@ public class ChallengeScreen extends AbstractScreen  {
         ScrollPane scroll = new ScrollPane(table2, skin);
 
 		table.add(scroll).expandY().padTop(40).padBottom(10);
-
        
-       
-        table2.row().center().uniform().padTop(50);
+        table2.row().center().uniform();
         table2.add("Rank", "header");
 		table2.add("Name", "header");
 		table2.add("Time", "header");
@@ -115,7 +113,7 @@ public class ChallengeScreen extends AbstractScreen  {
 			//final Row r = row.next();			
 			if(sortLRow.get(i).getInt("highscore") > -1){				
 				final String r = sortLRow.get(i).getString("username");
-				System.out.println(sortLRow.get(i).getString("username"));
+			//	System.out.println(sortLRow.get(i).getString("username"));
 				Button accept = new TextButton("A", skin);				
 		  		   accept.addListener(new ChangeListener(){
 						@Override
@@ -126,7 +124,7 @@ public class ChallengeScreen extends AbstractScreen  {
 							
 						}	
 		  		   });
-				table2.row().center();
+				table2.row().center().padTop(10);
 		  		table2.add("" + count);
 				table2.add("" +r);
 				table2.add("" +sortLRow.get(i).getInt("highscore"));
@@ -135,7 +133,7 @@ public class ChallengeScreen extends AbstractScreen  {
 			}
 		}
 		
-		table2.row().expand().padBottom(10);
+		table2.row().expand().padBottom(10).padTop(10);
         Button back = new TextButton("Go Back", skin);
         table2.add(back).colspan(4).bottom();
 
