@@ -25,6 +25,7 @@ import edu.oswego.tiltandtumble.screens.GameScreen;
 import edu.oswego.tiltandtumble.screens.HelpScreen;
 import edu.oswego.tiltandtumble.screens.HighScoresScreen;
 import edu.oswego.tiltandtumble.screens.LevelScreen;
+import edu.oswego.tiltandtumble.screens.LobbyScreen;
 import edu.oswego.tiltandtumble.screens.MainScreen;
 import edu.oswego.tiltandtumble.screens.NetworkingLevelScreen;
 import edu.oswego.tiltandtumble.screens.SettingsScreen;
@@ -38,8 +39,6 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 
 	// NOTE: older phones do not have Deque interface
 	Stack<Screen> screenStack = new Stack<Screen>();
-	private boolean challengeMode = false;
-	private boolean challengeAcceptMode = false;
 	private String name;
 	
 	private final List<String> levels = new ArrayList<String>();
@@ -66,7 +65,8 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 	private GameScreen gameScreen;
 	private ChallengeScreen challengeScreen;
 	private NetworkingLevelScreen networkingLevelScreen;
-
+	private LobbyScreen lobbyScreen;
+	
 	private AssetManager assetManager;
 	private Skin skin;
 	private Stage stage;
@@ -182,6 +182,15 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		setScreen(creditScreen);
 	}
 	
+	public void showLobbyScreen(String name) {
+		if (lobbyScreen == null) {
+			lobbyScreen = new LobbyScreen(this);
+		}
+		this.name = name;
+		screenStack.push(getScreen());
+		setScreen(lobbyScreen);
+	}
+	
 	public void showNetworkingLevelScreen(String name){
 		if (networkingLevelScreen == null) {
 			networkingLevelScreen = new NetworkingLevelScreen(this);
@@ -253,10 +262,10 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 	}
 
 	public void showPreviousScreen() {
-		if(screenStack.peek() == mainScreen){
-			this.challengeAcceptMode = false;
-			this.challengeMode = false;
-		}
+//		if(screenStack.peek() == mainScreen){
+//			this.challengeAcceptMode = false;
+//			this.challengeMode = false;
+//		}
 		if(screenStack.peek() != gameScreen){
 		this.playMusic();
 		}
@@ -297,22 +306,6 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 
 	public float getHeight() {
 		return height;
-	}
-	public boolean isChallengeMode(){
-		return challengeMode;
-	}
-	
-	
-	public void setChallengeMode(boolean x){
-		challengeMode = x;
-	}
-	//
-	public boolean isChallengeAcceptMode(){
-		return challengeAcceptMode;
-	}
-	
-	public void setChallengeAcceptMode(boolean x){
-		challengeAcceptMode = x;
 	}
 	
 	public Session getSession() {
@@ -391,6 +384,9 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		}
 		if (networkingLevelScreen != null) {
 			networkingLevelScreen.dispose();
+		}
+		if (lobbyScreen != null) {
+			lobbyScreen.dispose();
 		}
 		stage.dispose();
 		batch.dispose();

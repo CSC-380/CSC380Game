@@ -85,7 +85,7 @@ Sound button;
 		back.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				game.setChallengeMode(false);
+			//	game.setChallengeMode(false);
 				button.play();
 				game.showPreviousScreen();
 			}

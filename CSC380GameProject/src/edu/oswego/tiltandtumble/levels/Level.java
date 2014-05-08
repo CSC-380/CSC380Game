@@ -303,10 +303,11 @@ public class Level implements Disposable, Audible {
     				l.exit();
     				return;
     			}
-    			l.ballController.update(delta);
+    			
     			if(l.shadowController != null){
     			l.shadowController.update(delta);
     			}
+    			l.ballController.update(delta);
     			for (WorldUpdateable w : l.updateableObjects) {
     				w.update(delta);
     			}

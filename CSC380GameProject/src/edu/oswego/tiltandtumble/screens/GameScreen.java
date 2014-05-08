@@ -1,6 +1,5 @@
 package edu.oswego.tiltandtumble.screens;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +8,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
@@ -31,7 +29,11 @@ import edu.oswego.tiltandtumble.screens.widgets.Starter;
 
 public class GameScreen extends AbstractScreen {
 	public static enum Mode {
-		ARCADE, PRACTICE , NETWORKING
+		ARCADE, 
+		PRACTICE ,  
+		ACCEPT, 
+		CREATE, 
+		LIVE
 	}
 
 	private final BallController ballController;
@@ -61,27 +63,32 @@ public class GameScreen extends AbstractScreen {
 		this.numLevel = currentLevel +1;
 
 		worldPopulator = new WorldPopulator(game.getAssetManager());
-		
-		if(mode == Mode.NETWORKING){
+
+		if(mode == Mode.ACCEPT){
 			session = game.getSession();
-			if(game.isChallengeAcceptMode()){
-				//shadow only
-				name = game.getName();
-				System.out.println("ghost ball name " +name);
-				shadowController = new ShadowBallController(game.getSession(),name,currentLevel+1);
-				ballController = new BallController(!game.getSettings().isUseDpad());
-				
-			}
-			else{
-				//writing path only
-				name = game.getName();
-				ballController = new BallController(!game.getSettings().isUseDpad(), true, game.getSession(), name,currentLevel+1);
-			}
+			//shadow only
+			name = game.getName();
+			System.out.println("ghost ball name " +name);
+			shadowController = new ShadowBallController(game.getSession(),name,currentLevel+1);
+			ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.NORMAL);
+
+		}else if(mode == Mode.CREATE){
+			//writing path only
+			session = game.getSession();
+			name = game.getName();
+			name = game.getName();
+			ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.WRITE, game.getSession(), name,currentLevel+1);
+		}else if(mode == Mode.LIVE){
+			//need a shadowball and to write
+			session = game.getSession();
+			name = game.getName();
+			shadowController = new ShadowBallController(game.getSession(),name,currentLevel+1);	
+			ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.WRITE, game.getSession(), name,currentLevel+1);
 		}else{
-			ballController = new BallController(!game.getSettings().isUseDpad());
+			ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.NORMAL);
 		}
-		
-		
+
+
 		hud = new Hud(this, skin, game.getAssetManager());
 		loadLevel(currentLevel);
 		hud.setScore(level.getScore());
@@ -284,40 +291,24 @@ public class GameScreen extends AbstractScreen {
 				if (s.level.hasFinished()) {
 					s.audio.pause();
 					
-					if(s.getMode() != GameScreen.Mode.NETWORKING){
+					if(s.getMode() != GameScreen.Mode.CREATE && s.getMode() != GameScreen.Mode.ACCEPT){
+						//normal game play
 						s.scores.add(s.level.getScore());
 						new ScoreDialog("Score", s.skin, s.game, s).show(s.stage);
 						
 					}else{
+						// create or accept or live game play
 						s.scores.add(s.level.getScore());
 						new NeworkingScoreDialog("", s.skin, s.game, s).show(s.stage);
 						System.out.println("highscores");
-						if(!s.game.isChallengeAcceptMode()){
-							//write score when writting path only
-							//see if higher
-							//remove lowest high score
-							System.out.print("kelly was here");
-//							com.datastax.driver.core.ResultSet result = s.session.execute("SELECT username, MIN(highscore) FROM level1");
-//							List<Row> row = result.all();
-//							if(row.size()>5){
-//								System.out.println("about to check if new high score");
-//								
-//								if(s.level.getScore().getPoints() > row.get(0).getInt("highscore")){								
-//									s.session.execute("Delete From level1 WHERE (Select Min(highscore) FROM level1)s;");
-//								}
-//								
-//								s.session.execute("UPDATE level"+s.numLevel+" SET highscore =  WHERE username = '"+s.name+"'");
-//							}
+						if(s.getMode() == GameScreen.Mode.CREATE){
+							//create game play
 							System.out.println("name " +s.name +" level "+s.numLevel + " score "+s.level.getScore().getPoints());
 							s.session.execute("UPDATE level"+s.numLevel+" SET highscore = "+ s.level.getScore().getPoints()+" WHERE username = '"+s.name+"'");
 						}
-//						else{
-//							System.out.println("update for"+s.name +" level " + s.numLevel);
-//							s.session.execute("UPDATE level"+s.numLevel+" SET highscore ="+s.level.getScore() + " WHERE username = '"+s.name+"'");
-//						}
+
 					}
 					
-					s.ballController.setChallengeMode(false);
 					s.changeState(State.SCORED);
 				}
 				else {

@@ -76,7 +76,7 @@ public class NetworkingLevelScreen extends AbstractScreen {
 					button.play();
 					game.showGameScreen(
 							new Integer(((TextButton)actor).getText().toString()) - 1,
-							GameScreen.Mode.NETWORKING);
+							GameScreen.Mode.CREATE);
 				}
 			});
 		}
@@ -89,7 +89,7 @@ public class NetworkingLevelScreen extends AbstractScreen {
 		back.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				game.setChallengeMode(false);
+				//game.setChallengeMode(false);
 				button.play();
 				game.showPreviousScreen();
 			}

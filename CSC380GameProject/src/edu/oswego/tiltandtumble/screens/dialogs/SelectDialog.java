@@ -20,7 +20,8 @@ public class SelectDialog  extends Dialog {
 	
 	private static enum Buttons {
 		ACCEPT,
-		CREATE
+		CREATE,
+		LIVE
 	}
 	
 	public SelectDialog(String title, Skin skin, TiltAndTumble game, MainScreen screen) {
@@ -42,7 +43,10 @@ public class SelectDialog  extends Dialog {
         
         getButtonTable().row().uniform().fill();
 
+        button("Live play", Buttons.LIVE);
+		getButtonTable().row();
 		button("Accept a Challenge", Buttons.ACCEPT);
+		getButtonTable().row();
 		button("Create a Challenge", Buttons.CREATE);
 		
 	}
@@ -54,15 +58,14 @@ public class SelectDialog  extends Dialog {
 			button.play();
 			Buttons b = (Buttons)object;
 			if (b == Buttons.ACCEPT) {
-				game.setChallengeAcceptMode(true);
-				game.setChallengeMode(false);
 				game.showChallengeScreen();
 				
 			} else if (b == Buttons.CREATE) {
-				game.setChallengeMode(true);
-				game.setChallengeAcceptMode(false);
+
 				getName = new NetworkingDialog("Multiplayer", skin, game).show(screen.getStage());
 				
+			}else if(b == Buttons.LIVE){
+				getName = new NetworkingDialog("Live", skin, game).show(screen.getStage());	
 			}
 		 else {
 			screen.resume();

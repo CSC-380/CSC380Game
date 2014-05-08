@@ -76,7 +76,4 @@ abstract class AbstractScreen implements Screen {
 		Gdx.input.setInputProcessor(null);
 	}
 	
-	public boolean isChallengeMode(){
-		return game.isChallengeMode();
-	}
 }

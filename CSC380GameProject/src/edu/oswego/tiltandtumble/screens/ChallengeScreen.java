@@ -11,6 +11,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -48,7 +50,7 @@ public class ChallengeScreen extends AbstractScreen  {
 			}
 		});
         Gdx.input.setInputProcessor(multiplexer);
-        game.setChallengeMode(true);
+       // game.setChallengeMode(true);
         session = game.getSession();
         AssetManager assetManager = new AssetManager();
         String musicFile = "data/soundfx/button-8.ogg";
@@ -73,14 +75,19 @@ public class ChallengeScreen extends AbstractScreen  {
 		table.setModal(true);
 		table.setMovable(false);
         stage.addActor(table);
+        
+        Table table2 = new Table(skin);
+        ScrollPane scroll = new ScrollPane(table2, skin);
+
+		table.add(scroll).expandY().padTop(40).padBottom(10);
 
        
         
-        table.row().center().uniform().padTop(50);
-        table.add("Rank", "header");
-		table.add("Name", "header");
-		table.add("Time", "header");
-		table.add("Challenge", "header");
+        table2.row().center().uniform().padTop(50);
+        table2.add("Rank", "header");
+		table2.add("Name", "header");
+		table2.add("Time", "header");
+		table2.add("Challenge", "header");
 		
 		
 		
@@ -94,23 +101,22 @@ public class ChallengeScreen extends AbstractScreen  {
 	  		   accept.addListener(new ChangeListener(){
 					@Override
 		            public void changed(ChangeEvent event, Actor actor) {
-						topTable.setVisible(false);
 						game.setName(r.getString("username"));
-						game.showGameScreen(levelNum, GameScreen.Mode.NETWORKING);
+						game.showGameScreen(levelNum, GameScreen.Mode.ACCEPT);
 						
 					}	
 	  		   });
-			table.row().center();
-	  		table.add("" + count);
-			table.add("" +r.getString("username"));
-			table.add("" +r.getInt("highscore"));
-			table.add(accept);
+			table2.row().center();
+	  		table2.add("" + count);
+			table2.add("" +r.getString("username"));
+			table2.add("" +r.getInt("highscore"));
+			table2.add(accept);
 			count++;
 		}
 		
-		table.row().expand().padBottom(10);
+		table2.row().expand().padBottom(10);
         Button back = new TextButton("Go Back", skin);
-        table.add(back).colspan(4).bottom();
+        table2.add(back).colspan(4).bottom();
 
         back.addListener(new ChangeListener() {
             @Override
@@ -165,7 +171,7 @@ public class ChallengeScreen extends AbstractScreen  {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
             	button.play();
-            	game.setChallengeMode(false);
+            	//game.setChallengeMode(false);
                 game.showPreviousScreen();
             }
         });

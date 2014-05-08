@@ -23,22 +23,28 @@ public class BallController extends ClickListener {
 	private enum MyKeys {
 		LEFT, RIGHT, UP, DOWN
 	}
+	
+	public static enum Mode {
+		NORMAL,
+		WRITE,
+	}
 
 	private final Map<MyKeys, Boolean> keys = new EnumMap<MyKeys, Boolean>(MyKeys.class);
 	private final boolean useAccelerometer;
 	private Ball ball;
-	private boolean challengeMode;
 	private float tiltX = 0;
 	private float tiltY = 0;
 	private State currentState;
 	private float keyX = 0;
 	private float keyY = 0;
+	private Mode mode;
 	
 	private Session session;
 	private int blockNumber = 0;
 
-	public BallController(boolean useAccelerometer) {
-		this.useAccelerometer = useAccelerometer;		
+	public BallController(boolean useAccelerometer, Mode mode) {
+		this.useAccelerometer = useAccelerometer;
+		this.mode = mode;
 		keys.put(MyKeys.LEFT, false);
 		keys.put(MyKeys.RIGHT, false);
 		keys.put(MyKeys.UP, false);
@@ -46,14 +52,10 @@ public class BallController extends ClickListener {
 		currentState = State.ACTIVE;
 	}
 	
-	public BallController(boolean useAccelerometer, boolean challenge, Session session,String namee, int currentLevel) {
+	public BallController(boolean useAccelerometer, Mode mode, Session session,String namee, int currentLevel) {
 		this.useAccelerometer = useAccelerometer;
-		challengeMode = challenge;
-		if(challengeMode){
-			System.out.println("CHALLENGE MODE");
-		}
+		this.mode = mode;
 		this.name = namee;
-		//System.out.println("ball created" + namee);
 		this.currentLevel = currentLevel;
 		keys.put(MyKeys.LEFT, false);
 		keys.put(MyKeys.RIGHT, false);
@@ -67,9 +69,6 @@ public class BallController extends ClickListener {
 		this.ball = ball;
 	}
 	
-	public void setChallengeMode(boolean x){
-		challengeMode = x;
-	}
 
 	public void update(float delta) {
 		currentState.update(this, delta);
@@ -277,25 +276,20 @@ public class BallController extends ClickListener {
 					forceY = b.tiltY * 0.001f * -1;
 				}
 				if (b.ball != null) {
+					
 					b.ball.applyLinearImpulse(forceX, forceY);
-					if(b.challengeMode){
-						
-					//TODO this is where position needs to be gotten and sent to server
+					
+					if(b.mode == Mode.WRITE){
 						if(b.blockNumber == 0) {
 							System.out.println("Writing path useing" + name + " level " + currentLevel);
 						b.session.execute("INSERT INTO level"+currentLevel+" (username, highscore, pathx, pathy)"
 							+ "VALUES ('"+name+"', -1,{" + b.blockNumber + " : " + b.ball.getMapX() +"}, "
 										+ "{" + b.blockNumber + " : " + b.ball.getMapY() +"});");
 						} else {
-//							b.session.execute("UPDATE level" + (currentLevel+1)
-//							   		+ "SET pathx = pathx + {" + b.blockNumber + " : " + b.ball.getMapX() + "} WHERE username = '"+name+"'");
-//							   b.session.execute("UPDATE level" + (currentLevel+1)
-//							   				+ "SET pathy = pathy + {" + b.blockNumber + " : " + b.ball.getMapY() + "} WHERE username = '"+name+"'");
 							b.session.execute("UPDATE level"+currentLevel+" SET pathx = pathx + {" + b.blockNumber + " :" + b.ball.getMapX() +"} WHERE username = '"+name+"'");
 							b.session.execute("UPDATE level"+currentLevel+" SET pathy = pathy + {" + b.blockNumber + " :" + b.ball.getMapY() +"} WHERE username = '"+name+"'");
 						}
 						++b.blockNumber;
-						//System.out.println(b.ball.getMapX());
 					}
 				}
 			}

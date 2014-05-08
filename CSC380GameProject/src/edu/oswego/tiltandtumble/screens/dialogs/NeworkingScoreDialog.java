@@ -59,9 +59,9 @@ public class NeworkingScoreDialog extends Dialog {
 			total.setTime(total.getTime() + s.getTime());
 			table.row().uniformX();
 		}
-		table.add("Total:", "header").right();
-		table.add(total.getFormattedTime()).center();
-		table.add(String.valueOf(total.getPoints())).right();
+		//table.add("Total:", "header").right();
+		//table.add(total.getFormattedTime()).center();
+		//table.add(String.valueOf(total.getPoints())).right();
 		if (screen.getCurrentLevel().isFailed()) {
 			table.row().padTop(10).uniformX();
 			table.add("You Failed!", "highlight").colspan(3).center();
