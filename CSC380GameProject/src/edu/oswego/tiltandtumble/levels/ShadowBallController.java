@@ -26,6 +26,7 @@ public class ShadowBallController {
 		this.session = session;
 		this.level = level+1;
 		//have to add 1
+		/////
 		System.out.println("level " + level + "name" + name);
 		ResultSet resultsx = session.execute("SELECT pathx FROM level"+level+" WHERE username = '"+name+"';");
 		//ResultSet resultsx = session.execute("SELECT pathx FROM level"+level+" WHERE username = 'Doug';");
