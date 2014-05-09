@@ -333,6 +333,8 @@ public class GameScreen extends AbstractScreen {
 								
 							}
 
+						}else if(s.getMode() == GameScreen.Mode.LIVE){
+							s.session.execute("DROP TABLE "+s.game.getName()+"");
 						}
 
 					}
