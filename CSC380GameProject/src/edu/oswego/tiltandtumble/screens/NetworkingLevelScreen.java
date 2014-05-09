@@ -21,10 +21,18 @@ import edu.oswego.tiltandtumble.TiltAndTumble;
 public class NetworkingLevelScreen extends AbstractScreen {
 
 	Sound button;
+	private boolean live;
 	
-	public NetworkingLevelScreen(TiltAndTumble game) {
+	public NetworkingLevelScreen(TiltAndTumble game, boolean live) {
 		super(game);
+		this.live = live;
+		
 	}
+	
+	public void setLive(boolean live){
+		this.live = live;
+	}
+
 
 	@Override
 	public void show() {
@@ -49,7 +57,12 @@ public class NetworkingLevelScreen extends AbstractScreen {
 		}
 		button = assetManager.get(musicFile, Sound.class);
 
-		Window window = new Window("\nCreate A Challenge", skin);
+		Window window;
+		if(live){
+			window = new Window("\nOnline Multiplayer", skin);
+		}else{
+		window = new Window("\nCreate A Challenge", skin);
+		}
         window.setFillParent(true);
         window.setModal(true);
         window.setMovable(false);
@@ -64,19 +77,34 @@ public class NetworkingLevelScreen extends AbstractScreen {
 		window.row();
 		
 		int count = game.getLevels().size();
-		for (int i = 0; i < count; i++) {
-			if ((i % 5) == 0) {
+		int j =0;
+		if(live){
+			j = 3;
+		}else{
+			j =0;
+		}
+		window.row().pad(10);
+		for (int i = j; i < count; i++) {
+			
+		
+			if ((i % 5) == 0 &! live) {
 				window.row().pad(10).width(75);
 			}
+			
 			Button l = new TextButton(Integer.toString(i + 1), skin);
 			window.add(l);
 			l.addListener(new ChangeListener() {
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
+					if(!live){
 					button.play();
 					game.showGameScreen(
 							new Integer(((TextButton)actor).getText().toString()) - 1,
 							GameScreen.Mode.CREATE);
+					}else{
+						button.play();
+						game.showLobbyScreen(new Integer(((TextButton)actor).getText().toString()) - 1);
+					}
 				}
 			});
 		}

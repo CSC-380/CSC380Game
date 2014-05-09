@@ -34,7 +34,7 @@ public class LobbyScreen extends AbstractScreen{
 	private State currentState;
 	ResultSet result ;
 	List<Row> row;	
-	Table users;
+	Window table;
 	
 	public LobbyScreen(TiltAndTumble game) {
 		super(game);
@@ -60,59 +60,44 @@ public class LobbyScreen extends AbstractScreen{
 				return super.keyDown(keycode);
 			}
 		});
-		levelNum = Integer.parseInt(game.getLiveLevel());
+		
+		levelNum = game.getLiveLevel();
 		userName = game.getName();
         Gdx.input.setInputProcessor(multiplexer);
+        
         AssetManager assetManager = game.getAssetManager();
         String musicFile = "data/soundfx/button-8.ogg";
 		button = assetManager.get(musicFile, Sound.class);
-		Window table1 = new Window("\nOnline Multiplayer", skin);
-		table1.setFillParent(true);
-		table1.setModal(true);
-		table1.setMovable(false);
-		stage.addActor(table1);
+		
+		table = new Window("\nOnline Multiplayer", skin);
+		table.setFillParent(true);
+		table.setModal(true);
+		table.setMovable(false);
+        stage.addActor(table);
+
+        table.row().center().uniform().padTop(40);
+		table.add("Name", "header");
+		table.add("Time", "header");
+		table.add("Initials", "header");
+		table.add("Date", "header");
 		
 		//session.execute("DELETE FROM lobby WHERE username = '"+userName+"'");
-		
 		session.execute("INSERT INTO lobby (username) VALUES('"+userName +"');");
 //		System.out.println("In waiting room");
 //		session.execute("CREATE TABLE IF NOT EXISTS "+userName+"(block int PRIMARY KEY, pathx float,pathy float)");
 //		session.execute("INSERT INTO "+userName+" (username) VALUES('"+userName +"',0,-1.0,-1.0);");
-		
-		
-		
 		ResultSet lobby = session.execute("SELECT * FROM lobby");// WHERE '"+userName+"'");
 		List<Row> lobbyRow = lobby.all();
-//		
-//		int c = 0;
-//		for(Row r:lobbyRow){
-//			//opponent string variable
-//			System.out.println(lobbyRow.get(c).getString("username"));
-//			c++;
-//		}
 		
-		Table table = new Table(skin);
-		ScrollPane pane = new ScrollPane(table, skin);
-		table1.add(pane).expandY().padTop(40).padBottom(10);
-        
-        users = new Table(skin);
-        ScrollPane namesDisplay = new ScrollPane(users, skin);
-        table.add(namesDisplay).expandY().padTop(40).padBottom(10);
-        namesDisplay.setSize(100, 100);
-        users.add("Players in lobby", "header").center();
-        users.row().padTop(10);
-        users.add("1: " + userName);
-        
-//       
-      
-        
 
+        table.row().center().padTop(10);
+        table.add("1: " + userName);
         
         
-       table.row();
         
+        table.row().expand().padBottom(10);
         Button back = new TextButton("Go Back", skin);
-        table.add(back).colspan(2);
+        table.add(back).colspan(4).bottom();
         back.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -151,8 +136,8 @@ public class LobbyScreen extends AbstractScreen{
 					for(int i = 0; i< l.row.size();i++){
 						if(!l.row.get(i).getString("username").equals(l.userName)){
 							l.opponent =l.row.get(i).getString("username");
-							l.users.row().padTop(10);
-					        l.users.add("1: " + l.opponent);
+							l.table.row().padTop(10);
+					        l.table.add("1: " + l.opponent);
 							l.changeState(STARTING);
 						}
 					}
