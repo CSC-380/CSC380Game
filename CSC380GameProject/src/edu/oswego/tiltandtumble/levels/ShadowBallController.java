@@ -102,6 +102,7 @@ public class ShadowBallController {
 			@Override
 			public void update(ShadowBallController b, float delta) {
 			System.out.println("shadow update");
+			
 				ResultSet resultsx = b.session.execute("SELECT pathx FROM "+b.name+" WHERE block = "+b.blockNumber+";");
 				Row rowx = resultsx.one();
 				//rowx.getFloat("pathx");
@@ -111,8 +112,11 @@ public class ShadowBallController {
 				Row rowy = resultsy.one();
 				//rowy.getFloat("pathy");
 			  // 	b.pathY = rowy.getMap("pathy", Integer.class, Float.class);
+				try{
 				b.ball.draw(delta, rowx.getFloat("pathx"), rowy.getFloat("pathy"));
-				
+				}catch(NullPointerException e){
+					//do nothin
+				}
 				b.blockNumber++;
 				
 			}

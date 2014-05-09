@@ -90,7 +90,9 @@ public class LobbyScreen extends AbstractScreen{
 		
 		
 		session.execute("INSERT INTO lobby (username) VALUES('"+userName+"');");
-	//	session.execute("DELETE FROM lobby WHERE username = 'rof'");
+	
+		
+		//session.execute("DELETE FROM lobby WHERE username = '9999'");
 //		System.out.println("In waiting room");
 //		session.execute("CREATE TABLE IF NOT EXISTS "+userName+"(block int PRIMARY KEY, pathx float,pathy float)");
 //		session.execute("INSERT INTO "+userName+" (username) VALUES('"+userName +"',0,-1.0,-1.0);");
@@ -142,7 +144,7 @@ public class LobbyScreen extends AbstractScreen{
 				//System.out.println("in waiting render");
 					l.result = l.session.execute("SELECT * FROM lobby");
 					l.row = l.result.all();
-					//System.out.println(l.row.toString());
+				//	System.out.println(l.row.toString());
 				
 				if(l.row.size() > 1){
 					for(int i = 0; i< l.row.size();i++){
