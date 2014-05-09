@@ -331,6 +331,8 @@ public class GameScreen extends AbstractScreen {
 								String temp = sortLRow.get(sortLRow.size()-1).getString("username");
 								s.session.execute("Delete From level"+s.numLevel+" WHERE username = '"+temp+"';");
 								
+								
+								
 							}
 
 						}else if(s.getMode() == GameScreen.Mode.LIVE){
