@@ -12,13 +12,13 @@ import edu.oswego.tiltandtumble.TiltAndTumble;
 import edu.oswego.tiltandtumble.data.Score;
 import edu.oswego.tiltandtumble.screens.GameScreen;
 
-public class NeworkingScoreDialog extends Dialog {
+public class NetworkingScoreDialog extends Dialog {
 
 	private final TiltAndTumble game;
 	private final GameScreen screen;
 	private final Sound button;
 	
-	public NeworkingScoreDialog(String title, Skin skin, TiltAndTumble game, GameScreen screen) {
+	public NetworkingScoreDialog(String title, Skin skin, TiltAndTumble game, GameScreen screen) {
 		super(title, skin, "dialog");
 		this.game = game;
 		this.screen = screen;
@@ -40,8 +40,7 @@ public class NeworkingScoreDialog extends Dialog {
 		Table table = new Table(skin);
 		table.setFillParent(true);
 		int lastLevel = screen.getCurrentLevel().getLevelNumber() + 1;
-		table.add("Level #" + lastLevel + " Completed")
-			.colspan(3).center();
+		table.add("Level #" + lastLevel + " Completed").colspan(3).center();
 		table.row().padTop(10).uniformX();
 
 		table.add("Level", "header").left();

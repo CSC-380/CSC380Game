@@ -40,6 +40,7 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 	// NOTE: older phones do not have Deque interface
 	Stack<Screen> screenStack = new Stack<Screen>();
 	private String name;
+	private String liveLevel;
 	
 	private final List<String> levels = new ArrayList<String>();
 	{
@@ -182,13 +183,18 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		setScreen(creditScreen);
 	}
 	
-	public void showLobbyScreen(String name) {
+	public void showLobbyScreen(String name, String levelNum) {
 		if (lobbyScreen == null) {
 			lobbyScreen = new LobbyScreen(this);
 		}
 		this.name = name;
+		this.liveLevel = levelNum;
 		screenStack.push(getScreen());
 		setScreen(lobbyScreen);
+	}
+	
+	public String getLiveLevel(){
+		return liveLevel;
 	}
 	
 	public void showNetworkingLevelScreen(String name){
@@ -310,20 +316,10 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 	
 	public Session getSession() {
 		if(session != null) {
-			return session;
-			
-			
+			return session;			
 		}
-		Cluster cluster = Cluster.builder().addContactPoint("129.3.20.26").withPort(2715).build();
+		Cluster cluster = Cluster.builder().withPort(2715).addContactPoint("129.3.20.26").addContactPoint("129.3.20.36").addContactPoint("129.3.20.24").build();
         session = cluster.connect();
-		//session.execute("DROP KEYSPACE challengeMap");
-		//session.execute("CREATE KEYSPACE challengeMap "
-		//		+ "WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };");
-
-		session.execute("USE challenges;");
-		//session.execute("CREATE TABLE users (" + "username text PRIMARY KEY, "
-		//		+ "highscore int, " + "pathx map<int, float>, "
-		//		+ "pathy map<int, float>);");
 		return session;
 	}
 	

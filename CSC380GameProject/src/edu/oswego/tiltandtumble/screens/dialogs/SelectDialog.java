@@ -58,16 +58,17 @@ public class SelectDialog  extends Dialog {
 			button.play();
 			Buttons b = (Buttons)object;
 			if (b == Buttons.ACCEPT) {
-				game.showChallengeScreen();
-				
+				game.getSession().execute("USE challenges");
+				game.showChallengeScreen();				
 			} else if (b == Buttons.CREATE) {
-
-				getName = new NetworkingDialog("Multiplayer", skin, game).show(screen.getStage());
-				
+				game.getSession().execute("USE challenges");
+				getName = new NetworkingDialog("Multiplayer", skin, game).show(screen.getStage());				
 			}else if(b == Buttons.LIVE){
+				game.getSession().execute("USE realtime");
+				//this prompts for the initials
 				getName = new NetworkingDialog("Live", skin, game).show(screen.getStage());	
 			}
-		 else {
+		else {
 			screen.resume();
 		}
 	}

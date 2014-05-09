@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.google.common.util.concurrent.Service.State;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
 import edu.oswego.tiltandtumble.screens.GameScreen;
@@ -78,6 +79,13 @@ public class Starter extends Dialog {
 		});
 		getContentTable().add(button);
 
+		return super.show(stage);
+	}
+	
+	public Dialog show(Stage stage, String blah) {
+        currentState = State.COUNTING;
+        countdownTime = 0;
+        lastCount = 0;
 		return super.show(stage);
 	}
 

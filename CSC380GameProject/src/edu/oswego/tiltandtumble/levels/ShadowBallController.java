@@ -9,7 +9,6 @@ import com.datastax.driver.core.Session;
 
 import edu.oswego.tiltandtumble.worldObjects.ShadowBall;
 
-
 public class ShadowBallController {
 	private State currentState;
 	private ShadowBall ball;
