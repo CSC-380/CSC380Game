@@ -136,7 +136,7 @@ public class LobbyScreen extends AbstractScreen{
 				//System.out.println("in waiting render");
 					l.result = l.session.execute("SELECT * FROM lobby");
 					l.row = l.result.all();
-					System.out.println(l.row.toString());
+					//System.out.println(l.row.toString());
 				
 				if(l.row.size() > 1){
 					for(int i = 0; i< l.row.size();i++){
