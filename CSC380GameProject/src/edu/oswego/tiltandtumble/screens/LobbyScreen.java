@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -90,6 +91,7 @@ public class LobbyScreen extends AbstractScreen{
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
 					button.play();
+					actor.setColor(new Color(Color.GREEN));
 //					game.showGameScreen(
 //							new Integer(((TextButton)actor).getText().toString()) - 1,
 //							GameScreen.Mode.LIVE);
