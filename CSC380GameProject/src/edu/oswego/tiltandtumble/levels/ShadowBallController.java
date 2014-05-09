@@ -102,12 +102,12 @@ public class ShadowBallController {
 			@Override
 			public void update(ShadowBallController b, float delta) {
 			
-				ResultSet resultsx = b.session.execute("SELECT pathx FROM "+b.name+" WHERE blocknumber = "+b.blockNumber+";");
+				ResultSet resultsx = b.session.execute("SELECT pathx FROM "+b.name+" WHERE block = "+b.blockNumber+";");
 				Row rowx = resultsx.one();
 				//rowx.getFloat("pathx");
 				//b.pathX = rowx.getMap("pathx", Integer.class, Float.class);
 		 	   	
-		 	   	ResultSet resultsy = b.session.execute("SELECT pathy FROM "+b.name+" WHERE blocknumber = "+b.blockNumber+";");
+		 	   	ResultSet resultsy = b.session.execute("SELECT pathy FROM "+b.name+" WHERE block = "+b.blockNumber+";");
 				Row rowy = resultsy.one();
 				//rowy.getFloat("pathy");
 			  // 	b.pathY = rowy.getMap("pathy", Integer.class, Float.class);
