@@ -81,7 +81,6 @@ public class LobbyScreen extends AbstractScreen{
 		table.add("Initials", "header");
 		table.add("Date", "header");
 		
-		//session.execute("DELETE FROM lobby WHERE username = '"+userName+"'");
 		session.execute("INSERT INTO lobby (username) VALUES('"+userName +"');");
 //		System.out.println("In waiting room");
 //		session.execute("CREATE TABLE IF NOT EXISTS "+userName+"(block int PRIMARY KEY, pathx float,pathy float)");
@@ -102,6 +101,7 @@ public class LobbyScreen extends AbstractScreen{
             @Override
             public void changed(ChangeEvent event, Actor actor) {
             	button.play();
+            	session.execute("DELETE FROM lobby WHERE username = '"+userName+"'");
                 game.showPreviousScreen();
             }
         });
@@ -144,8 +144,8 @@ public class LobbyScreen extends AbstractScreen{
 					        l.table.add("1: " + l.opponent);
 					        l.game.setName(temp);
 					        l.session.execute("DELETE FROM lobby WHERE username = '"+l.userName+"'");
-							l.session.execute("CREATE TABLE IF NOT EXISTS "+l.userName+"(block int PRIMARY KEY, pathx float,pathy float)");
-							l.session.execute("INSERT INTO "+l.userName+" (username) VALUES('"+l.userName +"',0,-1.0,-1.0);");
+							l.session.execute("CREATE TABLE IF NOT EXISTS '"+l.userName+"' (block int PRIMARY KEY, pathx float,pathy float)");
+							l.session.execute("INSERT INTO '"+l.userName+"' (username) VALUES(0,-1.0,-1.0);");
 							l.changeState(STARTING);
 						}
 					}
