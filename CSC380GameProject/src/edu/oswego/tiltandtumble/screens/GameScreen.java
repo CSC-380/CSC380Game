@@ -21,12 +21,13 @@ import edu.oswego.tiltandtumble.levels.Level;
 import edu.oswego.tiltandtumble.levels.LevelRenderer;
 import edu.oswego.tiltandtumble.levels.ShadowBallController;
 import edu.oswego.tiltandtumble.levels.WorldPopulator;
-import edu.oswego.tiltandtumble.screens.dialogs.NeworkingScoreDialog;
+import edu.oswego.tiltandtumble.screens.dialogs.NetworkingScoreDialog;
 import edu.oswego.tiltandtumble.screens.dialogs.PauseDialog;
 import edu.oswego.tiltandtumble.screens.dialogs.ScoreDialog;
 import edu.oswego.tiltandtumble.screens.widgets.DPad;
 import edu.oswego.tiltandtumble.screens.widgets.Hud;
 import edu.oswego.tiltandtumble.screens.widgets.Starter;
+
 
 public class GameScreen extends AbstractScreen {
 	public static enum Mode {
@@ -84,7 +85,7 @@ public class GameScreen extends AbstractScreen {
 			session = game.getSession();
 			name = game.getName();
 			shadowController = new ShadowBallController(game.getSession(),name,currentLevel+1);	
-			ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.WRITE, game.getSession(), name,currentLevel+1);
+			ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.REALTIME, game.getSession(), name,currentLevel+1);
 		}else{
 			ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.NORMAL);
 		}
@@ -300,7 +301,7 @@ public class GameScreen extends AbstractScreen {
 					}else{
 						// create or accept or live game play
 						s.scores.add(s.level.getScore());
-						new NeworkingScoreDialog("", s.skin, s.game, s).show(s.stage);
+						new NetworkingScoreDialog("", s.skin, s.game, s).show(s.stage);
 						System.out.println("highscores");
 
 						if(s.getMode() == GameScreen.Mode.CREATE){

@@ -2,10 +2,15 @@ package edu.oswego.tiltandtumble.screens.dialogs;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
 
@@ -15,11 +20,13 @@ public class NetworkingDialog extends Dialog {
 	private TextField initials = null;
 	private final Sound button;
 	private String title;
+	private Skin skin;
 	
 	public NetworkingDialog(String title, Skin skin, TiltAndTumble game){
 		super(title, skin, "dialog");
 		this.game = game;
 		this.title = title;
+		this.skin = skin;
 		AssetManager assetManager = game.getAssetManager();
         String musicFile = "data/soundfx/button-8.ogg";
 		button = assetManager.get(musicFile, Sound.class);
@@ -45,8 +52,39 @@ public class NetworkingDialog extends Dialog {
 		button("Continue");
 		getContentTable().add("Initials:").center();
 		getContentTable().add(initials).center();
+		
+		
 		//table.add("Initials:").center();
 
+	}
+	
+	private void showLevelSelect(final String userName){
+
+//       
+       Table maps = new Table(skin);
+       ScrollPane mapDisplay = new ScrollPane(maps, skin);
+      // maps.setSize(50, 50);
+       getContentTable().add(mapDisplay).expandY().padTop(40).padBottom(10);
+       
+       maps.add("Vote for a Level", "highlight");
+		//maps.row().pad(10, 10, 0, 10).width(75).center();
+		maps.row();
+		
+		int count = game.getLevels().size();
+		for (int i = 0; i < count; i++) {
+			if ((i % 5) == 0) {
+				maps.row().pad(10).width(75);
+			}
+			Button l = new TextButton(Integer.toString(i + 1), skin);
+			maps.add(l);
+			l.addListener(new ChangeListener() {
+				@Override
+				public void changed(ChangeEvent event, Actor actor) {
+					button.play();
+					game.showLobbyScreen(userName, actor.getName());
+				}
+			});
+		}
 	}
 	
 	@Override
@@ -55,9 +93,10 @@ public class NetworkingDialog extends Dialog {
 			button.play();
 			String text = initials.getText();
 			if(title.equalsIgnoreCase("Multiplayer")){
-			game.showNetworkingLevelScreen(text);
+				game.showNetworkingLevelScreen(text);
 			}else{
-			game.showLobbyScreen(text);
+				this.showLevelSelect(text);
+				//game.showLobbyScreen(text);
 			}
 	}
 

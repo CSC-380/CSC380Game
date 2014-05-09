@@ -27,6 +27,7 @@ public class BallController extends ClickListener {
 	public static enum Mode {
 		NORMAL,
 		WRITE,
+		REALTIME,
 	}
 
 	private final Map<MyKeys, Boolean> keys = new EnumMap<MyKeys, Boolean>(MyKeys.class);
@@ -289,6 +290,13 @@ public class BallController extends ClickListener {
 							b.session.execute("UPDATE level"+currentLevel+" SET pathx = pathx + {" + b.blockNumber + " :" + b.ball.getMapX() +"} WHERE username = '"+name+"'");
 							b.session.execute("UPDATE level"+currentLevel+" SET pathy = pathy + {" + b.blockNumber + " :" + b.ball.getMapY() +"} WHERE username = '"+name+"'");
 						}
+						++b.blockNumber;
+					}
+					
+					if(b.mode == Mode.REALTIME){
+							b.session.execute("INSERT INTO '"+name+"' (blockNumber, pathx, pathy)"
+									+ "VALUES ("+b.blockNumber +"," + b.ball.getMapX() +", " + b.ball.getMapY() +"");
+						
 						++b.blockNumber;
 					}
 				}
