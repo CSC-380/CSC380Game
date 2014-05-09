@@ -40,6 +40,7 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 	// NOTE: older phones do not have Deque interface
 	Stack<Screen> screenStack = new Stack<Screen>();
 	private String name;
+	private String opponent;
 	private int liveLevel;
 	
 	private final List<String> levels = new ArrayList<String>();
@@ -215,6 +216,14 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 	
 	public void setName(String name){
 		this.name = name;
+	}
+	
+	public String getOpp(){
+		return opponent;
+	}
+	
+	public void setOpp(String opp){
+		this.opponent = opp;
 	}
 
 	public void showHelpScreen() {

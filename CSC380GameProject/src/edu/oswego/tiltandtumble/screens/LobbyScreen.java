@@ -35,6 +35,7 @@ public class LobbyScreen extends AbstractScreen{
 	ResultSet result ;
 	List<Row> row;	
 	Window table;
+	Table users;
 	
 	public LobbyScreen(TiltAndTumble game) {
 		super(game);
@@ -80,17 +81,20 @@ public class LobbyScreen extends AbstractScreen{
 		table.add("Time", "header");
 		table.add("Initials", "header");
 		table.add("Date", "header");
+		table.row().center().uniform().padTop(5);
 		
 		session.execute("INSERT INTO lobby (username) VALUES('"+userName +"');");
+	//	session.execute("DELETE FROM lobby WHERE username = 'rof'");
 //		System.out.println("In waiting room");
 //		session.execute("CREATE TABLE IF NOT EXISTS "+userName+"(block int PRIMARY KEY, pathx float,pathy float)");
 //		session.execute("INSERT INTO "+userName+" (username) VALUES('"+userName +"',0,-1.0,-1.0);");
 //		ResultSet lobby = session.execute("SELECT * FROM lobby");// WHERE '"+userName+"'");
 //		List<Row> lobbyRow = lobby.all();
 		
-
-        table.row().center().padTop(10);
-        table.add("1: " + userName);
+		users = new Table(skin);
+        users.row().center().uniform();
+        users.add("1: " + userName);
+        table.add(users);
         
         
         
@@ -132,7 +136,7 @@ public class LobbyScreen extends AbstractScreen{
 				//System.out.println("in waiting render");
 					l.result = l.session.execute("SELECT * FROM lobby");
 					l.row = l.result.all();
-					//System.out.println(l.row.toString());
+					System.out.println(l.row.toString());
 				
 				if(l.row.size() > 1){
 					for(int i = 0; i< l.row.size();i++){
@@ -140,12 +144,10 @@ public class LobbyScreen extends AbstractScreen{
 						System.out.println(temp);
 						if(!temp.equals(l.userName)){
 							l.opponent = temp;
-							l.table.row().padTop(10);
-					        l.table.add("1: " + l.opponent);
-					        l.game.setName(temp);
+							l.users.row().padTop(10);
+					        l.users.add("2: " + l.opponent);
+					        l.game.setOpp(temp);
 					        l.session.execute("DELETE FROM lobby WHERE username = '"+l.userName+"'");
-							l.session.execute("CREATE TABLE IF NOT EXISTS '"+l.userName+"' (block int PRIMARY KEY, pathx float,pathy float)");
-							l.session.execute("INSERT INTO '"+l.userName+"' (username) VALUES(0,-1.0,-1.0);");
 							l.changeState(STARTING);
 						}
 					}
@@ -160,7 +162,9 @@ public class LobbyScreen extends AbstractScreen{
 		STARTING{
 		
 		public void render(LobbyScreen l, float delta){
-			
+			System.out.println("Got to state starting");
+			l.session.execute("CREATE TABLE IF NOT EXISTS "+l.userName+" (block int PRIMARY KEY, pathx float, pathy float)");
+			l.session.execute("INSERT INTO "+l.userName+" (block, pathx, pathy)VALUES (0, -1.0, -1.0);");
 		
 			l.game.showGameScreen(l.levelNum, GameScreen.Mode.LIVE);
 			

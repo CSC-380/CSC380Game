@@ -294,8 +294,7 @@ public class BallController extends ClickListener {
 					}
 					
 					if(b.mode == Mode.REALTIME){
-							b.session.execute("INSERT INTO '"+name+"' (blockNumber, pathx, pathy)"
-									+ "VALUES ("+b.blockNumber +"," + b.ball.getMapX() +", " + b.ball.getMapY() +"");
+							b.session.execute("INSERT INTO "+name+" (block, pathx, pathy)VALUES ("+b.blockNumber +", " + b.ball.getMapX() +", " + b.ball.getMapY() +");");
 						
 						++b.blockNumber;
 					}
