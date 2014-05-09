@@ -89,7 +89,7 @@ public class LobbyScreen extends AbstractScreen{
 //		System.out.println(r.toString());
 		
 		
-		//session.execute("INSERT INTO lobby (username) VALUES('"+userName +"');");
+		session.execute("INSERT INTO lobby (username) VALUES('"+userName+"');");
 	//	session.execute("DELETE FROM lobby WHERE username = 'rof'");
 //		System.out.println("In waiting room");
 //		session.execute("CREATE TABLE IF NOT EXISTS "+userName+"(block int PRIMARY KEY, pathx float,pathy float)");
