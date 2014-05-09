@@ -147,17 +147,11 @@ public class LobbyScreen extends AbstractScreen{
 							l.users.row().padTop(10);
 					        l.users.add("2: " + l.opponent);
 					        l.game.setOpp(temp);
-					        l.session.execute("DELETE FROM lobby WHERE username = '"+l.userName+"'");
 							l.changeState(STARTING);
 						}
-					}
-					
-				}
-				
+					}	
+				}	
 			}
-			
-			
-		
 	},
 		STARTING{
 		
@@ -165,7 +159,7 @@ public class LobbyScreen extends AbstractScreen{
 			System.out.println("Got to state starting");
 			l.session.execute("CREATE TABLE IF NOT EXISTS "+l.userName+" (block int PRIMARY KEY, pathx float, pathy float)");
 			l.session.execute("INSERT INTO "+l.userName+" (block, pathx, pathy)VALUES (0, -1.0, -1.0);");
-		
+			l.session.execute("DELETE FROM lobby WHERE username = '"+l.userName+"'");
 			l.game.showGameScreen(l.levelNum, GameScreen.Mode.LIVE);
 			
 		}
