@@ -83,7 +83,13 @@ public class LobbyScreen extends AbstractScreen{
 		table.add("Date", "header");
 		table.row().center().uniform().padTop(5);
 		
-		session.execute("INSERT INTO lobby (username) VALUES('"+userName +"');");
+		
+		
+//		ResultSet r = session.execute("DESCRIBE KEYSPACE realtime;");
+//		System.out.println(r.toString());
+		
+		
+		//session.execute("INSERT INTO lobby (username) VALUES('"+userName +"');");
 	//	session.execute("DELETE FROM lobby WHERE username = 'rof'");
 //		System.out.println("In waiting room");
 //		session.execute("CREATE TABLE IF NOT EXISTS "+userName+"(block int PRIMARY KEY, pathx float,pathy float)");
