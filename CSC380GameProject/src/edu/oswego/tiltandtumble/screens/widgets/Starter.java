@@ -82,12 +82,6 @@ public class Starter extends Dialog {
 		return super.show(stage);
 	}
 	
-	public Dialog playNow(Stage stage) {
-        currentState = State.COUNTING;
-        countdownTime = 0;
-        lastCount = 0;
-		return super.show(stage);
-	}
 
 	private static enum State {
 		COUNTING {

@@ -239,11 +239,8 @@ public class GameScreen extends AbstractScreen {
 		WAITING {
 			@Override
 			public void show(GameScreen s) {
-				if(s.currentMode != Mode.LIVE){
 					new Starter(s, s.skin, s.game).show(s.stage);
-				}else{
-					new Starter(s, s.skin, s.game).playNow(s.stage);
-				}
+
 			}
 
 			@Override
