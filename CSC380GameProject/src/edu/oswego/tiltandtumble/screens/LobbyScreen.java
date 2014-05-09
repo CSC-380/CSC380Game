@@ -86,8 +86,8 @@ public class LobbyScreen extends AbstractScreen{
 //		System.out.println("In waiting room");
 //		session.execute("CREATE TABLE IF NOT EXISTS "+userName+"(block int PRIMARY KEY, pathx float,pathy float)");
 //		session.execute("INSERT INTO "+userName+" (username) VALUES('"+userName +"',0,-1.0,-1.0);");
-		ResultSet lobby = session.execute("SELECT * FROM lobby");// WHERE '"+userName+"'");
-		List<Row> lobbyRow = lobby.all();
+//		ResultSet lobby = session.execute("SELECT * FROM lobby");// WHERE '"+userName+"'");
+//		List<Row> lobbyRow = lobby.all();
 		
 
         table.row().center().padTop(10);
@@ -128,16 +128,24 @@ public class LobbyScreen extends AbstractScreen{
 				
 			}
 			
-			public void render(LobbyScreen l , float delta){		
+			public void render(LobbyScreen l , float delta){
+				//System.out.println("in waiting render");
 					l.result = l.session.execute("SELECT * FROM lobby");
 					l.row = l.result.all();
+					//System.out.println(l.row.toString());
 				
-				if(l.row.size() < 2){
+				if(l.row.size() > 1){
 					for(int i = 0; i< l.row.size();i++){
-						if(!l.row.get(i).getString("username").equals(l.userName)){
-							l.opponent =l.row.get(i).getString("username");
+						String temp = l.row.get(i).getString("username");
+						System.out.println(temp);
+						if(!temp.equals(l.userName)){
+							l.opponent = temp;
 							l.table.row().padTop(10);
 					        l.table.add("1: " + l.opponent);
+					        l.game.setName(temp);
+					        l.session.execute("DELETE FROM lobby WHERE username = '"+l.userName+"'");
+							l.session.execute("CREATE TABLE IF NOT EXISTS "+l.userName+"(block int PRIMARY KEY, pathx float,pathy float)");
+							l.session.execute("INSERT INTO "+l.userName+" (username) VALUES('"+l.userName +"',0,-1.0,-1.0);");
 							l.changeState(STARTING);
 						}
 					}

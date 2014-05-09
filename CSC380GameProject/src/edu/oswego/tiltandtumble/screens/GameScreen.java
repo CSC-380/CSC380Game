@@ -84,7 +84,7 @@ public class GameScreen extends AbstractScreen {
 			//need a shadowball and to write
 			session = game.getSession();
 			name = game.getName();
-			shadowController = new ShadowBallController(game.getSession(),name,currentLevel+1);	
+			shadowController = new ShadowBallController(game.getSession(),name);	
 			ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.REALTIME, game.getSession(), name,currentLevel+1);
 		}else{
 			ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.NORMAL);

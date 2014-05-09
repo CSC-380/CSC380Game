@@ -12,6 +12,7 @@ import edu.oswego.tiltandtumble.worldObjects.ShadowBall;
 public class ShadowBallController {
 	private State currentState;
 	private ShadowBall ball;
+	private String name;
 	
 	private Session session;
 	private Map<Integer, Float> pathX;
@@ -19,6 +20,7 @@ public class ShadowBallController {
 	private int level;
 	
 	private int count = 0;
+	private int blockNumber = 0;
 	
 	public ShadowBallController(Session session,String name,int level){
 		//get info from server here store in something so update can use it		
@@ -39,6 +41,14 @@ public class ShadowBallController {
 	   	pathY = rowy.getMap("pathy", Integer.class, Float.class);
  	   	currentState = State.ACTIVE;
  	   	System.out.println("made shadow");
+	}
+	
+	public ShadowBallController(Session session,String name){
+	
+		this.session = session;
+		this.name = name;  	
+	   	currentState = State.LIVE;
+ 	   	System.out.println("made live shadow");
 	}
 	
 	public void setBall(ShadowBall ball) {
@@ -82,6 +92,29 @@ public class ShadowBallController {
 				}catch(NullPointerException e){
 					//do nothing
 				}
+			}
+		},
+		LIVE{
+			@Override
+			public void pause(ShadowBallController b) {
+				b.changeState(PAUSED);
+			}
+			@Override
+			public void update(ShadowBallController b, float delta) {
+			
+				ResultSet resultsx = b.session.execute("SELECT pathx FROM username = '"+b.name+"' WHERE blocknumber = "+b.blockNumber+";");
+				Row rowx = resultsx.one();
+				//rowx.getFloat("pathx");
+				//b.pathX = rowx.getMap("pathx", Integer.class, Float.class);
+		 	   	
+		 	   	ResultSet resultsy = b.session.execute("SELECT pathy FROM username = '"+b.name+"' WHERE blocknumber = "+b.blockNumber+";");
+				Row rowy = resultsy.one();
+				//rowy.getFloat("pathy");
+			  // 	b.pathY = rowy.getMap("pathy", Integer.class, Float.class);
+				b.ball.draw(delta, rowx.getFloat("pathx"), rowy.getFloat("pathy"));
+				
+				b.blockNumber++;
+				
 			}
 		};
 
