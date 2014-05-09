@@ -8,7 +8,6 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -104,39 +103,7 @@ public class LobbyScreen extends AbstractScreen{
         users.row().padTop(10);
         users.add("1: " + userName);
         
-<<<<<<< HEAD
-        table.row();
-        
-        Table maps = new Table(skin);
-        ScrollPane mapDisplay = new ScrollPane(maps, skin);
-       // maps.setSize(50, 50);
-        table.add(mapDisplay).expandY().padTop(40).padBottom(10);
-        
-        maps.add("Vote for a Level", "highlight");
-		//maps.row().pad(10, 10, 0, 10).width(75).center();
-		maps.row();
-		
-		int count = game.getLevels().size();
-		for (int i = 0; i < count; i++) {
-			if ((i % 5) == 0) {
-				maps.row().pad(10).width(75);
-			}
-			Button l = new TextButton(Integer.toString(i + 1), skin);
-			maps.add(l);
-			l.addListener(new ChangeListener() {
-				@Override
-				public void changed(ChangeEvent event, Actor actor) {
-					button.play();
-					actor.setColor(new Color(Color.GREEN));
-//					game.showGameScreen(
-//							new Integer(((TextButton)actor).getText().toString()) - 1,
-//							GameScreen.Mode.LIVE);
-				}
-			});
-		}
-=======
 //       
->>>>>>> FETCH_HEAD
       
         
 
