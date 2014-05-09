@@ -82,7 +82,7 @@ public class Starter extends Dialog {
 		return super.show(stage);
 	}
 	
-	public Dialog show(Stage stage, String blah) {
+	public Dialog playNow(Stage stage) {
         currentState = State.COUNTING;
         countdownTime = 0;
         lastCount = 0;
