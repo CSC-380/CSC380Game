@@ -148,6 +148,7 @@ public class LobbyScreen extends AbstractScreen{
 					        l.users.add("2: " + l.opponent);
 					        l.game.setOpp(temp);
 							l.changeState(STARTING);
+							
 						}
 					}	
 				}	
