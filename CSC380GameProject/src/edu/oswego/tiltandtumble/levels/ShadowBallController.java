@@ -123,7 +123,7 @@ public class ShadowBallController {
 						e1.printStackTrace();
 					}
 				}
-				//b.blockNumber++;
+				b.blockNumber++;
 				
 			}
 		};
