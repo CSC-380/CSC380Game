@@ -78,6 +78,7 @@ public class NetworkingDialog extends Dialog {
 				game.showNetworkingLevelScreen(text, false);
 			}else{
 				//live
+				
 				Session session = game.getSession();
 				ResultSet result = session.execute("SELECT * FROM lobbyy");
 				List<Row> row = result.all();

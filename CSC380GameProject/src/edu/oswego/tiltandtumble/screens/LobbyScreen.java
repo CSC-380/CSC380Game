@@ -207,36 +207,37 @@ public class LobbyScreen extends AbstractScreen{
 			
 			public void render(LobbyScreen l , float delta){
 				//System.out.println("in waiting render");
-//					l.result = l.session.execute("SELECT * FROM lobbyy");
-//					l.row = l.result.all();
-//					//System.out.println(l.row.toString());
-//				
-//					for(int i = 0; i< l.row.size();i++){
-//						String temp = l.row.get(i).getString("user");
-//						if(temp.equals(l.userName)){
-//							if(l.row.get(i).getBool("selected")){
-//								System.out.println("selcected");
-//								l.lobby = l.row.get(i).getString("lobby");
-//								//l.session.execute("DROP TABLE privateLobby"+l.userName+"");
-//								l.result = l.session.execute("SELECT * FROM privateLobby"+l.lobby+"");
-//								l.row = l.result.all();
-//								for(int j = 0; j< l.row.size();j++){
-//									temp = l.row.get(i).getString("username");
-//									if(!temp.equals(l.userName)){
-//										l.opponent = temp;
-//										l.users.row().padTop(10);
-//								        l.users.add(l.numOfPlayers+": "+ l.opponent);
-//								        l.game.setOpp(temp);
-//								        l.privateLobby.setVisible(true);
-//								        l.numOfPlayers++;	
-//									}
-//	
-//								}
-//
-//							}
-//
-//						}
-//					}	
+					l.result = l.session.execute("SELECT * FROM lobbyy");
+					l.row = l.result.all();
+					//System.out.println(l.row.toString());
+				
+					for(int i = 0; i< l.row.size();i++){
+						String temp = l.row.get(i).getString("user");
+						if(temp.equals(l.userName)){
+							if(l.row.get(i).getBool("selected")){
+								System.out.println("selcected");
+								l.lobby = l.row.get(i).getString("lobby");
+								//l.session.execute("DROP TABLE privateLobby"+l.userName+"");
+								l.result = l.session.execute("SELECT * FROM privateLobby"+l.lobby+"");
+								l.row = l.result.all();
+								
+								for(int j = 0; j< l.row.size();j++){
+									temp = l.row.get(j).getString("user");
+									if(!temp.equals(l.userName)){
+										l.opponent = temp;
+										l.users.row().padTop(10);
+								        l.users.add(l.numOfPlayers+": "+ l.opponent);
+								        l.game.setOpp(temp);
+								        l.privateLobby.setVisible(true);
+								        l.numOfPlayers++;	
+									}
+									
+								}
+
+							}
+
+						}
+					}	
 			}	
 			
 	},
