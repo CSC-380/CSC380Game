@@ -10,6 +10,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -20,27 +22,33 @@ import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
+import edu.oswego.tiltandtumble.screens.dialogs.AddPlayerDialog;
 
 
 
 
 public class LobbyScreen extends AbstractScreen{
-	Sound button;
-	String userName;
-	String opponent;
+	private Sound button;
+	private String userName;
+	private String opponent;
+	private String lobby;
+	private int numOfPlayers = 1;
 	private int levelNum;
-	TiltAndTumble game;
-	Session session;	
+	private TiltAndTumble game;
+	private Session session;	
 	private State currentState;
-	ResultSet result ;
-	List<Row> row;	
-	Window table;
-	Table users;
+	private ResultSet result ;
+	private List<Row> row;	
+	private Table users;
+	private Dialog dialog;
+	private Label badUserName;
+	private Label privateLobby;
 	
 	public LobbyScreen(TiltAndTumble game) {
 		super(game);
 		this.game = game;
 		session = game.getSession();
+		dialog = new AddPlayerDialog("Add Player", skin, game, this);
 	}
 
 	@Override
@@ -70,29 +78,23 @@ public class LobbyScreen extends AbstractScreen{
         String musicFile = "data/soundfx/button-8.ogg";
 		button = assetManager.get(musicFile, Sound.class);
 		
-		table = new Window("\nOnline Multiplayer", skin);
-		table.setFillParent(true);
-		table.setModal(true);
-		table.setMovable(false);
-        stage.addActor(table);
-
-        table.row().center().uniform().padTop(40);
-		table.add("Name", "header");
-		table.add("Time", "header");
-		table.add("Initials", "header");
-		table.add("Date", "header");
-		table.row().center().uniform().padTop(5);
-		
-		
-		
-//		ResultSet r = session.execute("DESCRIBE KEYSPACE realtime;");
-//		System.out.println(r.toString());
-		
-		
-		session.execute("INSERT INTO lobby (username) VALUES('"+userName+"');");
-	
-		
-		//session.execute("DELETE FROM lobby WHERE username = '9999'");
+		Window window = new Window("\nOnline Multiplayer", skin);
+		window.setFillParent(true);
+		window.setModal(true);
+		window.setMovable(false);
+        stage.addActor(window);
+        privateLobby = new Label("Private Lobby", skin);
+        window.add(privateLobby).padTop(40);
+        privateLobby.setVisible(false);
+		window.row().center().uniform().pad(10, 10, 0, 10);
+			
+		//session.execute("CREATE TABLE IF NOT EXISTS lobbyy (user ascii PRIMARY KEY, selected boolean, lobby ascii)");
+		//session.execute("INSERT INTO lobbyy (user, selected, lobby) VALUES('"+userName+"', false, '"+userName+"');");
+		//numOfPlayers++;
+		session.execute("CREATE TABLE IF NOT EXISTS privateLobby"+userName+" (user ascii PRIMARY KEY)");
+		session.execute("INSERT INTO privateLobby"+userName+" (user)VALUES ('"+userName+"');");
+		lobby = userName;
+//		session.execute("DELETE FROM lobby WHERE username = 'GOO'");
 //		System.out.println("In waiting room");
 //		session.execute("CREATE TABLE IF NOT EXISTS "+userName+"(block int PRIMARY KEY, pathx float,pathy float)");
 //		session.execute("INSERT INTO "+userName+" (username) VALUES('"+userName +"',0,-1.0,-1.0);");
@@ -100,26 +102,89 @@ public class LobbyScreen extends AbstractScreen{
 //		List<Row> lobbyRow = lobby.all();
 		
 		users = new Table(skin);
+		Table buttons = new Table(skin);
+        users.row().center().uniform().pad(10,10,0,0);
+        users.add("Players in lobby", "highlight");
         users.row().center().uniform();
         users.add("1: " + userName);
-        table.add(users);
+
+        window.add(users).left();
+       
+       
+        
+        Button addPlayers = new TextButton("Add Player", skin);
+        Button startMatch = new TextButton ("Start Match", skin);
+        buttons.row().center().uniform().pad(10,0,0,20);
+        badUserName = new Label("Invalid UserName", skin);
+		badUserName.setVisible(false);
+		buttons.add(badUserName);
+		buttons.row().uniform();
+		buttons.add(addPlayers);
+		window.add(buttons);
+        
+        addPlayers.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+            	button.play();
+            	
+            	dialog.show(stage);
+            		
+            }
+        });
+        
+        startMatch.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+            	button.play();
+            	changeState(State.STARTING);
+            	
+            }
+        });
         
         
         
-        table.row().expand().padBottom(10);
+        window.row().expand().padBottom(10);
         Button back = new TextButton("Go Back", skin);
-        table.add(back).colspan(4).bottom();
+        window.add(back).bottom();
+        window.add(startMatch).bottom();
         back.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
             	button.play();
-            	session.execute("DELETE FROM lobby WHERE username = '"+userName+"'");
+            	session.execute("DELETE FROM lobbyy WHERE user = '"+userName+"'");
+            	session.execute("DROP TABLE privateLobby"+userName+"");
                 game.showPreviousScreen();
             }
         });
         
         changeState(State.WAITING);
 		
+	}
+	
+	public void addPlayer(String addedPlayer){
+		ResultSet result = session.execute("SELECT * FROM privateLobby"+lobby+"");
+		List<Row> row = result.all();
+		//System.out.println("1 " + row.toString());
+    	
+		if(row.size() > 1){
+			for(int i = 0; i< row.size();i++){
+				String temp = row.get(i).getString("user");
+				System.out.println("after dialog");
+				if(temp.equals(addedPlayer)){
+					numOfPlayers++;
+					opponent = temp;
+					users.row().padTop(10);
+			        users.add(numOfPlayers+": "+ opponent);
+			        game.setOpp(temp);
+			        
+			        privateLobby.setVisible(true);
+			        badUserName.setVisible(false);
+					return;
+				}
+			}
+			
+		}
+		badUserName.setVisible(true);
 	}
 	
 	
@@ -142,25 +207,38 @@ public class LobbyScreen extends AbstractScreen{
 			
 			public void render(LobbyScreen l , float delta){
 				//System.out.println("in waiting render");
-					l.result = l.session.execute("SELECT * FROM lobby");
-					l.row = l.result.all();
-				//	System.out.println(l.row.toString());
-				
-				if(l.row.size() > 1){
-					for(int i = 0; i< l.row.size();i++){
-						String temp = l.row.get(i).getString("username");
-						System.out.println(temp);
-						if(!temp.equals(l.userName)){
-							l.opponent = temp;
-							l.users.row().padTop(10);
-					        l.users.add("2: " + l.opponent);
-					        l.game.setOpp(temp);
-							l.changeState(STARTING);
-							
-						}
-					}	
-				}	
-			}
+//					l.result = l.session.execute("SELECT * FROM lobbyy");
+//					l.row = l.result.all();
+//					//System.out.println(l.row.toString());
+//				
+//					for(int i = 0; i< l.row.size();i++){
+//						String temp = l.row.get(i).getString("user");
+//						if(temp.equals(l.userName)){
+//							if(l.row.get(i).getBool("selected")){
+//								System.out.println("selcected");
+//								l.lobby = l.row.get(i).getString("lobby");
+//								//l.session.execute("DROP TABLE privateLobby"+l.userName+"");
+//								l.result = l.session.execute("SELECT * FROM privateLobby"+l.lobby+"");
+//								l.row = l.result.all();
+//								for(int j = 0; j< l.row.size();j++){
+//									temp = l.row.get(i).getString("username");
+//									if(!temp.equals(l.userName)){
+//										l.opponent = temp;
+//										l.users.row().padTop(10);
+//								        l.users.add(l.numOfPlayers+": "+ l.opponent);
+//								        l.game.setOpp(temp);
+//								        l.privateLobby.setVisible(true);
+//								        l.numOfPlayers++;	
+//									}
+//	
+//								}
+//
+//							}
+//
+//						}
+//					}	
+			}	
+			
 	},
 		STARTING{
 		
@@ -168,7 +246,8 @@ public class LobbyScreen extends AbstractScreen{
 			System.out.println("Got to state starting");
 			l.session.execute("CREATE TABLE IF NOT EXISTS "+l.userName+" (block int PRIMARY KEY, pathx float, pathy float)");
 			l.session.execute("INSERT INTO "+l.userName+" (block, pathx, pathy)VALUES (0, -1.0, -1.0);");
-			l.session.execute("DELETE FROM lobby WHERE username = '"+l.userName+"'");
+			l.session.execute("DELETE FROM lobbyy WHERE user = '"+l.userName+"'");
+			l.session.execute("DROP TABLE privateLobby"+l.userName+"");
 			l.game.showGameScreen(l.levelNum, GameScreen.Mode.LIVE);
 			
 		}
