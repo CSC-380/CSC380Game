@@ -101,7 +101,7 @@ public class ShadowBallController {
 			}
 			@Override
 			public void update(ShadowBallController b, float delta) {
-			System.out.println("shadow update");
+			//System.out.println("shadow update");
 			
 				ResultSet resultsx = b.session.execute("SELECT pathx FROM "+b.name+" WHERE block = "+b.blockNumber+";");
 				Row rowx = resultsx.one();
