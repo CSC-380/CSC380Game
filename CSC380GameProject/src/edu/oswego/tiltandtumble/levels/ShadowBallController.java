@@ -113,11 +113,17 @@ public class ShadowBallController {
 				//rowy.getFloat("pathy");
 			  // 	b.pathY = rowy.getMap("pathy", Integer.class, Float.class);
 				try{
-				b.ball.draw(delta, rowx.getFloat("pathx"), rowy.getFloat("pathy"));
+					b.ball.draw(delta, rowx.getFloat("pathx"), rowy.getFloat("pathy"));
+					//b.blockNumber++;
 				}catch(NullPointerException e){
-					//do nothin
+					try {
+						Thread.sleep((long) (0.5*delta));
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
-				b.blockNumber++;
+				//b.blockNumber++;
 				
 			}
 		};
