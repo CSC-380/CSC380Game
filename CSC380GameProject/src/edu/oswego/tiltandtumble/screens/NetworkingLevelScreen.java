@@ -1,5 +1,7 @@
 package edu.oswego.tiltandtumble.screens;
 
+import java.net.UnknownHostException;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
@@ -103,7 +105,15 @@ public class NetworkingLevelScreen extends AbstractScreen {
 							GameScreen.Mode.CREATE);
 					}else{
 						button.play();
-						game.showLobbyScreen(new Integer(((TextButton)actor).getText().toString()) - 1);
+						try {
+							game.showLobbyScreen(new Integer(((TextButton)actor).getText().toString()) - 1);
+						} catch (NumberFormatException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (UnknownHostException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 			});

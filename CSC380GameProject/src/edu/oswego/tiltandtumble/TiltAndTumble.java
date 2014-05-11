@@ -1,5 +1,6 @@
 package edu.oswego.tiltandtumble;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -19,6 +20,8 @@ import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
 
 import edu.oswego.tiltandtumble.data.HighScores;
+import edu.oswego.tiltandtumble.net.JAVAClient;
+import edu.oswego.tiltandtumble.net.JAVAServer;
 import edu.oswego.tiltandtumble.screens.ChallengeScreen;
 import edu.oswego.tiltandtumble.screens.CreditScreen;
 import edu.oswego.tiltandtumble.screens.GameScreen;
@@ -42,6 +45,9 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 	private String name;
 	private String opponent;
 	private int liveLevel;
+	private boolean isServer;
+	private JAVAServer javaServer;
+	private JAVAClient javaClient;
 	
 	private final List<String> levels = new ArrayList<String>();
 	{
@@ -184,7 +190,7 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		setScreen(creditScreen);
 	}
 	
-	public void showLobbyScreen(int levelNum) {
+	public void showLobbyScreen(int levelNum) throws UnknownHostException {
 		if (lobbyScreen == null) {
 			lobbyScreen = new LobbyScreen(this);
 		}
@@ -273,15 +279,32 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		}
 		screenStack.push(getScreen());
 		gameScreen = new GameScreen(this, level, mode);
-		//this.endMusic();
 		setScreen(gameScreen);
+	}
+	
+	public void setToServer(boolean server){
+		this.isServer = server;
+		if(server){
+		javaServer = new JAVAServer(JAVAServer.platformCode.DESKTOP);
+		}else{
+		javaClient = new JAVAClient(JAVAClient.platformCode.DESKTOP);
+		}
+	}
+	
+	public JAVAClient getClientConnection(){
+			return javaClient;
+	}
+	
+	public JAVAServer getServerConnection(){
+			return javaServer;
+	}
+	
+	public boolean isServer(){
+		return isServer;
 	}
 
 	public void showPreviousScreen() {
-//		if(screenStack.peek() == mainScreen){
-//			this.challengeAcceptMode = false;
-//			this.challengeMode = false;
-//		}
+
 		if(screenStack.peek() != gameScreen){
 		this.playMusic();
 		}

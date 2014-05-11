@@ -1,5 +1,7 @@
 package edu.oswego.tiltandtumble.screens;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -43,12 +45,15 @@ public class LobbyScreen extends AbstractScreen{
 	private Dialog dialog;
 	private Label badUserName;
 	private Label privateLobby;
+	private InetAddress addressOfServer;
+	private boolean isServer;
 	
-	public LobbyScreen(TiltAndTumble game) {
+	public LobbyScreen(TiltAndTumble game) throws UnknownHostException {
 		super(game);
 		this.game = game;
 		session = game.getSession();
 		dialog = new AddPlayerDialog("Add Player", skin, game, this);
+		addressOfServer = InetAddress.getLocalHost();
 	}
 
 	@Override
@@ -91,9 +96,10 @@ public class LobbyScreen extends AbstractScreen{
 		//session.execute("CREATE TABLE IF NOT EXISTS lobbyy (user ascii PRIMARY KEY, selected boolean, lobby ascii)");
 		//session.execute("INSERT INTO lobbyy (user, selected, lobby) VALUES('"+userName+"', false, '"+userName+"');");
 		//numOfPlayers++;
-		session.execute("CREATE TABLE IF NOT EXISTS privateLobby"+userName+" (user ascii PRIMARY KEY)");
-		session.execute("INSERT INTO privateLobby"+userName+" (user)VALUES ('"+userName+"');");
+		session.execute("CREATE TABLE IF NOT EXISTS privateLobby"+userName+" (user ascii PRIMARY KEY, inet ipAdressForServer)");
+		session.execute("INSERT INTO privateLobby"+userName+" (user)VALUES ('"+userName+"', '"+addressOfServer.toString()+"');");
 		lobby = userName;
+		isServer = true;
 //		session.execute("DELETE FROM lobby WHERE username = 'GOO'");
 //		System.out.println("In waiting room");
 //		session.execute("CREATE TABLE IF NOT EXISTS "+userName+"(block int PRIMARY KEY, pathx float,pathy float)");
@@ -214,23 +220,26 @@ public class LobbyScreen extends AbstractScreen{
 					for(int i = 0; i< l.row.size();i++){
 						String temp = l.row.get(i).getString("user");
 						if(temp.equals(l.userName)){
-							if(l.row.get(i).getBool("selected")){
-							//	System.out.println("selcected");
 								l.lobby = l.row.get(i).getString("lobby");
-							//	System.out.println(l.lobby);
-								//l.session.execute("DROP TABLE privateLobby"+l.userName+"");
 								l.result = l.session.execute("SELECT * FROM privateLobby"+l.lobby+"");
 								l.row = l.result.all();
 								System.out.println(l.row.size());
 								for(int j = 0; j< l.row.size();j++){
 									temp = l.row.get(j).getString("user");
-							//		System.out.println(temp + "***" + l.userName);
 									if(!temp.equals(l.userName)){
+										String address = l.row.get(j).getString("ipAddressOfServer");
+										try {
+											
+											l.addressOfServer = InetAddress.getByName(address);
+											l.isServer = false;
+										} catch (UnknownHostException e) {
+								
+											e.printStackTrace();
+										}
 										l.opponent = temp;
 										l.users.row().padTop(10);
 										 l.numOfPlayers++;
 								        l.users.add(l.numOfPlayers+": "+ l.opponent);
-							//	        System.out.println("HERE");
 								        l.game.setOpp(temp);
 								        l.privateLobby.setVisible(true);
 								      	
@@ -244,7 +253,7 @@ public class LobbyScreen extends AbstractScreen{
 
 						}
 					}	
-			}	
+				
 			
 	},
 		STARTING{
@@ -255,6 +264,7 @@ public class LobbyScreen extends AbstractScreen{
 			l.session.execute("INSERT INTO "+l.userName+" (block, pathx, pathy)VALUES (0, -1.0, -1.0);");
 			l.session.execute("DELETE FROM lobbyy WHERE user = '"+l.userName+"'");
 			l.session.execute("DROP TABLE privateLobby"+l.userName+"");
+			l.game.setToServer(l.isServer);
 			l.game.showGameScreen(l.levelNum, GameScreen.Mode.LIVE);
 			
 		}

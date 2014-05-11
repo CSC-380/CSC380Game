@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.datastax.driver.core.Session;
 
+import edu.oswego.tiltandtumble.net.JAVAClient;
+import edu.oswego.tiltandtumble.net.JAVAServer;
 import edu.oswego.tiltandtumble.worldObjects.Ball;
 
 
@@ -39,6 +41,9 @@ public class BallController extends ClickListener {
 	private float keyX = 0;
 	private float keyY = 0;
 	private Mode mode;
+	private JAVAServer server;
+	private JAVAClient client;
+	private boolean isServer;
 	
 	private Session session;
 	private int blockNumber = 0;
@@ -53,6 +58,36 @@ public class BallController extends ClickListener {
 		currentState = State.ACTIVE;
 	}
 	
+	public BallController(boolean useAccelerometer, Mode mode, Session session,String namee, int currentLevel, JAVAServer server) {
+		this.useAccelerometer = useAccelerometer;
+		this.mode = mode;
+		this.name = namee;
+		this.server = server;
+		this.isServer = true;
+		this.currentLevel = currentLevel;
+		keys.put(MyKeys.LEFT, false);
+		keys.put(MyKeys.RIGHT, false);
+		keys.put(MyKeys.UP, false);
+		keys.put(MyKeys.DOWN, false);
+		this.session = session;
+		currentState = State.ACTIVE;
+	}	
+	
+	public BallController(boolean useAccelerometer, Mode mode, Session session,String namee, int currentLevel, JAVAClient client) {
+		this.useAccelerometer = useAccelerometer;
+		this.mode = mode;
+		this.name = namee;
+		this.currentLevel = currentLevel;
+		this.client = client;
+		this.isServer = false;
+		keys.put(MyKeys.LEFT, false);
+		keys.put(MyKeys.RIGHT, false);
+		keys.put(MyKeys.UP, false);
+		keys.put(MyKeys.DOWN, false);
+		this.session = session;
+		currentState = State.ACTIVE;
+	}
+	
 	public BallController(boolean useAccelerometer, Mode mode, Session session,String namee, int currentLevel) {
 		this.useAccelerometer = useAccelerometer;
 		this.mode = mode;
@@ -64,7 +99,7 @@ public class BallController extends ClickListener {
 		keys.put(MyKeys.DOWN, false);
 		this.session = session;
 		currentState = State.ACTIVE;
-	}	
+	}
 
 	public void setBall(Ball ball) {
 		this.ball = ball;
@@ -295,9 +330,13 @@ public class BallController extends ClickListener {
 					
 					if(b.mode == Mode.REALTIME){
 						//ystem.out.println("got here");
-						++b.blockNumber;
-						b.session.execute("INSERT INTO "+name+" (block, pathx, pathy)VALUES ("+b.blockNumber +", " + b.ball.getMapX() +", " + b.ball.getMapY() +");");
-						
+						//++b.blockNumber;
+						//b.session.execute("INSERT INTO "+name+" (block, pathx, pathy)VALUES ("+b.blockNumber +", " + b.ball.getMapX() +", " + b.ball.getMapY() +");");
+						if(b.isServer){
+							b.server.sendMessage(b.ball.getMapX(), b.ball.getMapY());
+						}else{
+							b.client.sendMessage(b.ball.getMapX(), b.ball.getMapY());
+						}
 					
 					}
 				}
