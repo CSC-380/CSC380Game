@@ -4,6 +4,9 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
 
+import appwarp.WarpController;
+import appwarp.WarpListener;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
@@ -29,7 +32,7 @@ import edu.oswego.tiltandtumble.screens.dialogs.AddPlayerDialog;
 
 
 
-public class LobbyScreen extends AbstractScreen{
+public class LobbyScreen extends AbstractScreen implements WarpListener{
 	private Sound button;
 	public String userName;
 	public String opponent;
@@ -45,27 +48,29 @@ public class LobbyScreen extends AbstractScreen{
 	public Dialog dialog;
 	public Label badUserName;
 	public Label privateLobby;
-	public InetAddress addressOfServer;
-	public boolean isServer;
 	private boolean first = true;
 	private RenderThread rt;
+	
+	private final String[] tryingToConnect = {"Connecting","to AppWarp"};
+	private final String[] waitForOtherUser = {"Waiting for","other user"};
+	private final String[] errorInConnection = {"Error in","Connection", "Go Back"};
+	
+	private final String[] game_over = {"Congrats!", "Level Completed"};
+	private final String[] enemy_left = {"Congrats You Win!", "Enemy Left the Game"};
+	
+	private String[] msg = tryingToConnect;
 
-	public LobbyScreen(TiltAndTumble game) throws UnknownHostException {
+	public LobbyScreen(TiltAndTumble game) {
 		super(game);
 		this.game = game;
 		session = game.getSession();
 		dialog = new AddPlayerDialog("Add Player", skin, game, this);
-		addressOfServer = InetAddress.getLocalHost();
-		//System.out.println(addressOfServer.toString());
 	}
 
 	@Override
 	public void show() {
+		
 
-		//session.execute("CREATE TABLE IF NOT EXISTS lobby (username text PRIMARY KEY)");
-		//		session.execute("CREATE TABLE users (" + "username text PRIMARY KEY, "
-		//						+ "highscore int, " + "pathx map<int, float>, "
-		//						+ "pathy map<int, float>);");
 		InputMultiplexer multiplexer = new InputMultiplexer(stage,
 				new InputAdapter() {
 			@Override
@@ -96,19 +101,6 @@ public class LobbyScreen extends AbstractScreen{
 		privateLobby.setVisible(false);
 		window.row().center().uniform().pad(10, 10, 0, 10);
 
-		//session.execute("CREATE TABLE IF NOT EXISTS lobbyy (user ascii PRIMARY KEY, selected boolean, lobby ascii)");
-		//session.execute("INSERT INTO lobbyy (user, selected, lobby) VALUES('"+userName+"', false, '"+userName+"');");
-		//numOfPlayers++;
-		session.execute("CREATE TABLE IF NOT EXISTS privateLobby"+userName+" (user ascii PRIMARY KEY, ipAddressForServer inet)");
-		session.execute("INSERT INTO privateLobby"+userName+" (user, ipAddressForServer)VALUES ('"+userName+"', '"+addressOfServer.getHostAddress()+"');");
-		lobby = userName;
-		isServer = true;
-		//		session.execute("DELETE FROM lobby WHERE username = 'GOO'");
-		//		System.out.println("In waiting room");
-		//		session.execute("CREATE TABLE IF NOT EXISTS "+userName+"(block int PRIMARY KEY, pathx float,pathy float)");
-		//		session.execute("INSERT INTO "+userName+" (username) VALUES('"+userName +"',0,-1.0,-1.0);");
-		//		ResultSet lobby = session.execute("SELECT * FROM lobby");// WHERE '"+userName+"'");
-		//		List<Row> lobbyRow = lobby.all();
 
 		users = new Table(skin);
 		Table buttons = new Table(skin);
@@ -135,7 +127,6 @@ public class LobbyScreen extends AbstractScreen{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				button.play();
-
 				dialog.show(stage);
 
 			}
@@ -145,8 +136,8 @@ public class LobbyScreen extends AbstractScreen{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				button.play();
-				changeState(State.STARTING);
-
+				//changeState(State.STARTING);
+				WarpController.getInstance().startGame();
 			}
 		});
 
@@ -160,15 +151,89 @@ public class LobbyScreen extends AbstractScreen{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				button.play();
-				session.execute("DELETE FROM lobbyy WHERE user = '"+userName+"'");
-				session.execute("DROP TABLE privateLobby"+userName+"");
+			//	session.execute("DELETE FROM lobbyy WHERE user = '"+userName+"'");
+			//	session.execute("DROP TABLE privateLobby"+userName+"");
+				WarpController.getInstance().handleLeave();
 				game.showPreviousScreen();
 			}
 		});
 
+		
+		WarpController.getInstance().setListener(this);
+
+		//session.execute("CREATE TABLE IF NOT EXISTS lobbyy (user ascii PRIMARY KEY, selected boolean, lobby ascii)");
+		//session.execute("INSERT INTO lobbyy (user, selected, lobby) VALUES('"+userName+"', false, '"+userName+"');");
+		//numOfPlayers++;
+	//	session.execute("CREATE TABLE IF NOT EXISTS privateLobby"+userName+" (user ascii PRIMARY KEY, roomId ascii)");
+	//	session.execute("INSERT INTO privateLobby"+userName+" (user, roomId)VALUES ('"+userName+"' , '"+WarpController.getInstance().getRoomID()+"');");
+		lobby = userName;
+		//		session.execute("DELETE FROM lobby WHERE username = 'GOO'");
+		//		System.out.println("In waiting room");
+		//		session.execute("CREATE TABLE IF NOT EXISTS "+userName+"(block int PRIMARY KEY, pathx float,pathy float)");
+		//		session.execute("INSERT INTO "+userName+" (username) VALUES('"+userName +"',0,-1.0,-1.0);");
+		//		ResultSet lobby = session.execute("SELECT * FROM lobby");// WHERE '"+userName+"'");
+		//		List<Row> lobbyRow = lobby.all();
 		changeState(State.WAITING);
 
 	}
+	
+	@Override
+	public void onError (String message) {
+		this.msg = errorInConnection;
+		
+	}
+	
+	@Override
+	public void onUserJoinedRoom(String user){
+		numOfPlayers++;
+		opponent = user;
+		users.row().padTop(10);
+		users.add(numOfPlayers+": "+ opponent);
+		game.setOpp(user);
+
+		privateLobby.setVisible(true);
+		badUserName.setVisible(false);
+	}
+	
+	@Override
+	public int getNumPlayers(){
+		return numOfPlayers;
+	}
+
+	@Override
+	public void onGameStarted (String message) {
+		Gdx.app.postRunnable(new Runnable() {
+			@Override
+			public void run () {
+				changeState(State.STARTING);
+			}
+		});
+		
+	}
+
+	@Override
+	public void onGameFinished (int code, boolean isRemote) {
+		if(code==WarpController.GAME_OVER){
+			this.msg = game_over;
+		}else if(code==WarpController.ENEMY_LEFT){
+			this.msg = enemy_left;
+		}
+		game.setScreen(this);
+	}
+	
+	@Override
+	public void onGameUpdateReceived (String message) {
+		
+	}
+
+	@Override
+	public void onWaitingStarted(String message) {
+		this.msg = waitForOtherUser;
+
+	}
+	
+	
+	
 
 	public void addPlayer(String addedPlayer){
 		ResultSet result = session.execute("SELECT * FROM privateLobby"+lobby+"");
@@ -209,59 +274,12 @@ public class LobbyScreen extends AbstractScreen{
 	private static enum State {
 		WAITING{
 
-			public void show(LobbyScreen l){
-				//display something to show the user stuff is happening
-
-			}
-
 			public void render(LobbyScreen l , float delta){
 				if(l.first) {
-				//	l.rt = new RenderThread(l);
-				//	l.rt.start();
-				//	l.first = false;
-				//	System.out.println("CHECK 1-1");
 					new Thread(new RenderThread(l)).start();
 					l.first = false;
 				}
-				//l = l.rt.getLobbyScreen();
-				
-//				//System.out.println("in waiting render");
-//				l.result = l.session.execute("SELECT * FROM lobbyy");
-//				l.row = l.result.all();
-//				//System.out.println(l.row.toString());
-//
-//				for(int i = 0; i< l.row.size();i++){
-//					String temp = l.row.get(i).getString("user");
-//					if(temp.equals(l.userName)){
-//						boolean sel = l.row.get(i).getBool("selected");
-//						if(sel) {
-//							l.lobby = l.row.get(i).getString("lobby");
-//							l.result = l.session.execute("SELECT * FROM privateLobby"+l.lobby+"");
-//							l.row = l.result.all();
-//							for(int j = 0; j< l.row.size();j++){
-//								temp = l.row.get(j).getString("user");
-//								if(!temp.equals(l.userName)){
-//									l.addressOfServer = l.row.get(j).getInet("ipAddressForServer");
-//									l.isServer = false;
-//									l.opponent = temp;
-//									l.users.row().padTop(10);
-//									l.numOfPlayers++;
-//									l.users.add(l.numOfPlayers+": "+ l.opponent);
-//									l.game.setOpp(temp);
-//									l.privateLobby.setVisible(true);
-//
-//									l.session.execute("DELETE FROM lobbyy WHERE user = '"+l.userName+"'");
-//									return;
-//								}
-//
-//							}
-//
-//						}
-//
-//
-//					}
-//
-//				}
+
 			}	
 
 
@@ -270,22 +288,17 @@ public class LobbyScreen extends AbstractScreen{
 		
 		public void render(LobbyScreen l, float delta){
 			System.out.println("Got to state starting");
-			l.session.execute("CREATE TABLE IF NOT EXISTS "+l.userName+" (block int PRIMARY KEY, pathx float, pathy float)");
-			l.session.execute("INSERT INTO "+l.userName+" (block, pathx, pathy)VALUES (0, -1.0, -1.0);");
-			l.session.execute("DELETE FROM lobbyy WHERE user = '"+l.userName+"'");
-			l.session.execute("DROP TABLE privateLobby"+l.userName+"");
-			l.game.setOnlineServerAddress(l.addressOfServer.toString());
-			l.game.setToServer(l.isServer);
-			l.game.showGameScreen(l.levelNum, GameScreen.Mode.LIVE);
+			//l.session.execute("DELETE FROM lobbyy WHERE user = '"+l.userName+"'");
+			//l.session.execute("DROP TABLE privateLobby"+l.userName+"");
+			l.game.showMultiplayerGameScreen(l.levelNum, l);
 			
 		}
 		
 		
 	};
 
-
-		public void show(LobbyScreen l) {}
 		public void render(LobbyScreen l, float delta) {}
 	}
+
 
 }

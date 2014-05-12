@@ -1,7 +1,11 @@
 package edu.oswego.tiltandtumble.screens;
 
 import java.net.UnknownHostException;
+import java.util.Random;
 
+import appwarp.WarpController;
+
+import com.shephertz.app42.gaming.multiplayer.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
@@ -34,7 +38,7 @@ public class NetworkingLevelScreen extends AbstractScreen {
 	public void setLive(boolean live){
 		this.live = live;
 	}
-
+	
 
 	@Override
 	public void show() {
@@ -105,15 +109,9 @@ public class NetworkingLevelScreen extends AbstractScreen {
 							GameScreen.Mode.CREATE);
 					}else{
 						button.play();
-						try {
-							game.showLobbyScreen(new Integer(((TextButton)actor).getText().toString()) - 1);
-						} catch (NumberFormatException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (UnknownHostException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+						WarpController.getInstance().startApp(game.getName());
+						game.showLobbyScreen(new Integer(((TextButton)actor).getText().toString()) - 1);
+						
 					}
 				}
 			});

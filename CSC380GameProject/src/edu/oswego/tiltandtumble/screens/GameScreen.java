@@ -35,7 +35,6 @@ public class GameScreen extends AbstractScreen {
 		PRACTICE ,  
 		ACCEPT, 
 		CREATE, 
-		LIVE
 	}
 
 	private final BallController ballController;
@@ -80,20 +79,6 @@ public class GameScreen extends AbstractScreen {
 			name = game.getName();
 			name = game.getName();
 			ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.WRITE, game.getSession(), name,currentLevel+1);
-		}else if(mode == Mode.LIVE){
-			//need a shadowball and to write
-			
-			
-			session = game.getSession();
-			
-			if(game.isServer()){
-				shadowController = new ShadowBallController(game.getSession(),game.getOpp(), game.getServerConnection());	
-				ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.REALTIME, game.getSession(), game.getName(),currentLevel+1, game.getServerConnection());
-			}else{
-			
-			shadowController = new ShadowBallController(game.getSession(),game.getOpp(), game.getClientConnection());	
-			ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.REALTIME, game.getSession(), game.getName(),currentLevel+1, game.getClientConnection());
-			}
 		}else{
 			ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.NORMAL);
 		}
@@ -107,7 +92,6 @@ public class GameScreen extends AbstractScreen {
 	
 
 	public void loadLevel(int num) {
-		if(this.currentMode != Mode.LIVE){
 		changeState(State.WAITING);
 		Gdx.app.log("GameScreen", "Loading level #" + num);
 		if (level != null) {
@@ -144,48 +128,6 @@ public class GameScreen extends AbstractScreen {
 		hud.setLevel(num + 1);
 		new Starter(this, skin, game).show(stage);
 		Gdx.app.log("GameScreen", "Level starting...");
-		
-		}else{
-			changeState(State.WAITING);
-			Gdx.app.log("GameScreen", "Loading level #" + num);
-			if (level != null) {
-				level.dispose();
-				level = null;
-			}
-			if (renderer != null) {
-				renderer.dispose();
-				renderer = null;
-			}
-			if (audio != null) {
-				game.getSettings().removeObserver(audio);
-				audio.dispose();
-				audio = null;
-			}
-			//Gdx.app.log("GameScreen", "Cleaned up previous level");
-			level = new Level(num, game.getLevels().get(num), ballController, worldPopulator, game.getAssetManager(),shadowController);
-			//Gdx.app.log("GameScreen", "Level loaded");
-			renderer = new DefaultLevelRenderer(level,
-					game.getWidth(), game.getHeight(),
-					game.getSpriteBatch(),
-					game.getAssetManager());
-			if (game.getSettings().isDebugRender()) {
-				renderer = new DebugLevelRenderer(renderer, ballController);
-			}
-			Gdx.app.log("GameScreen", "Renderer created");
-			audio = new AudioManager(
-					level,
-					game.getSettings().isMusicOn(),
-					game.getSettings().isSoundEffectOn(),
-					game.getAssetManager());
-			game.getSettings().addObserver(audio);
-			Gdx.app.log("GameScreen", "Audio manager created");
-			hud.setLevel(num + 1);
-			//new Starter(this, skin, game).show(stage);
-			Gdx.app.log("GameScreen", "Level starting...");
-			this.start();
-			
-			
-		}
 	}
 
 	public boolean hasMoreLevels() {
@@ -351,13 +293,8 @@ public class GameScreen extends AbstractScreen {
 						new ScoreDialog("Score", s.skin, s.game, s).show(s.stage);
 						
 					}else{
-						// create or accept or live game play
-						if(s.getMode() == GameScreen.Mode.LIVE && s.level.isFailed()){
-							s.loadLevel(s.getCurrentLevel().getLevelNumber());
-							
-							
-							
-						}
+						// create or accept game play
+						
 						s.scores.add(s.level.getScore());
 						new NetworkingScoreDialog("", s.skin, s.game, s).show(s.stage);
 						System.out.println("highscores");
@@ -394,8 +331,6 @@ public class GameScreen extends AbstractScreen {
 								
 							}
 
-						}else if(s.getMode() == GameScreen.Mode.LIVE){
-							s.session.execute("DROP TABLE "+s.game.getName()+"");
 						}
 
 					}

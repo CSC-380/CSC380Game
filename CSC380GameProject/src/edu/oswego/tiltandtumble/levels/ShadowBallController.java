@@ -6,9 +6,6 @@ import java.util.Map;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
-
-import edu.oswego.tiltandtumble.net.JAVAClient;
-import edu.oswego.tiltandtumble.net.JAVAServer;
 import edu.oswego.tiltandtumble.worldObjects.ShadowBall;
 
 public class ShadowBallController {
@@ -20,11 +17,11 @@ public class ShadowBallController {
 	private Map<Integer, Float> pathX;
 	private Map<Integer, Float> pathY;
 	private int level;
+	private float x = 0;
+	private float y = 0;
 	
 	private int count = 0;
 	private int blockNumber = 0;
-	private JAVAServer server;
-	private JAVAClient client;
 	private boolean isServer;
 	
 	public ShadowBallController(Session session,String name,int level){
@@ -42,23 +39,14 @@ public class ShadowBallController {
  	   	System.out.println("made shadow");
 	}
 	
-	public ShadowBallController(Session session,String name, JAVAServer server){
-		this.server = server;
+	public ShadowBallController(Session session,String name){
 		this.session = session;
 		this.name = name;  	
 		this.isServer = true;
 	   	currentState = State.LIVE;
  	   	System.out.println("made live shadow");
 	}
-	
-	public ShadowBallController(Session session,String name, JAVAClient client){
-		this.client = client;
-		this.session = session;
-		this.name = name; 
-		this.isServer = false;
-	   	currentState = State.LIVE;
- 	   	System.out.println("made live shadow");
-	}
+
 	
 	public void setBall(ShadowBall ball) {
 		this.ball = ball;
@@ -74,6 +62,10 @@ public class ShadowBallController {
 
 	public void resume() {
 		currentState.resume(this);
+	}
+	
+	public void updateEnemyLocation(float x, float y){
+		currentState.updateEnemyLocation(this, x, y);
 	}
 	
 	private void changeState(State state) {
@@ -110,40 +102,17 @@ public class ShadowBallController {
 			}
 			@Override
 			public void update(ShadowBallController b, float delta) {
-			//System.out.println("shadow update");
-//			
-//				ResultSet resultsx = b.session.execute("SELECT pathx FROM "+b.name+" WHERE block = "+b.blockNumber+";");
-//				Row rowx = resultsx.one();
-//				//rowx.getFloat("pathx");
-//				//b.pathX = rowx.getMap("pathx", Integer.class, Float.class);
-//		 	   	
-//		 	   	ResultSet resultsy = b.session.execute("SELECT pathy FROM "+b.name+" WHERE block = "+b.blockNumber+";");
-//				Row rowy = resultsy.one();
-//				//rowy.getFloat("pathy");
-//			  // 	b.pathY = rowy.getMap("pathy", Integer.class, Float.class);
-//				try{
-//					b.ball.draw(delta, rowx.getFloat("pathx"), rowy.getFloat("pathy"));
-//					//b.blockNumber++;
-//				}catch(NullPointerException e){
-//					try {
-//						Thread.sleep((long) (0.5*delta));
-//					} catch (InterruptedException e1) {
-//						// TODO Auto-generated catch block
-//						e1.printStackTrace();
-//					}
-//				}
-//				b.blockNumber++;
-				if(b.isServer){
-					b.ball.draw(delta, b.server.getX(), b.server.getY());
-					System.out.println("drawing shadow");
-				}else{
-					b.ball.draw(delta, b.client.getX(), b.client.getY());
-					System.out.println("drawing shadow");
-				}
-				
+				b.ball.draw(delta, b.x, b.y);
+				//System.out.println("x and y drawn");
+			}
+			
+			public void updateEnemyLocation(ShadowBallController b, float x, float y){
+				b.x = x;
+				b.y = y;
+			//	System.out.println("x and y updated");
 			}
 		};
-
+		public void updateEnemyLocation(ShadowBallController b, float x, float y){}
 		public void pause(ShadowBallController b) {}
 		public void resume(ShadowBallController b) {}
 		public void update(ShadowBallController b, float delta) {}

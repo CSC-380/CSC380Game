@@ -3,6 +3,10 @@ package edu.oswego.tiltandtumble.levels;
 import java.util.EnumMap;
 import java.util.Map;
 
+import org.json.JSONObject;
+
+import appwarp.WarpController;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector3;
@@ -10,8 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.datastax.driver.core.Session;
 
-import edu.oswego.tiltandtumble.net.JAVAClient;
-import edu.oswego.tiltandtumble.net.JAVAServer;
 import edu.oswego.tiltandtumble.worldObjects.Ball;
 
 
@@ -41,9 +43,6 @@ public class BallController extends ClickListener {
 	private float keyX = 0;
 	private float keyY = 0;
 	private Mode mode;
-	private JAVAServer server;
-	private JAVAClient client;
-	private boolean isServer;
 	
 	private Session session;
 	private int blockNumber = 0;
@@ -57,37 +56,7 @@ public class BallController extends ClickListener {
 		keys.put(MyKeys.DOWN, false);
 		currentState = State.ACTIVE;
 	}
-	
-	public BallController(boolean useAccelerometer, Mode mode, Session session,String namee, int currentLevel, JAVAServer server) {
-		this.useAccelerometer = useAccelerometer;
-		this.mode = mode;
-		this.name = namee;
-		this.server = server;
-		this.isServer = true;
-		this.currentLevel = currentLevel;
-		keys.put(MyKeys.LEFT, false);
-		keys.put(MyKeys.RIGHT, false);
-		keys.put(MyKeys.UP, false);
-		keys.put(MyKeys.DOWN, false);
-		this.session = session;
-		currentState = State.ACTIVE;
-	}	
-	
-	public BallController(boolean useAccelerometer, Mode mode, Session session,String namee, int currentLevel, JAVAClient client) {
-		this.useAccelerometer = useAccelerometer;
-		this.mode = mode;
-		this.name = namee;
-		this.currentLevel = currentLevel;
-		this.client = client;
-		this.isServer = false;
-		keys.put(MyKeys.LEFT, false);
-		keys.put(MyKeys.RIGHT, false);
-		keys.put(MyKeys.UP, false);
-		keys.put(MyKeys.DOWN, false);
-		this.session = session;
-		currentState = State.ACTIVE;
-	}
-	
+		
 	public BallController(boolean useAccelerometer, Mode mode, Session session,String namee, int currentLevel) {
 		this.useAccelerometer = useAccelerometer;
 		this.mode = mode;
@@ -332,17 +301,24 @@ public class BallController extends ClickListener {
 						//ystem.out.println("got here");
 						//++b.blockNumber;
 						//b.session.execute("INSERT INTO "+name+" (block, pathx, pathy)VALUES ("+b.blockNumber +", " + b.ball.getMapX() +", " + b.ball.getMapY() +");");
-						if(b.isServer){
-							b.server.sendMessage(b.ball.getMapX(), b.ball.getMapY());
-							System.out.println("writing out");
-						}else{
-							b.client.sendMessage(b.ball.getMapX(), b.ball.getMapY());
-							System.out.println("writing out");
-						}
+						b.blockNumber++;
+							try {
+								JSONObject data = new JSONObject();
+								data.put("x", b.ball.getMapX());
+								data.put("y", b.ball.getMapY());
+								if(b.blockNumber%10==0){
+									b.blockNumber=0;
+									WarpController.getInstance().sendGameUpdate(data.toString());
+								//	System.out.println("data sent");
+								}
+							} catch (Exception e) {
+								// exception in sendLocation
+							}
+					}
 					
 					}
 				}
-			}
+			
 		};
 
 		public void pause(BallController b) {}

@@ -20,8 +20,6 @@ import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
 
 import edu.oswego.tiltandtumble.data.HighScores;
-import edu.oswego.tiltandtumble.net.JAVAClient;
-import edu.oswego.tiltandtumble.net.JAVAServer;
 import edu.oswego.tiltandtumble.screens.ChallengeScreen;
 import edu.oswego.tiltandtumble.screens.CreditScreen;
 import edu.oswego.tiltandtumble.screens.GameScreen;
@@ -30,6 +28,7 @@ import edu.oswego.tiltandtumble.screens.HighScoresScreen;
 import edu.oswego.tiltandtumble.screens.LevelScreen;
 import edu.oswego.tiltandtumble.screens.LobbyScreen;
 import edu.oswego.tiltandtumble.screens.MainScreen;
+import edu.oswego.tiltandtumble.screens.MultiplayerGameScreen;
 import edu.oswego.tiltandtumble.screens.NetworkingLevelScreen;
 import edu.oswego.tiltandtumble.screens.SettingsScreen;
 import edu.oswego.tiltandtumble.settings.Settings;
@@ -45,10 +44,6 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 	private String name;
 	private String opponent;
 	private int liveLevel;
-	private boolean isServer;
-	private JAVAServer javaServer;
-	private JAVAClient javaClient;
-	private String onlineServerAddress;
 	
 	private final List<String> levels = new ArrayList<String>();
 	{
@@ -75,6 +70,7 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 	private ChallengeScreen challengeScreen;
 	private NetworkingLevelScreen networkingLevelScreen;
 	private LobbyScreen lobbyScreen;
+	private MultiplayerGameScreen multiplayerScreen;
 	
 	private AssetManager assetManager;
 	private Skin skin;
@@ -191,13 +187,33 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		setScreen(creditScreen);
 	}
 	
-	public void showLobbyScreen(int levelNum) throws UnknownHostException {
+	public void showLobbyScreen(int levelNum){
 		if (lobbyScreen == null) {
 			lobbyScreen = new LobbyScreen(this);
 		}
 		this.liveLevel = levelNum;
 		screenStack.push(getScreen());
 		setScreen(lobbyScreen);
+	}
+	
+	public void showMultiplayerGameScreen(int lvl, LobbyScreen l){
+		if (multiplayerScreen != null) {
+			multiplayerScreen.dispose();
+			
+		}
+		screenStack.push(getScreen());
+		multiplayerScreen = new MultiplayerGameScreen(this, lvl, l);
+		setScreen(multiplayerScreen);
+		
+	}
+	
+	public void showGameScreen(int level, GameScreen.Mode mode) {
+		if (gameScreen != null) {
+			gameScreen.dispose();
+		}
+		screenStack.push(getScreen());
+		gameScreen = new GameScreen(this, level, mode);
+		setScreen(gameScreen);
 	}
 	
 	public int getLiveLevel(){
@@ -274,39 +290,7 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		setScreen(challengeScreen);
 	}
 
-	public void showGameScreen(int level, GameScreen.Mode mode) {
-		if (gameScreen != null) {
-			gameScreen.dispose();
-		}
-		screenStack.push(getScreen());
-		gameScreen = new GameScreen(this, level, mode);
-		setScreen(gameScreen);
-	}
-	
-	public void setToServer(boolean server){
-		this.isServer = server;
-		if(server){
-		javaServer = new JAVAServer(JAVAServer.platformCode.DESKTOP);
-		}else{
-		javaClient = new JAVAClient(JAVAClient.platformCode.DESKTOP, "onlineServerAddress");
-		}
-	}
-	
-	public void setOnlineServerAddress(String x){
-		onlineServerAddress = x;
-	}
-	
-	public JAVAClient getClientConnection(){
-			return javaClient;
-	}
-	
-	public JAVAServer getServerConnection(){
-			return javaServer;
-	}
-	
-	public boolean isServer(){
-		return isServer;
-	}
+
 
 	public void showPreviousScreen() {
 

@@ -2,6 +2,8 @@ package edu.oswego.tiltandtumble.screens;
 
 import java.util.List;
 
+import appwarp.WarpController;
+
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
@@ -48,15 +50,14 @@ public class RenderThread implements Runnable {
 						for (int j = 0; j < l.row.size(); j++) {
 							temp = l.row.get(j).getString("user");
 							if (!temp.equals(l.userName)) {
-								l.addressOfServer = l.row.get(j).getInet(
-										"ipAddressForServer");
-								l.isServer = false;
 								l.opponent = temp;
 								l.users.row().padTop(10);
 								l.numOfPlayers++;
 								l.users.add(l.numOfPlayers + ": " + l.opponent);
 								l.game.setOpp(temp);
 								l.privateLobby.setVisible(true);
+								String roomId = l.row.get(j).getString("roomId");
+								WarpController.getInstance().onRoomCreated(roomId);
 
 								l.session
 										.execute("DELETE FROM lobbyy WHERE user = '"
