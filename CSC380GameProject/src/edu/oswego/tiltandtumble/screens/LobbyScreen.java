@@ -96,8 +96,8 @@ public class LobbyScreen extends AbstractScreen{
 		//session.execute("CREATE TABLE IF NOT EXISTS lobbyy (user ascii PRIMARY KEY, selected boolean, lobby ascii)");
 		//session.execute("INSERT INTO lobbyy (user, selected, lobby) VALUES('"+userName+"', false, '"+userName+"');");
 		//numOfPlayers++;
-		session.execute("CREATE TABLE IF NOT EXISTS privateLobby"+userName+" (user ascii PRIMARY KEY, inet ipAdressForServer)");
-		session.execute("INSERT INTO privateLobby"+userName+" (user)VALUES ('"+userName+"', '"+addressOfServer.toString()+"');");
+		session.execute("CREATE TABLE IF NOT EXISTS privateLobby"+userName+" (user ascii PRIMARY KEY, ipAddressForServer inet)");
+		session.execute("INSERT INTO privateLobby"+userName+" (user, ipAddressForServer) VALUES ('"+userName+"', '"+addressOfServer.getHostAddress()+"');");
 		lobby = userName;
 		isServer = true;
 //		session.execute("DELETE FROM lobby WHERE username = 'GOO'");
@@ -223,19 +223,11 @@ public class LobbyScreen extends AbstractScreen{
 								l.lobby = l.row.get(i).getString("lobby");
 								l.result = l.session.execute("SELECT * FROM privateLobby"+l.lobby+"");
 								l.row = l.result.all();
-								System.out.println(l.row.size());
 								for(int j = 0; j< l.row.size();j++){
 									temp = l.row.get(j).getString("user");
 									if(!temp.equals(l.userName)){
-										String address = l.row.get(j).getString("ipAddressOfServer");
-										try {
-											
-											l.addressOfServer = InetAddress.getByName(address);
-											l.isServer = false;
-										} catch (UnknownHostException e) {
-								
-											e.printStackTrace();
-										}
+										l.addressOfServer = l.row.get(j).getInet("ipAddressForServer");
+										l.isServer = false;
 										l.opponent = temp;
 										l.users.row().padTop(10);
 										 l.numOfPlayers++;
