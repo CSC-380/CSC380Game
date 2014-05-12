@@ -215,44 +215,6 @@ public class LobbyScreen extends AbstractScreen{
 			}
 
 			public void render(LobbyScreen l , float delta){
-<<<<<<< HEAD
-				//System.out.println("in waiting render");
-					l.result = l.session.execute("SELECT * FROM lobbyy");
-					l.row = l.result.all();
-					//System.out.println(l.row.toString());
-				
-					for(int i = 0; i< l.row.size();i++){
-						String temp = l.row.get(i).getString("user");
-						
-						if(temp.equals(l.userName)){
-							boolean sel = l.row.get(i).getBool("selected");
-							if(sel){
-								l.lobby = l.row.get(i).getString("lobby");
-								l.result = l.session.execute("SELECT * FROM privateLobby"+l.lobby+"");
-								l.row = l.result.all();
-								for(int j = 0; j< l.row.size();j++){
-									temp = l.row.get(j).getString("user");
-									if(!temp.equals(l.userName)){
-										l.addressOfServer = l.row.get(j).getInet("ipAddressForServer");
-										l.isServer = false;
-										l.opponent = temp;
-										l.users.row().padTop(10);
-										l.numOfPlayers++;
-								        l.users.add(l.numOfPlayers+": "+ l.opponent);
-								        l.game.setOpp(temp);
-								        l.privateLobby.setVisible(true);
-								      	
-								    	l.session.execute("DELETE FROM lobbyy WHERE user = '"+l.userName+"'");
-								        return;
-									}
-	
-								}
-								}
-							}
-
-						}
-					}	
-=======
 				if(l.first) {
 				//	l.rt = new RenderThread(l);
 				//	l.rt.start();
@@ -262,7 +224,6 @@ public class LobbyScreen extends AbstractScreen{
 					l.first = false;
 				}
 				//l = l.rt.getLobbyScreen();
->>>>>>> FETCH_HEAD
 				
 //				//System.out.println("in waiting render");
 //				l.result = l.session.execute("SELECT * FROM lobbyy");
@@ -306,7 +267,6 @@ public class LobbyScreen extends AbstractScreen{
 
 		},
 		STARTING{
-<<<<<<< HEAD
 		
 		public void render(LobbyScreen l, float delta){
 			System.out.println("Got to state starting");
@@ -322,22 +282,7 @@ public class LobbyScreen extends AbstractScreen{
 		
 		
 	};
-=======
 
-			public void render(LobbyScreen l, float delta){
-				System.out.println("Got to state starting");
-				l.session.execute("CREATE TABLE IF NOT EXISTS "+l.userName+" (block int PRIMARY KEY, pathx float, pathy float)");
-				l.session.execute("INSERT INTO "+l.userName+" (block, pathx, pathy)VALUES (0, -1.0, -1.0);");
-				l.session.execute("DELETE FROM lobbyy WHERE user = '"+l.userName+"'");
-				l.session.execute("DROP TABLE privateLobby"+l.userName+"");
-				l.game.setToServer(l.isServer);
-				l.game.showGameScreen(l.levelNum, GameScreen.Mode.LIVE);
-
-			}
-
-
-		};
->>>>>>> FETCH_HEAD
 
 		public void show(LobbyScreen l) {}
 		public void render(LobbyScreen l, float delta) {}
