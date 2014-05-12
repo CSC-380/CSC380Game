@@ -220,7 +220,7 @@ public class LobbyScreen extends AbstractScreen implements WarpListener{
 		}else if(code==WarpController.ENEMY_LEFT){
 			this.msg = enemy_left;
 		}
-		game.setScreen(this);
+		game.showMainScreen();
 	}
 	
 	@Override
@@ -276,13 +276,13 @@ public class LobbyScreen extends AbstractScreen implements WarpListener{
 	private static enum State {
 		WAITING{
 
-			public void render(LobbyScreen l , float delta){
-				if(l.first) {
-					new Thread(new RenderThread(l)).start();
-					l.first = false;
-				}
+//			public void render(LobbyScreen l , float delta){
+//				if(l.first) {
+//					new Thread(new RenderThread(l)).start();
+//					l.first = false;
+//				}
 
-			}	
+			//}	
 
 
 		},
