@@ -306,7 +306,7 @@ public class BallController extends ClickListener {
 								JSONObject data = new JSONObject();
 								data.put("x", b.ball.getMapX());
 								data.put("y", b.ball.getMapY());
-								if(b.blockNumber%10==0){
+								if(b.blockNumber%5 == 0){
 									b.blockNumber=0;
 									WarpController.getInstance().sendGameUpdate(data.toString());
 								//	System.out.println("data sent");
