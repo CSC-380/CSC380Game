@@ -77,20 +77,6 @@ public class NetworkingDialog extends Dialog {
 				game.showNetworkingLevelScreen(text, false);
 			}else{
 				//live
-				
-//				Session session = game.getSession();
-//				//ResultSet result = session.execute("SELECT * FROM lobbyy");
-//				List<Row> row = result.all();
-//				System.out.println(row.toString());
-//			
-//				for(int i = 0; i< row.size();i++){
-//					String temp = row.get(i).getString("user");
-//					if(temp.equals(text)){
-//						Dialog dialog = new NetworkingDialog(title, skin, game, true).show(game.getStage());
-//					}
-//				}	
-			//	session.execute("INSERT INTO lobbyy (user, selected, lobby) VALUES('"+text+"', false, '"+text+"');");
-
 				game.showNetworkingLevelScreen(text, true);
 			}
 	}

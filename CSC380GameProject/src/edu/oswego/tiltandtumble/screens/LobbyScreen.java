@@ -1,8 +1,6 @@
 package edu.oswego.tiltandtumble.screens;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.List;
+
 
 import appwarp.WarpController;
 import appwarp.WarpListener;
@@ -17,14 +15,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.datastax.driver.core.ResultSet;
-import com.datastax.driver.core.Row;
-import com.datastax.driver.core.Session;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
 import edu.oswego.tiltandtumble.screens.dialogs.AddPlayerDialog;
@@ -40,16 +34,15 @@ public class LobbyScreen extends AbstractScreen implements WarpListener{
 	public int numOfPlayers = 1;
 	public int levelNum;
 	public TiltAndTumble game;
-	public Session session;	
 	public State currentState;
-	public ResultSet result ;
-	public List<Row> row;	
+	//public ResultSet result ;
+	//public List<Row> row;	
 	public Table users;
-	public Dialog dialog;
+	//public Dialog dialog;
 	public Label badUserName;
 	public Label privateLobby;
 	private boolean first = true;
-	private RenderThread rt;
+	//private RenderThread rt;
 	
 	private final String[] tryingToConnect = {"Connecting","to AppWarp"};
 	private final String[] waitForOtherUser = {"Waiting for","other user"};
@@ -63,8 +56,7 @@ public class LobbyScreen extends AbstractScreen implements WarpListener{
 	public LobbyScreen(TiltAndTumble game) {
 		super(game);
 		this.game = game;
-		session = game.getSession();
-		dialog = new AddPlayerDialog("Add Player", skin, game, this);
+		//dialog = new AddPlayerDialog("Add Player", skin, game, this);
 	}
 
 	@Override
@@ -129,7 +121,7 @@ public class LobbyScreen extends AbstractScreen implements WarpListener{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				button.play();
-				dialog.show(stage);
+				//dialog.show(stage);
 
 			}
 		});
@@ -238,29 +230,29 @@ public class LobbyScreen extends AbstractScreen implements WarpListener{
 	
 
 	public void addPlayer(String addedPlayer){
-		ResultSet result = session.execute("SELECT * FROM privateLobby"+lobby+"");
-		List<Row> row = result.all();
-		//System.out.println("1 " + row.toString());
-
-		if(row.size() > 1){
-			for(int i = 0; i< row.size();i++){
-				String temp = row.get(i).getString("user");
-				System.out.println("after dialog");
-				if(temp.equals(addedPlayer)){
-					numOfPlayers++;
-					opponent = temp;
-					users.row().padTop(10);
-					users.add(numOfPlayers+": "+ opponent);
-					game.setOpp(temp);
-
-					privateLobby.setVisible(true);
-					badUserName.setVisible(false);
-					return;
-				}
-			}
-
-		}
-		badUserName.setVisible(true);
+//		//ResultSet result = session.execute("SELECT * FROM privateLobby"+lobby+"");
+//		List<Row> row = result.all();
+//		//System.out.println("1 " + row.toString());
+//
+//		if(row.size() > 1){
+//			for(int i = 0; i< row.size();i++){
+//				String temp = row.get(i).getString("user");
+//				System.out.println("after dialog");
+//				if(temp.equals(addedPlayer)){
+//					numOfPlayers++;
+//					opponent = temp;
+//					users.row().padTop(10);
+//					users.add(numOfPlayers+": "+ opponent);
+//					game.setOpp(temp);
+//
+//					privateLobby.setVisible(true);
+//					badUserName.setVisible(false);
+//					return;
+//				}
+//			}
+//
+//		}
+//		badUserName.setVisible(true);
 	}
 
 

@@ -64,7 +64,7 @@ public class SelectDialog  extends Dialog {
 				game.getSession().execute("USE challenges");
 				getName = new NetworkingDialog("Multiplayer", skin, game, false).show(screen.getStage());				
 			}else if(b == Buttons.LIVE){
-				game.getSession().execute("USE realtime");
+				//game.getSession().execute("USE realtime");
 				//this prompts for the initials
 				getName = new NetworkingDialog("Live", skin, game, false).show(screen.getStage());	
 			}

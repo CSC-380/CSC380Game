@@ -9,13 +9,10 @@ import appwarp.WarpController;
 import appwarp.WarpListener;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.datastax.driver.core.Row;
-import com.datastax.driver.core.Session;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
 import edu.oswego.tiltandtumble.data.Score;
@@ -27,12 +24,9 @@ import edu.oswego.tiltandtumble.levels.Level;
 import edu.oswego.tiltandtumble.levels.LevelRenderer;
 import edu.oswego.tiltandtumble.levels.ShadowBallController;
 import edu.oswego.tiltandtumble.levels.WorldPopulator;
-import edu.oswego.tiltandtumble.screens.dialogs.NetworkingScoreDialog;
 import edu.oswego.tiltandtumble.screens.dialogs.PauseDialog;
-import edu.oswego.tiltandtumble.screens.dialogs.ScoreDialog;
 import edu.oswego.tiltandtumble.screens.widgets.DPad;
 import edu.oswego.tiltandtumble.screens.widgets.Hud;
-import edu.oswego.tiltandtumble.screens.widgets.Starter;
 
 
 public class MultiplayerGameScreen extends AbstractScreen implements WarpListener{
@@ -55,7 +49,6 @@ public class MultiplayerGameScreen extends AbstractScreen implements WarpListene
 	private Dialog pauseDialog;
 	
 	private ShadowBallController shadowController;
-	Session session;
 	private int numLevel;
 
 	public MultiplayerGameScreen(TiltAndTumble game, int currentLevel, LobbyScreen l) {
@@ -64,8 +57,8 @@ public class MultiplayerGameScreen extends AbstractScreen implements WarpListene
 
 		worldPopulator = new WorldPopulator(game.getAssetManager());
 		this.prevScreen = l;
-		shadowController = new ShadowBallController(game.getSession(),game.getOpp());	
-		ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.REALTIME, game.getSession(), game.getName(),currentLevel+1);
+		shadowController = new ShadowBallController(game.getOpp());	
+		ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.REALTIME, game.getName(),currentLevel+1);
 		hud = new Hud(this, skin, game.getAssetManager());
 		loadLevel(currentLevel);
 		//hud.setScore(level.getScore());
