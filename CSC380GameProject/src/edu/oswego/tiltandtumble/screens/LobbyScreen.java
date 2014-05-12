@@ -98,7 +98,11 @@ public class LobbyScreen extends AbstractScreen{
 		//session.execute("INSERT INTO lobbyy (user, selected, lobby) VALUES('"+userName+"', false, '"+userName+"');");
 		//numOfPlayers++;
 		session.execute("CREATE TABLE IF NOT EXISTS privateLobby"+userName+" (user ascii PRIMARY KEY, ipAddressForServer inet)");
+<<<<<<< HEAD
 		session.execute("INSERT INTO privateLobby"+userName+" (user, ipAddressForServer)VALUES ('"+userName+"', '"+addressOfServer.getHostAddress()+"');");
+=======
+		session.execute("INSERT INTO privateLobby"+userName+" (user, ipAddressForServer) VALUES ('"+userName+"', '"+addressOfServer.getHostAddress()+"');");
+>>>>>>> FETCH_HEAD
 		lobby = userName;
 		isServer = true;
 //		session.execute("DELETE FROM lobby WHERE username = 'GOO'");
@@ -224,7 +228,10 @@ public class LobbyScreen extends AbstractScreen{
 								l.lobby = l.row.get(i).getString("lobby");
 								l.result = l.session.execute("SELECT * FROM privateLobby"+l.lobby+"");
 								l.row = l.result.all();
+<<<<<<< HEAD
 							//	System.out.println(l.row.size());
+=======
+>>>>>>> FETCH_HEAD
 								for(int j = 0; j< l.row.size();j++){
 									temp = l.row.get(j).getString("user");
 									if(!temp.equals(l.userName)){
