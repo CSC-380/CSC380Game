@@ -22,13 +22,16 @@ public class WarpController {
 	private final String apiKey = "14a611b4b3075972be364a7270d9b69a5d2b24898ac483e32d4dc72b2df039ef";
 	private final String secretKey = "55216a9a165b08d93f9390435c9be4739888d971a17170591979e5837f618059";
 	
+	//API KEY :	b83bf2c96166e825fa52673b9c09d0dbeccda2b941be118dfbfd2b84810cc3ce
+	//SECRET KEY :	5a642f9df2ca55e64e3a212ceee07f494153748318bd43452b76e51030f82a37
+	
 	private WarpClient warpClient;
 	
 	private String localUser;
 	private String roomId;
 	
 	private boolean isConnected = false;
-	boolean isUDPEnabled = false;
+	boolean isUDPEnabled = true;
 	
 	private WarpListener warpListener ;
 	
@@ -76,6 +79,7 @@ public class WarpController {
 	public void stopApp(){
 		if(isConnected){
 			warpClient.unsubscribeRoom(roomId);
+			
 			warpClient.leaveRoom(roomId);
 		}
 		warpClient.disconnect();
@@ -84,6 +88,7 @@ public class WarpController {
 	private void initAppwarp(){
 		try {
 			WarpClient.initialize(apiKey, secretKey);
+			System.out.println("Started app");
 			warpClient = WarpClient.getInstance();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -111,6 +116,7 @@ public class WarpController {
 	
 	public void onConnectDone(boolean status){
 		log("onConnectDone: "+status);
+		System.out.println("in on connect done method");
 		if(status){
 			warpClient.initUDP();
 			warpClient.joinRoomInRange(1, 1, false);

@@ -101,7 +101,9 @@ public class NetworkingLevelScreen extends AbstractScreen {
 							GameScreen.Mode.CREATE);
 					}else{
 						button.play();
+						System.out.println("before");
 						WarpController.getInstance().startApp(game.getName());
+						System.out.println("after start");
 						game.showLobbyScreen(new Integer(((TextButton)actor).getText().toString()) - 1);
 						
 					}
