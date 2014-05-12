@@ -1,5 +1,7 @@
 package edu.oswego.tiltandtumble.screens.dialogs;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -84,7 +86,12 @@ public class AddPlayerDialog extends Dialog {
 				boolean selected = row.get(i).getBool("selected");
 				if(temp.equals(text) &! selected){
 					//System.out.println(temp);
-					session.execute("INSERT INTO privateLobby"+userName+" (user)VALUES ('"+temp+"');");
+					try {
+						session.execute("INSERT INTO privateLobby"+userName+" (user, ipAddressForServer)VALUES ('"+temp+"', '"+InetAddress.getLocalHost().getHostAddress()+"');");
+					} catch (UnknownHostException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					session.execute("UPDATE lobbyy SET selected = true WHERE user = '"+temp+"'");
 					session.execute("UPDATE lobbyy SET lobby = '"+userName+"' WHERE user = '"+temp+"'");
 					break;
