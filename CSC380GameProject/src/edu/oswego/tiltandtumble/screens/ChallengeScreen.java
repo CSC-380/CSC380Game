@@ -66,6 +66,40 @@ public class ChallengeScreen extends AbstractScreen  {
 	}
 	
 	private void showTopChallenges(final int levelNum){
+//		String result = "";
+//		
+//		ArrayList<NameValuePair> nvp = new ArrayList<NameValuePair>();
+//		
+//		nvp.add(new BasicNameValuePair("year","1980"));
+//		
+//		try{
+//			HttpClient httpclient = new DefaultHttpClient();
+//			HttpPost post = new HttpPost("http://moxie.cs.oswego.edu/~dmorgan/networking/androidTest.php")
+//			post.setEntity(new UrlEncodedFormEntity(nvp));
+//			HttpResponse r = client.execute(post);
+//			HttpEntity entity = response.getEntity();
+//			InputStream is = entity.getContent();
+//			
+//		}catch(){
+//			
+//		
+//		}
+//		
+//		try{
+//			BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"),8);
+//			StringBuilder sb = new StringBuilder();
+//			String line = null;
+//			while((line = reader.readLine()) != null){
+//				sb.append(line + "\n";)
+//				
+//			}
+//			is.close();
+//			result = 
+//			
+//		}catch(){
+//			
+//		}
+		
 		
 		
 		//System.out.println("top challenges for level" + (levelNum+1));
