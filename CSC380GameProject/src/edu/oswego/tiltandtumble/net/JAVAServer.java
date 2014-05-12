@@ -13,7 +13,7 @@ public class JAVAServer {
 	{
 		super();
 		
-		serverMSG = new ServerMSG(8080, this, pC); //Don't use a port lower than 1024 on Android and Linux!
+		serverMSG = new ServerMSG(12707, this, pC); //Don't use a port lower than 1024 on Android and Linux!
 	}
 	
 	public void sendMessage(float x, float y){

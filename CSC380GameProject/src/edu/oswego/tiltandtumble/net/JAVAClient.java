@@ -13,13 +13,13 @@ public class JAVAClient {
 	int myID;
 	public static enum platformCode {DESKTOP, ANDROID, HTML5};
 	
-	public JAVAClient(platformCode pC)
+	public JAVAClient(platformCode pC, String address)
 	{
 		super();
 		
 		//Here we must create the client connection to the server
-		clientMSG = new ClientMSG("127.0.0.1", 8080, this, pC); //Change here the IP and Port for your Server IP and Port
-		myID = clientMSG.getId();
+		clientMSG = new ClientMSG(address, 12707, this, pC); //Change here the IP and Port for your Server IP and Port
+		myID = clientMSG.getId();//12707
 	}
 	
 	

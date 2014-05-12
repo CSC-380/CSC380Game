@@ -220,7 +220,10 @@ public class LobbyScreen extends AbstractScreen{
 				
 					for(int i = 0; i< l.row.size();i++){
 						String temp = l.row.get(i).getString("user");
+						
 						if(temp.equals(l.userName)){
+							boolean sel = l.row.get(i).getBool("selected");
+							if(sel){
 								l.lobby = l.row.get(i).getString("lobby");
 								l.result = l.session.execute("SELECT * FROM privateLobby"+l.lobby+"");
 								l.row = l.result.all();
@@ -241,7 +244,7 @@ public class LobbyScreen extends AbstractScreen{
 									}
 	
 								}
-
+								}
 							}
 
 						}
@@ -257,6 +260,7 @@ public class LobbyScreen extends AbstractScreen{
 			l.session.execute("INSERT INTO "+l.userName+" (block, pathx, pathy)VALUES (0, -1.0, -1.0);");
 			l.session.execute("DELETE FROM lobbyy WHERE user = '"+l.userName+"'");
 			l.session.execute("DROP TABLE privateLobby"+l.userName+"");
+			l.game.setOnlineServerAddress(l.addressOfServer.toString());
 			l.game.setToServer(l.isServer);
 			l.game.showGameScreen(l.levelNum, GameScreen.Mode.LIVE);
 			

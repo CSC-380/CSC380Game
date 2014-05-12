@@ -135,8 +135,10 @@ public class ShadowBallController {
 //				b.blockNumber++;
 				if(b.isServer){
 					b.ball.draw(delta, b.server.getX(), b.server.getY());
+					System.out.println("drawing shadow");
 				}else{
 					b.ball.draw(delta, b.client.getX(), b.client.getY());
+					System.out.println("drawing shadow");
 				}
 				
 			}

@@ -334,8 +334,10 @@ public class BallController extends ClickListener {
 						//b.session.execute("INSERT INTO "+name+" (block, pathx, pathy)VALUES ("+b.blockNumber +", " + b.ball.getMapX() +", " + b.ball.getMapY() +");");
 						if(b.isServer){
 							b.server.sendMessage(b.ball.getMapX(), b.ball.getMapY());
+							System.out.println("writing out");
 						}else{
 							b.client.sendMessage(b.ball.getMapX(), b.ball.getMapY());
+							System.out.println("writing out");
 						}
 					
 					}

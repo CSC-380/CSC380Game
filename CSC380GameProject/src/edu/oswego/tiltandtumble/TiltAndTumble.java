@@ -48,6 +48,7 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 	private boolean isServer;
 	private JAVAServer javaServer;
 	private JAVAClient javaClient;
+	private String onlineServerAddress;
 	
 	private final List<String> levels = new ArrayList<String>();
 	{
@@ -287,8 +288,12 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		if(server){
 		javaServer = new JAVAServer(JAVAServer.platformCode.DESKTOP);
 		}else{
-		javaClient = new JAVAClient(JAVAClient.platformCode.DESKTOP);
+		javaClient = new JAVAClient(JAVAClient.platformCode.DESKTOP, "onlineServerAddress");
 		}
+	}
+	
+	public void setOnlineServerAddress(String x){
+		onlineServerAddress = x;
 	}
 	
 	public JAVAClient getClientConnection(){

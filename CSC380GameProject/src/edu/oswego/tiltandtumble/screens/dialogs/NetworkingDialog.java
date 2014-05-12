@@ -51,8 +51,7 @@ public class NetworkingDialog extends Dialog {
 		table.row().padTop(10);
 		table.row().center();
 		
-		
-		table.add("Initials:", "highlight").center();
+		//table.add("UserName:", "highlight").center();	
 		table.row().padBottom(5);
 		initials = new TextField("", skin);
 		initials.setMaxLength(6);
@@ -60,7 +59,7 @@ public class NetworkingDialog extends Dialog {
 		table.add(initials).width(80);
 
 		button("Continue");
-		getContentTable().add("Initials:").center();
+		getContentTable().add("Username:").center();
 		getContentTable().add(initials).center();
 		
 		
