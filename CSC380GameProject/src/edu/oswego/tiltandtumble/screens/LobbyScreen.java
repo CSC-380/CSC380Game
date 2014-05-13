@@ -2,6 +2,9 @@ package edu.oswego.tiltandtumble.screens;
 
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import appwarp.WarpController;
 import appwarp.WarpListener;
 
@@ -40,7 +43,7 @@ public class LobbyScreen extends AbstractScreen implements WarpListener{
 	public Table users;
 	//public Dialog dialog;
 	public Label badUserName;
-	public Label privateLobby;
+	public Label privateLobby; 
 	private boolean first = true;
 	//private RenderThread rt;
 	
@@ -116,7 +119,8 @@ public class LobbyScreen extends AbstractScreen implements WarpListener{
 		buttons.row().uniform();
 		buttons.add(addPlayers);
 		window.add(buttons);
-
+		
+		
 		addPlayers.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -130,8 +134,17 @@ public class LobbyScreen extends AbstractScreen implements WarpListener{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				button.play();
-				//changeState(State.STARTING);
+				//changeState(State.STARTING);\
+				JSONObject data = new JSONObject();
+				try {
+					data.put("START", "start");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				WarpController.getInstance().sendGameUpdate(data.toString());
 				WarpController.getInstance().startGame();
+				
 			}
 		});
 
@@ -189,6 +202,7 @@ public class LobbyScreen extends AbstractScreen implements WarpListener{
 
 		privateLobby.setVisible(true);
 		badUserName.setVisible(false);
+		
 	}
 	
 	@Override
@@ -219,12 +233,21 @@ public class LobbyScreen extends AbstractScreen implements WarpListener{
 	
 	@Override
 	public void onGameUpdateReceived (String message) {
-		
+		try {
+			JSONObject data = new JSONObject(message);
+			String start = (String)data.getString("START");
+			if(start!= null){
+				WarpController.getInstance().startGame();
+			}
+		} catch (Exception e) {
+			// exception in onMoveNotificationReceived
+		}
 	}
 
 	@Override
 	public void onWaitingStarted(String message) {
 		this.msg = waitForOtherUser;
+		
 
 	}
 	

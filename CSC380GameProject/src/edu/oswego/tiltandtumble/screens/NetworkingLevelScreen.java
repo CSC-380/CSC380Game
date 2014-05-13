@@ -77,7 +77,7 @@ public class NetworkingLevelScreen extends AbstractScreen {
 		int count = game.getLevels().size();
 		int j =0;
 		if(live){
-			j = 3;
+			j = 2;
 		}else{
 			j =0;
 		}

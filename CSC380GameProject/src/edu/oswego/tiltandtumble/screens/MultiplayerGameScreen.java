@@ -24,6 +24,7 @@ import edu.oswego.tiltandtumble.levels.Level;
 import edu.oswego.tiltandtumble.levels.LevelRenderer;
 import edu.oswego.tiltandtumble.levels.ShadowBallController;
 import edu.oswego.tiltandtumble.levels.WorldPopulator;
+import edu.oswego.tiltandtumble.screens.dialogs.NetworkingScoreDialog;
 import edu.oswego.tiltandtumble.screens.dialogs.PauseDialog;
 import edu.oswego.tiltandtumble.screens.widgets.DPad;
 import edu.oswego.tiltandtumble.screens.widgets.Hud;
@@ -57,6 +58,8 @@ public class MultiplayerGameScreen extends AbstractScreen implements WarpListene
 
 		worldPopulator = new WorldPopulator(game.getAssetManager());
 		this.prevScreen = l;
+		
+		//this is where to set multiple shadowballs
 		shadowController = new ShadowBallController(game.getOpp());	
 		ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.REALTIME, game.getName(),currentLevel+1);
 		hud = new Hud(this, skin, game.getAssetManager());
@@ -212,6 +215,7 @@ public class MultiplayerGameScreen extends AbstractScreen implements WarpListene
 	public void onGameFinished (int code, boolean isRemote) {
 		if(isRemote){
 			prevScreen.onGameFinished(code, true);
+			
 		}else{
 			//idk here
 		}
@@ -220,6 +224,7 @@ public class MultiplayerGameScreen extends AbstractScreen implements WarpListene
 
 	@Override
 	public void onGameUpdateReceived (String message) {
+		//update received calculate time difference
 		try {
 			JSONObject data = new JSONObject(message);
 			float x = (float)data.getDouble("x");
@@ -300,7 +305,9 @@ public class MultiplayerGameScreen extends AbstractScreen implements WarpListene
 			
 		},
 		GAME_OVER{
-
+			public void render(MultiplayerGameScreen  s, float delta) {
+				new NetworkingScoreDialog("", s.skin, s.game, s).show(s.stage);	
+			}
 		};
 		
 		public void start(MultiplayerGameScreen s) {}

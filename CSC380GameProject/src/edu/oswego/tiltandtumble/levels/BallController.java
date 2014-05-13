@@ -312,16 +312,16 @@ public class BallController extends ClickListener {
 						//ystem.out.println("got here");
 						//++b.blockNumber;
 						//b.session.execute("INSERT INTO "+name+" (block, pathx, pathy)VALUES ("+b.blockNumber +", " + b.ball.getMapX() +", " + b.ball.getMapY() +");");
-						b.blockNumber++;
+						//b.blockNumber++;
 							try {
 								JSONObject data = new JSONObject();
 								data.put("x", b.ball.getMapX());
 								data.put("y", b.ball.getMapY());
-								if(b.blockNumber%5 == 0){
-									b.blockNumber=0;
+								//if(b.blockNumber%2 == 0){
+								//	b.blockNumber=0;
 									WarpController.getInstance().sendGameUpdate(data.toString());
 								//	System.out.println("data sent");
-								}
+								//}
 							} catch (Exception e) {
 								// exception in sendLocation
 							}

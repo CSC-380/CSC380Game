@@ -296,8 +296,8 @@ public class GameScreen extends AbstractScreen {
 					}else{
 						// create or accept game play
 						
-						s.scores.add(s.level.getScore());
-						new NetworkingScoreDialog("", s.skin, s.game, s).show(s.stage);
+				s.scores.add(s.level.getScore());
+						new NetworkingScoreDialog("", s.skin, s.game, s).show(s.stage);		
 						System.out.println("highscores");
 
 						if(s.getMode() == GameScreen.Mode.CREATE){
