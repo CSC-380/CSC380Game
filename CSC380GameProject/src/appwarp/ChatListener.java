@@ -9,6 +9,7 @@ public class ChatListener implements ChatRequestListener{
 	
 	WarpController callBack;
 	
+	
 	public ChatListener(WarpController callBack) {
 		this.callBack = callBack;
 	}
