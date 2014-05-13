@@ -70,7 +70,7 @@ public class GameScreen extends AbstractScreen {
 			//shadow only
 			name = game.getName();
 			System.out.println("ghost ball name " +name);
-			//shadowController = new ShadowBallController(game.getSession(),name,currentLevel+1);
+			shadowController = new ShadowBallController(game.getSession(),name,currentLevel+1);
 			ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.NORMAL);
 
 		}else if(mode == Mode.CREATE){
@@ -78,8 +78,8 @@ public class GameScreen extends AbstractScreen {
 			session = game.getSession();
 			name = game.getName();
 			name = game.getName();
-			ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.NORMAL);
-		//	ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.WRITE, game.getSession(), name,currentLevel+1);
+			//ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.NORMAL);
+			ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.WRITE, game.getSession(), name,currentLevel+1);
 		}else{
 			ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.NORMAL);
 		}
