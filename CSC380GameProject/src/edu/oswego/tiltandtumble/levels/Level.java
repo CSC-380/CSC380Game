@@ -303,11 +303,21 @@ public class Level implements Disposable, Audible {
     				l.exit();
     				return;
     			}
-    			
-    			if(l.shadowController != null){
-    			l.shadowController.update(delta);
+    			try{
+	    			if(l.shadowController != null){
+	    				l.shadowController.update(delta);
+	    			}
+	    			
+	    			l.ballController.update(delta);
+    			}catch(com.datastax.driver.core.exceptions.QueryExecutionException e){
+    				l.fail();
+    				l.exit();
+    				return;
+    			}catch(com.datastax.driver.core.exceptions.DriverException e){
+    				l.fail();
+    				l.exit();
+    				return;
     			}
-    			l.ballController.update(delta);
     			for (WorldUpdateable w : l.updateableObjects) {
     				w.update(delta);
     			}

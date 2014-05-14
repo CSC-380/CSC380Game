@@ -170,6 +170,7 @@ public class WarpController {
 	public void onGetLiveRoomInfo(String[] liveUsers){
 		log("onGetLiveRoomInfo: "+liveUsers.length);
 		if(liveUsers!=null){
+			System.out.println(liveUsers[0]);
 			//what is this?
 			if(warpListener.getNumPlayers() != liveUsers.length){
 				warpListener.onUserJoinedRoom(liveUsers[0]);

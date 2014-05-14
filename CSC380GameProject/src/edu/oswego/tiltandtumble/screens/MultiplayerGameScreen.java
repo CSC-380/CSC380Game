@@ -24,10 +24,12 @@ import edu.oswego.tiltandtumble.levels.Level;
 import edu.oswego.tiltandtumble.levels.LevelRenderer;
 import edu.oswego.tiltandtumble.levels.ShadowBallController;
 import edu.oswego.tiltandtumble.levels.WorldPopulator;
+//import edu.oswego.tiltandtumble.screens.GameScreen.State;
 import edu.oswego.tiltandtumble.screens.dialogs.NetworkingScoreDialog;
 import edu.oswego.tiltandtumble.screens.dialogs.PauseDialog;
 import edu.oswego.tiltandtumble.screens.widgets.DPad;
 import edu.oswego.tiltandtumble.screens.widgets.Hud;
+import edu.oswego.tiltandtumble.screens.widgets.Starter;
 
 
 public class MultiplayerGameScreen extends AbstractScreen implements WarpListener{
@@ -65,7 +67,6 @@ public class MultiplayerGameScreen extends AbstractScreen implements WarpListene
 		hud = new Hud(this, skin, game.getAssetManager());
 		loadLevel(currentLevel);
 		//hud.setScore(level.getScore());
-
 	}
 	
 
@@ -104,7 +105,9 @@ public class MultiplayerGameScreen extends AbstractScreen implements WarpListene
 			game.getSettings().addObserver(audio);
 			Gdx.app.log("GameScreen", "Audio manager created");
 			hud.setLevel(num + 1);
+			
 			//new Starter(this, skin, game).show(stage);
+			
 			Gdx.app.log("GameScreen", "Level starting...");
 			WarpController.getInstance().setListener(this);
 			start();
@@ -236,7 +239,6 @@ public class MultiplayerGameScreen extends AbstractScreen implements WarpListene
 	}
 	
 	private static enum State{
-		
 		GAME_READY{
 			public void start(MultiplayerGameScreen s) {
 				s.ballController.resetBall();
@@ -251,12 +253,13 @@ public class MultiplayerGameScreen extends AbstractScreen implements WarpListene
 			public void render(MultiplayerGameScreen s, float delta) {
 				if (s.level.hasFinished() && s.level.isFailed()) {
 					s.loadLevel(s.getCurrentLevel().getLevelNumber());
-				}else if(s.level.hasFinished() &! s.level.isFailed()){
+				}else if(s.level.hasFinished() && !s.level.isFailed()){
 					s.currentState = GAME_OVER;
 				}else{
 					s.level.update(delta);
 					s.hud.setTime(s.level.getScore());
 				}
+				
 			}
 			
 			@Override
@@ -306,6 +309,7 @@ public class MultiplayerGameScreen extends AbstractScreen implements WarpListene
 		},
 		GAME_OVER{
 			public void render(MultiplayerGameScreen  s, float delta) {
+				//send game over here
 				new NetworkingScoreDialog("", s.skin, s.game, s).show(s.stage);	
 			}
 		};

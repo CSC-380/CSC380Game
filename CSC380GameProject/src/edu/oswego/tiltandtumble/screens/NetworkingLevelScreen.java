@@ -59,7 +59,7 @@ public class NetworkingLevelScreen extends AbstractScreen {
 		if(live){
 			window = new Window("\nOnline Multiplayer", skin);
 		}else{
-		window = new Window("\nCreate A Challenge", skin);
+			window = new Window("\nCreate A Challenge", skin);
 		}
         window.setFillParent(true);
         window.setModal(true);
@@ -95,8 +95,8 @@ public class NetworkingLevelScreen extends AbstractScreen {
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
 					if(!live){
-					button.play();
-					game.showGameScreen(
+						button.play();
+						game.showGameScreen(
 							new Integer(((TextButton)actor).getText().toString()) - 1,
 							GameScreen.Mode.CREATE);
 					}else{

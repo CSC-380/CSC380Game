@@ -13,11 +13,13 @@ import com.google.common.util.concurrent.Service.State;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
 import edu.oswego.tiltandtumble.screens.GameScreen;
+import edu.oswego.tiltandtumble.screens.MultiplayerGameScreen;
 
 public class Starter extends Dialog {
 	private static final float MAX_COUNT = 4;
 
 	private final GameScreen screen;
+	private final MultiplayerGameScreen mScreen;
 	private final Skin skin;
 	private State currentState;
 	private float countdownTime;
@@ -35,6 +37,8 @@ public class Starter extends Dialog {
 		this.screen = screen;
 		this.game = game;
 		this.skin = skin;
+		this.mScreen = null;
+		
 		assetManager = game.getAssetManager();
 		setFillParent(true);
         setModal(true);
@@ -53,6 +57,35 @@ public class Starter extends Dialog {
 		musicFile = "data/soundfx/number-three.ogg";
 
 		three = assetManager.get(musicFile, Sound.class);
+	}
+	
+	public Starter(MultiplayerGameScreen screen, Skin skin, TiltAndTumble game){
+		super("", skin, "countdown");
+		this.screen = null;
+		this.mScreen = screen;
+		this.game = game;
+		this.skin = skin;
+		
+		setFillParent(true);
+        setModal(true);
+        setMovable(false);
+		String musicFile = "data/soundfx/button-8.ogg";
+		
+		assetManager = game.getAssetManager();
+		buttonSound = assetManager.get(musicFile, Sound.class);
+        musicFile = "data/soundfx/number-zero.ogg";
+		
+		zero = assetManager.get(musicFile, Sound.class);
+        musicFile = "data/soundfx/number-one.ogg";
+
+		one = assetManager.get(musicFile, Sound.class);
+		musicFile = "data/soundfx/number-two.ogg";
+
+		two = assetManager.get(musicFile, Sound.class);
+		musicFile = "data/soundfx/number-three.ogg";
+
+		three = assetManager.get(musicFile, Sound.class);
+		
 	}
 
 	@Override

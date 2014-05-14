@@ -10,6 +10,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
+import com.datastax.driver.core.exceptions.UnavailableException;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
 import edu.oswego.tiltandtumble.data.Score;
@@ -235,7 +236,7 @@ public class GameScreen extends AbstractScreen {
 			@Override
 			public void show(GameScreen s) {
 					new Starter(s, s.skin, s.game).show(s.stage);
-
+					
 			}
 
 			@Override
@@ -296,42 +297,46 @@ public class GameScreen extends AbstractScreen {
 					}else{
 						// create or accept game play
 						
-				s.scores.add(s.level.getScore());
+						s.scores.add(s.level.getScore());
 						new NetworkingScoreDialog("", s.skin, s.game, s).show(s.stage);		
 						System.out.println("highscores");
 
 						if(s.getMode() == GameScreen.Mode.CREATE){
 							//create game play
 							System.out.println("name " +s.name +" level "+s.numLevel + " score "+s.level.getScore().getPoints());
+						try{
 							s.session.execute("UPDATE level"+s.numLevel+" SET highscore = "+ s.level.getScore().getPoints()+" WHERE username = '"+s.name+"'");
 													
 							System.out.println(s.level.getLevelNumber());
-							com.datastax.driver.core.ResultSet result = s.session.execute("SELECT username,highscore FROM level"+s.numLevel);
-							List<Row> lRow = result.all();
-							ArrayList<Row> sortLRow = new ArrayList<Row>();
-							if(lRow.size()>6){
-								for(Row r:lRow){
-									if(sortLRow.size()>0){
-										for(int i = 0; i < sortLRow.size(); i++){
-											if(r.getInt("highscore")>sortLRow.get(i).getInt("highscore")){
-												sortLRow.add(i,r);
-												break;
-											}else if(i == sortLRow.size()-1){
-												sortLRow.add(r);
-												break;
+							
+								com.datastax.driver.core.ResultSet result = s.session.execute("SELECT username,highscore FROM level"+s.numLevel);
+								List<Row> lRow = result.all();
+								ArrayList<Row> sortLRow = new ArrayList<Row>();
+								int size = lRow.size();
+								while(size>5){
+									for(Row r:lRow){
+										if(sortLRow.size()>0){
+											for(int i = 0; i < sortLRow.size(); i++){
+												if(r.getInt("highscore")>sortLRow.get(i).getInt("highscore")){
+													sortLRow.add(i,r);
+													break;
+												}else if(i == sortLRow.size()-1){
+													sortLRow.add(r);
+													break;
+												}
 											}
-										}
-									}else{
-										sortLRow.add(r);
-									}								
+										}else{
+											sortLRow.add(r);
+										}								
+									}
+									String temp = sortLRow.get(sortLRow.size()-1).getString("username");
+									s.session.execute("Delete From level"+s.numLevel+" WHERE username = '"+temp+"';");
+									size--;
 								}
-								String temp = sortLRow.get(sortLRow.size()-1).getString("username");
-								s.session.execute("Delete From level"+s.numLevel+" WHERE username = '"+temp+"';");
-								
-								
+							}catch(com.datastax.driver.core.exceptions.UnavailableException e){
+								//e.printStackTrace();
 								
 							}
-
 						}
 
 					}

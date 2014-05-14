@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Stack;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SkinLoader;
@@ -44,6 +45,7 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 	private String name;
 	private String opponent;
 	private int liveLevel;
+	private Screen screen;
 	
 	private final List<String> levels = new ArrayList<String>();
 	{
@@ -160,6 +162,20 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 
 		showMainScreen();
 	}
+	
+//	@Override
+//	public void setScreen(Screen s){
+//		try{
+//			if(this.screen != null)this.screen.hide();
+//				this.screen = s;
+//			if(this.screen != null){
+//				this.screen.show();
+//				this.screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//			}
+//		}catch(com.datastax.driver.core.exceptions.QueryTimeoutException e){
+//			this.showMainScreen();
+//		}
+//	}
 
 	private void loadSkin() {
 		assetManager.load("data/ui/skin.json", Skin.class,

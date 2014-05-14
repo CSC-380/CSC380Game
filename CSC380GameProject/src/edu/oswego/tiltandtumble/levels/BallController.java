@@ -10,6 +10,7 @@ import appwarp.WarpController;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.datastax.driver.core.Session;
 
@@ -295,19 +296,25 @@ public class BallController extends ClickListener {
 					
 					b.ball.applyLinearImpulse(forceX, forceY);
 					
-					if(b.mode == Mode.WRITE){
-						if(b.blockNumber == 0) {
-							System.out.println("Writing path useing" + name + " level " + currentLevel);
-						b.session.execute("INSERT INTO level"+currentLevel+" (username, highscore, pathx, pathy)"
-							+ "VALUES ('"+name+"', -1,{" + b.blockNumber + " : " + b.ball.getMapX() +"}, "
-										+ "{" + b.blockNumber + " : " + b.ball.getMapY() +"});");
-						} else {
-							b.session.execute("UPDATE level"+currentLevel+" SET pathx = pathx + {" + b.blockNumber + " :" + b.ball.getMapX() +"} WHERE username = '"+name+"'");
-							b.session.execute("UPDATE level"+currentLevel+" SET pathy = pathy + {" + b.blockNumber + " :" + b.ball.getMapY() +"} WHERE username = '"+name+"'");
+					try{
+						if(b.mode == Mode.WRITE){
+							
+							if(b.blockNumber == 0) {
+								System.out.println("Writing path useing" + name + " level " + currentLevel);
+							b.session.execute("INSERT INTO level"+currentLevel+" (username, highscore, pathx, pathy)"
+								+ "VALUES ('"+name+"', -1,{" + b.blockNumber + " : " + b.ball.getMapX() +"}, "
+											+ "{" + b.blockNumber + " : " + b.ball.getMapY() +"});");
+							} else {
+								
+								b.session.execute("UPDATE level"+currentLevel+" SET pathx = pathx + {" + b.blockNumber + " :" + b.ball.getMapX() +"} WHERE username = '"+name+"'");
+								b.session.execute("UPDATE level"+currentLevel+" SET pathy = pathy + {" + b.blockNumber + " :" + b.ball.getMapY() +"} WHERE username = '"+name+"'");
+								
+							}
+							++b.blockNumber;
 						}
-						++b.blockNumber;
+					}catch(com.datastax.driver.core.exceptions.WriteTimeoutException e){
+						
 					}
-					
 					if(b.mode == Mode.REALTIME){
 						//ystem.out.println("got here");
 						//++b.blockNumber;

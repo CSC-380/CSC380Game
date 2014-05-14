@@ -139,7 +139,7 @@ public class ChallengeScreen extends AbstractScreen  {
         table2.row().center().uniform();
         table2.add("Rank", "header");
 		table2.add("Name", "header");
-		table2.add("Time", "header");
+		table2.add("Score", "header");
 		table2.add("Challenge", "header");
 
 		
