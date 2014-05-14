@@ -313,6 +313,7 @@ public class BallController extends ClickListener {
 							++b.blockNumber;
 						}
 					}catch(com.datastax.driver.core.exceptions.QueryExecutionException e){
+
 	    				
 	    			}catch(com.datastax.driver.core.exceptions.DriverException e){
 	    				
