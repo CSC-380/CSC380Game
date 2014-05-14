@@ -313,17 +313,11 @@ public class BallController extends ClickListener {
 							++b.blockNumber;
 						}
 					}catch(com.datastax.driver.core.exceptions.QueryExecutionException e){
-<<<<<<< HEAD
-						
-					}catch(com.datastax.driver.core.exceptions.DriverException e){
-						
-					}
-=======
+
 	    				
 	    			}catch(com.datastax.driver.core.exceptions.DriverException e){
 	    				
 	    			}
->>>>>>> FETCH_HEAD
 					if(b.mode == Mode.REALTIME){
 						//ystem.out.println("got here");
 						//++b.blockNumber;
