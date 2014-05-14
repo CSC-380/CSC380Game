@@ -346,7 +346,7 @@ public class GameScreen extends AbstractScreen {
 											if(r.getMap("pathx", Integer.class, Float.class).size() == rResult.getMap("pathx", Integer.class, Float.class).size()){
 												String temp = r.getString("username");
 												System.out.println(temp);
-												s.session.execute("DELETE FROM level" + s.numLevel +"WHERE username='"+temp+"'");
+												s.session.execute("DELETE FROM level" + s.numLevel +" WHERE username = '"+temp+"'");
 											}
 											break;
 										}
