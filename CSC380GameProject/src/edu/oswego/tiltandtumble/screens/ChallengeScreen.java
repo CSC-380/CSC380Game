@@ -101,26 +101,31 @@ public class ChallengeScreen extends AbstractScreen  {
 //		}
 		
 		
-		
-		//System.out.println("top challenges for level" + (levelNum+1));
-		ResultSet result = session.execute("SELECT username,highscore FROM level"+(levelNum+1));
-		List<Row> lRow = result.all();
 		ArrayList<Row> sortLRow = new ArrayList<Row>();
-		
-		for(Row r:lRow){
-			if(sortLRow.size()>0){
-				for(int i = 0; i < sortLRow.size(); i++){
-					if(r.getInt("highscore")>sortLRow.get(i).getInt("highscore")){
-						sortLRow.add(i,r);
-						break;
-					}else if(i == sortLRow.size()-1){
-						sortLRow.add(r);
-						break;
+		//System.out.println("top challenges for level" + (levelNum+1));
+		try{
+			ResultSet result = session.execute("SELECT username,highscore FROM level"+(levelNum+1));
+			List<Row> lRow = result.all();
+			
+			
+			for(Row r:lRow){
+				if(sortLRow.size()>0){
+					for(int i = 0; i < sortLRow.size(); i++){
+						if(r.getInt("highscore")>sortLRow.get(i).getInt("highscore")){
+							sortLRow.add(i,r);
+							break;
+						}else if(i == sortLRow.size()-1){
+							sortLRow.add(r);
+							break;
+						}
 					}
+				}else{
+					sortLRow.add(r);
 				}
-			}else{
-				sortLRow.add(r);
 			}
+		}catch(com.datastax.driver.core.exceptions.UnavailableException e){
+			System.out.println("unavailable");
+			
 		}
 		
 		
