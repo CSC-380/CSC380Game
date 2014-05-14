@@ -356,7 +356,7 @@ public class GameScreen extends AbstractScreen {
 								
 								
 							}catch(com.datastax.driver.core.exceptions.UnavailableException e){
-								//e.printStackTrace();
+								s.game.showMainScreen();
 								
 							}
 						}
