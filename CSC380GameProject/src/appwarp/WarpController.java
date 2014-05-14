@@ -116,9 +116,11 @@ public class WarpController {
 	
 	public void onConnectDone(boolean status){
 		log("onConnectDone: "+status);
-		System.out.println("in on connect done method");
+		//System.out.println("in on connect done method");
 		if(status){
 			warpClient.initUDP();
+			//trys to put client in room with exactly 1 user in it
+			//if it fails  a 2 player room  is created
 			warpClient.joinRoomInRange(1, 1, false);
 		}else{
 			isConnected = false;
@@ -168,6 +170,7 @@ public class WarpController {
 	public void onGetLiveRoomInfo(String[] liveUsers){
 		log("onGetLiveRoomInfo: "+liveUsers.length);
 		if(liveUsers!=null){
+			//what is this?
 			if(warpListener.getNumPlayers() != liveUsers.length){
 				warpListener.onUserJoinedRoom(liveUsers[0]);
 			}

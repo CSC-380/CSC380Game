@@ -196,10 +196,9 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		setScreen(lobbyScreen);
 	}
 	
-	public void showMultiplayerGameScreen(int lvl, LobbyScreen l){
+	public void showMultiplayerGameScreen(int lvl, LobbyScreen l,int numOfPlayers){
 		if (multiplayerScreen != null) {
-			multiplayerScreen.dispose();
-			
+			multiplayerScreen.dispose();			
 		}
 		screenStack.push(getScreen());
 		multiplayerScreen = new MultiplayerGameScreen(this, lvl, l);
