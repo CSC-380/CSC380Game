@@ -304,6 +304,7 @@ public class GameScreen extends AbstractScreen {
 						if(s.getMode() == GameScreen.Mode.CREATE){
 							//create game play
 							System.out.println("name " +s.name +" level "+s.numLevel + " score "+s.level.getScore().getPoints());
+							ArrayList<Row> negatives = new ArrayList<Row>();
 						try{
 							s.session.execute("UPDATE level"+s.numLevel+" SET highscore = "+ s.level.getScore().getPoints()+" WHERE username = '"+s.name+"'");
 													
@@ -313,11 +314,13 @@ public class GameScreen extends AbstractScreen {
 								List<Row> lRow = result.all();
 								ArrayList<Row> sortLRow = new ArrayList<Row>();
 								int size = lRow.size();
-								while(size>5){
+								if(size>5){
 									for(Row r:lRow){
 										if(sortLRow.size()>0){
 											for(int i = 0; i < sortLRow.size(); i++){
-												if(r.getInt("highscore")>sortLRow.get(i).getInt("highscore")){
+												if(r.getInt("highscore") == -1){
+													negatives.add(r);
+												}else if(r.getInt("highscore")>sortLRow.get(i).getInt("highscore")){
 													sortLRow.add(i,r);
 													break;
 												}else if(i == sortLRow.size()-1){
@@ -331,8 +334,27 @@ public class GameScreen extends AbstractScreen {
 									}
 									String temp = sortLRow.get(sortLRow.size()-1).getString("username");
 									s.session.execute("Delete From level"+s.numLevel+" WHERE username = '"+temp+"';");
-									size--;
+									//size--;
 								}
+								com.datastax.driver.core.ResultSet neg = s.session.execute("SELECT username,highscore FROM level"+s.numLevel);
+								
+								List<Row> negResults = neg.all();
+								
+								for(Row rResult: negResults){
+									for(Row r: negatives){
+										if(rResult.getString("username").equals(r.getString("username"))){
+											if(r.getMap("pathx", Integer.class, Float.class).size() == rResult.getMap("pathx", Integer.class, Float.class).size()){
+												s.session.execute("DELETE FROM level" + s.numLevel +"WHERE username='"+r.getString("username")+"'");
+											}
+											break;
+										}
+									}
+								}
+								
+								
+								
+								
+								
 							}catch(com.datastax.driver.core.exceptions.UnavailableException e){
 								s.game.showMainScreen();
 								
