@@ -310,7 +310,7 @@ public class GameScreen extends AbstractScreen {
 													
 							System.out.println(s.level.getLevelNumber());
 							
-								com.datastax.driver.core.ResultSet result = s.session.execute("SELECT username,highscore FROM level"+s.numLevel);
+								com.datastax.driver.core.ResultSet result = s.session.execute("SELECT * FROM level"+s.numLevel);
 								List<Row> lRow = result.all();
 								ArrayList<Row> sortLRow = new ArrayList<Row>();
 								int size = lRow.size();
@@ -336,7 +336,7 @@ public class GameScreen extends AbstractScreen {
 									s.session.execute("Delete From level"+s.numLevel+" WHERE username = '"+temp+"';");
 									//size--;
 								}
-								com.datastax.driver.core.ResultSet neg = s.session.execute("SELECT username,highscore FROM level"+s.numLevel);
+								com.datastax.driver.core.ResultSet neg = s.session.execute("SELECT * FROM level"+s.numLevel);
 								
 								List<Row> negResults = neg.all();
 								
@@ -344,7 +344,9 @@ public class GameScreen extends AbstractScreen {
 									for(Row r: negatives){
 										if(rResult.getString("username").equals(r.getString("username"))){
 											if(r.getMap("pathx", Integer.class, Float.class).size() == rResult.getMap("pathx", Integer.class, Float.class).size()){
-												s.session.execute("DELETE FROM level" + s.numLevel +"WHERE username='"+r.getString("username")+"'");
+												String temp = r.getString("username");
+												System.out.println(temp);
+												s.session.execute("DELETE FROM level" + s.numLevel +"WHERE username='"+temp+"'");
 											}
 											break;
 										}
