@@ -12,7 +12,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.datastax.driver.core.Session;
+//import com.datastax.driver.core.Session;
 
 import edu.oswego.tiltandtumble.worldObjects.Ball;
 
@@ -44,7 +44,7 @@ public class BallController extends ClickListener {
 	private float keyY = 0;
 	private Mode mode;
 	
-	private Session session;
+	//private Session session;
 	private int blockNumber = 0;
 
 	public BallController(boolean useAccelerometer, Mode mode) {
@@ -57,18 +57,18 @@ public class BallController extends ClickListener {
 		currentState = State.ACTIVE;
 	}
 		
-	public BallController(boolean useAccelerometer, Mode mode, Session session,String namee, int currentLevel) {
-		this.useAccelerometer = useAccelerometer;
-		this.mode = mode;
-		this.name = namee;
-		this.currentLevel = currentLevel;
-		keys.put(MyKeys.LEFT, false);
-		keys.put(MyKeys.RIGHT, false);
-		keys.put(MyKeys.UP, false);
-		keys.put(MyKeys.DOWN, false);
-		this.session = session;
-		currentState = State.ACTIVE;
-	}
+//	public BallController(boolean useAccelerometer, Mode mode, Session session,String namee, int currentLevel) {
+//		this.useAccelerometer = useAccelerometer;
+//		this.mode = mode;
+//		this.name = namee;
+//		this.currentLevel = currentLevel;
+//		keys.put(MyKeys.LEFT, false);
+//		keys.put(MyKeys.RIGHT, false);
+//		keys.put(MyKeys.UP, false);
+//		keys.put(MyKeys.DOWN, false);
+//		//this.session = session;
+//		currentState = State.ACTIVE;
+//	}
 	
 	public BallController(boolean useAccelerometer, Mode mode,String namee, int currentLevel) {
 		this.useAccelerometer = useAccelerometer;
@@ -296,28 +296,28 @@ public class BallController extends ClickListener {
 					
 					b.ball.applyLinearImpulse(forceX, forceY);
 					
-					try{
-						if(b.mode == Mode.WRITE){
-							
-							if(b.blockNumber == 0) {
-								System.out.println("Writing path useing" + name + " level " + currentLevel);
-							b.session.execute("INSERT INTO level"+currentLevel+" (username, highscore, pathx, pathy)"
-								+ "VALUES ('"+name+"', -1,{" + b.blockNumber + " : " + b.ball.getMapX() +"}, "
-											+ "{" + b.blockNumber + " : " + b.ball.getMapY() +"});");
-							} else {
-								
-								b.session.execute("UPDATE level"+currentLevel+" SET pathx = pathx + {" + b.blockNumber + " :" + b.ball.getMapX() +"} WHERE username = '"+name+"'");
-								b.session.execute("UPDATE level"+currentLevel+" SET pathy = pathy + {" + b.blockNumber + " :" + b.ball.getMapY() +"} WHERE username = '"+name+"'");
-								
-							}
-							++b.blockNumber;
-						}
-					}catch(com.datastax.driver.core.exceptions.QueryExecutionException e){
-
-	    				
-	    			}catch(com.datastax.driver.core.exceptions.DriverException e){
-	    				
-	    			}
+//					try{
+//						if(b.mode == Mode.WRITE){
+//							
+//							if(b.blockNumber == 0) {
+//								System.out.println("Writing path useing" + name + " level " + currentLevel);
+//						//	b.session.execute("INSERT INTO level"+currentLevel+" (username, highscore, pathx, pathy)"
+//							//	+ "VALUES ('"+name+"', -1,{" + b.blockNumber + " : " + b.ball.getMapX() +"}, "
+//							//				+ "{" + b.blockNumber + " : " + b.ball.getMapY() +"});");
+//							} else {
+//								
+//							//	b.session.execute("UPDATE level"+currentLevel+" SET pathx = pathx + {" + b.blockNumber + " :" + b.ball.getMapX() +"} WHERE username = '"+name+"'");
+//								//b.session.execute("UPDATE level"+currentLevel+" SET pathy = pathy + {" + b.blockNumber + " :" + b.ball.getMapY() +"} WHERE username = '"+name+"'");
+//								
+//							}
+//							++b.blockNumber;
+//						}
+//					}catch(com.datastax.driver.core.exceptions.QueryExecutionException e){
+//
+//	    				
+//	    			}catch(com.datastax.driver.core.exceptions.DriverException e){
+//	    				
+//	    			}
 					if(b.mode == Mode.REALTIME){
 						//ystem.out.println("got here");
 						//++b.blockNumber;

@@ -2,9 +2,9 @@ package edu.oswego.tiltandtumble.levels;
 
 import java.util.Map;
 
-import com.datastax.driver.core.ResultSet;
-import com.datastax.driver.core.Row;
-import com.datastax.driver.core.Session;
+//import com.datastax.driver.core.ResultSet;
+//import com.datastax.driver.core.Row;
+//import com.datastax.driver.core.Session;
 
 import edu.oswego.tiltandtumble.worldObjects.ShadowBall;
 
@@ -12,7 +12,7 @@ public class ShadowBallController {
 	private State currentState;
 	private ShadowBall ball;
 	
-	private Session session;
+	//private Session session;
 	private Map<Integer, Float> pathX;
 	private Map<Integer, Float> pathY;
 	private int level;
@@ -21,20 +21,20 @@ public class ShadowBallController {
 	
 	private int count = 0;
 	
-	public ShadowBallController(Session session,String name,int level){
-		//get info from server here store in something so update can use it		
-		this.session = session;
-		this.level = level+1;
-		System.out.println("level " + level + "name" + name);
-		ResultSet resultsx = session.execute("SELECT pathx FROM level"+level+" WHERE username = '"+name+"';");
-		Row rowx = resultsx.one();
- 	   	pathX = rowx.getMap("pathx", Integer.class, Float.class);
- 	   	ResultSet resultsy = session.execute("SELECT pathy FROM level"+level+" WHERE username = '"+name+"';");
-		Row rowy = resultsy.one();
-	   	pathY = rowy.getMap("pathy", Integer.class, Float.class);
- 	   	currentState = State.ACTIVE;
- 	   	System.out.println("made shadow");
-	}
+//	public ShadowBallController(Session session,String name,int level){
+//		//get info from server here store in something so update can use it		
+//		this.session = session;
+//		this.level = level+1;
+//		System.out.println("level " + level + "name" + name);
+//		ResultSet resultsx = session.execute("SELECT pathx FROM level"+level+" WHERE username = '"+name+"';");
+//		Row rowx = resultsx.one();
+// 	   	pathX = rowx.getMap("pathx", Integer.class, Float.class);
+// 	   	ResultSet resultsy = session.execute("SELECT pathy FROM level"+level+" WHERE username = '"+name+"';");
+//		Row rowy = resultsy.one();
+//	   	pathY = rowy.getMap("pathy", Integer.class, Float.class);
+// 	   	currentState = State.ACTIVE;
+// 	   	System.out.println("made shadow");
+//	}
 	
 	public ShadowBallController(String name){ 	
 	   	currentState = State.LIVE;
