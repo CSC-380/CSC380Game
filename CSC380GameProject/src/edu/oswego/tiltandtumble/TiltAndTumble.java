@@ -47,7 +47,8 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		levels.add("level1.tmx");//8
 		levels.add("level3.tmx");//9
 		levels.add("level2.tmx");//10
-		
+		levels.add("squared.tmx");//11
+
 	}
 
 	private MainScreen mainScreen;
