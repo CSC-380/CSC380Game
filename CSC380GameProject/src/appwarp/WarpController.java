@@ -88,7 +88,7 @@ public class WarpController {
 	private void initAppwarp(){
 		try {
 			WarpClient.initialize(apiKey, secretKey);
-			System.out.println("Started app");
+			//System.out.println("Started app");
 			warpClient = WarpClient.getInstance();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -170,7 +170,7 @@ public class WarpController {
 	public void onGetLiveRoomInfo(String[] liveUsers){
 		log("onGetLiveRoomInfo: "+liveUsers.length);
 		if(liveUsers!=null){
-			System.out.println(liveUsers[0]);
+			//System.out.println(liveUsers[0]);
 			//what is this?
 			if(warpListener.getNumPlayers() != liveUsers.length){
 				warpListener.onUserJoinedRoom(liveUsers[0]);
@@ -193,7 +193,7 @@ public class WarpController {
 		 * if room id is same and username is different then start the game
 		 */
 		if(localUser.equals(userName)==false){
-			System.out.println("onUserJoinedRoom WC line 176");
+			//System.out.println("onUserJoinedRoom WC line 176");
 			warpListener.onUserJoinedRoom(userName);
 			//startGame();
 		}
@@ -234,7 +234,7 @@ public class WarpController {
 	
 	private void log(String message){
 		if(showLog){
-			System.out.println(message);
+			//System.out.println(message);
 		}
 	}
 	

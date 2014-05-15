@@ -518,8 +518,8 @@ public final class WorldPopulator implements Disposable {
 		Sprite sprite = atlas.createSprite("GreenOrb");
 		sprite.setSize(diameter, diameter);
 		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-		System.out.println(diameter);
-		System.out.println(sprite.getOriginX() + "" + sprite.getOriginY());
+		//System.out.println(diameter);
+//		System.out.println(sprite.getOriginX() + "" + sprite.getOriginY());
 		GraphicComponent graphic = new SpriteGraphic(sprite);
 
 		return new Ball(body, graphic, scale, assetManager);

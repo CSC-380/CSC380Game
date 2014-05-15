@@ -124,7 +124,7 @@ public class ChallengeScreen extends AbstractScreen  {
 				}
 			}
 		}catch(com.datastax.driver.core.exceptions.UnavailableException e){
-			System.out.println("unavailable");
+			//System.out.println("unavailable");
 			
 		}
 		

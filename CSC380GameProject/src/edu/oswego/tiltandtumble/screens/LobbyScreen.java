@@ -165,9 +165,9 @@ public class LobbyScreen extends AbstractScreen implements WarpListener{
 			}
 		});
 
-		System.out.println("before set listener");
+		//System.out.println("before set listener");
 		WarpController.getInstance().setListener(this);
-		System.out.println("after set listener");
+		//System.out.println("after set listener");
 
 		//session.execute("CREATE TABLE IF NOT EXISTS lobbyy (user ascii PRIMARY KEY, selected boolean, lobby ascii)");
 		//session.execute("INSERT INTO lobbyy (user, selected, lobby) VALUES('"+userName+"', false, '"+userName+"');");
@@ -194,7 +194,7 @@ public class LobbyScreen extends AbstractScreen implements WarpListener{
 	@Override
 	public void onUserJoinedRoom(String user){
 		numOfPlayers++;
-		System.out.println("User joined room" + numOfPlayers);
+		//System.out.println("User joined room" + numOfPlayers);
 		opponent = user;
 		users.row().padTop(10);
 		users.add(numOfPlayers+": "+ opponent);
@@ -308,7 +308,7 @@ public class LobbyScreen extends AbstractScreen implements WarpListener{
 		STARTING{
 		
 		public void render(LobbyScreen l, float delta){
-			System.out.println("Got to state starting");
+			//System.out.println("Got to state starting");
 			//l.session.execute("DELETE FROM lobbyy WHERE user = '"+l.userName+"'");
 			//l.session.execute("DROP TABLE privateLobby"+l.userName+"");
 			l.game.showMultiplayerGameScreen(l.levelNum, l, l.numOfPlayers);

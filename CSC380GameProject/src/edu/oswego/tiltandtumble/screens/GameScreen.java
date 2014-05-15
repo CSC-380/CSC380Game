@@ -70,7 +70,7 @@ public class GameScreen extends AbstractScreen {
 			session = game.getSession();
 			//shadow only
 			name = game.getName();
-			System.out.println("ghost ball name " +name);
+			//System.out.println("ghost ball name " +name);
 			shadowController = new ShadowBallController(game.getSession(),name,currentLevel+1);
 			ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.NORMAL);
 
@@ -298,17 +298,17 @@ public class GameScreen extends AbstractScreen {
 						// create or accept game play
 						
 						s.scores.add(s.level.getScore());
-						new NetworkingScoreDialog("Challenge Complete", s.skin, s.game, s).show(s.stage);		
-						System.out.println("highscores");
+						new NetworkingScoreDialog("Complete", s.skin, s.game, s).show(s.stage);		
+//						System.out.println("highscores");
 
 						if(s.getMode() == GameScreen.Mode.CREATE){
 							//create game play
-							System.out.println("name " +s.name +" level "+s.numLevel + " score "+s.level.getScore().getPoints());
+//							System.out.println("name " +s.name +" level "+s.numLevel + " score "+s.level.getScore().getPoints());
 							ArrayList<Row> negatives = new ArrayList<Row>();
 						try{
 							s.session.execute("UPDATE level"+s.numLevel+" SET highscore = "+ s.level.getScore().getPoints()+" WHERE username = '"+s.name+"'");
 													
-							System.out.println(s.level.getLevelNumber());
+//							System.out.println(s.level.getLevelNumber());
 							
 								com.datastax.driver.core.ResultSet result = s.session.execute("SELECT * FROM level"+s.numLevel);
 								List<Row> lRow = result.all();
@@ -345,7 +345,7 @@ public class GameScreen extends AbstractScreen {
 										if(rResult.getString("username").equals(r.getString("username"))){
 											if(r.getMap("pathx", Integer.class, Float.class).size() == rResult.getMap("pathx", Integer.class, Float.class).size()){
 												String temp = r.getString("username");
-												System.out.println(temp);
+//												System.out.println(temp);
 												s.session.execute("DELETE FROM level" + s.numLevel +" WHERE username = '"+temp+"'");
 											}
 											break;

@@ -25,7 +25,7 @@ public class ShadowBallController {
 		//get info from server here store in something so update can use it		
 		this.session = session;
 		this.level = level+1;
-		System.out.println("level " + level + "name" + name);
+		//System.out.println("level " + level + "name" + name);
 		ResultSet resultsx = session.execute("SELECT pathx FROM level"+level+" WHERE username = '"+name+"';");
 		Row rowx = resultsx.one();
  	   	pathX = rowx.getMap("pathx", Integer.class, Float.class);
@@ -33,12 +33,12 @@ public class ShadowBallController {
 		Row rowy = resultsy.one();
 	   	pathY = rowy.getMap("pathy", Integer.class, Float.class);
  	   	currentState = State.ACTIVE;
- 	   	System.out.println("made shadow");
+ 	   	//System.out.println("made shadow");
 	}
 	
 	public ShadowBallController(String name){ 	
 	   	currentState = State.LIVE;
- 	   	System.out.println("made live shadow");
+ 	   	//System.out.println("made live shadow");
 	}
 
 	

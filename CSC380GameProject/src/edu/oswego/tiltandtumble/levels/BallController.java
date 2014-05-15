@@ -300,7 +300,7 @@ public class BallController extends ClickListener {
 						if(b.mode == Mode.WRITE){
 							
 							if(b.blockNumber == 0) {
-								System.out.println("Writing path useing" + name + " level " + currentLevel);
+//								System.out.println("Writing path useing" + name + " level " + currentLevel);
 							b.session.execute("INSERT INTO level"+currentLevel+" (username, highscore, pathx, pathy)"
 								+ "VALUES ('"+name+"', -1,{" + b.blockNumber + " : " + b.ball.getMapX() +"}, "
 											+ "{" + b.blockNumber + " : " + b.ball.getMapY() +"});");
