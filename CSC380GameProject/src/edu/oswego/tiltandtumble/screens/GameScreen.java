@@ -8,9 +8,9 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-//import com.datastax.driver.core.Row;
-//import com.datastax.driver.core.Session;
-//import com.datastax.driver.core.exceptions.UnavailableException;
+import com.datastax.driver.core.Row;
+import com.datastax.driver.core.Session;
+import com.datastax.driver.core.exceptions.UnavailableException;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
 import edu.oswego.tiltandtumble.data.Score;
@@ -57,7 +57,7 @@ public class GameScreen extends AbstractScreen {
 	
 	private ShadowBallController shadowController;
 	private String name;
-	//Session session;
+	Session session;
 	private int numLevel;
 
 	public GameScreen(TiltAndTumble game, int currentLevel, Mode mode) {
@@ -67,20 +67,20 @@ public class GameScreen extends AbstractScreen {
 		worldPopulator = new WorldPopulator(game.getAssetManager());
 
 		if(mode == Mode.ACCEPT){
-			//session = game.getSession();
+			session = game.getSession();
 			//shadow only
 			name = game.getName();
 			System.out.println("ghost ball name " +name);
-			//shadowController = new ShadowBallController(game.getSession(),name,currentLevel+1);
+			shadowController = new ShadowBallController(game.getSession(),name,currentLevel+1);
 			ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.NORMAL);
 
 		}else if(mode == Mode.CREATE){
 			//writing path only
-		//	session = game.getSession();
+			session = game.getSession();
 			name = game.getName();
 			name = game.getName();
-			ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.NORMAL);
-			//ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.WRITE, game.getSession(), name,currentLevel+1);
+			//ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.NORMAL);
+			ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.WRITE, game.getSession(), name,currentLevel+1);
 		}else{
 			ballController = new BallController(!game.getSettings().isUseDpad(), BallController.Mode.NORMAL);
 		}
@@ -298,69 +298,69 @@ public class GameScreen extends AbstractScreen {
 						// create or accept game play
 						
 						s.scores.add(s.level.getScore());
-						new NetworkingScoreDialog("", s.skin, s.game, s).show(s.stage);		
+						new NetworkingScoreDialog("Challenge Complete", s.skin, s.game, s).show(s.stage);		
 						System.out.println("highscores");
 
 						if(s.getMode() == GameScreen.Mode.CREATE){
 							//create game play
 							System.out.println("name " +s.name +" level "+s.numLevel + " score "+s.level.getScore().getPoints());
-//							ArrayList<Row> negatives = new ArrayList<Row>();
-//						try{
-//							s.session.execute("UPDATE level"+s.numLevel+" SET highscore = "+ s.level.getScore().getPoints()+" WHERE username = '"+s.name+"'");
-//													
-//							System.out.println(s.level.getLevelNumber());
-//							
-//								com.datastax.driver.core.ResultSet result = s.session.execute("SELECT * FROM level"+s.numLevel);
-//								List<Row> lRow = result.all();
-//								ArrayList<Row> sortLRow = new ArrayList<Row>();
-//								int size = lRow.size();
-//								if(size>5){
-//									for(Row r:lRow){
-//										if(sortLRow.size()>0){
-//											for(int i = 0; i < sortLRow.size(); i++){
-//												if(r.getInt("highscore") == -1){
-//													negatives.add(r);
-//												}else if(r.getInt("highscore")>sortLRow.get(i).getInt("highscore")){
-//													sortLRow.add(i,r);
-//													break;
-//												}else if(i == sortLRow.size()-1){
-//													sortLRow.add(r);
-//													break;
-//												}
-//											}
-//										}else{
-//											sortLRow.add(r);
-//										}								
-//									}
-//									String temp = sortLRow.get(sortLRow.size()-1).getString("username");
-//									s.session.execute("Delete From level"+s.numLevel+" WHERE username = '"+temp+"';");
-//									//size--;
-//								}
-//								com.datastax.driver.core.ResultSet neg = s.session.execute("SELECT * FROM level"+s.numLevel);
-//								
-//								List<Row> negResults = neg.all();
-//								
-//								for(Row rResult: negResults){
-//									for(Row r: negatives){
-//										if(rResult.getString("username").equals(r.getString("username"))){
-//											if(r.getMap("pathx", Integer.class, Float.class).size() == rResult.getMap("pathx", Integer.class, Float.class).size()){
-//												String temp = r.getString("username");
-//												System.out.println(temp);
-//												s.session.execute("DELETE FROM level" + s.numLevel +" WHERE username = '"+temp+"'");
-//											}
-//											break;
-//										}
-//									}
-//								}
-//								
-//								
-//								
-//								
-//								
-//							}catch(com.datastax.driver.core.exceptions.UnavailableException e){
-//								s.game.showMainScreen();
-//								
-//							}
+							ArrayList<Row> negatives = new ArrayList<Row>();
+						try{
+							s.session.execute("UPDATE level"+s.numLevel+" SET highscore = "+ s.level.getScore().getPoints()+" WHERE username = '"+s.name+"'");
+													
+							System.out.println(s.level.getLevelNumber());
+							
+								com.datastax.driver.core.ResultSet result = s.session.execute("SELECT * FROM level"+s.numLevel);
+								List<Row> lRow = result.all();
+								ArrayList<Row> sortLRow = new ArrayList<Row>();
+								int size = lRow.size();
+								if(size>5){
+									for(Row r:lRow){
+										if(sortLRow.size()>0){
+											for(int i = 0; i < sortLRow.size(); i++){
+												if(r.getInt("highscore") == -1){
+													negatives.add(r);
+												}else if(r.getInt("highscore")>sortLRow.get(i).getInt("highscore")){
+													sortLRow.add(i,r);
+													break;
+												}else if(i == sortLRow.size()-1){
+													sortLRow.add(r);
+													break;
+												}
+											}
+										}else{
+											sortLRow.add(r);
+										}								
+									}
+									String temp = sortLRow.get(sortLRow.size()-1).getString("username");
+									s.session.execute("Delete From level"+s.numLevel+" WHERE username = '"+temp+"';");
+									//size--;
+								}
+								com.datastax.driver.core.ResultSet neg = s.session.execute("SELECT * FROM level"+s.numLevel);
+								
+								List<Row> negResults = neg.all();
+								
+								for(Row rResult: negResults){
+									for(Row r: negatives){
+										if(rResult.getString("username").equals(r.getString("username"))){
+											if(r.getMap("pathx", Integer.class, Float.class).size() == rResult.getMap("pathx", Integer.class, Float.class).size()){
+												String temp = r.getString("username");
+												System.out.println(temp);
+												s.session.execute("DELETE FROM level" + s.numLevel +" WHERE username = '"+temp+"'");
+											}
+											break;
+										}
+									}
+								}
+								
+								
+								
+								
+								
+							}catch(com.datastax.driver.core.exceptions.UnavailableException e){
+								s.game.showMainScreen();
+								
+							}
 						}
 
 					}

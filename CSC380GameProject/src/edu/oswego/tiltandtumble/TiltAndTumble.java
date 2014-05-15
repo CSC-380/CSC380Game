@@ -58,6 +58,7 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		levels.add("Tutorial2.tmx");//6 kellys
 		levels.add("Tutorial7.tmx");//7 kellys
 		levels.add("level1.tmx");//8 impossible one
+		levels.add("squared.tmx");//11
 	//	levels.add("level3.tmx");//9
 	//	levels.add("level2.tmx");//10
 		
@@ -164,19 +165,6 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		showMainScreen();
 	}
 	
-//	@Override
-//	public void setScreen(Screen s){
-//		try{
-//			if(this.screen != null)this.screen.hide();
-//				this.screen = s;
-//			if(this.screen != null){
-//				this.screen.show();
-//				this.screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//			}
-//		}catch(com.datastax.driver.core.exceptions.QueryTimeoutException e){
-//			this.showMainScreen();
-//		}
-//	}
 
 	private void loadSkin() {
 		assetManager.load("data/ui/skin.json", Skin.class,
