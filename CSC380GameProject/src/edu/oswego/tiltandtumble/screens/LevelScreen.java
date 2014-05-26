@@ -58,13 +58,13 @@ Sound button;
 			}
 		});
 
-		window.row().padTop(25).colspan(5);
+		window.row().padTop(15).colspan(5);
 		window.add("Practice Mode", "highlight");
 		window.row().pad(10, 10, 0, 10).width(75);
 		int count = game.getLevels().size();
 		for (int i = 0; i < count; i++) {
 			if ((i % 5) == 0) {
-				window.row().pad(10).width(75);
+				window.row().pad(10, 10, 0, 10).width(75);
 			}
 			Button l = new TextButton(Integer.toString(i + 1), skin);
 			window.add(l);
@@ -79,7 +79,7 @@ Sound button;
 			});
 		}
 
-		window.row().padBottom(10).padTop(30).bottom().colspan(5).width(100);
+		window.row().padBottom(10).padTop(15).bottom().colspan(5).width(100);
 		Button back = new TextButton("Go Back", skin);
 		window.add(back);
 		back.addListener(new ChangeListener() {
