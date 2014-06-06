@@ -2,7 +2,7 @@
 <map version="1.0" orientation="orthogonal" width="60" height="60" tilewidth="32" tileheight="32">
  <properties>
   <property name="background image" value="NASA_HiddenUniverse_08.jpg"/>
-  <property name="music" value="spaceLevel_2.mp3"/>
+  <property name="music" value="2ndBallad.mp3"/>
  </properties>
  <tileset firstgid="1" name="sci-fi-platformer-tiles-1" tilewidth="32" tileheight="32">
   <image source="tiles/sci-fi-platformer-tiles-1.png" width="512" height="512"/>
@@ -74,21 +74,27 @@
   <object name="StaticWall" x="366" y="1248" width="146" height="32"/>
   <object x="480" y="1270" width="31" height="54"/>
   <object name="StaticWall" x="25" y="865" width="231" height="128"/>
-  <object name="Hole" x="1792" y="1433" width="71" height="119"/>
-  <object name="Hole" x="1792" y="1693" width="27" height="109"/>
+  <object name="Hole" x="1803" y="1433" width="71" height="119"/>
+  <object name="Hole" x="1803" y="1693" width="27" height="109"/>
   <object name="Hole" x="1186" y="1401" width="31" height="121"/>
-  <object name="Hole" x="13" y="1728" width="179" height="165"/>
-  <object name="Hole" x="640" y="890" width="45" height="88"/>
-  <object name="Hole" x="427" y="105" width="146" height="24"/>
-  <object name="Hole" x="1402" y="1056" width="114" height="17"/>
-  <object name="Hole" x="1788" y="1024" width="114" height="16"/>
+  <object name="Hole" x="2" y="1736" width="179" height="165"/>
+  <object name="Hole" x="649" y="891" width="45" height="88"/>
+  <object name="Hole" x="425" y="94" width="146" height="24"/>
+  <object name="Hole" x="1402" y="1068" width="114" height="17"/>
+  <object name="Hole" x="1788" y="1032" width="114" height="16"/>
   <object name="StaticWall" x="1152" y="1632" width="50" height="64"/>
   <object name="StaticWall" x="928" y="1792" width="160" height="113"/>
   <object name="StaticWall" x="819" y="1664" width="45" height="64"/>
   <object name="StaticWall" x="848" y="1664" width="207" height="32"/>
-  <object name="Hole" x="1083" y="1888" width="112" height="14"/>
+  <object name="Hole" x="1083" y="1894" width="112" height="14"/>
   <object name="Ball" x="66" y="66" width="24" height="24">
    <ellipse/>
   </object>
+  <object name="Hole" x="560" y="121"/>
+  <object name="Hole" x="434" y="122"/>
+  <object name="Hole" x="632" y="969" width="45" height="88"/>
+  <object name="Hole" x="1513" y="1050" width="29" height="44"/>
+  <object name="Hole" x="1373" y="1047" width="29" height="44"/>
+  <object name="Hole" x="1760" y="1013" width="29" height="44"/>
  </objectgroup>
 </map>

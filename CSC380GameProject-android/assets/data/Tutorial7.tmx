@@ -2,7 +2,7 @@
 <map version="1.0" orientation="orthogonal" width="40" height="40" tilewidth="32" tileheight="32">
  <properties>
   <property name="background image" value="NASA_HiddenUniverse_09.jpg"/>
-  <property name="music" value="spaceLevel_2.mp3"/>
+  <property name="music" value="Garote.mp3"/>
  </properties>
  <tileset firstgid="1" name="sci-fi-platformer-tiles-14" tilewidth="32" tileheight="32">
   <image source="tiles/sci-fi-platformer-tiles-14.png" width="512" height="512"/>
@@ -26,7 +26,7 @@
    eJztl9EKgCAMRaW+pP9/6Bd7kkBT565zF9qBPQg1D+bMpeTHddbBROnD6HcfbzD69cbeWPp97W1NjHIiftaEH0b41e8g9RPYsGrtrb6h5T5AczPX6c76mZ3Lo7alc3qeO6O5Gc7ElgODW6Y8e5jcMuz/uRV3VMt//c479F/8ZvuZ1ljyrLRf6uWR+uRxq9eWzIP6SfNp865ePwRk/Xb0A9r9x0T4YYQfRvhhzN6PPIKdB+cZI4Y=
   </data>
  </layer>
- <objectgroup name="collision" width="40" height="40" visible="0">
+ <objectgroup name="collision" width="40" height="40">
   <object name="MovingWall" x="797" y="349" width="64" height="64">
    <properties>
     <property name="path" value="p2"/>

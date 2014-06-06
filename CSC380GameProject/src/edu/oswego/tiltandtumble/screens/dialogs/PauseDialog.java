@@ -80,6 +80,7 @@ public class PauseDialog extends Dialog {
 					screen.loadLevel(screen.getCurrentLevel().getLevelNumber());
 				}
 			} else if (b == Buttons.CONTINUE) {
+				game.endMusic();
 				screen.resume();
 			}
 		} else {

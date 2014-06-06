@@ -37,17 +37,26 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 
 	private final List<String> levels = new ArrayList<String>();
 	{
-		levels.add("Tutorial5.tmx");//1
-		levels.add("Tutorial4.tmx");//2
-		levels.add("Tutorial6.tmx");//3
-		levels.add("Tutorial1.tmx");//4
-		levels.add("Tutorial3.tmx");//5
-		levels.add("Tutorial2.tmx");//6
-		levels.add("Tutorial7.tmx");//7
-		levels.add("level1.tmx");//8
-		levels.add("level3.tmx");//9
-		levels.add("level2.tmx");//10
-		levels.add("squared.tmx");//11
+		levels.add("level3.tmx");//simple one medium james
+		levels.add("Level8.tmx");//not sure whos this was
+		levels.add("Tutorial1.tmx");//red push bumpers kelly -redo
+		levels.add("Tutorial3.tmx");//pink holes kelly
+		levels.add("level1.tmx");//Kevins first death map
+		levels.add("Tutorial2.tmx");//pokemon kelly 
+		levels.add("Tutorial7.tmx");//purple blue kelly
+		levels.add("squared.tmx");//Kevins second death map
+
+		//order?
+	}
+	
+	private final List<String> tutorials = new ArrayList<String>();
+	{
+		tutorials.add("Tutorial5.tmx");//basic james
+		tutorials.add("Tutorial4.tmx");//push bumpers james
+		tutorials.add("Tutorial6.tmx");//attractor force james
+		//TODO add into words describing objects on start widget
+		//create more short maps - spikes, moving walls, tele
+		//maybe lvl 3 above
 
 	}
 
@@ -196,11 +205,13 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 		setScreen(settingsScreen);
 	}
 
-	public void showLevelScreen() {
-		if (levelScreen == null) {
-			levelScreen = new LevelScreen(this);
+	public void showLevelScreen(LevelScreen.Mode mode) {
+		if (levelScreen != null) {
+			levelScreen.dispose();
+			
 		}
 		screenStack.push(getScreen());
+		levelScreen = new LevelScreen(this, mode);
 		//this.playMusic();
 		setScreen(levelScreen);
 	}
@@ -260,6 +271,10 @@ public class TiltAndTumble extends Game implements SettingsObserver {
 
 	public List<String> getLevels() {
 		return levels;
+	}
+	
+	public List<String> getTutorials() {
+		return tutorials;
 	}
 
 	public void playMusic() {

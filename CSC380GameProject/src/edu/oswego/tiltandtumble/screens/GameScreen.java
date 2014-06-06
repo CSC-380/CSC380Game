@@ -27,8 +27,9 @@ import edu.oswego.tiltandtumble.screens.widgets.Starter;
 public class GameScreen extends AbstractScreen {
 	public static enum Mode {
 		ARCADE, PRACTICE
+		//TODO practice is no longer practice but just single map play
 	}
-
+	
 	private final BallController ballController;
 	private final WorldPopulator worldPopulator;
 
@@ -258,6 +259,7 @@ public class GameScreen extends AbstractScreen {
 
 			@Override
 			public void pause(GameScreen s) {
+				s.game.playMusic();
 				s.pauseDialog = new PauseDialog("Paused", s.skin, s, s.game).show(s.stage);
 				s.ballController.pause();
 				s.audio.pause();

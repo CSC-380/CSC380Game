@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import edu.oswego.tiltandtumble.TiltAndTumble;
+import edu.oswego.tiltandtumble.screens.dialogs.ModeDialog;
+import edu.oswego.tiltandtumble.screens.dialogs.ScoreDialog;
 
 
 public class MainScreen extends AbstractScreen {
@@ -52,7 +54,7 @@ public class MainScreen extends AbstractScreen {
         stage.addActor(window);
         Table table = new Table();
         table.setFillParent(true);
-        table.bottom();
+        table.bottom();			
         window.addActor(table);
 
         Button play = new TextButton("Play", skin);
@@ -61,7 +63,8 @@ public class MainScreen extends AbstractScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
             	button.play();
-                game.showLevelScreen();
+            	new ModeDialog("Select A Mode", skin, game).show(stage);
+                //game.showLevelScreen();
             }
         });
 

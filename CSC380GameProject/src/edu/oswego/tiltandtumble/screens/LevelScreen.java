@@ -8,6 +8,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -16,8 +18,14 @@ import edu.oswego.tiltandtumble.TiltAndTumble;
 
 public class LevelScreen extends AbstractScreen {
 Sound button;
-	public LevelScreen(TiltAndTumble game) {
+private Mode currentMode;
+public static enum Mode {
+	TUTORIAL, SINGLE
+}
+
+	public LevelScreen(TiltAndTumble game, Mode mode) {
 		super(game);
+		this.currentMode = mode;
 	}
 
 	@Override
@@ -39,35 +47,70 @@ Sound button;
         String musicFile = "data/soundfx/button-8.ogg";
 		button = assetManager.get(musicFile, Sound.class);
 
-		Window window = new Window("\nLevels", skin);
+		Window window = new Window("\nPick a Level", skin);
         window.setFillParent(true);
         window.setModal(true);
         window.setMovable(false);
         stage.addActor(window);
-
-		window.row().padTop(50).colspan(5);
-		window.add("Arcade Mode", "highlight");
-		window.row().padTop(10).colspan(5).width(100);
-		Button arcade = new TextButton("Play", skin);
-		window.add(arcade);
-		arcade.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				button.play();
-				game.showGameScreen(0, GameScreen.Mode.ARCADE);
-			}
-		});
-
+        
+//        if(currentMode == Mode.ARCADE){
+//        	
+//        
+//		window.row().padTop(20).colspan(5);
+//		window.add("Arcade Mode", "highlight");
+//		window.row().padTop(15).colspan(5).width(100);
+//		Button arcade = new TextButton("Play", skin);
+//		window.add(arcade);
+//		arcade.addListener(new ChangeListener() {
+//			@Override
+//			public void changed(ChangeEvent event, Actor actor) {
+//				button.play();
+//				game.showGameScreen(0, GameScreen.Mode.ARCADE);
+//			}
+//		});
+       if(currentMode == Mode.TUTORIAL){
+    	    Table table2 = new Table(skin);
+   			ScrollPane scroll = new ScrollPane(table2, skin);
+   			
+   		
+        	window.row().padTop(35).colspan(5);
+    		window.add("Tutorial Mode", "highlight");
+    		window.row().padTop(15).colspan(5);
+    		window.add(scroll).expandY().padTop(40).padBottom(10);
+    		int count = game.getTutorials().size();
+    		for (int i = 0; i < count; i++) {
+    			if ((i % 4) == 0) {
+    				table2.row().pad(10, 10, 0, 10).width(75);
+    			}
+    			Button l = new TextButton(Integer.toString(i + 1), skin);
+    			table2.add(l);
+    			l.addListener(new ChangeListener() {
+    				@Override
+    				public void changed(ChangeEvent event, Actor actor) {
+    					button.play();
+    					game.showGameScreen(
+    							new Integer(((TextButton)actor).getText().toString()) - 1,
+    							GameScreen.Mode.PRACTICE);
+    							
+    				}
+    			});
+    	    	}
+        	
+        }
+        else{
+		window.row().padTop(35).colspan(5);
+		window.add("Single Map Mode", "highlight");
 		window.row().padTop(15).colspan(5);
-		window.add("Practice Mode", "highlight");
-		window.row().pad(10, 10, 0, 10).width(75);
+		Table table2 = new Table(skin);
+		ScrollPane scroll = new ScrollPane(table2, skin);
+		window.add(scroll).expandY().padTop(40).padBottom(10);
 		int count = game.getLevels().size();
 		for (int i = 0; i < count; i++) {
-			if ((i % 5) == 0) {
-				window.row().pad(10, 10, 0, 10).width(75);
+			if ((i % 4) == 0) {
+				table2.row().pad(10, 10, 0, 10).width(75);
 			}
 			Button l = new TextButton(Integer.toString(i + 1), skin);
-			window.add(l);
+			table2.add(l);
 			l.addListener(new ChangeListener() {
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
@@ -77,11 +120,11 @@ Sound button;
 							GameScreen.Mode.PRACTICE);
 				}
 			});
-		}
-
-		window.row().padBottom(10).padTop(15).bottom().colspan(5).width(100);
+	    	}
+        }
+		window.row().expand().padBottom(10);
 		Button back = new TextButton("Go Back", skin);
-		window.add(back);
+		window.add(back).bottom();
 		back.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
