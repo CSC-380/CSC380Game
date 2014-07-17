@@ -99,7 +99,7 @@ public static enum Mode {
         }
         else{
 		window.row().padTop(35).colspan(5);
-		window.add("Single Map Mode", "highlight");
+		window.add("Select A Level", "highlight");
 		window.row().padTop(15).colspan(5);
 		Table table2 = new Table(skin);
 		ScrollPane scroll = new ScrollPane(table2, skin);

@@ -43,7 +43,7 @@ public class ModeDialog extends Dialog{
         getButtonTable().row().uniform().fill();
         button("Arcade Mode", Buttons.ARCADE);
         getButtonTable().row().uniform().fill();
-        button("Single Map Mode", Buttons.PRACTICE);
+        button("Select A Level", Buttons.PRACTICE);
         
 		this.addListener(new InputListener(){
 			@Override

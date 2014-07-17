@@ -44,6 +44,8 @@ public class GameScreen extends AbstractScreen {
 	private State currentState;
 
 	private final Hud hud;
+	private int numOfLives = 3;
+	private int currentLevel;
 
 	private Dialog pauseDialog;
 
@@ -51,11 +53,52 @@ public class GameScreen extends AbstractScreen {
 		super(game);
 		ballController = new BallController(!game.getSettings().isUseDpad());
 		worldPopulator = new WorldPopulator(game.getAssetManager());
-
+		this.currentLevel = currentLevel;
 		hud = new Hud(this, skin, game.getAssetManager());
-		loadLevel(currentLevel);
+		loadLevel(currentLevel, State.WAITING);
 		hud.setScore(level.getScore());
 		currentMode = mode;
+	}
+
+	public void loadLevel(int num, State state) {
+		changeState(state);
+		Gdx.app.log("GameScreen", "Loading level #" + num);
+		if (level != null) {
+			level.dispose();
+			level = null;
+		}
+		if (renderer != null) {
+			renderer.dispose();
+			renderer = null;
+		}
+		if (audio != null) {
+			game.getSettings().removeObserver(audio);
+			audio.dispose();
+			audio = null;
+		}
+		Gdx.app.log("GameScreen", "Cleaned up previous level");
+		level = new Level(num,
+				game.getLevels().get(num),
+				ballController, worldPopulator, game.getAssetManager());
+		Gdx.app.log("GameScreen", "Level loaded");
+		renderer = new DefaultLevelRenderer(level,
+				game.getWidth(), game.getHeight(),
+				game.getSpriteBatch(),
+				game.getAssetManager());
+		if (game.getSettings().isDebugRender()) {
+			renderer = new DebugLevelRenderer(renderer, ballController);
+		}
+		Gdx.app.log("GameScreen", "Renderer created");
+		audio = new AudioManager(
+				level,
+				game.getSettings().isMusicOn(),
+				game.getSettings().isSoundEffectOn(),
+				game.getAssetManager());
+		game.getSettings().addObserver(audio);
+		Gdx.app.log("GameScreen", "Audio manager created");
+		hud.setLevel(num + 1);
+		new Starter(this, skin, game).show(stage);
+		Gdx.app.log("GameScreen", "Level starting...");
 	}
 
 	public void loadLevel(int num) {
@@ -98,7 +141,6 @@ public class GameScreen extends AbstractScreen {
 		new Starter(this, skin, game).show(stage);
 		Gdx.app.log("GameScreen", "Level starting...");
 	}
-
 	public boolean hasMoreLevels() {
 		if (currentMode == Mode.ARCADE){
 			return level.getLevelNumber() < game.getLevels().size();
@@ -108,7 +150,7 @@ public class GameScreen extends AbstractScreen {
 
 	public void loadNextLevel() {
 		if (hasMoreLevels() && !level.isFailed()) {
-			loadLevel(level.getLevelNumber() + 1);
+			loadLevel(level.getLevelNumber() + 1, State.WAITING);
 		}
 		else {
 			game.showPreviousScreen();
@@ -150,6 +192,11 @@ public class GameScreen extends AbstractScreen {
 		hud.setPosition(0, stage.getHeight());
 		hud.setHeight(32);
 		hud.setWidth(stage.getWidth());
+		if(this.currentMode == GameScreen.Mode.ARCADE){
+			hud.setLives("3");
+		}else{
+			hud.setLives("0");
+		}
 		stage.addActor(hud);
 
 		currentState.show(this);
@@ -244,17 +291,46 @@ public class GameScreen extends AbstractScreen {
 		PLAYING {
 			@Override
 			public void render(GameScreen s, float delta) {
-				if (s.level.hasFinished()) {
-					s.audio.pause();
-					s.scores.add(s.level.getScore());
-					new ScoreDialog("Score", s.skin, s.game, s).show(s.stage);
-					s.changeState(State.SCORED);
-				}
-				else {
-					s.level.update(delta);
-				}
+				if(s.currentMode == GameScreen.Mode.ARCADE){
+					//System.out.println("Mode arcade");
+					if (s.level.hasFinished() && s.numOfLives == 0) {
+						s.audio.pause();
+						s.scores.add(s.level.getScore());
+						new ScoreDialog("Score", s.skin, s.game, s).show(s.stage);
+						s.changeState(State.SCORED);
+					}
+					else if(s.level.hasFinished() && s.numOfLives != 0){
+						System.out.println(s.numOfLives);
+						//s.audio.pause();
+						s.loadLevel(s.currentLevel, State.PLAYING);
+						s.numOfLives = s.numOfLives-1;
+						s.hud.setLives(String.valueOf(s.numOfLives));
+						s.ballController.resetBall();
+						s.ballController.resume();
+						s.level.start();
+						s.audio.start();
+					}
+					else {
+						
+						s.level.update(delta);
+					}
 
-				s.hud.setScore(s.level.getScore());
+					s.hud.setScore(s.level.getScore());
+					
+				}
+				else{
+					if (s.level.hasFinished()) {
+						s.audio.pause();
+						s.scores.add(s.level.getScore());
+						new ScoreDialog("Score", s.skin, s.game, s).show(s.stage);
+						s.changeState(State.SCORED);
+					}
+					else {
+						s.level.update(delta);
+					}
+
+					s.hud.setScore(s.level.getScore());
+				}
 			}
 
 			@Override

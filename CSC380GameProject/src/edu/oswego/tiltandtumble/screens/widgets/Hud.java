@@ -16,6 +16,7 @@ public class Hud extends Window {
 	private final Label levelDisplay;
 	private final Label scoreDisplay;
 	private final Label timerDisplay;
+	private final Label livesDisplay;
 	private Sound buttonn;
 
 	public Hud(final GameScreen screen, final Skin skin, AssetManager assetManager) {
@@ -28,6 +29,15 @@ public class Hud extends Window {
 		add("Level: ").right().padLeft(10);
 		levelDisplay = new Label("", skin, "hud-values");
 		add(levelDisplay).left();
+		
+		//Image lifeImage = new Image(skin, "GreenOrb");
+		//add(lifeImage).right().fill(false);
+		
+		//TODO kevin i cannot figure out how to add a green orb image nicely to your json file
+		//without messing things up
+		livesDisplay = new Label("", skin, "hud-values");
+		add(livesDisplay).left();
+		
 		add("Score: ").right();
 		scoreDisplay = new Label("", skin, "hud-values");
 		add(scoreDisplay).left();
@@ -54,6 +64,10 @@ public class Hud extends Window {
 
 	public void setLevel(int level) {
 		setLevel(String.valueOf(level));
+	}
+	
+	public void setLives(String lives){
+		livesDisplay.setText("X"+ lives);
 	}
 
 	public void setScore(Score score) {
