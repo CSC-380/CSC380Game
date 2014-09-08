@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="99" height="99" tilewidth="32" tileheight="32" backgroundcolor="#550000">
+ <properties>
+  <property name="background image" value="NASA_HiddenUniverse_Pinwheel_Galaxy.jpg"/>
+  <property name="music" value="dj-chronos__spy-game-sneeking.ogg"/>
+ </properties>
+ <tileset firstgid="1" name="sci-fi-platformer-tiles-0" tilewidth="32" tileheight="32">
+  <image source="tiles/sci-fi-platformer-tiles-0.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="257" name="sci-fi-platformer-tiles-8" tilewidth="32" tileheight="32">
+  <image source="tiles/sci-fi-platformer-tiles-8.png" width="512" height="512"/>
+ </tileset>
+ <layer name="background" width="99" height="99">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3YoREAIQxFQfzRAdfG9d8aJh7DkMuwayJivn6tAdTwxh2pK+BfetwndQUAAAAAcJpmzo2+xV8zBwAAAADgFqtmDgAAAABAvoott+JmAAAAAAAAAAAAAAAAAAAAAAAAYJ8JzX4SaSSZAAA=
+  </data>
+ </layer>
+ <layer name="map" width="99" height="99">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+2YQZLCMAwEwxl+ANd9Qop95D56cRUHcJGgOLI9jrqrdAmejKwJF00TACxxftT8Uhe03bTp+fk0TT+Pupzez7cuK0f1Tc9SDvdnHmTRzzc9uz5zuJFFV99r9vttQ29o/bUl3wjaOlrl3qJplXuLplXuLZpWubdoWuXeommVe4umVe4tmla5N7RtGHEmNbXKO+Ro2vTcc2duZa+Pp69Kz+lZyuHXaWeucq8tvi17/jst+6ZnnjvzlvcaMYs1X/UdcjRtyTfSW7uHXr4WyEIHstCBLHQgCx3IQgey0IEsdCALHUac5x5Ue1beIUfTzs5lxdt3xGImfevbzrxm1kv0nolC5ajvkNFuY8v/Iddt/T+NrG0BWehAFjqQhQ5koQNZ6EAWOpCFDmShA1n4oLxDjqadP5SVT9ratdZzj3723uXTPNd2uUv0ziLvufdsvbJYO7NE7ywsz5UrZ8Qd8pG1Jf8JD/AtO1MDfMvO1ADfsjM1wLfsTA3wLTtTA3zLztQA37IzNcC37EwN8C07UwN831HeIUfTzs5lxdt3xJ5bv7/VvUbsufX7W91rxJ5z1HfIaO2UfF/41iHaTMgCXwvRZkIW+FqINhOywNdCtJmQBb4Wos2kpq/yDjmadnYuK96+I/bc+v2t7jViz63f3+peI/acM+IO+cjakm/Eg2i+r97ffo8yE7LA99X72+9RZkIW+Fp8lXuL5qvc2xF9LWeizYQs8LWciTYTtSyUd8jRtDO1q/bMkyx0iix05pyjvkNGCxCTf9BUFFckmQAA
+  </data>
+ </layer>
+ <objectgroup name="collision" width="99" height="99">
+  <object name="Hole" x="223" y="207">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="703" y="207">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="1183" y="207">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="1665" y="207">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="2145" y="206">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="2625" y="208">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="223" y="685">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="704" y="686">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="1184" y="687">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="1664" y="684">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="2145" y="687">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="2624" y="686">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="223" y="1164">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="702" y="1167">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="1185" y="1167">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="1664" y="1168">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="2145" y="1166">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="2624" y="1167">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="226" y="1649">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="225" y="2128">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="224" y="2607">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="702" y="1646">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="1185" y="1646">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="1663" y="1646">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="2144" y="1647">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="2624" y="1646">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="705" y="2128">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="1184" y="2127">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="1665" y="2126">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="2144" y="2128">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="2624" y="2126">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="705" y="2607">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="1184" y="2608">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="1665" y="2607">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="2144" y="2607">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="2623" y="2607">
+   <polygon points="5,0 -16,23 -15,331 7,354 313,355 336,331 337,21 315,0"/>
+  </object>
+  <object name="Hole" x="80" y="520" width="128" height="16"/>
+  <object name="FinishLine" x="119" y="599" width="48" height="48">
+   <ellipse/>
+  </object>
+  <object name="Ball" x="132" y="132" width="23" height="23">
+   <ellipse/>
+  </object>
+  <object name="Hole" x="63" y="77">
+   <polyline points="-9,11 27,-25 138,-24 165,5 474,7 507,-26 614,-25 645,6 953,6 985,-25 1095,-25 1127,6 1433,7 1468,-26 1573,-25 1607,8 1912,6 1947,-23 2055,-23 2086,9 2394,9 2429,-24 2533,-24 2564,7 2880,7 2912,-25 3013,-25 3051,13 3050,119 3019,150 3019,463 3052,494 3052,599 3019,630 3019,943 3052,977 3052,1075 3021,1108 3022,1425 3052,1456 3052,1557 3021,1592 3021,1903 3052,1934 3052,2038 3022,2068 3020,2381 3052,2418 3051,2519 3021,2551 3020,2862 3049,2894 3049,3000 3012,3037 2909,3038 2878,3007 2563,3008 2531,3042 2429,3041 2397,3009 2085,3008 2054,3039 1947,3038 1916,3008 1605,3008 1575,3039 1468,3039 1437,3008 1123,3009 1092,3041 991,3041 956,3009 645,3008 615,3038 508,3038 477,3009 166,3008 133,3040 27,3040 -13,2997 -12,2895 22,2862 21,2551 -8,2521 -8,2413 23,2380 22,2070 -10,2042 -9,1935 24,1902 24,1591 -8,1558 -8,1453 23,1420 22,1113 -8,1079 -8,973 23,942 23,630 -10,596 -10,495 21,462 21,148 -8,119 -9,12"/>
+  </object>
+  <object name="MovingWall" x="224" y="576" width="32" height="96">
+   <properties>
+    <property name="movement" value="NodeStop"/>
+    <property name="path" value="ExitWallH"/>
+    <property name="rotate" value="90"/>
+    <property name="speed" value="-1"/>
+    <property name="sprite" value="WallBlue1x3"/>
+    <property name="switch" value="exitBlock"/>
+   </properties>
+  </object>
+  <object name="MovingWall" x="96" y="704" width="96" height="32">
+   <properties>
+    <property name="movement" value="NodeStop"/>
+    <property name="path" value="ExitWallV"/>
+    <property name="speed" value="-1"/>
+    <property name="sprite" value="WallBlue1x3"/>
+    <property name="switch" value="exitBlock"/>
+   </properties>
+  </object>
+  <object name="ToggleSwitch" x="3016" y="136" width="16" height="16">
+   <properties>
+    <property name="id" value="exitBlock"/>
+    <property name="sprite-off" value="switch-off"/>
+    <property name="sprite-on" value="switch-on"/>
+   </properties>
+  </object>
+  <object name="Hole" x="2159" y="565" width="292" height="117"/>
+  <object name="Hole" x="2159" y="88" width="292" height="117"/>
+  <object name="Hole" x="2484" y="715" width="123" height="297"/>
+  <object name="Hole" x="2960" y="713" width="123" height="297"/>
+  <object name="MovingWall" x="2432" y="1056" width="32" height="96">
+   <properties>
+    <property name="movement" value="NodeStop"/>
+    <property name="path" value="l2r1"/>
+    <property name="rotate" value="90"/>
+    <property name="speed" value="-1"/>
+    <property name="sprite" value="WallBlue1x3"/>
+    <property name="switch" value="l2r"/>
+   </properties>
+  </object>
+  <object name="MovingWall" x="2432" y="1536" width="32" height="96">
+   <properties>
+    <property name="movement" value="NodeStop"/>
+    <property name="path" value="l2r2"/>
+    <property name="rotate" value="90"/>
+    <property name="speed" value="-1"/>
+    <property name="sprite" value="WallBlue1x3"/>
+    <property name="switch" value="l2r"/>
+   </properties>
+  </object>
+  <object name="MovingWall" x="2432" y="2016" width="32" height="96">
+   <properties>
+    <property name="movement" value="NodeStop"/>
+    <property name="path" value="l2r3"/>
+    <property name="rotate" value="90"/>
+    <property name="speed" value="-1"/>
+    <property name="sprite" value="WallBlue1x3"/>
+    <property name="switch" value="l2r"/>
+   </properties>
+  </object>
+  <object name="MovingWall" x="2432" y="2496" width="32" height="96">
+   <properties>
+    <property name="movement" value="NodeStop"/>
+    <property name="path" value="l2r4"/>
+    <property name="rotate" value="90"/>
+    <property name="speed" value="-1"/>
+    <property name="sprite" value="WallBlue1x3"/>
+    <property name="switch" value="l2r"/>
+   </properties>
+  </object>
+  <object name="MovingWall" x="2432" y="2976" width="32" height="96">
+   <properties>
+    <property name="movement" value="NodeStop"/>
+    <property name="path" value="l2r5"/>
+    <property name="rotate" value="90"/>
+    <property name="speed" value="-1"/>
+    <property name="sprite" value="WallBlue1x3"/>
+    <property name="switch" value="l2r"/>
+   </properties>
+  </object>
+  <object name="ToggleSwitch" x="1576" y="3016" width="16" height="16">
+   <properties>
+    <property name="id" value="l2r"/>
+    <property name="sprite-off" value="switch-off"/>
+    <property name="sprite-on" value="switch-on"/>
+   </properties>
+  </object>
+  <object name="Teleporter" x="3016" y="616" width="16" height="16">
+   <properties>
+    <property name="id" value="upperRight2"/>
+    <property name="target" value="upperRight1"/>
+   </properties>
+  </object>
+  <object name="Teleporter" x="3016" y="1096" width="16" height="16">
+   <properties>
+    <property name="id" value="upperRight1"/>
+    <property name="target" value="upperRight2"/>
+   </properties>
+  </object>
+  <object name="Teleporter" x="1576" y="1576" width="16" height="16">
+   <properties>
+    <property name="id" value="mid1"/>
+    <property name="target" value="mid2"/>
+   </properties>
+  </object>
+  <object name="Teleporter" x="136" y="1576" width="16" height="16">
+   <properties>
+    <property name="id" value="mid2"/>
+    <property name="target" value="mid1"/>
+   </properties>
+  </object>
+  <object name="ToggleSwitch" x="3016" y="3016" width="16" height="16">
+   <properties>
+    <property name="id" value="upperRightBlock"/>
+    <property name="sprite-off" value="switch-off"/>
+    <property name="sprite-on" value="switch-on"/>
+   </properties>
+  </object>
+  <object name="MovingWall" x="2912" y="96" width="32" height="96">
+   <properties>
+    <property name="movement" value="NodeStop"/>
+    <property name="path" value="upperRightH"/>
+    <property name="rotate" value="90"/>
+    <property name="speed" value="-1"/>
+    <property name="sprite" value="WallBlue1x3"/>
+    <property name="switch" value="upperRightBlock"/>
+   </properties>
+  </object>
+  <object name="MovingWall" x="2976" y="224" width="96" height="32">
+   <properties>
+    <property name="movement" value="NodeStop"/>
+    <property name="path" value="upperRightV"/>
+    <property name="speed" value="-1"/>
+    <property name="sprite" value="WallBlue1x3"/>
+    <property name="switch" value="upperRightBlock"/>
+   </properties>
+  </object>
+  <object name="Hole" x="560" y="519" width="128" height="16"/>
+  <object name="Hole" x="1678" y="565" width="292" height="117"/>
+  <object name="Hole" x="1198" y="85" width="292" height="117"/>
+  <object name="Hole" x="718" y="565" width="292" height="117"/>
+  <object name="Hole" x="238" y="1524" width="292" height="117"/>
+  <object name="Hole" x="719" y="2005" width="292" height="117"/>
+  <object name="Hole" x="718" y="2487" width="292" height="117"/>
+  <object name="Hole" x="2156" y="2007" width="292" height="117"/>
+  <object name="Hole" x="2158" y="2487" width="292" height="117"/>
+  <object name="Hole" x="2963" y="1194" width="123" height="297"/>
+  <object name="Hole" x="2483" y="1674" width="123" height="297"/>
+  <object name="Hole" x="2960" y="2154" width="123" height="297"/>
+  <object name="Hole" x="2003" y="2152" width="123" height="297"/>
+  <object name="Hole" x="2483" y="2636" width="123" height="297"/>
+  <object name="Hole" x="1524" y="2634" width="123" height="297"/>
+  <object name="Hole" x="1043" y="2154" width="123" height="297"/>
+  <object name="Hole" x="563" y="2634" width="123" height="297"/>
+  <object name="Hole" x="85" y="2154" width="123" height="297"/>
+  <object name="Hole" x="564" y="1673" width="123" height="297"/>
+  <object name="Hole" x="84" y="1194" width="123" height="297"/>
+  <object name="Hole" x="1521" y="1673" width="123" height="297"/>
+  <object name="Hole" x="1523" y="714" width="123" height="297"/>
+  <object name="Hole" x="1041" y="1000" width="128" height="16"/>
+  <object name="Hole" x="717" y="1040" width="294" height="33"/>
+  <object name="Hole" x="717" y="1134" width="294" height="33"/>
+  <object name="Hole" x="560" y="1195" width="34" height="296"/>
+  <object name="Hole" x="653" y="1196" width="34" height="296"/>
+  <object name="Hole" x="1482" y="1522" width="12" height="123"/>
+  <object name="Hole" x="1674" y="1523" width="12" height="123"/>
+  <object name="Hole" x="2960" y="2636" width="35" height="102"/>
+  <object name="Hole" x="3050" y="2829" width="35" height="102"/>
+  <object name="Hole" x="2636" y="2961" width="104" height="34"/>
+  <object name="Hole" x="2828" y="3051" width="104" height="34"/>
+ </objectgroup>
+ <objectgroup name="paths" width="99" height="99">
+  <object name="ExitWallH" x="240" y="624">
+   <polyline points="1,1 -192,1"/>
+  </object>
+  <object name="ExitWallV" x="144" y="720">
+   <polyline points="1,-1 1,-191"/>
+  </object>
+  <object name="l2r1" x="2446" y="1103">
+   <polyline points="1,2 -1726,1"/>
+  </object>
+  <object name="l2r2" x="2445" y="1582">
+   <polyline points="1,2 -1724,1"/>
+  </object>
+  <object name="l2r3" x="2445" y="2062">
+   <polyline points="1,2 -1723,2"/>
+  </object>
+  <object name="l2r4" x="2445" y="2543">
+   <polyline points="1,2 -1725,2"/>
+  </object>
+  <object name="l2r5" x="2445" y="3023">
+   <polyline points="1,2 -1725,1"/>
+  </object>
+  <object name="upperRightV" x="3024" y="239">
+   <polyline points="0,0 1,482"/>
+  </object>
+  <object name="upperRightH" x="2929" y="142">
+   <polyline points="0,3 -480,3"/>
+  </object>
+ </objectgroup>
+</map>

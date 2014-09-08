@@ -1,0 +1,123 @@
+{
+    com.badlogic.gdx.graphics.Color: {
+        white: { r: 1, g: 1, b: 1, a: 1 },
+        black: { r: 0, g: 0, b: 0, a: 1 },
+        light-grey: { r: 0.8, g: 0.8, b: 0.8, a: 1 },
+        dark-grey: { r: 0.2, g: 0.2, b: 0.2, a: 1 },
+        dark-blue: { r: 0, g: 0, b: 0.7, a: 1 },
+        orange: { r: 1, g: 0.604, b: 0, a: 1 },
+        
+        red: { r: 1, g: 0, b: 0, a: 1 },
+        green: { r: 0, g: 1, b: 0, a: 1 }
+    },
+    com.badlogic.gdx.graphics.g2d.BitmapFont: {
+        small: { file: data/ui/fonts/font_small.fnt },
+        small-orange: { file: data/ui/fonts/font_small_orange.fnt },
+        small-blue: { file: data/ui/fonts/font_small_blue.fnt },
+        medium: { file: data/ui/fonts/font_medium.fnt },
+        large: { file: data/ui/fonts/font_large.fnt },
+        large-blue: { file: data/ui/fonts/font_large_blue.fnt },
+        jumbo-orange: { file: data/ui/fonts/font_jumbo_orange.fnt },
+    },
+    com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
+        dialogDim: { name: whitePixel, color: { r: 0, g: 0, b: 0, a: 0.45 } },
+        clear: { name: whitePixel, color: { r: 1, g: 1, b: 1, a: 0 } }
+    },    
+    com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+        default: {
+            titleFont: large-blue,
+            titleFontColor: white,
+            background: dark_grey_panel
+        },
+        hud: {
+            titleFont: large-blue,
+            titleFontColor: white,
+            background: hudback
+        },
+        dialog: {
+            titleFont: large-blue,
+            titleFontColor: white,
+            background: dark_grey_panel,
+            stageBackground: dialogDim
+        },
+        countdown: {
+            titleFont: large-blue,
+            titleFontColor: white,
+            background: dialogDim,
+        },
+    },
+    com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+        default: {
+            font: small,
+            fontColor: white
+        },
+        hud-values: {
+            font: small-orange,
+            fontColor: white
+        },
+        highlight: {
+            font: small-orange,
+            fontColor: white
+        },
+        countdown: {
+            font: jumbo-orange,
+            fontColor: white,
+        },
+        header: {
+            font: small-blue,
+            fontColor: white,
+        },
+    },
+    com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+        default: {
+            down: orange_button_glass_down,
+            up: blue_button_glass_up,
+            font: small,
+            fontColor: white,
+            downFontColor: white
+        }
+    },
+    com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+        default: {
+            font: small,
+            fontColor: white,
+            checkboxOn: blue_cross,
+            checkboxOff: grey_cross
+        }
+    },
+    com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
+        default: {
+            font: small,
+            fontColorSelected: dark-grey,
+            fontColorUnselected: black,
+            selection: orange_button_glass_down
+        }
+    },
+    com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
+        default: {
+            background: dark_grey_panel
+        },
+        clear: {
+            background: clear
+        }
+    },
+    com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
+        default: {
+            background: blue_border,
+            font: small,
+            fontColor: dark-grey,
+            scrollStyle: default,
+            listStyle: default
+        }
+    },
+    com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+        default: {
+            background: blue_border,
+            focusedBackground: orange_border,
+            font: small,
+            fontColor: black,
+            messageFont: small,
+            messageFontColor: dark-grey
+        }
+    }
+}

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="25" height="25" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="music" value="spaceLevel_2.mp3"/>
+ </properties>
+ <tileset firstgid="1" name="sci-fi-platformer-tiles-0" tilewidth="32" tileheight="32">
+  <image source="tiles/sci-fi-platformer-tiles-0.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="257" name="sci-fi-platformer-tiles-1" tilewidth="32" tileheight="32">
+  <image source="tiles/sci-fi-platformer-tiles-1.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="513" name="sci-fi-platformer-tiles-6" tilewidth="32" tileheight="32">
+  <image source="tiles/sci-fi-platformer-tiles-6.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="769" name="sci-fi-platformer-tiles-8" tilewidth="32" tileheight="32">
+  <image source="tiles/sci-fi-platformer-tiles-8.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="1025" name="sci-fi-platformer-tiles-9" tilewidth="32" tileheight="32">
+  <image source="tiles/sci-fi-platformer-tiles-9.png" width="512" height="512"/>
+ </tileset>
+ <layer name="background" width="25" height="25">
+  <data encoding="base64" compression="zlib">
+   eJwzZWBgMB3FQxYzDAI3jOJRPIpH8SgexaOY/hgAV92BMQ==
+  </data>
+ </layer>
+ <layer name="map" width="25" height="25">
+  <data encoding="base64" compression="zlib">
+   eJxTZGFgUKQD5mZmYEgBYh5mVHFCAJuaXixqQBhkvgXUHkrtwKYGhKWh5svQ0A5ywUi0gxAeKnZkMBFWSy4YtWPUDmqDCibS7UAvt0mxg9oYGcDrKKB9KUDMQ4Mwg9dRQLMtoPbQyg5pqPkyNLSDlmC42UFrDABb4B9B
+  </data>
+ </layer>
+ <objectgroup name="collision" width="25" height="25">
+  <object name="StaticWall" x="128" y="32" width="96" height="96"/>
+  <object name="StaticWall" x="32" y="0" width="768" height="32"/>
+  <object name="StaticWall" x="0" y="0" width="32" height="800"/>
+  <object name="StaticWall" x="768" y="32" width="32" height="736"/>
+  <object name="StaticWall" x="32" y="768" width="768" height="32"/>
+  <object name="Ball" x="67" y="67" width="24" height="24">
+   <ellipse/>
+  </object>
+  <object name="StaticWall" x="32" y="224" width="256" height="64"/>
+  <object name="AttractorForce" x="256" y="0" width="288" height="288">
+   <ellipse/>
+  </object>
+  <object name="StaticWall" x="480" y="32" width="32" height="256"/>
+  <object name="StaticWall" x="32" y="544" width="640" height="32"/>
+  <object name="AttractorForce" x="224" y="384" width="288" height="288">
+   <ellipse/>
+  </object>
+  <object name="MovingWall" x="224" y="288" width="64" height="64">
+   <properties>
+    <property name="path" value="p1"/>
+   </properties>
+  </object>
+  <object name="MovingWall" x="608" y="576" width="64" height="64">
+   <properties>
+    <property name="path" value="p3"/>
+   </properties>
+  </object>
+  <object name="Teleporter" x="360" y="520" width="16" height="14">
+   <properties>
+    <property name="id" value="t1"/>
+    <property name="target" value="target"/>
+   </properties>
+  </object>
+  <object name="TeleporterTarget" x="640" y="32" width="32" height="32">
+   <properties>
+    <property name="id" value="target"/>
+   </properties>
+  </object>
+  <object name="MovingWall" x="512" y="224" width="64" height="64">
+   <properties>
+    <property name="path" value="p2"/>
+   </properties>
+  </object>
+  <object name="FinishLine" x="56" y="600" width="48" height="48">
+   <ellipse/>
+  </object>
+  <object name="PushBumper" x="32" y="288" width="8" height="256"/>
+  <object name="PushBumper" x="760" y="480" width="8" height="64"/>
+  <object name="Hole" x="392" y="136" width="16" height="16"/>
+  <object name="AttractorForce" x="256" y="192" width="288" height="288">
+   <ellipse/>
+  </object>
+  <object name="AttractorForce" x="448" y="416" width="288" height="288">
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <objectgroup name="paths" width="25" height="25">
+  <object name="p2" x="544" y="256">
+   <polyline points="0,0 192,0"/>
+  </object>
+  <object name="p1" x="256" y="320">
+   <polyline points="0,0 224,0"/>
+  </object>
+  <object name="p3" x="640" y="608">
+   <polyline points="0,0 96,0 96,96 0,96 0,0"/>
+  </object>
+ </objectgroup>
+</map>
